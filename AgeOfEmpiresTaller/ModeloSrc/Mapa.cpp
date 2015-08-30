@@ -45,6 +45,4 @@ Mapa::~Mapa() {
 	}
 	delete[] celdas;
 
-
 }
-

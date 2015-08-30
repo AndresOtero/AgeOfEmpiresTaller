@@ -16,6 +16,7 @@ class Mapa {
 public:
 	Mapa(int largo, int ancho);
 	bool celdaOcupada(int largo,int ancho);
+
 	virtual ~Mapa();
 };
 
