@@ -13,10 +13,3 @@ void HolaMundo::saludar () {
   cout <<"hola";
 }
 
-int main() {
-	HolaMundo* hola;
-	hola = new HolaMundo();
-	hola->saludar();
-	delete hola;
-	return 0;
-}

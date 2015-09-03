@@ -11,10 +11,6 @@ class HolaMundo {
     	~HolaMundo(){};
 };
 
-void HolaMundo::saludar () {
-  cout <<"hola";
-}
-
 int main() {
 	HolaMundo* hola;
 	hola = new HolaMundo();
