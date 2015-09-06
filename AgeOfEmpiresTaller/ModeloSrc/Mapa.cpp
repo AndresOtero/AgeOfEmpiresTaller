@@ -7,8 +7,9 @@
 
 #include "../ModeloSrc/Mapa.h"
 #include "../ModeloSrc/Celda.h"
+#include <iostream>
 
-Mapa::Mapa(int largo, int ancho) {
+Mapa::Mapa(int ancho, int largo) {
 	this->largo = largo;
 	this->ancho = ancho;
 	Celda*** celdas = new Celda**[ancho];
@@ -23,14 +24,39 @@ Mapa::Mapa(int largo, int ancho) {
 	this->celdas=celdas;
 }
 
-
-bool Mapa::celdaOcupada(int largo, int ancho) {
-	if ((largo >= this->largo) || (ancho >= this->ancho)) {
-		return false;
+Celda* Mapa::getCelda(int x,int y){
+	if ((x >= this->largo) || (y >= this->ancho)) {
+			return NULL;
 	}
-	return (this->celdas[largo][ancho]->estaOcupada());
+	return this->celdas[x][y];
 }
 
+void Mapa::setDibujo(Dibujo* dibujo,int x,int y){
+	this->getCelda(x,y)->setDibujo(dibujo);
+}
+bool Mapa::celdaOcupada(int x, int y) {
+	Celda* celda=this->getCelda(x,y);
+	if (celda==NULL) {
+		return false;
+	}
+	return (celda->estaOcupada());
+}
+
+dibujo_t Mapa::dibujar(int x, int y) {
+	if ((y >= this->largo) || (x >= this->ancho)) {
+		return AFUERA;
+	}
+	if(this->celdaOcupada(x,y)){
+		return this->getCelda(x,y)->dibujar();
+	}
+	return DEFAULT;
+}
+int Mapa::getAncho(){
+	return this->ancho;
+}
+int Mapa::getLargo(){
+	return this->largo;
+}
 Mapa::~Mapa() {
 	int largo = this->largo;
 	int ancho = this->ancho;

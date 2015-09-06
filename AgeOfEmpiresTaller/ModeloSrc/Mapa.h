@@ -14,10 +14,16 @@ class Mapa {
 	Celda*** celdas;
 
 public:
-	Mapa(int largo, int ancho);
-	bool celdaOcupada(int largo,int ancho);
-
+	Mapa(int ancho, int largo);
+	int getAncho();
+	int getLargo();
+	dibujo_t dibujar(int x, int y);
+	void setDibujo(Dibujo* dibujo,int x,int y)
 	virtual ~Mapa();
+
+private:
+	bool celdaOcupada(int largo,int ancho);
+	Celda* getCelda(int largo,int ancho);
 };
 
 #endif /* MAPA_H_ */
