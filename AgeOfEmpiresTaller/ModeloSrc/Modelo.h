@@ -18,7 +18,7 @@ public:
 	void setMapa(int largo,int ancho);
 	void setDibujoMapa(dibujo_t** dibujos);
 	dibujo_t** dibujar(int x,int y,int ancho,int alto);
-	void eliminarDibujar(int ancho, int alto);
+	void eliminarDibujar(int ancho, int alto,dibujo_t** matriz);
 	~Modelo();
 };
 

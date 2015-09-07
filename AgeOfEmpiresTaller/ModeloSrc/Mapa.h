@@ -18,12 +18,13 @@ public:
 	int getAncho();
 	int getLargo();
 	dibujo_t dibujar(int x, int y);
-	void setDibujo(Dibujo* dibujo,int x,int y)
-	virtual ~Mapa();
+	void setDibujo(Dibujo* dibujo,int x,int y);
 
-private:
+	virtual ~Mapa();
 	bool celdaOcupada(int largo,int ancho);
+private:
 	Celda* getCelda(int largo,int ancho);
+
 };
 
 #endif /* MAPA_H_ */

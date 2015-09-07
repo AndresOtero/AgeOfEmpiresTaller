@@ -12,7 +12,7 @@ Modelo::Modelo() {
 	// TODO Auto-generated constructor stub
 }
 void Modelo::setMapa(int ancho,int largo){
-	this->mapa=Mapa(ancho,largo);
+	this->mapa=new Mapa(ancho,largo);
 	int i=0,j=0;
 	for(;i<ancho;i++){
 		for(;j<largo;j++){

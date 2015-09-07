@@ -13,7 +13,7 @@ Celda::Celda() {
 	// TODO Auto-generated constructor stub
 }
 void Celda::setDibujo(Dibujo* dibujo){
-	if(this->dibujo==true){
+	if(this->ocupada==true){
 		this->dibujo->~Dibujo();
 	}else{
 		this->ocupada=true;
@@ -21,7 +21,7 @@ void Celda::setDibujo(Dibujo* dibujo){
 	this->dibujo=dibujo;
 }
 dibujo_t Celda::dibujar(){
-	this->dibujo->dibujar();
+	return this->dibujo->dibujar();
 }
 bool Celda::estaOcupada(){
 	return this->ocupada;
