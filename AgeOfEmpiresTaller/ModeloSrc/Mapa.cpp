@@ -5,8 +5,8 @@
  *      Author: andres
  */
 
-#include "../ModeloSrc/Mapa.h"
-#include "../ModeloSrc/Celda.h"
+#include "Mapa.h"
+#include "Celda.h"
 #include <iostream>
 
 Mapa::Mapa(int ancho, int largo) {

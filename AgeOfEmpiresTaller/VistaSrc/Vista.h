@@ -8,7 +8,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "../VistaSrc/LTexture.h"
+#include "LTexture.h"
+#include "../ModeloSrc/Dibujo.h"
+
 #ifndef VISTA_H_
 #define VISTA_H_
 
@@ -17,9 +19,10 @@ class Vista {
 	SDL_Window* gWindow = NULL;
 	//The window renderer
 	SDL_Renderer* gRenderer = NULL;
+	Dibujo* dibujo;
 
-	SDL_Rect gSpriteClips[ 4 ];
-	LTexture gSpriteSheetTexture;
+	//SDL_Rect gSpriteClips[ 4 ];
+	//LTexture gSpriteSheetTexture;
 public:
 	Vista();
 	bool init();

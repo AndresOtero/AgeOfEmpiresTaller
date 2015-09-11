@@ -5,7 +5,7 @@
  *      Author: andres
  */
 
-#include "../VistaSrc/LTexture.h"
+#include "LTexture.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

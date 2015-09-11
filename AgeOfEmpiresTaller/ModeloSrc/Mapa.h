@@ -4,7 +4,7 @@
  *  Created on: 29 de ago. de 2015
  *      Author: andres
  */
-#include "../ModeloSrc/Celda.h"
+#include "Celda.h"
 
 #ifndef MAPA_H_
 #define MAPA_H_
