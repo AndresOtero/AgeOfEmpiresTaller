@@ -14,7 +14,7 @@ Celda::Celda() {
 }
 void Celda::setDibujo(Dibujo* dibujo){
 	if(this->ocupada==true){
-		this->dibujo->~Dibujo();
+		delete this->dibujo;
 	}else{
 		this->ocupada=true;
 	}
@@ -29,7 +29,7 @@ bool Celda::estaOcupada(){
 Celda::~Celda() {
 	// TODO Auto-generated destructor stub
 	if(this->dibujo!=NULL){
-		this->dibujo->~Dibujo();
+		delete this->dibujo;
 	}
 }
 

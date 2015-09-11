@@ -59,7 +59,7 @@ void Modelo::eliminarDibujar(int ancho,int largo,dibujo_t** matriz){
 
 Modelo::~Modelo() {
 	// TODO Auto-generated destructor stub
-	this->mapa->~Mapa();
+	delete this->mapa;
 
 }
 

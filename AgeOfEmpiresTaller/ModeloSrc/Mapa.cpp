@@ -25,7 +25,7 @@ Mapa::Mapa(int ancho, int largo) {
 }
 
 Celda* Mapa::getCelda(int x,int y){
-	if ((x >= this->largo) || (y >= this->ancho)) {
+	if ((x >= this->ancho) || (y >= this->largo)) {
 			return NULL;
 	}
 	return this->celdas[x][y];

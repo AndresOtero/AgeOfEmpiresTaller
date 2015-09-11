@@ -11,6 +11,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../VistaSrc/LTexture.h"
+#include <math.h>
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 768;
@@ -141,6 +142,9 @@ int Vista::run() { //Main loop flag
 	int frame = 0;
 	int x=200, y=200;
 	int img_x=x,img_y=y;
+	double a,b;
+	double des_x=0,des_y=0,distancia=1,velocidad,delta_x=0,delta_y=0;
+	velocidad=5;
 	//While application is running
 	while (!quit) {
 
@@ -152,33 +156,60 @@ int Vista::run() { //Main loop flag
 			}
 			if(e.type==SDL_MOUSEBUTTONDOWN){
 				//Get mouse position
-				printf("\n\nHOLIS\n\n");
 				SDL_GetMouseState(&x, &y);
-				printf("X: %d\n", x);
-
+				a = ((float) (y - img_y)) / ((float) (x - img_x));//pendiente
+				b = img_y - a * img_x;//ordenada al origen
 			}
 		}
+
+		printf("X: %d\n",x);
+		printf("img_x: %d\n",img_x);
+		delta_x=(double)(x-img_x);
+		printf("Delta x: %f\n",delta_x);
+		printf("Y: %d\n",y);
+		printf("img_y: %d\n",img_y);
+		delta_y=(double)(y-img_y);
+		printf("Delta y: %f\n",delta_y);
+		distancia=sqrt(delta_x*delta_x+delta_y*delta_y);
+		if (distancia != 0) {
+			printf("Distancia: %f\n", distancia);
+			des_x = (velocidad * delta_x) / distancia;
+			printf("desplazamiento x: %f\n", des_x);
+			des_y = (velocidad * delta_y) / distancia;
+			printf("desplazamiento y: %f\n", des_y);
+			if ((sqrt(des_x*des_x) > distancia)&&(sqrt(des_y*des_y)<distancia)) {
+				img_x = x;
+			}
+			if ((sqrt(des_y*des_y) > distancia)&&((sqrt(des_x*des_x)<distancia))) {
+				img_y = y;
+			}
+			img_x += des_x;
+			img_y += des_y;
+		}
 		//Move
+		/**
 		if ((x != img_x) || (y != img_y)) {
-			if(x==img_x){
-				img_y++;
-			}else if(y==img_y){
-				img_x++;
-			}else{
-				float a=((float)(y-img_y))/((float)(x-img_x));
-				float b=img_y-a*img_x;
-				printf("a: %f\n ",a);
-				printf("b: %f\n ",b);
-				if(x>img_x){
+			if (x == img_x) {//Si esta en el mismo eje x
+				if (y > img_y) {
+					img_y++;
+				} else {
+					img_y--;
+				}
+			} else if (y == img_y) {//Si esta en el mismo eje y
+				if (x > img_x) {
+					img_x++;
+				} else {
+					img_x--;
+				}
+			} else {
+				if (x > img_x){//Si esta en el mismo eje x
 					img_x++;
 				}else{
 					img_x--;
 				}
-				img_y=a*img_x+b;
-				printf("img_x: %d\n",img_x);
-				printf("img_y: %d\n",img_y);
+				img_y=(a*img_x+b);
 			}
-		}
+		}**/
 
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -194,7 +225,9 @@ int Vista::run() { //Main loop flag
 		SDL_RenderPresent(gRenderer);
 
 		//Go to next frame
-		++frame;
+		if((delta_x!=0.0)||(delta_y!=0.0)){
+			++frame;
+		}
 		int WALKING_ANIMATION_FRAMES = 4;
 		//Cycle animation
 		if (frame / 4 >= WALKING_ANIMATION_FRAMES) {
@@ -204,5 +237,4 @@ int Vista::run() { //Main loop flag
 
 	}
 }
-
 
