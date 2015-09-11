@@ -17,8 +17,7 @@ class Vista {
 	SDL_Window* gWindow = NULL;
 	//The window renderer
 	SDL_Renderer* gRenderer = NULL;
-	//Walking animation
-	//int WALKING_ANIMATION_FRAMES = 4;
+
 	SDL_Rect gSpriteClips[ 4 ];
 	LTexture gSpriteSheetTexture;
 public:

@@ -134,7 +134,7 @@ int Vista::run() { //Main loop flag
 	int img_x = x, img_y = y;
 	double a, b;
 	double des_x = 0, des_y = 0, distancia = 1, velocidad, delta_x = 0,
-			delta_y = 0;
+	delta_y = 0;
 	velocidad = 5;
 	//While application is running
 	while (!quit) {
@@ -209,27 +209,26 @@ int Vista::run() { //Main loop flag
 		 }**/
 
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, 0, 0xFF, 0, 0);
 		SDL_RenderClear(gRenderer);
 
 		//Render current frame
 		SDL_Rect* currentClip = &gSpriteClips[frame / 4];
-		//gSpriteSheetTexture.render((SCREEN_WIDTH - currentClip->w) / 2,	(SCREEN_HEIGHT - currentClip->h) / 2, currentClip, gRenderer);
-		gSpriteSheetTexture.render(img_x - (currentClip->w / 2),
-				img_y - (currentClip->h / 2), currentClip, gRenderer);
-
-		//Update screen
-		SDL_RenderPresent(gRenderer);
+		gSpriteSheetTexture.render(img_x - (currentClip->w / 2),img_y - (currentClip->h / 2), currentClip, gRenderer);
 
 		//Go to next frame
 		if ((delta_x != 0.0) || (delta_y != 0.0)) {
-			++frame;
+				++frame;
 		}
 		int WALKING_ANIMATION_FRAMES = 4;
 		//Cycle animation
 		if (frame / 4 >= WALKING_ANIMATION_FRAMES) {
-			frame = 0;
+				frame = 0;
 		}
+
+		//Update screen
+		SDL_RenderPresent(gRenderer);
+
 
 	}
 }
