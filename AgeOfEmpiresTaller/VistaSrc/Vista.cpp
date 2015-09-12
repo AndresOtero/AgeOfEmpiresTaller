@@ -183,16 +183,8 @@ int Vista::run() { //Main loop flag
 
 		//Render current frame
 
-		for(int i=0;i<SCREEN_WIDTH+128;i+=128){
-			for(int j=0;j<SCREEN_HEIGHT+90;j+=90){
-				this->pasto->set_posicion_default(i,j);
-				this->pasto->render(gRenderer);
-			}
-			for(int j=45;j<SCREEN_HEIGHT;j+=90){
-				this->pasto->set_posicion_default(i+64,j);
-				this->pasto->render(gRenderer);
-			}
-		}
+		dibujar_mapa();
+
 		this->personaje->render(gRenderer);
 		this->personaje->set_velocidad(10);
 		this->personaje->mover(x, y);
@@ -203,6 +195,20 @@ int Vista::run() { //Main loop flag
 
 
 	}
+
 	return 0;
+}
+
+void Vista::dibujar_mapa(){
+	for(int i=0;i<SCREEN_WIDTH+128;i+=128){
+		for(int j=0;j<SCREEN_HEIGHT+90;j+=90){
+			this->pasto->set_posicion_default(i,j);
+			this->pasto->render(gRenderer);
+		}
+		for(int j=45;j<SCREEN_HEIGHT;j+=90){
+			this->pasto->set_posicion_default(i+64,j);
+			this->pasto->render(gRenderer);
+		}
+	}
 }
 

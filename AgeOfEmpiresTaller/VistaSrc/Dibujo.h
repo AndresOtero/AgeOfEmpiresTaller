@@ -24,6 +24,10 @@ class Dibujo {
 	int y_imagen;
 	int velocidad;
 	int acumulador;
+	int get_alto();
+	int get_alto(int n_imagen);
+	int get_ancho();
+	int get_ancho(int n_imagen);
 
 public:
 	Dibujo(dibujo_t tipo_de_dibujo=DEFAULT);
