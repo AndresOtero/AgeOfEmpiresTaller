@@ -9,7 +9,7 @@
 #include "../ModeloSrc/Mapa.h"
 
 Modelo::Modelo() {
-	// TODO Auto-generated constructor stub
+	this -> mapa = NULL;
 }
 void Modelo::setMapa(int ancho,int largo){
 	this->mapa=new Mapa(ancho,largo);

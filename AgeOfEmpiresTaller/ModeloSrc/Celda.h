@@ -12,8 +12,8 @@
 
 class Celda {
 private:
-	bool ocupada=false;
-	Dibujo* dibujo=NULL;
+	bool ocupada;
+	Dibujo* dibujo;
 public:
 	Celda();
 	bool estaOcupada();

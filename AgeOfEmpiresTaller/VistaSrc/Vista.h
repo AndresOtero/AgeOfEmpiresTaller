@@ -16,9 +16,9 @@
 
 class Vista {
 	//The window we'll be rendering to
-	SDL_Window* gWindow = NULL;
+	SDL_Window* gWindow;
 	//The window renderer
-	SDL_Renderer* gRenderer = NULL;
+	SDL_Renderer* gRenderer;
 	Dibujo* dibujo;
 
 	//SDL_Rect gSpriteClips[ 4 ];

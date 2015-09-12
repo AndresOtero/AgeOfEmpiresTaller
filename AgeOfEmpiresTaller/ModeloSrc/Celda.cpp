@@ -10,7 +10,8 @@
 #include <iostream>
 
 Celda::Celda() {
-	// TODO Auto-generated constructor stub
+	this -> dibujo = NULL;
+	this -> ocupada = false;
 }
 void Celda::setDibujo(Dibujo* dibujo){
 	if(this->ocupada==true){

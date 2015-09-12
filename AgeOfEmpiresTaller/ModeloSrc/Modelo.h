@@ -11,7 +11,7 @@
 #define MODELO_H_
 
 class Modelo {
-	Mapa* mapa=NULL;
+	Mapa* mapa;
 
 public:
 	Modelo();

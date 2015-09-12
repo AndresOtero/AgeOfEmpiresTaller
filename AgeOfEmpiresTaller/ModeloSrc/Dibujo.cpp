@@ -11,6 +11,8 @@ Dibujo::Dibujo(dibujo_t tipo_de_dibujo) {
 	// TODO Auto-generated constructor stub
 	this->tipo_de_dibujo = tipo_de_dibujo;
 	this->textura = new LTexture();
+	this -> velocidad = 0;
+	this -> acumulador = 0;
 }
 
 void Dibujo::set_cantidad_de_imagenes(size_t cant_de_imagenes) {

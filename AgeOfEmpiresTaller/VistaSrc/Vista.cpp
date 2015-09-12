@@ -31,7 +31,8 @@ void transformar_isometrica_cartesiana(int iso_x,int iso_y,int cart_x,int cart_y
 bool Vista::init() {
 	//Initialization flag
 	bool success = true;
-
+	this -> gRenderer = NULL;
+	this -> gWindow = NULL;
 	//Initialize SDL
 	if (SDL_Init( SDL_INIT_VIDEO) < 0) {
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
@@ -144,12 +145,13 @@ int Vista::run() { //Main loop flag
 
 		//Render current frame
 		this->dibujo->render( gRenderer);
-		this->dibujo->set_velocidad(5);
+		this->dibujo->set_velocidad(10);
 		this->dibujo->mover(x,y);
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 
 
 	}
+	return 0;
 }
 

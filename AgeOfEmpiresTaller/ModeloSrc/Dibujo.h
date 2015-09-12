@@ -22,8 +22,8 @@ class Dibujo {
 	size_t imagen_actual;
 	int x_imagen;
 	int y_imagen;
-	int velocidad = 0;
-	int acumulador =0;
+	int velocidad;
+	int acumulador;
 
 public:
 	Dibujo(dibujo_t tipo_de_dibujo=DEFAULT);
