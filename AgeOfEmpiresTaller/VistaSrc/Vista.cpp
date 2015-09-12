@@ -74,7 +74,8 @@ bool Vista::init() {
 			}
 		}
 		//creo dibujo
-		this->dibujo=new Dibujo;
+		this->personaje=new Dibujo;
+		this->pasto=new Dibujo;
 	}
 
 	return success;
@@ -84,16 +85,27 @@ bool Vista::loadMedia() {
 	bool success = true;
 
 	//Load sprite sheet texture
-	if (!this->dibujo->cargar_archivo("img/foo.png", gRenderer)) {
+	if (!this->personaje->cargar_archivo("img/foo.png", gRenderer)) {
 		printf("Failed to load walking animation texture!\n");
 		success = false;
 	} else {
 		//Set sprite clips
-		this->dibujo->set_cantidad_de_imagenes(4);
+		this->personaje->set_cantidad_de_imagenes(4);
 		for (int i = 0; i < 4; i++) {
-			this->dibujo->set_imagen(i,i*64,0,64,205);
+			this->personaje->set_imagen(i,i*64,0,64,205);
 		}
 	}
+	//Load sprite sheet texture
+		if (!this->pasto->cargar_archivo("img/Sprites/crops.png", gRenderer)) {
+			printf("Failed to load walking animation texture!\n");
+			success = false;
+		} else {
+			//Set sprite clips
+			this->pasto->set_cantidad_de_imagenes(4);
+			for (int i = 0; i < 4; i++) {
+				this->pasto->set_imagen(0,0,0,128,90);
+			}
+		}
 
 	return success;
 }
@@ -101,7 +113,7 @@ Vista::~Vista() {
 	// TODO Auto-generated destructor stub
 
 	//Free loaded images
-	delete dibujo;
+	delete personaje;
 
 	//Destroy window
 	SDL_DestroyRenderer(gRenderer);
@@ -122,7 +134,8 @@ int Vista::run() { //Main loop flag
 	//Event handler
 	SDL_Event e;
 
-	this->dibujo->set_posicion_default(200,200);
+	this->personaje->set_posicion_default(200,200);
+	this->pasto->set_posicion_default(200,200);
 	int x=200, y=200 ;
 
 	//While application is running
@@ -144,9 +157,22 @@ int Vista::run() { //Main loop flag
 		SDL_RenderClear(gRenderer);
 
 		//Render current frame
-		this->dibujo->render( gRenderer);
-		this->dibujo->set_velocidad(10);
-		this->dibujo->mover(x,y);
+
+		for(int i=0;i<SCREEN_WIDTH+128;i+=128){
+			for(int j=0;j<SCREEN_HEIGHT+90;j+=90){
+				this->pasto->set_posicion_default(i,j);
+				this->pasto->render(gRenderer);
+			}
+			for(int j=45;j<SCREEN_HEIGHT;j+=90){
+				this->pasto->set_posicion_default(i+64,j);
+				this->pasto->render(gRenderer);
+			}
+		}
+		this->personaje->render(gRenderer);
+		this->personaje->set_velocidad(10);
+		this->personaje->mover(x, y);
+
+
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 

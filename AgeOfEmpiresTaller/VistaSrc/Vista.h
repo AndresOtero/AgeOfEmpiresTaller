@@ -19,10 +19,9 @@ class Vista {
 	SDL_Window* gWindow;
 	//The window renderer
 	SDL_Renderer* gRenderer;
-	Dibujo* dibujo;
+	Dibujo* personaje;
+	Dibujo* pasto;
 
-	//SDL_Rect gSpriteClips[ 4 ];
-	//LTexture gSpriteSheetTexture;
 public:
 	Vista();
 	bool init();
