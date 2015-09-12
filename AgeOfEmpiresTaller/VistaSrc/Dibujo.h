@@ -24,10 +24,8 @@ class Dibujo {
 	int y_imagen;
 	int velocidad;
 	int acumulador;
-	int get_alto();
-	int get_alto(int n_imagen);
-	int get_ancho();
-	int get_ancho(int n_imagen);
+
+
 
 public:
 	Dibujo(dibujo_t tipo_de_dibujo=DEFAULT);
@@ -41,6 +39,10 @@ public:
 	void mover(int x, int y);
 	void set_velocidad(int velocidad);
 	dibujo_t dibujar();
+	int get_alto();
+	int get_alto(int n_imagen);
+	int get_ancho();
+	int get_ancho(int n_imagen);
 	virtual ~Dibujo();
 private:
 	void cambiar_frame();

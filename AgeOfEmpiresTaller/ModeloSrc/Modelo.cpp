@@ -54,6 +54,13 @@ void Modelo::eliminarDibujar(int ancho,int largo,dibujo_t** matriz){
 	delete[] matriz;
 }
 
+int Modelo::get_alto_mapa(){
+	return mapa->getLargo();
+}
+
+int Modelo::get_ancho_mapa(){
+	return mapa->getAncho();
+}
 
 
 

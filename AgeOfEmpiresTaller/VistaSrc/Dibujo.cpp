@@ -112,7 +112,7 @@ int Dibujo::get_alto(int n_imagen){
 }
 
 int Dibujo::get_alto(){
-	return get_alto(0);
+	return get_alto(imagen_actual);
 }
 
 int Dibujo::get_ancho(int n_imagen){
@@ -120,7 +120,7 @@ int Dibujo::get_ancho(int n_imagen){
 }
 
 int Dibujo::get_ancho(){
-	return get_ancho(0);
+	return get_ancho(imagen_actual);
 }
 
 
