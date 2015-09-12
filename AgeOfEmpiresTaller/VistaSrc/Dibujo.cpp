@@ -106,6 +106,24 @@ void Dibujo::mover(int x, int y) {/**
 
 	}
 }
+
+int Dibujo::get_alto(int n_imagen){
+	return spriteClips[n_imagen].h;
+}
+
+int Dibujo::get_alto(){
+	return get_alto(0);
+}
+
+int Dibujo::get_ancho(int n_imagen){
+	return spriteClips[n_imagen].w;
+}
+
+int Dibujo::get_ancho(){
+	return get_ancho(0);
+}
+
+
 //Move
 /**
  if ((x != x_imagen) || (y != y_imagen)) {

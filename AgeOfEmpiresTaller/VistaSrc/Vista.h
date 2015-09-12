@@ -23,6 +23,8 @@ class Vista {
 	Dibujo* pasto;
 	Modelo* modelo;
 
+	void dibujar_mapa();
+
 public:
 	Vista(Modelo* modelo);
 	bool init();
