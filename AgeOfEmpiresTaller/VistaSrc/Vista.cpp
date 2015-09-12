@@ -144,7 +144,7 @@ int Vista::run() { //Main loop flag
 
 		//Render current frame
 		this->dibujo->render( gRenderer);
-		this->dibujo->set_velocidad(10);
+		this->dibujo->set_velocidad(5);
 		this->dibujo->mover(x,y);
 		//Update screen
 		SDL_RenderPresent(gRenderer);

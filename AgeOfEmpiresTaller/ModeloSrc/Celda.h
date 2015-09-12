@@ -11,6 +11,7 @@
 #define CELDA_H_
 
 class Celda {
+private:
 	bool ocupada=false;
 	Dibujo* dibujo=NULL;
 public:

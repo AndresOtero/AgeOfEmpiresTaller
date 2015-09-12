@@ -43,6 +43,9 @@
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="SDL2main"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="SDL2_image"/>
 								</option>
+								<option id="gnu.cpp.link.option.userobjs.842253538" superClass="gnu.cpp.link.option.userobjs" valueType="userObjs">
+									<listOptionValue builtIn="false" value="/usr/local/lib/libyaml-cpp.a"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.265494681" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

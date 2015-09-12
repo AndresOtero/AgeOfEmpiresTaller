@@ -71,25 +71,25 @@ void Dibujo::cambiar_frame(){
 	}
 }
 
-void Dibujo::mover(int x, int y) {
+void Dibujo::mover(int x, int y) {/**
 	printf("X: %d\n", x);
 	printf("x_imagen: %d\n", x_imagen);
-	float delta_x = (double) (x - x_imagen);
-	printf("Delta x: %f\n", delta_x);
+**/	float delta_x = (double) (x - x_imagen);
+	/**printf("Delta x: %f\n", delta_x);
 	printf("Y: %d\n", y);
-	printf("y_imagen: %d\n", y_imagen);
+	printf("y_imagen: %d\n", y_imagen);**/
 	float delta_y = (double) (y - y_imagen);
-	printf("Delta y: %f\n", delta_y);
+	//printf("Delta y: %f\n", delta_y);
 	float distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
 	if (distancia != 0) {
 		if (distancia < velocidad) {
 			distancia = velocidad;
 		}
-		printf("Distancia: %f\n", distancia);
+//		printf("Distancia: %f\n", distancia);
 		float des_x = (velocidad * delta_x) / distancia;
-		printf("desplazamiento x: %f\n", des_x);
+	//	printf("desplazamiento x: %f\n", des_x);
 		float des_y = (velocidad * delta_y) / distancia;
-		printf("desplazamiento y: %f\n", des_y);
+		//printf("desplazamiento y: %f\n", des_y);
 		if ((sqrt(des_x * des_x) > distancia)
 				&& (sqrt(des_y * des_y) < distancia)) {
 			x_imagen = x;
