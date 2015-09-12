@@ -25,8 +25,10 @@ class Vista {
 public:
 	Vista();
 	bool init();
-	void transformar_cartesiana_isometrica(int cart_x,int cart_y,int iso_x,int iso_y);
-	void transformar_isometrica_cartesiana(int iso_x,int iso_y,int cart_x,int cart_y);
+	int ancho_por_celda();
+	int altura_por_celda();
+	void transformar_cartesiana_isometrica(int cart_x,int cart_y,int* iso_x,int* iso_y);
+	void transformar_isometrica_cartesiana(int iso_x,int iso_y,int* cart_x,int* cart_y);
 	bool loadMedia();
 	int run();
 	virtual ~Vista();
