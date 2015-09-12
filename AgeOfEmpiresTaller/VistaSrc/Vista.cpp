@@ -183,7 +183,6 @@ int Vista::run() { //Main loop flag
 	SDL_Event e;
 
 	this->personaje->set_posicion_default(200,200);
-	this->pasto->set_posicion_default(200,200);
 	int mov_x=200, mov_y=200 ;
 
 	//While application is running
@@ -238,4 +237,3 @@ void Vista::dibujar_mapa(){
 		}
 	}
 }
-
