@@ -32,15 +32,15 @@ int Vista::ancho_por_celda(){
 	//devuelve ancho de imagen
 }
 
-void Vista::transformar_cartesiana_isometrica(int cart_x,int cart_y,int *iso_x,int *iso_y){
-	*iso_x= ( cart_x/ this->ancho_por_celda() + cart_y/ this->altura_por_celda() )/2  ;
-	*iso_y = ( cart_y/ this->altura_por_celda() - cart_x/ this->ancho_por_celda() )/2;
+void Vista::transformar_cartesiana_isometrica(int cart_x,int cart_y,int& iso_x,int& iso_y){
+	iso_x= ( cart_x/ this->ancho_por_celda() + cart_y/ this->altura_por_celda() )/2  ;
+	iso_y = ( cart_y/ this->altura_por_celda() - cart_x/ this->ancho_por_celda() )/2;
 }
 
-void Vista::transformar_isometrica_cartesiana(int iso_x,int iso_y,int *cart_x,int *cart_y){
+void Vista::transformar_isometrica_cartesiana(int iso_x,int iso_y,int& cart_x,int& cart_y){
 
-	*cart_x = ( iso_x - iso_y ) * this->ancho_por_celda();
-	*cart_y = ( iso_x + iso_y)* this->altura_por_celda();
+	cart_x = ( iso_x - iso_y ) * this->ancho_por_celda();
+	cart_y = ( iso_x + iso_y)* this->altura_por_celda();
 }
 
 bool Vista::init() {
