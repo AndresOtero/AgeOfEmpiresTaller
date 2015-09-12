@@ -33,6 +33,7 @@ public:
 	void transformar_cartesiana_isometrica(int cart_x,int cart_y,int& iso_x,int& iso_y);
 	void transformar_isometrica_cartesiana(int iso_x,int iso_y,int& cart_x,int& cart_y);
 	bool loadMedia();
+	void detectar_mouse_borde();
 	int run();
 	virtual ~Vista();
 };
