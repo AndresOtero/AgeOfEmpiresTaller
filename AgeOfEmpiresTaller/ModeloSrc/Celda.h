@@ -4,8 +4,8 @@
  *  Created on: 29 de ago. de 2015
  *      Author: andres
  */
-#include "../ModeloSrc/Dibujo.h"
 #include <iostream>
+#include "../VistaSrc/Dibujo.h"
 
 #ifndef CELDA_H_
 #define CELDA_H_
