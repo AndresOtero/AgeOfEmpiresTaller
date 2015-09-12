@@ -8,7 +8,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "../ModeloSrc/Dibujo.h"
+#include "Dibujo.h"
 #include "LTexture.h"
 
 #ifndef VISTA_H_
