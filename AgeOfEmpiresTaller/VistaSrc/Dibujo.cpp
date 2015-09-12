@@ -5,7 +5,7 @@
  *      Author: andres
  */
 
-#include "Dibujo.h"
+#include "../VistaSrc/Dibujo.h"
 
 Dibujo::Dibujo(dibujo_t tipo_de_dibujo) {
 	// TODO Auto-generated constructor stub

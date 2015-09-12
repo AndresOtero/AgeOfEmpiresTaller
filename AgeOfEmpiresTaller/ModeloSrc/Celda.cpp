@@ -6,8 +6,8 @@
  */
 
 #include "../ModeloSrc/Celda.h"
-#include "../ModeloSrc/Dibujo.h"
 #include <iostream>
+#include "../VistaSrc/Dibujo.h"
 
 Celda::Celda() {
 	this -> dibujo = NULL;
