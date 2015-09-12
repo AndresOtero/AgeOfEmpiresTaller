@@ -14,27 +14,31 @@
 #include <math.h>
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 768;
-const int SCREEN_HEIGHT = 1024;
+const int SCREEN_WIDTH = 1024;
+const int SCREEN_HEIGHT = 768;
 
 Vista::Vista() {
 	// TODO Auto-generated constructor stub
 
 }
 int Vista::altura_por_celda(){
-
+	return 90;
 	//devuelve alto de imagen
 
 }
 
 int Vista::ancho_por_celda(){
-
+	return 128;
 	//devuelve ancho de imagen
 }
 
 void Vista::transformar_cartesiana_isometrica(int cart_x,int cart_y,int *iso_x,int *iso_y){
 	*iso_x= ( cart_x/ this->ancho_por_celda() + cart_y/ this->altura_por_celda() )/2  ;
 	*iso_y = ( cart_y/ this->altura_por_celda() - cart_x/ this->ancho_por_celda() )/2;
+	int x=*iso_x;
+	int y=*iso_y;
+	printf("isometrica x %d \n",x);
+	printf("isometrica y %d \n",y);
 }
 
 void Vista::transformar_isometrica_cartesiana(int iso_x,int iso_y,int *cart_x,int *cart_y){
@@ -141,6 +145,26 @@ Vista::~Vista() {
 	IMG_Quit();
 	SDL_Quit();
 }
+void Vista::detectar_mouse_borde(){
+		int mouse_x, mouse_y;
+		SDL_GetMouseState(&mouse_x, &mouse_y);
+
+		int mov_pantalla_x = 100, mov_pantalla_y = 100;
+		if ((mouse_x < mov_pantalla_x)){
+			//printf("izquierda \n");
+		}
+		if(mouse_x > (SCREEN_WIDTH - mov_pantalla_x)){
+			//printf("derecha\n");
+		}
+		if(mouse_y < mov_pantalla_y){
+			//printf("alto\n");
+		}
+		if(mouse_y > (SCREEN_HEIGHT - mov_pantalla_y) ){
+			//printf("abajo\n");
+		} else {
+			//printf("in\n");
+		}
+}
 
 int Vista::run() { //Main loop flag
 	//Main loop flag
@@ -151,10 +175,11 @@ int Vista::run() { //Main loop flag
 
 	this->personaje->set_posicion_default(200,200);
 	this->pasto->set_posicion_default(200,200);
-	int x=200, y=200 ;
+	int mov_x=200, mov_y=200 ;
 
 	//While application is running
 	while (!quit) {
+
 
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0) {
@@ -164,7 +189,10 @@ int Vista::run() { //Main loop flag
 			}
 			if (e.type == SDL_MOUSEBUTTONDOWN) {
 				//Get mouse position
-				SDL_GetMouseState(&x, &y);
+				SDL_GetMouseState(&mov_x, &mov_y);
+				int* coordenadas=new int[2];
+				this->transformar_cartesiana_isometrica(mov_x,mov_x,&coordenadas[0],&coordenadas[1]);
+
 			}
 		}
 		//Clear screen
@@ -185,7 +213,8 @@ int Vista::run() { //Main loop flag
 		}
 		this->personaje->render(gRenderer);
 		this->personaje->set_velocidad(10);
-		this->personaje->mover(x, y);
+		this->personaje->mover(mov_x, mov_y);
+
 
 
 		//Update screen
