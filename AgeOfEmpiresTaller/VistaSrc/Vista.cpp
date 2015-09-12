@@ -7,19 +7,24 @@
 
 #include "Vista.h"
 
-#include "stdlib.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_error.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_hints.h>
 #include <SDL2/SDL_image.h>
-#include "LTexture.h"
-#include <math.h>
+#include <SDL2/SDL_mouse.h>
+#include <SDL2/SDL_render.h>
+#include <cstdio>
+
+#include "../ModeloSrc/Modelo.h"
+#include "Dibujo.h"
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 768;
 const int SCREEN_HEIGHT = 1024;
 
-Vista::Vista() {
-	// TODO Auto-generated constructor stub
-
+Vista::Vista(Modelo* modelo) {
+	this -> modelo = modelo;
 }
 int Vista::altura_por_celda(){
 
@@ -129,7 +134,8 @@ bool Vista::loadMedia() {
 	return success;
 }
 Vista::~Vista() {
-	// TODO Auto-generated destructor stub
+	delete modelo;
+	delete pasto;
 
 	//Free loaded images
 	delete personaje;

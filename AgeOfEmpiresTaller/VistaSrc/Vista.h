@@ -4,12 +4,12 @@
  *  Created on: 9 de set. de 2015
  *      Author: andres
  */
-#include "stdlib.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
-#include "Dibujo.h"
-#include "LTexture.h"
+#include <SDL2/SDL_video.h>
+
+class Dibujo;
+class Modelo;
+struct SDL_Renderer;
 
 #ifndef VISTA_H_
 #define VISTA_H_
@@ -21,9 +21,10 @@ class Vista {
 	SDL_Renderer* gRenderer;
 	Dibujo* personaje;
 	Dibujo* pasto;
+	Modelo* modelo;
 
 public:
-	Vista();
+	Vista(Modelo* modelo);
 	bool init();
 	int ancho_por_celda();
 	int altura_por_celda();

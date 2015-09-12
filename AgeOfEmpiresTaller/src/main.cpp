@@ -13,10 +13,9 @@ using namespace std;
 
 int main() {
 	cout << "Hola Gaston\n";
-	Modelo* m = new Modelo();
-	m->setMapa(1,2);
-	delete m;
-	Vista* vista= new Vista();
+	Modelo* modelo = new Modelo();
+	modelo->setMapa(10,15);
+	Vista* vista= new Vista(modelo);
 	vista->init();
 	vista->loadMedia();
 	vista->run();
