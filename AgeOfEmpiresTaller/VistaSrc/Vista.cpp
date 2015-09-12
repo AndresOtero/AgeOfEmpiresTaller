@@ -153,7 +153,7 @@ int Vista::run() { //Main loop flag
 			}
 		}
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0,0, 0);
+		SDL_SetRenderDrawColor(gRenderer, 0, 0,0xFF, 0);
 		SDL_RenderClear(gRenderer);
 
 		//Render current frame
