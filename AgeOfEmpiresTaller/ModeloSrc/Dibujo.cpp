@@ -63,6 +63,13 @@ int Dibujo::get_x() {
 int Dibujo::get_y() {
 	return this->y_imagen;
 }
+void Dibujo::cambiar_frame(){
+	acumulador++;
+	if((20/velocidad)<=acumulador){
+		imagen_actual++;
+		acumulador=0;
+	}
+}
 
 void Dibujo::mover(int x, int y) {
 	printf("X: %d\n", x);
@@ -93,7 +100,7 @@ void Dibujo::mover(int x, int y) {
 		}
 		x_imagen += des_x;
 		y_imagen += des_y;
-		imagen_actual++;
+		this->cambiar_frame();
 
 	}
 }

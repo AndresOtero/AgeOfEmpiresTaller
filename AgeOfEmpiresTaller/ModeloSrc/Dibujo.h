@@ -23,6 +23,8 @@ class Dibujo {
 	int x_imagen;
 	int y_imagen;
 	int velocidad = 0;
+	int acumulador =0;
+
 public:
 	Dibujo(dibujo_t tipo_de_dibujo=DEFAULT);
 	void set_cantidad_de_imagenes(size_t cant_de_imagenes);
@@ -36,6 +38,8 @@ public:
 	void set_velocidad(int velocidad);
 	dibujo_t dibujar();
 	virtual ~Dibujo();
+private:
+	void cambiar_frame();
 };
 
 #endif /* DIBUJO_H_ */

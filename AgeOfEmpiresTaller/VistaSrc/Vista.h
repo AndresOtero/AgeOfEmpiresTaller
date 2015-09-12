@@ -8,8 +8,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "LTexture.h"
 #include "../ModeloSrc/Dibujo.h"
+#include "LTexture.h"
 
 #ifndef VISTA_H_
 #define VISTA_H_
@@ -26,6 +26,8 @@ class Vista {
 public:
 	Vista();
 	bool init();
+	void transformar_cartesiana_isometrica(int cart_x,int cart_y,int iso_x,int iso_y);
+	void transformar_isometrica_cartesiana(int iso_x,int iso_y,int cart_x,int cart_y);
 	bool loadMedia();
 	int run();
 	virtual ~Vista();

@@ -21,6 +21,12 @@ Vista::Vista() {
 	// TODO Auto-generated constructor stub
 
 }
+void Vista::transformar_cartesiana_isometrica(int cart_x,int cart_y,int iso_x,int iso_y){
+
+}
+void transformar_isometrica_cartesiana(int iso_x,int iso_y,int cart_x,int cart_y){
+
+}
 
 bool Vista::init() {
 	//Initialization flag
@@ -37,7 +43,7 @@ bool Vista::init() {
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED,
+		gWindow = SDL_CreateWindow("Age of empires", SDL_WINDOWPOS_UNDEFINED,
 				SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT,
 				SDL_WINDOW_SHOWN);
 		if (gWindow == NULL) {
@@ -133,12 +139,12 @@ int Vista::run() { //Main loop flag
 			}
 		}
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0, 0xFF, 0, 0);
+		SDL_SetRenderDrawColor(gRenderer, 0, 0,0xFF, 0);
 		SDL_RenderClear(gRenderer);
 
 		//Render current frame
 		this->dibujo->render( gRenderer);
-		this->dibujo->set_velocidad(5);
+		this->dibujo->set_velocidad(10);
 		this->dibujo->mover(x,y);
 		//Update screen
 		SDL_RenderPresent(gRenderer);
