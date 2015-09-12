@@ -7,44 +7,52 @@
 
 #include "Vista.h"
 
-#include "stdlib.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_error.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_hints.h>
 #include <SDL2/SDL_image.h>
-#include "LTexture.h"
-#include <math.h>
+#include <SDL2/SDL_mouse.h>
+#include <SDL2/SDL_render.h>
+#include <cstdio>
+
+#include "../ModeloSrc/Modelo.h"
+#include "Dibujo.h"
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
 
-Vista::Vista() {
-	// TODO Auto-generated constructor stub
-
+Vista::Vista(Modelo* modelo) {
+	this -> modelo = modelo;
 }
+
 int Vista::altura_por_celda(){
 	return 90;
-	//devuelve alto de imagen
+	//devuelve alto de imagen111111111111111
 
 }
 
 int Vista::ancho_por_celda(){
 	return 128;
 	//devuelve ancho de imagen
+
 }
 
-void Vista::transformar_cartesiana_isometrica(int cart_x,int cart_y,int *iso_x,int *iso_y){
-	*iso_x= ( cart_x/ this->ancho_por_celda() + cart_y/ this->altura_por_celda() )/2  ;
-	*iso_y = ( cart_y/ this->altura_por_celda() - cart_x/ this->ancho_por_celda() )/2;
-	int x=*iso_x;
-	int y=*iso_y;
-	printf("isometrica x %d \n",x);
-	printf("isometrica y %d \n",y);
-}
 
-void Vista::transformar_isometrica_cartesiana(int iso_x,int iso_y,int *cart_x,int *cart_y){
+void Vista::transformar_cartesiana_isometrica(int cart_x,int cart_y,int& iso_x,int& iso_y){
+	iso_x = ( cart_x - cart_y ) * this->ancho_por_celda()/2;
+	iso_y = ( cart_x + cart_y)* this->altura_por_celda()/2;
+	printf("Iso_x: %d\n", iso_x);
+	printf("Iso_y: %d\n", iso_y);
+	}
 
-	*cart_x = ( iso_x - iso_y ) * this->ancho_por_celda();
-	*cart_y = ( iso_x + iso_y)* this->altura_por_celda();
+void Vista::transformar_isometrica_cartesiana(int iso_x,int iso_y,int& cart_x,int& cart_y){
+	cart_x= ( iso_x/ this->ancho_por_celda() + iso_y/ this->altura_por_celda() )  ;
+	cart_y = ( iso_y/ this->altura_por_celda() - iso_x/ this->ancho_por_celda() );
+	printf("Cart_x: %d\n", cart_x);
+	printf("Cart_y: %d\n", cart_y);
+
 }
 
 bool Vista::init() {
@@ -129,7 +137,8 @@ bool Vista::loadMedia() {
 	return success;
 }
 Vista::~Vista() {
-	// TODO Auto-generated destructor stub
+	delete modelo;
+	delete pasto;
 
 	//Free loaded images
 	delete personaje;
@@ -190,8 +199,7 @@ int Vista::run() { //Main loop flag
 			if (e.type == SDL_MOUSEBUTTONDOWN) {
 				//Get mouse position
 				SDL_GetMouseState(&mov_x, &mov_y);
-				int* coordenadas=new int[2];
-				this->transformar_cartesiana_isometrica(mov_x,mov_x,&coordenadas[0],&coordenadas[1]);
+
 
 			}
 		}
