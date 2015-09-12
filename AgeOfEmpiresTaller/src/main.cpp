@@ -7,6 +7,7 @@ using namespace std;
 
 
 int main() {
+	cout << "Hola Gaston";
 	Modelo* m = new Modelo();
 	m->setMapa(1,2);
 	delete m;
