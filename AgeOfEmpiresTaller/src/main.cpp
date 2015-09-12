@@ -14,8 +14,8 @@ using namespace std;
 int main() {
 	cout << "Hola Gaston\n";
 	Modelo* modelo = new Modelo();
-	int tamnio_x_mapa = 5;
-	int tamnio_y_mapa = 3;
+	int tamnio_x_mapa = 100;
+	int tamnio_y_mapa = 100;
 	modelo->setMapa(tamnio_x_mapa, tamnio_y_mapa);
 	Vista* vista= new Vista(modelo);
 	vista->init();

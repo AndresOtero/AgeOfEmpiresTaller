@@ -124,14 +124,14 @@ bool Vista::loadMedia() {
 		}
 	}
 	//Load sprite sheet texture
-		if (!this->pasto->cargar_archivo("img/Sprites/crops.png", gRenderer)) {
+		if (!this->pasto->cargar_archivo("img/Sprites/grass_and_water/grass_and_water_0.png", gRenderer)) {
 			printf("Failed to load walking animation texture!\n");
 			success = false;
 		} else {
 			//Set sprite clips
 			this->pasto->set_cantidad_de_imagenes(4);
 			for (int i = 0; i < 4; i++) {
-				this->pasto->set_imagen(0,0,0,128,90);
+				this->pasto->set_imagen(0,2,2,62,41);
 			}
 		}
 
@@ -204,7 +204,7 @@ int Vista::run() { //Main loop flag
 			}
 		}
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0, 0,0xFF, 0);
+		SDL_SetRenderDrawColor(gRenderer, 0, 0,0, 0);
 		SDL_RenderClear(gRenderer);
 
 		//Render current frame
