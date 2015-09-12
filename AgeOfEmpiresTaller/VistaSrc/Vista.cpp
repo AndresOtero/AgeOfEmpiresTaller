@@ -6,7 +6,7 @@
  */
 
 #include "Vista.h"
-
+#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_error.h>
 #include <SDL2/SDL_events.h>
@@ -18,6 +18,7 @@
 
 #include "../ModeloSrc/Modelo.h"
 #include "Dibujo.h"
+
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 1024;
@@ -225,15 +226,22 @@ int Vista::run() { //Main loop flag
 	return 0;
 }
 
-void Vista::dibujar_mapa(){
-	for(int i=0;i<SCREEN_WIDTH+128;i+=128){
-		for(int j=0;j<SCREEN_HEIGHT+90;j+=90){
-			this->pasto->set_posicion_default(i,j);
+void Vista::dibujar_mapa() {
+	int x_imagen = SCREEN_WIDTH / 2;
+	int y_imagen = 0;
+	for (int i = 0; i < modelo->get_ancho_mapa(); i++) {
+		for (int j = 0; j < modelo->get_alto_mapa(); j++) {
+			this->pasto->set_posicion_default(x_imagen, y_imagen);
 			this->pasto->render(gRenderer);
-		}
-		for(int j=45;j<SCREEN_HEIGHT;j+=90){
-			this->pasto->set_posicion_default(i+64,j);
-			this->pasto->render(gRenderer);
+
+			if (j < modelo->get_alto_mapa() - 1) {
+				x_imagen -= this->pasto->get_ancho() / 2;
+				y_imagen += this->pasto->get_alto() / 2;
+			} else {
+				y_imagen = (i + 1) * (this->pasto->get_alto() / 2);
+				x_imagen = SCREEN_WIDTH/2 + (i + 1) * (this->pasto->get_ancho() / 2);
+			}
+
 		}
 	}
 }
