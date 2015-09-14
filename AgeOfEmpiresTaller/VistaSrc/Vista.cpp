@@ -29,13 +29,14 @@ Vista::Vista(Modelo* modelo) {
 }
 
 int Vista::altura_por_celda(){
-	return 90;
+	return this->pasto->get_alto();
+
 	//devuelve alto de imagen111111111111111
 
 }
 
 int Vista::ancho_por_celda(){
-	return 128;
+	return this->pasto->get_ancho();
 	//devuelve ancho de imagen
 
 }
@@ -49,8 +50,11 @@ void Vista::transformar_cartesiana_isometrica(int cart_x,int cart_y,int& iso_x,i
 	}
 
 void Vista::transformar_isometrica_cartesiana(int iso_x,int iso_y,int& cart_x,int& cart_y){
-	cart_x= ( iso_x/ this->ancho_por_celda() + iso_y/ this->altura_por_celda() )  ;
-	cart_y = ( iso_y/ this->altura_por_celda() - iso_x/ this->ancho_por_celda() );
+	int ancho_tile=sqrt(pow(this->ancho_por_celda() /2,2)+pow(this->altura_por_celda() /2,2));
+	cart_x= ( (iso_x-SCREEN_WIDTH/2)/ancho_tile + iso_y/ ancho_tile)  ;
+	cart_y = ( iso_y/ ancho_tile - (iso_x-SCREEN_WIDTH/2)/ancho_tile);
+	printf("iso_x: %d\n",iso_x);
+	printf("iso_y: %d\n",iso_y);
 	printf("Cart_x: %d\n", cart_x);
 	printf("Cart_y: %d\n", cart_y);
 
@@ -204,7 +208,7 @@ int Vista::run() { //Main loop flag
 			}
 		}
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0, 0,0, 0);
+		SDL_SetRenderDrawColor(gRenderer, 0, 0xFF,0, 0);
 		SDL_RenderClear(gRenderer);
 
 		//Render current frame
@@ -214,8 +218,10 @@ int Vista::run() { //Main loop flag
 		this->personaje->render(gRenderer);
 		this->personaje->set_velocidad(10);
 		this->personaje->mover(mov_x, mov_y);
-
-
+		int mouse_x,mouse_y;
+		SDL_GetMouseState(&mouse_x, &mouse_y);
+		int x,y;
+		this->transformar_isometrica_cartesiana(mouse_x,mouse_y,x,y);
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
