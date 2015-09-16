@@ -18,7 +18,8 @@ class FactoryDibujo {
 	size_t dibujo_actual;
 public:
 	FactoryDibujo();
-	size_t asignar_dibujo(Dibujo* dibujo);
+	size_t set_dibujo(Dibujo* dibujo);
+	Dibujo* get_dibujo(size_t n_dibujo);
 	virtual ~FactoryDibujo();
 };
 

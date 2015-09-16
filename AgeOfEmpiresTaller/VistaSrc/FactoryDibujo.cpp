@@ -14,7 +14,7 @@ FactoryDibujo::FactoryDibujo() {
 	this->cantidad_de_dibujos=this->dibujos.size();
 	this->dibujo_actual=0;
 }
-size_t FactoryDibujo::asignar_dibujo(Dibujo* dibujo){
+size_t FactoryDibujo::set_dibujo(Dibujo* dibujo){
 	if(this->dibujos.capacity()==dibujo_actual){
 		this->dibujos.resize(this->dibujos.capacity()*2,NULL);
 	}
@@ -23,6 +23,12 @@ size_t FactoryDibujo::asignar_dibujo(Dibujo* dibujo){
 	return (dibujo_actual-1);
 }
 
+Dibujo* FactoryDibujo::get_dibujo(size_t n_dibujo){
+	if(n_dibujo>=this->dibujo_actual){
+		return NULL;
+	}
+	return this->dibujos[n_dibujo];
+}
 
 
 FactoryDibujo::~FactoryDibujo() {

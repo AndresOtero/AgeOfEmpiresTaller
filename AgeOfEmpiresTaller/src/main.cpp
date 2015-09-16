@@ -10,19 +10,19 @@ using namespace std;
 #include <string>
 #include <vector>
 #include "Yaml.h"
+#include <memory>
+using namespace std;
 
 int main() {
 	cout << "Hola Gaston\n";
-	Modelo* modelo = new Modelo();
+	shared_ptr<Modelo> modelo(new Modelo());
 	int tamnio_x_mapa = 100;
 	int tamnio_y_mapa = 100;
 	modelo->setMapa(tamnio_x_mapa, tamnio_y_mapa);
-	Vista* vista= new Vista(modelo);
+	shared_ptr<Vista> vista ( new Vista(modelo));
 	vista->init();
 	vista->loadMedia();
 	vista->run();
-	delete vista;
-	Yaml* reader=new Yaml();
+	shared_ptr<Yaml> reader(new Yaml());
 	reader->read();
-	delete reader;
 }

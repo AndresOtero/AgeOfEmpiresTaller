@@ -18,6 +18,7 @@ using namespace std;
 class Dibujo {
 
 	shared_ptr <LTexture> textura;
+
 	SDL_Rect* spriteClips;
 	size_t cantidad_de_imagenes;
 	size_t imagen_actual;

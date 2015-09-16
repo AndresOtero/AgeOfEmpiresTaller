@@ -15,6 +15,7 @@
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_render.h>
 #include <cstdio>
+#include <memory>
 
 #include "../ModeloSrc/Modelo.h"
 #include "Dibujo.h"
@@ -24,7 +25,9 @@
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
 
-Vista::Vista(Modelo* modelo) {
+Vista::Vista(shared_ptr<Modelo>  modelo) {
+	shared_ptr<FactoryDibujo> fact( new FactoryDibujo);
+	this -> factory=fact;
 	this -> modelo = modelo;
 	this->x_pantalla=0;
 	this->y_pantalla=0;
@@ -83,7 +86,7 @@ bool Vista::init() {
 			success = false;
 		} else {
 			//Create vsynced renderer for window
-			gRenderer = SDL_CreateRenderer(gWindow, -1,
+			gRenderer = SDL_CreateRenderer(&(*gWindow), -1,
 					SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (gRenderer == NULL) {
 				printf("Renderer could not be created! SDL Error: %s\n",
@@ -104,8 +107,10 @@ bool Vista::init() {
 			}
 		}
 		//creo dibujo
-		this->personaje=new Dibujo;
-		this->pasto=new Dibujo;
+		shared_ptr<Dibujo> personaje(new Dibujo());
+		this->personaje=personaje;
+		shared_ptr<Dibujo> pasto(new Dibujo());
+		this->pasto=pasto;
 	}
 
 	return success;
@@ -138,15 +143,12 @@ bool Vista::loadMedia() {
 	return success;
 }
 Vista::~Vista() {
-	delete modelo;
-	delete pasto;
 
-	//Free loaded images
-	delete personaje;
 
 	//Destroy window
+	 SDL_DestroyWindow( gWindow);
 	SDL_DestroyRenderer(gRenderer);
-	SDL_DestroyWindow(gWindow);
+
 
 	gWindow = NULL;
 	gRenderer = NULL;

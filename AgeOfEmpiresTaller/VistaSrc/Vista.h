@@ -6,6 +6,10 @@
  */
 
 #include <SDL2/SDL_video.h>
+#include <memory>
+#include "FactoryDibujo.h"
+
+using namespace std;
 
 class Dibujo;
 class Modelo;
@@ -19,14 +23,15 @@ class Vista {
 	SDL_Window* gWindow;
 	//The window renderer
 	SDL_Renderer* gRenderer;
-	Dibujo* personaje;
-	Dibujo* pasto;
-	Modelo* modelo;
+	shared_ptr<Dibujo> personaje;
+	shared_ptr<Dibujo>  pasto;
+	shared_ptr<Modelo>  modelo;
+	shared_ptr<FactoryDibujo> factory;
 	int x_pantalla,y_pantalla;
 	void dibujar_mapa();
 
 public:
-	Vista(Modelo* modelo);
+	Vista(shared_ptr<Modelo>  modelo);
 	bool init();
 	int ancho_por_celda();
 	int altura_por_celda();
