@@ -13,13 +13,13 @@ using namespace std;
 
 class FactoryDibujo {
 	/**Guarda los dibujos**/
-	vector<Dibujo* > dibujos;
+	vector<shared_ptr<Dibujo>> dibujos;
 	size_t cantidad_de_dibujos;
 	size_t dibujo_actual;
 public:
 	FactoryDibujo();
-	size_t set_dibujo(Dibujo* dibujo);
-	Dibujo* get_dibujo(size_t n_dibujo);
+	size_t set_dibujo(shared_ptr<Dibujo> dibujo);
+	shared_ptr<Dibujo> get_dibujo(size_t n_dibujo);
 	virtual ~FactoryDibujo();
 };
 

@@ -21,16 +21,19 @@
 #include "Dibujo.h"
 
 
+
 //Screen dimension constants
 const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 768;
+const int SCREEN_HEIGHT = 700;
 
 Vista::Vista(shared_ptr<Modelo>  modelo) {
-	shared_ptr<FactoryDibujo> fact( new FactoryDibujo);
-	this -> factory=fact;
+
+	this -> factory=shared_ptr<FactoryDibujo> ( new FactoryDibujo);
 	this -> modelo = modelo;
 	this->x_pantalla=0;
 	this->y_pantalla=0;
+	this->velocidad_de_scroll=100;
+	this->sensibilidad_de_scroll=50;
 }
 
 int Vista::altura_por_celda(){
@@ -139,7 +142,7 @@ bool Vista::loadMedia() {
 			this->pasto->set_cantidad_de_imagenes(1);
 			this->pasto->set_imagen(0,0,0,250,125);
 		}
-
+	factory->set_dibujo(this->pasto);
 	return success;
 }
 Vista::~Vista() {
@@ -161,17 +164,21 @@ void Vista::detectar_mouse_borde(){
 		int mouse_x, mouse_y;
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 
-		int mov_pantalla_x = 100, mov_pantalla_y = 100;
+		int mov_pantalla_x = sensibilidad_de_scroll, mov_pantalla_y = sensibilidad_de_scroll;
 		if ((mouse_x < mov_pantalla_x)){
+			this->x_pantalla+=velocidad_de_scroll;
 			//printf("izquierda \n");
 		}
 		if(mouse_x > (SCREEN_WIDTH - mov_pantalla_x)){
+			this->x_pantalla-=velocidad_de_scroll;
 			//printf("derecha\n");
 		}
 		if(mouse_y < mov_pantalla_y){
+			this->y_pantalla+=velocidad_de_scroll;
 			//printf("alto\n");
 		}
 		if(mouse_y > (SCREEN_HEIGHT - mov_pantalla_y) ){
+			this->y_pantalla-=velocidad_de_scroll;
 			//printf("abajo\n");
 		} else {
 			//printf("in\n");
@@ -220,7 +227,7 @@ int Vista::run() { //Main loop flag
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 		int x,y;
 		this->transformar_isometrica_cartesiana(mouse_x,mouse_y,x,y);
-
+		this->detectar_mouse_borde();
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 

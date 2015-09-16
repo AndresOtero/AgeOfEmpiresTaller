@@ -7,12 +7,14 @@
 #include "../ModeloSrc/Mapa.h"
 #include "../ModeloSrc/Celda.h"
 #include <iostream>
+#include <memory>
+using namespace std;
 
 #ifndef MODELO_H_
 #define MODELO_H_
 
 class Modelo {
-	Mapa* mapa;
+	shared_ptr<Mapa> mapa;
 
 public:
 	Modelo();

@@ -27,7 +27,7 @@ class Vista {
 	shared_ptr<Dibujo>  pasto;
 	shared_ptr<Modelo>  modelo;
 	shared_ptr<FactoryDibujo> factory;
-	int x_pantalla,y_pantalla;
+	int x_pantalla,y_pantalla,velocidad_de_scroll,sensibilidad_de_scroll;
 	void dibujar_mapa();
 
 public:

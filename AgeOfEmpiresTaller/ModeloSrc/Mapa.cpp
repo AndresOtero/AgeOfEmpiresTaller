@@ -19,6 +19,7 @@ Mapa::Mapa(int ancho, int largo) {
 	for (int i = 0; i < ancho; ++i) {
 		for (int j = 0; j < largo; ++j) {
 			celdas[i][j] = new Celda();
+
 		}
 	}
 	this->celdas=celdas;

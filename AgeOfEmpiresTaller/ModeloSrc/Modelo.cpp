@@ -13,7 +13,7 @@ Modelo::Modelo() {
 	this -> mapa = NULL;
 }
 void Modelo::setMapa(int ancho,int largo){
-	this->mapa=new Mapa(ancho,largo);
+	this->mapa=shared_ptr<Mapa>(new Mapa(ancho,largo));
 }
 
 void Modelo::setDibujoMapa(dibujo_t** dibujos){
@@ -61,7 +61,7 @@ int Modelo::get_ancho_mapa(){
 
 Modelo::~Modelo() {
 	// TODO Auto-generated destructor stub
-	delete this->mapa;
+
 
 }
 
