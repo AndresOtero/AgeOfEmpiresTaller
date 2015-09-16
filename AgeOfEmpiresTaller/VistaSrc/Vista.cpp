@@ -31,12 +31,12 @@ Vista::Vista(Modelo* modelo) {
 }
 
 int Vista::altura_por_celda(){
-	return 125;
+	return 0;
 	//devuelve alto de imagen
 }
 
 int Vista::ancho_por_celda(){
-	return 250;
+	return 0;
 	//devuelve ancho de imagen
 
 }
@@ -126,7 +126,7 @@ bool Vista::loadMedia() {
 		}
 	}
 	//Load sprite sheet texture
-		if (!this->pasto->cargar_archivo("img/isometric_tile_1.png", gRenderer)) {
+		if (!this->pasto->cargar_archivo("img/isometric_tile.png", gRenderer)) {
 			printf("Failed to load walking animation texture!\n");
 			success = false;
 		} else {
@@ -204,7 +204,7 @@ int Vista::run() { //Main loop flag
 			}
 		}
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0, 0xFF,0, 0);
+		SDL_SetRenderDrawColor(gRenderer, 0, 0,0, 0);
 		SDL_RenderClear(gRenderer);
 
 		//Render current frame
@@ -212,7 +212,7 @@ int Vista::run() { //Main loop flag
 		dibujar_mapa();
 
 		this->personaje->render(gRenderer);
-		this->personaje->set_velocidad(100);
+		this->personaje->set_velocidad(10);
 		this->personaje->mover(mov_x, mov_y);
 		int mouse_x,mouse_y;
 		SDL_GetMouseState(&mouse_x, &mouse_y);
@@ -233,7 +233,7 @@ void Vista::dibujar_mapa() {
 	int x_mapa,y_mapa;
 	this->transformar_isometrica_cartesiana(this->x_pantalla,this->y_pantalla,x_mapa,y_mapa);
 	for (int i = x_mapa; i<this->modelo->get_ancho_mapa(); i++) {
-		for (int j = y_mapa; i<this->modelo->get_alto_mapa(); j++) {
+		for (int j = y_mapa; j<this->modelo->get_alto_mapa(); j++) {
 
 			this->transformar_cartesiana_isometrica(i,j,x_imagen,y_imagen);
 

@@ -7,7 +7,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../VistaSrc/LTexture.h"
-
+#include <memory>
+using namespace std;
 
 #ifndef DIBUJO_H_
 #define DIBUJO_H_
@@ -16,7 +17,7 @@
 
 class Dibujo {
 
-	LTexture* textura;
+	shared_ptr <LTexture> textura;
 	SDL_Rect* spriteClips;
 	size_t cantidad_de_imagenes;
 	size_t imagen_actual;

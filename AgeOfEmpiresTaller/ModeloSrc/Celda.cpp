@@ -25,8 +25,6 @@ bool Celda::estaOcupada(){
 }
 Celda::~Celda() {
 	// TODO Auto-generated destructor stub
-	if(this->dibujo!=NULL){
-		delete this->dibujo;
-	}
+
 }
 

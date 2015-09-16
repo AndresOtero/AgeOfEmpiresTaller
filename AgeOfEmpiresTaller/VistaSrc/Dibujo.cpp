@@ -7,9 +7,11 @@
 
 #include "../VistaSrc/Dibujo.h"
 
+
 Dibujo::Dibujo() {
 	// TODO Auto-generated constructor stub
-	this->textura = new LTexture();
+	shared_ptr <LTexture> text(new LTexture());
+	this->textura = text;
 	this -> velocidad = 0;
 	this -> acumulador = 0;
 	this->spriteClips=NULL;
@@ -49,7 +51,6 @@ bool Dibujo::cargar_archivo(std::string path, SDL_Renderer* renderer) {
 
 Dibujo::~Dibujo() {
 	// TODO Auto-generated destructor stub
-	delete textura;
 	if(spriteClips!=NULL){
 		delete[] spriteClips;
 	}
