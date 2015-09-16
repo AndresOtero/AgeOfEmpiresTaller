@@ -5,6 +5,7 @@
  *      Author: andres
  */
 #include "../ModeloSrc/Mapa.h"
+#include "../ModeloSrc/Celda.h"
 #include <iostream>
 
 #ifndef MODELO_H_

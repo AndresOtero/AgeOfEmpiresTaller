@@ -5,19 +5,20 @@
  *      Author: andres
  */
 #include <iostream>
-#include "../VistaSrc/Dibujo.h"
-
+typedef int dibujo_t;
+#define DEFAULT 0
+#define AFUERA -1
 #ifndef CELDA_H_
 #define CELDA_H_
 
 class Celda {
 private:
 	bool ocupada;
-	Dibujo* dibujo;
+	dibujo_t dibujo;
 public:
 	Celda();
 	bool estaOcupada();
-	void setDibujo(Dibujo* dibujo);
+	void setDibujo(dibujo_t dibujo);
 	dibujo_t dibujar();
 	virtual ~Celda();
 };

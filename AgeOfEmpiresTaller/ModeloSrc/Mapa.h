@@ -4,7 +4,7 @@
  *  Created on: 29 de ago. de 2015
  *      Author: andres
  */
-#include "Celda.h"
+#include "../ModeloSrc/Celda.h"
 
 #ifndef MAPA_H_
 #define MAPA_H_
@@ -18,7 +18,7 @@ public:
 	int getAncho();
 	int getLargo();
 	dibujo_t dibujar(int x, int y);
-	void setDibujo(Dibujo* dibujo,int x,int y);
+	void setDibujo(dibujo_t dibujo,int x,int y);
 
 	virtual ~Mapa();
 	bool celdaOcupada(int largo,int ancho);

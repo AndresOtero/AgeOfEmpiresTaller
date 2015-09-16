@@ -11,11 +11,11 @@
 
 #ifndef DIBUJO_H_
 #define DIBUJO_H_
-enum dibujo_t {DEFAULT,AFUERA};
+
 
 
 class Dibujo {
-	dibujo_t tipo_de_dibujo;
+
 	LTexture* textura;
 	SDL_Rect* spriteClips;
 	size_t cantidad_de_imagenes;
@@ -28,7 +28,7 @@ class Dibujo {
 
 
 public:
-	Dibujo(dibujo_t tipo_de_dibujo=DEFAULT);
+	Dibujo();
 	void set_cantidad_de_imagenes(size_t cant_de_imagenes);
 	void set_imagen(size_t n_imagen, int x, int y, int ancho, int alto);
 	bool cargar_archivo(std::string path, SDL_Renderer* renderer);
@@ -38,7 +38,6 @@ public:
 	void set_posicion_default(int x,int y);
 	void mover(int x, int y);
 	void set_velocidad(int velocidad);
-	dibujo_t dibujar();
 	int get_alto();
 	int get_alto(int n_imagen);
 	int get_ancho();

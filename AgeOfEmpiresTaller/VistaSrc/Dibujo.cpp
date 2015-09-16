@@ -7,12 +7,12 @@
 
 #include "../VistaSrc/Dibujo.h"
 
-Dibujo::Dibujo(dibujo_t tipo_de_dibujo) {
+Dibujo::Dibujo() {
 	// TODO Auto-generated constructor stub
-	this->tipo_de_dibujo = tipo_de_dibujo;
 	this->textura = new LTexture();
 	this -> velocidad = 0;
 	this -> acumulador = 0;
+	this->spriteClips=NULL;
 }
 
 void Dibujo::set_cantidad_de_imagenes(size_t cant_de_imagenes) {
@@ -39,21 +39,20 @@ void Dibujo::set_posicion_default(int x, int y){
 }
 
 void Dibujo::render( SDL_Renderer* renderer) {
-	this->textura->render(this->x_imagen-(this->spriteClips->w)/2, this->y_imagen-(this->spriteClips->h)/2, &(this->spriteClips[this->imagen_actual%this->cantidad_de_imagenes]),renderer);
+	this->textura->render(this->x_imagen, this->y_imagen, &(this->spriteClips[this->imagen_actual%this->cantidad_de_imagenes]),renderer);
 
 }
 
 bool Dibujo::cargar_archivo(std::string path, SDL_Renderer* renderer) {
 	return this->textura->loadFromFile(path, renderer);
 }
-dibujo_t Dibujo::dibujar() {
-	// TODO Auto-generated destructor stub
-	return this->tipo_de_dibujo;
-}
 
 Dibujo::~Dibujo() {
 	// TODO Auto-generated destructor stub
 	delete textura;
+	if(spriteClips!=NULL){
+		delete[] spriteClips;
+	}
 
 }
 void Dibujo::set_velocidad(int velocidad) {

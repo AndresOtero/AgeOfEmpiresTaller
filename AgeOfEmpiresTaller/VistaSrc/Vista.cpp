@@ -26,33 +26,31 @@ const int SCREEN_HEIGHT = 768;
 
 Vista::Vista(Modelo* modelo) {
 	this -> modelo = modelo;
+	this->x_pantalla=0;
+	this->y_pantalla=0;
 }
 
 int Vista::altura_por_celda(){
-	return this->pasto->get_alto();
-
-	//devuelve alto de imagen111111111111111
-
+	return 125;
+	//devuelve alto de imagen
 }
 
 int Vista::ancho_por_celda(){
-	return this->pasto->get_ancho();
+	return 250;
 	//devuelve ancho de imagen
 
 }
 
 
 void Vista::transformar_cartesiana_isometrica(int cart_x,int cart_y,int& iso_x,int& iso_y){
-	iso_x = ( cart_x - cart_y ) * this->ancho_por_celda()/2;
-	iso_y = ( cart_x + cart_y)* this->altura_por_celda()/2;
-	printf("Iso_x: %d\n", iso_x);
-	printf("Iso_y: %d\n", iso_y);
-	}
+	iso_x = (double)( cart_x - cart_y ) * this->pasto->get_ancho()/2;
+	iso_y = (double)( cart_x + cart_y)*  this->pasto->get_alto()/2;
+}
 
 void Vista::transformar_isometrica_cartesiana(int iso_x,int iso_y,int& cart_x,int& cart_y){
-	int ancho_tile=sqrt(pow(this->ancho_por_celda() /2,2)+pow(this->altura_por_celda() /2,2));
-	cart_x= ( (iso_x-SCREEN_WIDTH/2)/ancho_tile + iso_y/ ancho_tile)  ;
-	cart_y = ( iso_y/ ancho_tile - (iso_x-SCREEN_WIDTH/2)/ancho_tile);
+	cart_x= ( (iso_x)/ (this->pasto->get_ancho()/2) + (iso_y/ this->pasto->get_alto()/2)  )/2;
+	cart_y = (( iso_y/ this->pasto->get_alto()/2) - ((iso_x)/this->pasto->get_ancho()/2))/2;
+
 	printf("iso_x: %d\n",iso_x);
 	printf("iso_y: %d\n",iso_y);
 	printf("Cart_x: %d\n", cart_x);
@@ -128,15 +126,13 @@ bool Vista::loadMedia() {
 		}
 	}
 	//Load sprite sheet texture
-		if (!this->pasto->cargar_archivo("img/Sprites/grass_and_water/grass_and_water_0.png", gRenderer)) {
+		if (!this->pasto->cargar_archivo("img/isometric_tile_1.png", gRenderer)) {
 			printf("Failed to load walking animation texture!\n");
 			success = false;
 		} else {
 			//Set sprite clips
-			this->pasto->set_cantidad_de_imagenes(4);
-			for (int i = 0; i < 4; i++) {
-				this->pasto->set_imagen(0,2,2,62,41);
-			}
+			this->pasto->set_cantidad_de_imagenes(1);
+			this->pasto->set_imagen(0,0,0,250,125);
 		}
 
 	return success;
@@ -216,7 +212,7 @@ int Vista::run() { //Main loop flag
 		dibujar_mapa();
 
 		this->personaje->render(gRenderer);
-		this->personaje->set_velocidad(10);
+		this->personaje->set_velocidad(100);
 		this->personaje->mover(mov_x, mov_y);
 		int mouse_x,mouse_y;
 		SDL_GetMouseState(&mouse_x, &mouse_y);
@@ -233,20 +229,17 @@ int Vista::run() { //Main loop flag
 }
 
 void Vista::dibujar_mapa() {
-	int x_imagen = SCREEN_WIDTH / 2;
-	int y_imagen = 0;
-	for (int i = 0; i < modelo->get_ancho_mapa(); i++) {
-		for (int j = 0; j < modelo->get_alto_mapa(); j++) {
+	int x_imagen,y_imagen;
+	int x_mapa,y_mapa;
+	this->transformar_isometrica_cartesiana(this->x_pantalla,this->y_pantalla,x_mapa,y_mapa);
+	for (int i = x_mapa; i<this->modelo->get_ancho_mapa(); i++) {
+		for (int j = y_mapa; i<this->modelo->get_alto_mapa(); j++) {
+
+			this->transformar_cartesiana_isometrica(i,j,x_imagen,y_imagen);
+
 			this->pasto->set_posicion_default(x_imagen, y_imagen);
 			this->pasto->render(gRenderer);
 
-			if (j < modelo->get_alto_mapa() - 1) {
-				x_imagen -= this->pasto->get_ancho() / 2;
-				y_imagen += this->pasto->get_alto() / 2;
-			} else {
-				y_imagen = (i + 1) * (this->pasto->get_alto() / 2);
-				x_imagen = SCREEN_WIDTH/2 + (i + 1) * (this->pasto->get_ancho() / 2);
-			}
 
 		}
 	}

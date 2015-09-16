@@ -10,19 +10,15 @@
 #include "../VistaSrc/Dibujo.h"
 
 Celda::Celda() {
-	this -> dibujo = NULL;
+	this -> dibujo = DEFAULT;
 	this -> ocupada = false;
 }
-void Celda::setDibujo(Dibujo* dibujo){
-	if(this->ocupada==true){
-		delete this->dibujo;
-	}else{
-		this->ocupada=true;
-	}
+void Celda::setDibujo(dibujo_t dibujo){
+	this->ocupada=true;
 	this->dibujo=dibujo;
 }
 dibujo_t Celda::dibujar(){
-	return this->dibujo->dibujar();
+	return this->dibujo;
 }
 bool Celda::estaOcupada(){
 	return this->ocupada;

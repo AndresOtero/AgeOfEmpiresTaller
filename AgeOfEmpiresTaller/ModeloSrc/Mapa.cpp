@@ -25,13 +25,10 @@ Mapa::Mapa(int ancho, int largo) {
 }
 
 Celda* Mapa::getCelda(int x,int y){
-	if ((x >= this->ancho) || (y >= this->largo)) {
-			return NULL;
-	}
 	return this->celdas[x][y];
 }
 
-void Mapa::setDibujo(Dibujo* dibujo,int x,int y){
+void Mapa::setDibujo(dibujo_t dibujo,int x,int y){
 	this->getCelda(x,y)->setDibujo(dibujo);
 }
 bool Mapa::celdaOcupada(int x, int y) {
@@ -41,16 +38,13 @@ bool Mapa::celdaOcupada(int x, int y) {
 	}
 	return (celda->estaOcupada());
 }
-
 dibujo_t Mapa::dibujar(int x, int y) {
-	if ((y >= this->largo) || (x >= this->ancho)) {
+	if ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0)) {
 		return AFUERA;
 	}
-	if(this->celdaOcupada(x,y)){
-		return this->getCelda(x,y)->dibujar();
-	}
-	return DEFAULT;
+	return this->getCelda(x,y)->dibujar();
 }
+
 int Mapa::getAncho(){
 	return this->ancho;
 }

@@ -8,17 +8,12 @@
 #include "../ModeloSrc/Modelo.h"
 #include "../ModeloSrc/Mapa.h"
 
+
 Modelo::Modelo() {
 	this -> mapa = NULL;
 }
 void Modelo::setMapa(int ancho,int largo){
 	this->mapa=new Mapa(ancho,largo);
-	int i=0,j=0;
-	for(;i<ancho;i++){
-		for(;j<largo;j++){
-			this->mapa->setDibujo(new Dibujo(DEFAULT),i,j);
-		}
-	}
 }
 
 void Modelo::setDibujoMapa(dibujo_t** dibujos){
@@ -27,7 +22,7 @@ void Modelo::setDibujoMapa(dibujo_t** dibujos){
 	int i=0,j=0;
 	for(;i<ancho;i++){
 		for(;j<largo;j++){
-			this->mapa->setDibujo(new Dibujo(dibujos[i][j]),i,j);
+			this->mapa->setDibujo(dibujos[i][j],i,j);
 		}
 	}
 }

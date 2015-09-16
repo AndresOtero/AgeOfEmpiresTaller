@@ -22,7 +22,7 @@ class Vista {
 	Dibujo* personaje;
 	Dibujo* pasto;
 	Modelo* modelo;
-
+	int x_pantalla,y_pantalla;
 	void dibujar_mapa();
 
 public:
