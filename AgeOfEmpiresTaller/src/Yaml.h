@@ -16,6 +16,7 @@
 class Yaml {
 public:
 	Yaml();
+	std::map<std::string, int> hashObjetos;
 	int read();
 	virtual ~Yaml();
 };
