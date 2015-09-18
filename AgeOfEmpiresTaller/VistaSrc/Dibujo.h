@@ -17,36 +17,29 @@ using namespace std;
 
 class Dibujo {
 
-	shared_ptr <LTexture> textura;
-
-	SDL_Rect* spriteClips;
-	size_t cantidad_de_imagenes;
-	size_t imagen_actual;
-	int x_imagen;
-	int y_imagen;
-	int velocidad;
-	int acumulador;
-
-
-
 public:
 	Dibujo();
-	void set_cantidad_de_imagenes(size_t cant_de_imagenes);
-	void set_imagen(size_t n_imagen, int x, int y, int ancho, int alto);
+	void set_imagen( int x, int y, int ancho, int alto);
 	bool cargar_archivo(std::string path, SDL_Renderer* renderer);
 	void render( SDL_Renderer* gRenderer);
 	int get_x();
 	int get_y();
 	void set_posicion_default(int x,int y);
-	void mover(int x, int y);
-	void set_velocidad(int velocidad);
 	int get_alto();
-	int get_alto(int n_imagen);
 	int get_ancho();
-	int get_ancho(int n_imagen);
+
 	virtual ~Dibujo();
 private:
+	SDL_Rect spriteClips;
+protected:
 	void cambiar_frame();
+	shared_ptr <LTexture> textura;
+	size_t cantidad_de_imagenes;
+	size_t imagen_actual;
+	int x_imagen;
+	int y_imagen;
+	int fps;
+	int acumulador;
 };
 
 #endif /* DIBUJO_H_ */

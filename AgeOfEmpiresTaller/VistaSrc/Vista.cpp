@@ -19,6 +19,7 @@
 
 #include "../ModeloSrc/Modelo.h"
 #include "Dibujo.h"
+#include "DibujoPersonaje.h"
 
 
 
@@ -27,42 +28,35 @@ const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 700;
 
 Vista::Vista(shared_ptr<Modelo>  modelo) {
-
 	this -> modelo = modelo;
-	this->x_pantalla=0;
-	this->y_pantalla=0;
-	this->velocidad_de_scroll=0.5;
-	this->sensibilidad_de_scroll=200;
+	this->referencia_mapa_x=0;
+	this->referencia_mapa_y=0;
+	this->velocidad_de_scroll=0.001;
+	this->sensibilidad_de_scroll=100;
 }
 
 int Vista::altura_por_celda(){
-	return 0;
+	return 124;
 	//devuelve alto de imagen
 }
 
 int Vista::ancho_por_celda(){
-	return 0;
+	return 249;
 	//devuelve ancho de imagen
 
 }
 
 
 void Vista::transformar_isometrica_pantalla(int iso_x,int iso_y,int& pant_x,int& pant_y){
-	pant_x = (( iso_x - iso_y ) * this->pasto->get_ancho())/2;
-	pant_y =(( iso_x + iso_y)*  this->pasto->get_alto())/2;
+	pant_x = (( iso_x - iso_y ) * this->ancho_por_celda())/2;
+	pant_y =(( iso_x + iso_y)*  this->altura_por_celda()) /2;
 }
 
 void Vista::transformar_pantalla_isometrica(int pant_x,int pant_y,int& iso_x,int& iso_y){
-	float termino_x=  ( (float)pant_x/ (this->pasto->get_ancho()/2)) ;
-	float termino_y= ( (float)pant_y/ (this->pasto->get_alto()/2) );
+	float termino_x=  ( (float)pant_x/ (this->ancho_por_celda()/2)) ;
+	float termino_y= ( (float)pant_y/ (this->altura_por_celda()/2) );
 	iso_x= (termino_x+ termino_y-1)/2;//MAGIA NEGRA
 	iso_y = (termino_y - termino_x+1)/2;//En serio no se porque funciona
-	/**
-	printf("iso_x: %d\n",iso_x);
-	printf("iso_y: %d\n",iso_y);
-	printf("Cart_x: %d\n", cart_x);
-	printf("Cart_y: %d\n", cart_y);
-	**/
 }
 
 bool Vista::init() {
@@ -116,32 +110,34 @@ bool Vista::init() {
 	return success;
 }
 bool Vista::loadMedia() {
-	//Loading success flag
-	bool success = true;
+
 	/**Creo el dibujo del pasto**/
-	vector<int> v1d={0,0,249,123};/**(X,Y,Ancho,Alto)**/
-	vector< vector<int> > v2d(1,v1d);
-	this->factory->crear_dibujo("img/isometric_tile_1.png",1,v2d);
+	vector<int> v1d={0,0,249,124};/**(X,Y,Ancho,Alto)**/
+	this->factory->crear_dibujo("img/isometric_tile_1.png",v1d);
 	dibujo_t pasto_id=this->factory->ultimo_dibujo();
+
+	/**Creo el dibujo del castillo**/
+	v1d={0,0,368,345};
+	this->factory->crear_dibujo("img/Sprites/castle.png",v1d);
+	dibujo_t castillo=this->factory->ultimo_dibujo();
 
 	/**Dibujo el mapa**/
 	int largo=this->modelo->get_alto_mapa();
 	int ancho=this->modelo->get_ancho_mapa();
 	vector<dibujo_t> filas(ancho,pasto_id);
 	vector<vector<dibujo_t>> dibujos (largo,filas);
+	dibujos[2][2]=castillo;
 	this->modelo->setDibujoMapa(dibujos);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
-	this->pasto = pasto;
+
 
 	//creo dibujo
-	shared_ptr<Dibujo> personaje(new Dibujo());
+	shared_ptr<DibujoPersonaje> personaje(new DibujoPersonaje());
 	this->personaje = personaje;
 
-	this->castillo = shared_ptr<Dibujo>(new Dibujo());
 	//Load sprite sheet texture
 	if (!this->personaje->cargar_archivo("img/foo.png", gRenderer)) {
 		printf("Failed to load walking animation texture!\n");
-		success = false;
 	} else {
 		//Set sprite clips
 		this->personaje->set_cantidad_de_imagenes(4);
@@ -149,17 +145,7 @@ bool Vista::loadMedia() {
 			this->personaje->set_imagen(i, i * 64, 0, 64, 205);
 		}
 	}
-
-	//Load sprite sheet texture
-	if (!this->castillo->cargar_archivo("img/Sprites/castle.png", gRenderer)) {
-		printf("Failed to load walking animation texture!\n");
-		success = false;
-	} else {
-		//Set sprite clips
-		this->castillo->set_cantidad_de_imagenes(1);
-		this->castillo->set_imagen(0, 0, 0, 368, 345);
-	}
-	return success;
+	return true;
 }
 Vista::~Vista() {
 
@@ -183,25 +169,32 @@ void Vista::detectar_mouse_borde(){
 		int mov_pantalla_x = sensibilidad_de_scroll, mov_pantalla_y = sensibilidad_de_scroll;
 		if ((mouse_x < mov_pantalla_x)){
 			float vel=this->velocidad_de_scroll*(mov_pantalla_x-mouse_x);
-			this->x_pantalla+=vel;
-			//printf("izquierda \n");
+			this->referencia_mapa_x+=vel;
+			printf("izquierda \n");
+			printf("%g\n",this->referencia_mapa_x);
+
 		}
 		if(mouse_x > (SCREEN_WIDTH - mov_pantalla_x)){
 			float vel=this->velocidad_de_scroll*(mouse_x-(SCREEN_WIDTH - mov_pantalla_x));
-			this->x_pantalla-=vel;
-			//printf("derecha\n");
+			this->referencia_mapa_x-=vel;
+			printf("derecha\n");
+			printf("%g\n",this->referencia_mapa_x);
+
 		}
 		if(mouse_y < mov_pantalla_y){
 			float vel=this->velocidad_de_scroll*(mov_pantalla_y-mouse_y);
-			this->y_pantalla+=vel;
-			//printf("alto\n");
+			this->referencia_mapa_y+=vel;
+			printf("\n alto\n");
+			printf("%g\n",this->referencia_mapa_y);
 		}
 		if(mouse_y > (SCREEN_HEIGHT - mov_pantalla_y) ){
 			float vel=this->velocidad_de_scroll*(mouse_y-(SCREEN_HEIGHT - mov_pantalla_y));
-			this->y_pantalla-=vel;
-			//printf("abajo\n");
+			this->referencia_mapa_y-=vel;
+			printf("abajo\n");
+			printf("%g\n",this->referencia_mapa_y);
+
 		} else {
-			//printf("in\n");
+			printf("in\n");
 		}
 }
 
@@ -246,17 +239,17 @@ int Vista::run() { //Main loop flag
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 
 		int x,y;
-		this->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
+		this->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);/**
 		printf("iso_x: %d\n",mouse_x);
 		printf("iso_y: %d\n",mouse_y);
 		printf("Cart_x: %d\n", x);
-		printf("Cart_y: %d\n", y);/**
-		this->detectar_mouse_borde();**/
+		printf("Cart_y: %d\n", y);**/
+		this->detectar_mouse_borde();
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 
 		tiempo_actual= SDL_GetTicks();
-		printf("%f",tiempo_actual-tiempo_viejo);
+		//printf("%f",tiempo_actual-tiempo_viejo);
 		tiempo_viejo=tiempo_actual;
 
 	}
@@ -266,19 +259,22 @@ int Vista::run() { //Main loop flag
 
 void Vista::dibujar_mapa() {
 	int x_imagen,y_imagen;
-	int x_mapa,y_mapa;
-	this->transformar_pantalla_isometrica(this->x_pantalla,this->y_pantalla,x_mapa,y_mapa);
-	int imprimir=this->modelo->get_ancho_mapa();
-	dibujo_t** dibujo_mapa=this->modelo->dibujar(0,0,100,100);
+	int x_mapa=referencia_mapa_x,y_mapa=referencia_mapa_y;
+	int imprimir=100;
+	vector<vector<dibujo_t>> dibujo_mapa=this->modelo->dibujar(0,0,100,100);
 	for (int i=0; i<imprimir; i++) {
 		for (	int j=0; j<i+1; j++) {
-			shared_ptr<Dibujo> dibujo=this->factory->get_dibujo(dibujo_mapa[i][j]);
-			this->transformar_isometrica_pantalla((x_mapa+j),(y_mapa+i-j),x_imagen,y_imagen);
-			dibujo->set_posicion_default(x_imagen, y_imagen);
-			dibujo->render(gRenderer);
+			int coord_x=x_mapa+j;
+			int coord_y=y_mapa+i-j;
+			if((coord_x<this->modelo->get_ancho_mapa())&&(coord_y<this->modelo->get_alto_mapa())&&(coord_x>=0)&&(coord_y>=0)){
+				size_t n_imagen=dibujo_mapa[coord_x][coord_y];
+				shared_ptr<Dibujo> dibujo=this->factory->get_dibujo(n_imagen);
+				this->transformar_isometrica_pantalla((coord_x),(coord_y),x_imagen,y_imagen);
+				dibujo->set_posicion_default(x_imagen, y_imagen);
+				dibujo->render(gRenderer);
+			}
 		}
 	}
-	this->modelo->eliminarDibujar(100,100,dibujo_mapa);
 
 
 }

@@ -12,28 +12,17 @@ Dibujo::Dibujo() {
 	// TODO Auto-generated constructor stub
 	shared_ptr <LTexture> text(new LTexture());
 	this->textura = text;
-	this -> velocidad = 0;
+
 	this -> acumulador = 0;
-	this->spriteClips=NULL;
+	this->fps=1;
 }
 
-void Dibujo::set_cantidad_de_imagenes(size_t cant_de_imagenes) {
-	if (cant_de_imagenes == 0) {
-		return;
-	}
-	this->imagen_actual = 0;
-	this->spriteClips = new SDL_Rect[cant_de_imagenes];
-	this->cantidad_de_imagenes = cant_de_imagenes;
-}
 
-void Dibujo::set_imagen(size_t n_imagen, int x, int y, int ancho, int alto) {
-	if (this->cantidad_de_imagenes <= n_imagen) {
-		return;
-	}
-	this->spriteClips[n_imagen].x = x;
-	this->spriteClips[n_imagen].y = y;
-	this->spriteClips[n_imagen].w = ancho;
-	this->spriteClips[n_imagen].h = alto;
+void Dibujo::set_imagen( int x, int y, int ancho, int alto) {
+	this->spriteClips.x = x;
+	this->spriteClips.y = y;
+	this->spriteClips.w = ancho;
+	this->spriteClips.h = alto;
 }
 void Dibujo::set_posicion_default(int x, int y){
 	this->x_imagen=x;
@@ -41,8 +30,7 @@ void Dibujo::set_posicion_default(int x, int y){
 }
 
 void Dibujo::render( SDL_Renderer* renderer) {
-	this->textura->render(this->x_imagen, this->y_imagen, &(this->spriteClips[this->imagen_actual%this->cantidad_de_imagenes]),renderer);
-
+	this->textura->render(this->x_imagen, this->y_imagen, &(this->spriteClips),renderer);
 }
 
 bool Dibujo::cargar_archivo(std::string path, SDL_Renderer* renderer) {
@@ -51,14 +39,10 @@ bool Dibujo::cargar_archivo(std::string path, SDL_Renderer* renderer) {
 
 Dibujo::~Dibujo() {
 	// TODO Auto-generated destructor stub
-	if(spriteClips!=NULL){
-		delete[] spriteClips;
-	}
+
 
 }
-void Dibujo::set_velocidad(int velocidad) {
-	this->velocidad = velocidad;
-}
+
 int Dibujo::get_x() {
 	return this->x_imagen;
 }
@@ -67,86 +51,24 @@ int Dibujo::get_y() {
 }
 void Dibujo::cambiar_frame(){
 	acumulador++;
-	if((20/velocidad)<=acumulador){
+	if((fps)<=acumulador){
 		imagen_actual++;
 		acumulador=0;
 	}
 }
 
-void Dibujo::mover(int x, int y) {/**
-	printf("X: %d\n", x);
-	printf("x_imagen: %d\n", x_imagen);
-**/	float delta_x = (double) (x - x_imagen);
-	/**printf("Delta x: %f\n", delta_x);
-	printf("Y: %d\n", y);
-	printf("y_imagen: %d\n", y_imagen);**/
-	float delta_y = (double) (y - y_imagen);
-	//printf("Delta y: %f\n", delta_y);
-	float distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
-	if (distancia != 0) {
-		if (distancia < velocidad) {
-			distancia = velocidad;
-		}
-//		printf("Distancia: %f\n", distancia);
-		float des_x = (velocidad * delta_x) / distancia;
-	//	printf("desplazamiento x: %f\n", des_x);
-		float des_y = (velocidad * delta_y) / distancia;
-		//printf("desplazamiento y: %f\n", des_y);
-		if ((sqrt(des_x * des_x) > distancia)
-				&& (sqrt(des_y * des_y) < distancia)) {
-			x_imagen = x;
-		}
-		if ((sqrt(des_y * des_y) > distancia)
-				&& ((sqrt(des_x * des_x) < distancia))) {
-			y_imagen = y;
-		}
-		x_imagen += des_x;
-		y_imagen += des_y;
-		this->cambiar_frame();
 
-	}
-}
 
-int Dibujo::get_alto(int n_imagen){
-	return spriteClips[n_imagen].h;
-}
+
 
 int Dibujo::get_alto(){
-	return get_alto(imagen_actual);
-}
-
-int Dibujo::get_ancho(int n_imagen){
-	return spriteClips[n_imagen].w;
+	return spriteClips.h;
 }
 
 int Dibujo::get_ancho(){
-	return get_ancho(imagen_actual);
+	return spriteClips.w;
 }
 
 
-//Move
-/**
- if ((x != x_imagen) || (y != y_imagen)) {
- if (x == x_imagen) { //Si esta en el mismo eje x
- if (y > y_imagen) {
- y_imagen++;
- } else {
- y_imagen--;
- }
- } else if (y == y_imagen) { //Si esta en el mismo eje y
- if (x > x_imagen) {
- x_imagen++;
- } else {
- x_imagen--;
- }
- } else {
- if (x > x_imagen) { //Si esta en el mismo eje x
- x_imagen++;
- } else {
- x_imagen--;
- }
- y_imagen = (a * x_imagen + b);
- }
- }
- **/
+
 

@@ -12,6 +12,7 @@
 using namespace std;
 
 class Dibujo;
+class DibujoPersonaje;
 class Modelo;
 struct SDL_Renderer;
 
@@ -23,13 +24,11 @@ class Vista {
 	SDL_Window* gWindow;
 	//The window renderer
 	SDL_Renderer* gRenderer;
-	shared_ptr<Dibujo> personaje;
-	shared_ptr<Dibujo>  pasto;
-	shared_ptr<Dibujo>  castillo;
+	shared_ptr<DibujoPersonaje> personaje;
 	shared_ptr<Modelo>  modelo;
 	shared_ptr<FactoryDibujo> factory;
-	int x_pantalla,y_pantalla,sensibilidad_de_scroll;
-	float velocidad_de_scroll;
+	int sensibilidad_de_scroll;
+	float referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	void dibujar_mapa();
 
 public:

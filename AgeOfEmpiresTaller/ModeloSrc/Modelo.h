@@ -21,7 +21,7 @@ public:
 	Modelo();
 	void setMapa(int largo,int ancho);
 	void setDibujoMapa(vector<vector<dibujo_t>> dibujos);
-	dibujo_t** dibujar(int x,int y,int ancho,int alto);
+	vector<vector<dibujo_t>> dibujar(int x,int y,int ancho,int alto);
 	void eliminarDibujar(int ancho, int alto,dibujo_t** matriz);
 	int get_alto_mapa();
 	int get_ancho_mapa();

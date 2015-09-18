@@ -27,16 +27,16 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> dibujos){
 	}
 }
 
-dibujo_t** Modelo::dibujar(int x,int 	y,int ancho,int largo){
+vector<vector<dibujo_t>> Modelo::dibujar(int x,int 	y,int ancho,int largo){
 	/**	Recibe un posicion x,y de comienzo y un ancho y alto para dibujar.
 	 	Dibuja entre (x,y),(x+ancho,y),(x,y+largo),(x+ancho)(y+largo)**/
-	dibujo_t** dibujos=new dibujo_t*[ancho];
+	vector<vector<dibujo_t>> dibujos(ancho);
 	for (int i = 0; i < ancho;i++) {
-		dibujos[i] = new dibujo_t[largo];
+		dibujos[i]=vector<dibujo_t>(largo) ;
 	}
-	for(int i=0;i<ancho;i++){
+	for(int k=0;k<ancho;k++){
 		for(int j=0;j<largo;j++){
-			dibujos[i][j]=this->mapa->dibujar(x+i,y+j);
+			dibujos[k][j]=this->mapa->dibujar(x+k,y+j);
 		}
 	}
 	return dibujos;
