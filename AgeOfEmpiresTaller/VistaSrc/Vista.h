@@ -25,9 +25,11 @@ class Vista {
 	SDL_Renderer* gRenderer;
 	shared_ptr<Dibujo> personaje;
 	shared_ptr<Dibujo>  pasto;
+	shared_ptr<Dibujo>  castillo;
 	shared_ptr<Modelo>  modelo;
 	shared_ptr<FactoryDibujo> factory;
-	int x_pantalla,y_pantalla,velocidad_de_scroll,sensibilidad_de_scroll;
+	int x_pantalla,y_pantalla,sensibilidad_de_scroll;
+	float velocidad_de_scroll;
 	void dibujar_mapa();
 
 public:
@@ -35,8 +37,8 @@ public:
 	bool init();
 	int ancho_por_celda();
 	int altura_por_celda();
-	void transformar_cartesiana_isometrica(int cart_x,int cart_y,int& iso_x,int& iso_y);
-	void transformar_isometrica_cartesiana(int iso_x,int iso_y,int& cart_x,int& cart_y);
+	void transformar_isometrica_pantalla(int cart_x,int cart_y,int& iso_x,int& iso_y);
+	void transformar_pantalla_isometrica(int iso_x,int iso_y,int& cart_x,int& cart_y);
 	bool loadMedia();
 	void detectar_mouse_borde();
 	int run();

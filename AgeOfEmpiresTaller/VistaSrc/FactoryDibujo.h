@@ -16,11 +16,15 @@ class FactoryDibujo {
 	vector<shared_ptr<Dibujo>> dibujos;
 	size_t cantidad_de_dibujos;
 	size_t dibujo_actual;
+	SDL_Renderer* gRenderer;
 public:
-	FactoryDibujo();
-	size_t set_dibujo(shared_ptr<Dibujo> dibujo);
+	FactoryDibujo(SDL_Renderer* gRenderer);
+	bool crear_dibujo(string path,size_t cantidad_de_imagenes,std::vector<std::vector<int> >parametros_de_imagen);
 	shared_ptr<Dibujo> get_dibujo(size_t n_dibujo);
+	size_t ultimo_dibujo();
 	virtual ~FactoryDibujo();
+private:
+	void set_dibujo(shared_ptr<Dibujo> dibujo);
 };
 
 #endif /* FACTORYDIBUJO_H_ */

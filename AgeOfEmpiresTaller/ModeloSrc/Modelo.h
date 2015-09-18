@@ -8,6 +8,7 @@
 #include "../ModeloSrc/Celda.h"
 #include <iostream>
 #include <memory>
+#include <vector>
 using namespace std;
 
 #ifndef MODELO_H_
@@ -19,7 +20,7 @@ class Modelo {
 public:
 	Modelo();
 	void setMapa(int largo,int ancho);
-	void setDibujoMapa(dibujo_t** dibujos);
+	void setDibujoMapa(vector<vector<dibujo_t>> dibujos);
 	dibujo_t** dibujar(int x,int y,int ancho,int alto);
 	void eliminarDibujar(int ancho, int alto,dibujo_t** matriz);
 	int get_alto_mapa();

@@ -16,7 +16,7 @@ void Modelo::setMapa(int ancho,int largo){
 	this->mapa=shared_ptr<Mapa>(new Mapa(ancho,largo));
 }
 
-void Modelo::setDibujoMapa(dibujo_t** dibujos){
+void Modelo::setDibujoMapa(vector<vector<dibujo_t>> dibujos){
 	int ancho =this->mapa->getAncho();
 	int largo =this->mapa->getLargo();
 	int i=0,j=0;
