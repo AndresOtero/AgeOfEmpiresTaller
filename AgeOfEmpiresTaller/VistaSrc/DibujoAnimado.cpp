@@ -36,7 +36,7 @@ void DibujoAnimado::set_imagen(size_t n_imagen, int x, int y, int ancho, int alt
 
 void DibujoAnimado::render( SDL_Renderer* renderer) {
 	this->textura->render(this->x_imagen, this->y_imagen, &(this->spriteClips[this->imagen_actual%this->cantidad_de_imagenes]),renderer);
-
+	this->cambiar_frame();
 }
 
 

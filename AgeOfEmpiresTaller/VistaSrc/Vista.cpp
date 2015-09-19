@@ -151,11 +151,13 @@ bool Vista::loadMedia() {
 		printf("Failed to load walking animation texture!\n");
 	} else {
 		//Set sprite clips
-		this->personaje->set_cantidad_de_imagenes(4);
+		this->personaje->set_cantidad_de_movimientos(1);
+		this->personaje->set_cantidad_de_imagenes(0,4);
 		for (int i = 0; i < 4; i++) {
-			this->personaje->set_imagen(i, i * 64, 0, 64, 205);
+			this->personaje->set_imagen(0,i, i * 64, 0, 64, 205);
 		}
 	}
+
 	return true;
 }
 Vista::~Vista() {
@@ -228,9 +230,9 @@ void Vista::detectar_mouse_borde() {
 			printf("%g\n",this->referencia_mapa_y);
 
 		}**/
-		if((mouse_y < (SCREEN_HEIGHT - mov_pantalla_y))&&(mouse_y > mov_pantalla_y)&&(mouse_x < (SCREEN_WIDTH - mov_pantalla_x)&&(mouse_x > mov_pantalla_x)) ){
+		/**if((mouse_y < (SCREEN_HEIGHT - mov_pantalla_y))&&(mouse_y > mov_pantalla_y)&&(mouse_x < (SCREEN_WIDTH - mov_pantalla_x)&&(mouse_x > mov_pantalla_x)) ){
 			printf("in\n");
-		}
+		}**/
 }
 
 int Vista::run() { //Main loop flag
@@ -258,6 +260,7 @@ int Vista::run() { //Main loop flag
 				SDL_GetMouseState(&mov_x, &mov_y);
 
 
+
 			}
 		}
 		//Clear screen
@@ -275,12 +278,12 @@ int Vista::run() { //Main loop flag
 
 		int x,y;
 		this->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
-		printf("iso_x: %d\n",mouse_x);
+		/**printf("iso_x: %d\n",mouse_x);
 		printf("iso_y: %d\n",mouse_y);
 		x+=referencia_mapa_x;
-		y+=y+referencia_mapa_y;
+		y+=referencia_mapa_y;
 		printf("Cart_x: %d\n", x);
-		printf("Cart_y: %d\n", y);
+		printf("Cart_y: %d\n", y);**/
 		this->detectar_mouse_borde();
 		//Update screen
 		SDL_RenderPresent(gRenderer);

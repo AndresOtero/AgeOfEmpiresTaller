@@ -9,7 +9,9 @@
 #define DIBUJOANIMADO_H_
 
 #include "Dibujo.h"
-
+#include "vector"
+#include "memory.h"
+using namespace std;
 class DibujoAnimado: public Dibujo {
 	SDL_Rect* spriteClips;
 public:
