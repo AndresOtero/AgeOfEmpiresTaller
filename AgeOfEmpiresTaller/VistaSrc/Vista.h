@@ -36,12 +36,16 @@ public:
 	bool init();
 	int ancho_por_celda();
 	int altura_por_celda();
-	void transformar_isometrica_pantalla(int cart_x,int cart_y,int& iso_x,int& iso_y);
-	void transformar_pantalla_isometrica(int iso_x,int iso_y,int& cart_x,int& cart_y);
+	void transformar_isometrica_pantalla(float iso_x,float iso_y,int& pant_x,int& pant_y);
+	void transformar_isometrica_pantalla(int iso_x,int iso_y,int& pant_x,int& pant_y);
+	void transformar_pantalla_isometrica(int pant_x,int pant_y,float& iso_x,float& iso_y);
+	void transformar_pantalla_isometrica(int pant_x,int pant_y,int& iso_x,int& iso_y);
+	vector<int> calcular_bordes();
 	bool loadMedia();
 	void detectar_mouse_borde();
 	int run();
 	virtual ~Vista();
+
 };
 
 #endif /* VISTA_H_ */
