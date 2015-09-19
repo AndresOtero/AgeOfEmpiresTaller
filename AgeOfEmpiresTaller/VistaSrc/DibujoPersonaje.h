@@ -12,6 +12,8 @@
 #include "vector"
 #include "memory.h"
 #define SDL_RECT rect
+enum movimientos {DERECHA,IZQUIERDA,ARRIBA,ABAJO,DIAGONAL_DERECHA_ARRIBA,DIAGONAL_DERECHA_ABAJO,DIAGONAL_IZQUIERDA_ARRIBA,DIAGONAL_IZQUIERDA_ABAJO};
+
 using namespace std;
 class DibujoPersonaje: public DibujoAnimado {
 	int velocidad;

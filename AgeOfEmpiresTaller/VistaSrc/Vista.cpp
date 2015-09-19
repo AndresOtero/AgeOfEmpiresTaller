@@ -147,14 +147,19 @@ bool Vista::loadMedia() {
 	this->personaje = personaje;
 
 	//Load sprite sheet texture
-	if (!this->personaje->cargar_archivo("img/foo.png", gRenderer)) {
+	if (!this->personaje->cargar_archivo("img/tipo_moviendose.png", gRenderer)) {
 		printf("Failed to load walking animation texture!\n");
 	} else {
 		//Set sprite clips
-		this->personaje->set_cantidad_de_movimientos(1);
-		this->personaje->set_cantidad_de_imagenes(0,4);
-		for (int i = 0; i < 4; i++) {
-			this->personaje->set_imagen(0,i, i * 64, 0, 64, 205);
+		vector<size_t> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
+		this->personaje->set_cantidad_de_movimientos(8);
+		for(int i=0;i<8;i++){
+			this->personaje->set_cantidad_de_imagenes(i,8);
+		}
+		for (int i = 0; i < 8; i++) {
+			for(int j=0;j<8;j++){
+				this->personaje->set_imagen(movimientos[i],j, j * 128, i*128, 128, 128);
+			}
 		}
 	}
 
