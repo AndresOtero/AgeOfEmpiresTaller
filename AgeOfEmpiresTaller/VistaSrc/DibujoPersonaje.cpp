@@ -104,12 +104,11 @@ int DibujoPersonaje::get_ancho(){
 	return get_ancho(movimiento_actual,imagen_actual);
 }
 void DibujoPersonaje::render( SDL_Renderer* renderer) {
-	this->textura->render(this->x_imagen+get_ancho()/2, this->y_imagen+get_alto()/2, &(this->spriteClips[movimiento_actual][this->imagen_actual%this->cantidad_de_imagenes[movimiento_actual]]),renderer);
+	this->textura->render(this->x_imagen, this->y_imagen , &(this->spriteClips[movimiento_actual][this->imagen_actual%this->cantidad_de_imagenes[movimiento_actual]]),renderer);
 }
 
 void DibujoPersonaje::mover(int x, int y) {
-	x+=this->get_ancho()/2;
-	y+=this->get_alto()/2;
+
 	double delta_x = (double) (x - x_imagen);
 	double delta_y = (double) (y - y_imagen);
 	double distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
