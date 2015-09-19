@@ -29,7 +29,11 @@ public:
 	void set_velocidad(int velocidad);
 	DibujoPersonaje();
 	void mover(int x, int y) ;
-	void render( SDL_Renderer* renderer) ;
+	int get_alto(int n_mov,int n_imagen);
+	int get_ancho(int n_mov, int n_imagen);
+	int get_alto();
+	int get_ancho();
+	void render(SDL_Renderer* renderer);
 	void elegir_frame(double des_x,double des_y);
 	virtual ~DibujoPersonaje();
 };

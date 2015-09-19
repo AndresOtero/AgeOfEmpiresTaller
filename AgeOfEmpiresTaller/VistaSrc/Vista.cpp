@@ -265,7 +265,6 @@ int Vista::run() { //Main loop flag
 				SDL_GetMouseState(&mov_x, &mov_y);
 
 
-
 			}
 		}
 		//Clear screen
