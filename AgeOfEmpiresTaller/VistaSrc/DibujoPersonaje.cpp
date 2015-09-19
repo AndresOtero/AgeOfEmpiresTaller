@@ -107,7 +107,6 @@ void DibujoPersonaje::render( SDL_Renderer* renderer) {
 }
 
 void DibujoPersonaje::mover(int x, int y) {
-
 	double delta_x = (double) (x - x_imagen);
 	double delta_y = (double) (y - y_imagen);
 	double distancia = sqrt(delta_x * delta_x + delta_y * delta_y);

@@ -8,7 +8,7 @@
 #include <SDL2/SDL_video.h>
 #include <memory>
 #include "FactoryDibujo.h"
-
+#include "CambioDeCoordendas.h"
 using namespace std;
 
 class Dibujo;
@@ -27,6 +27,7 @@ class Vista {
 	shared_ptr<DibujoPersonaje> personaje;
 	shared_ptr<Modelo>  modelo;
 	shared_ptr<FactoryDibujo> factory;
+	shared_ptr<CambioDeCoordendas> transformador;
 	int sensibilidad_de_scroll;
 	float referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	void dibujar_mapa();
@@ -36,10 +37,6 @@ public:
 	bool init();
 	int ancho_por_celda();
 	int altura_por_celda();
-	void transformar_isometrica_pantalla(float iso_x,float iso_y,int& pant_x,int& pant_y);
-	void transformar_isometrica_pantalla(int iso_x,int iso_y,int& pant_x,int& pant_y);
-	void transformar_pantalla_isometrica(int pant_x,int pant_y,float& iso_x,float& iso_y);
-	void transformar_pantalla_isometrica(int pant_x,int pant_y,int& iso_x,int& iso_y);
 	vector<int> calcular_bordes();
 	bool loadMedia();
 	void detectar_mouse_borde();
