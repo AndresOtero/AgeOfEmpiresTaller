@@ -7,7 +7,6 @@
 
 #include "DibujoPersonaje.h"
 #include  "LTexture.h"
-#define CANTIDAD_DE_MOVIMIENTOS 8
 DibujoPersonaje::DibujoPersonaje() {
 	// TODO Auto-generated constructor stub
 	this -> velocidad = 0;
@@ -49,42 +48,42 @@ void DibujoPersonaje::set_velocidad(int velocidad){
 void DibujoPersonaje::elegir_frame(double des_x,double des_y) {
 	if((des_x>0)&&(des_y==0)){
 		movimiento_actual=DERECHA;
-		printf("DERECHA\n");
+		//printf("DERECHA\n");
 		//DERECHA
 	}
 	if((des_x<0)&&(des_y==0)){
 		movimiento_actual=IZQUIERDA;
-		printf("IZQUIERDA\n");
+		//printf("IZQUIERDA\n");
 		//IZQUIERDA
 	}
 	if((des_x==0)&&(des_y<0)){
 		movimiento_actual=ARRIBA;
-		printf("ARRIBA\n");
+		//printf("ARRIBA\n");
 		//ARRIBA
 	}
 	if((des_x==0)&&(des_y>0)){
 		movimiento_actual=ABAJO;
-		printf("ABAJO\n");
+		//printf("ABAJO\n");
 		//ABAJO
 	}
 	if((des_x>0)&&(des_y<0)){
 		movimiento_actual=DIAGONAL_DERECHA_ARRIBA;
-		printf("ARRIBA_DERECHA\n");
+		//printf("ARRIBA_DERECHA\n");
 		//ARRIBA_DERECHA
 	}
 	if((des_x>0)&&(des_y>0)){
 		movimiento_actual=DIAGONAL_DERECHA_ABAJO;
-		printf("ABAJO_DERECHA\n");
+		//printf("ABAJO_DERECHA\n");
 		//ABAJO_DERECHA
 	}
 	if((des_x<0)&&(des_y<0)){
 		movimiento_actual=DIAGONAL_IZQUIERDA_ARRIBA;
-		printf("ARRIBA_IZQUIERDA\n");
+		//printf("ARRIBA_IZQUIERDA\n");
 		//ARRIBA_IZQUIERDA
 	}
 	if((des_x<0)&&(des_y>0)){
 		movimiento_actual=DIAGONAL_IZQUIERDA_ABAJO;
-		printf("ABAJO_IZQUIERDA\n");
+		//printf("ABAJO_IZQUIERDA\n");
 		//ABAJO_IZQUIERDA
 	}
 }
@@ -104,7 +103,7 @@ int DibujoPersonaje::get_ancho(){
 	return get_ancho(movimiento_actual,imagen_actual);
 }
 void DibujoPersonaje::render( SDL_Renderer* renderer) {
-	this->textura->render(this->x_imagen, this->y_imagen , &(this->spriteClips[movimiento_actual][this->imagen_actual%this->cantidad_de_imagenes[movimiento_actual]]),renderer);
+	this->textura->render(this->x_imagen, this->y_imagen , &(this->spriteClips[movimiento_actual%cant_mov][this->imagen_actual%this->cantidad_de_imagenes[movimiento_actual]]),renderer);
 }
 
 void DibujoPersonaje::mover(int x, int y) {

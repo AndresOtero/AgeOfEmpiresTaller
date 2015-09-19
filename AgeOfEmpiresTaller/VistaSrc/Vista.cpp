@@ -29,8 +29,8 @@ const int SCREEN_HEIGHT = 700;
 
 Vista::Vista(shared_ptr<Modelo>  modelo) {
 	this -> modelo = modelo;
-	this->referencia_mapa_x=10;
-	this->referencia_mapa_y=10;
+	this->referencia_mapa_x=96;
+	this->referencia_mapa_y=97;
 	this->velocidad_de_scroll=0.001;
 	this->sensibilidad_de_scroll=100;
 }
@@ -124,7 +124,7 @@ bool Vista::loadMedia() {
 
 	/**Creo el dibujo del pasto**/
 	vector<int> v1d={0,0,249,124};/**(X,Y,Ancho,Alto)**/
-	this->factory->crear_dibujo("img/isometric_tile.png",v1d);
+	this->factory->crear_dibujo("img/isometric_tile_1.png",v1d);
 	dibujo_t pasto_id=this->factory->ultimo_dibujo();
 
 	/**Creo el dibujo del castillo**/
@@ -282,12 +282,12 @@ int Vista::run() { //Main loop flag
 
 		int x,y;
 		this->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
-		/**printf("iso_x: %d\n",mouse_x);
+		printf("iso_x: %d\n",mouse_x);
 		printf("iso_y: %d\n",mouse_y);
 		x+=referencia_mapa_x;
 		y+=referencia_mapa_y;
 		printf("Cart_x: %d\n", x);
-		printf("Cart_y: %d\n", y);**/
+		printf("Cart_y: %d\n", y);
 		this->detectar_mouse_borde();
 		//Update screen
 		SDL_RenderPresent(gRenderer);
@@ -301,20 +301,24 @@ int Vista::run() { //Main loop flag
 	return 0;
 }
 vector<int> Vista::calcular_bordes(){
-	/**http://www.java-gaming.org/index.php?topic=24922.0**/
+	/**
+	Credit:
+	http://www.java-gaming.org/index.php?topic=24922.0
+	**/
 	int pantalla_refencia_x,pantalla_refencia_y;
 	this->transformar_isometrica_pantalla(referencia_mapa_x,referencia_mapa_y,pantalla_refencia_x,pantalla_refencia_y);
 	int x_start,y_start;
 	this->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y,x_start,y_start);
-	x_start=x_start-1;
+	x_start=x_start-2;
 	int x_max,y;
-	x_max+=1;
+	x_max+=2;
 	this->transformar_pantalla_isometrica(pantalla_refencia_x+SCREEN_WIDTH,pantalla_refencia_y+SCREEN_HEIGHT,x_max,y);
 	int x,y_max;
 	this->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y+SCREEN_HEIGHT,x,y_max);
-	y_max=y_max+100;
+	y_max=y_max+2;
 	int y_min;
 	this->transformar_pantalla_isometrica(pantalla_refencia_x+SCREEN_WIDTH,pantalla_refencia_y,x,y_min);
+	y_min-=2;
 	vector<int> bordes={x_start,y_start,y_min,x_max,y_max};
 	return bordes;
 }
@@ -324,12 +328,12 @@ void Vista::dibujar_mapa() {
 	/****/
 	int x_start=bordes[X_START],y_start=bordes[Y_START],y_min=bordes[Y_MIN],x_max=bordes[X_MAX],y_max=bordes[Y_MAX];
 	int x_imagen,y_imagen;
-
+	bool llego_min_y=false,llego_max_x=false;
+	int y_offset_max=0,y_offset_min=0;
 	vector<vector<dibujo_t>> dibujo_mapa=this->modelo->dibujar(0,0,100,100);
+
 	for (int coord_x=x_start; coord_x<x_max; coord_x++) {
-		for (	int coord_y=y_min; coord_y<y_max	;coord_y++) {
-
-
+		for (	int coord_y=y_start-y_offset_min; coord_y<y_start+y_offset_max;coord_y++) {
 			if((coord_x<this->modelo->get_ancho_mapa())&&(coord_y<this->modelo->get_alto_mapa())&&(coord_x>=0)&&(coord_y>=0)){
 				size_t n_imagen=dibujo_mapa[coord_x][coord_y];
 				shared_ptr<Dibujo> dibujo=this->factory->get_dibujo(n_imagen);
@@ -337,6 +341,22 @@ void Vista::dibujar_mapa() {
 				dibujo->set_posicion_default(x_imagen, y_imagen);
 				dibujo->render(gRenderer);
 			}
+		}
+		if(!llego_min_y){
+			y_offset_min++;
+			if(((y_start-y_offset_min)==y_min)){
+				llego_min_y=true;
+			}
+		}else{
+			y_offset_min--;
+		}
+		if (!llego_max_x) {
+			y_offset_max++;
+			if (((y_start + y_offset_max) == y_max)) {
+				llego_min_y = true;
+			}
+		} else {
+			y_offset_max--;
 		}
 	}
 
