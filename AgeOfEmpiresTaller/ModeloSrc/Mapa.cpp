@@ -31,6 +31,7 @@ Celda* Mapa::getCelda(int x,int y){
 
 void Mapa::setDibujo(dibujo_t dibujo,int x,int y){
 	this->getCelda(x,y)->setDibujo(dibujo);
+
 }
 bool Mapa::celdaOcupada(int x, int y) {
 	Celda* celda=this->getCelda(x,y);
@@ -44,6 +45,7 @@ dibujo_t Mapa::dibujar(int x, int y) {
 		return AFUERA;
 	}
 	return this->getCelda(x,y)->dibujar();
+
 }
 
 int Mapa::getAncho(){

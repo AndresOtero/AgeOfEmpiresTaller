@@ -6,6 +6,7 @@
  */
 #include "../ModeloSrc/Celda.h"
 #include <memory>
+#include <vector>
 using namespace std;
 #ifndef MAPA_H_
 #define MAPA_H_
