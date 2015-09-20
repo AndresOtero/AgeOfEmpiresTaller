@@ -10,6 +10,7 @@
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
 #include "../ModeloSrc/Escenario.h"
+#include "../ModeloSrc/Juego.h"
 //#include "../ModeloSrc/ObjetoMapaAnimado.h"
 #include <map>
 Yaml::Yaml() {
@@ -61,7 +62,6 @@ typedef struct {
 	std::string nombre;
 	int size_x;
 	int size_y;
-	std::vector <Entidad_t> entidades;
 	Protagonista_t protagonista;
 } Escenario_t;
 
@@ -89,23 +89,25 @@ typedef struct  {
 typedef struct {
 	Pantalla_t pantalla;
 	Configuracion_t configuracion;
-	std::vector<Objeto_mapa_t> tipos;
 	Escenario_t escenario;
 
 }ConfiguracionJuego_t;
 
 int Yaml::read()
 {
+	Juego* juego;
 	try {
 	   std::ifstream fin("YAML/configuracion.yaml");
 	   YAML::Parser parser(fin);
 	   YAML::Node doc;
 	   parser.GetNextDocument(doc);
-	   ConfiguracionJuego_t conf;
 
+	   ConfiguracionJuego_t conf;
 	   Pantalla* pantalla;
 	   Configuracion* configuracion;
 	   std::map<std::string, ObjetoMapa*> tipos;
+	   Escenario* escenario;
+	   EntidadAnimada* protagonista;
 
 	   if (const YAML::Node *pPantalla = doc.FindValue(tag_pantalla)){
 		   if (const YAML::Node *pPantallaAncho = (*pPantalla).FindValue(tag_pantalla_ancho)){
@@ -114,17 +116,18 @@ int Yaml::read()
 				   (*pPantallaAlto) >> conf.pantalla.alto;
 				   pantalla = new Pantalla(conf.pantalla.ancho,conf.pantalla.alto);
 			   }else{
-				   //log pantalla sin ancho
+				   //log pantalla sin alto
 				   pantalla = new Pantalla();
 			   }
 		   }else{
-			   //log conf pantalla
+			   //log conf pantalla sin ancho
 
 			   pantalla = new Pantalla();
 		   }
 
 	   }else{
 		   // log no tiene pantalla
+		   pantalla = new Pantalla();
 	   }
 
 		if (const YAML::Node *pConfiguracion = doc.FindValue(tag_config)){
@@ -186,7 +189,7 @@ int Yaml::read()
 							 objeto -> delay = tipo.delay;
 						 }
 						 tipos[tipo.nombre] = objeto;
-						 conf.tipos.push_back(tipo);
+						 //conf.tipos.push_back(tipo);
 					 }else{
 						 //crear log falta imagen del tipo
 					 }
@@ -201,30 +204,40 @@ int Yaml::read()
 			if (const YAML::Node *pNombre = (*pEscenario).FindValue(tag_escenario_nombre)){
 				(*pNombre) >> conf.escenario.nombre;
 			}else{
-				// log no hay nombre de escenario
+				// log std::map<std::string, ObjetoMapa*> no hay nombre de escenario
 			}
 			if (const YAML::Node *pSizeX = (*pEscenario).FindValue(tag_escenario_size_x)){
 				(*pSizeX) >> conf.escenario.size_x;
 
 				if (const YAML::Node *pSizeY = (*pEscenario).FindValue(tag_escenario_size_y)){
 					(*pSizeY) >> conf.escenario.size_y;
+					escenario = new Escenario(conf.escenario.nombre, conf.escenario.size_x, conf.escenario.size_y);
 				}else{
 					// log hay size x pero no y
+					escenario = new Escenario();
 				}
 			}else{
 				// log no hay size
+				escenario = new Escenario();
 			}
 
 			if (const YAML::Node *pEntidades = (*pEscenario).FindValue(tag_escenario_entidades)){
 				 for(unsigned i=0;i< (*pEntidades).size();i++) {
 					 Entidad_t entidad;
+					 Entidad* ent;
 					 if (const YAML::Node *pX = ((*pEntidades)[i]).FindValue(tag_escenario_entidades_x)){
 						(*pX) >> entidad.x;
 						 if (const YAML::Node *pY = ((*pEntidades)[i]).FindValue(tag_escenario_entidades_y)){
 							(*pY) >> entidad.y;
 							if (const YAML::Node *pTipo = ((*pEntidades)[i]).FindValue(tag_escenario_entidades_tipo)){
 								(*pTipo) >> entidad.tipo;
-								conf.escenario.entidades.push_back(entidad);
+								 if(ObjetoMapa* obj = tipos[entidad.tipo]){
+									 ent = new Entidad(obj,entidad.x, entidad.y);
+									 escenario->entidades.push_back(ent);
+									 //conf.escenario.entidades.push_back(entidad);
+								 }else{
+									 //log tipo de la entidad no existe
+								 }
 							 }else{
 								 // log no hay tipo
 							 }
@@ -235,10 +248,10 @@ int Yaml::read()
 						 //log no hay x
 					 }
 				 }
-
 			}else{
 				// log no hay entidades
 			}
+			bool tieneProt = false;
 			if (const YAML::Node *pPersonaje = (*pEscenario).FindValue(tag_escenario_protagonista)){
 				if (const YAML::Node *pTipo = (* pPersonaje)[0].FindValue(tag_escenario_protagonista_tipo)){
 					(*pTipo) >> conf.escenario.protagonista.tipo;
@@ -246,6 +259,13 @@ int Yaml::read()
 						(*pX) >> conf.escenario.protagonista.x;
 						if (const YAML::Node *pY = (* pPersonaje)[0].FindValue(tag_escenario_protagonista_y)){
 							(*pY) >> conf.escenario.protagonista.y;
+							 if(ObjetoMapa* obj = tipos[conf.escenario.protagonista.tipo]){
+								 protagonista = new EntidadAnimada(obj,conf.escenario.protagonista.x,conf.escenario.protagonista.y);
+								 escenario->protagonista = protagonista;
+								 tieneProt = true;
+							 }else{
+								 //log el tipo no existe
+							 }
 						}else{
 							//log no hay y del protagonista
 						}
@@ -258,38 +278,38 @@ int Yaml::read()
 			}else{
 				//log no hay personaje principal
 			}
+			if(tieneProt == false){
+				protagonista = new EntidadAnimada();
+			}
 		}else{
-			//log no hay escenario
+			escenario = new Escenario();
 		}
 
 
-	   std:: cout << "Pantalla: " << pantalla->getAncho() << " " << pantalla->getAlto()  << "\n";
+	   juego = new Juego(pantalla, configuracion, escenario,tipos);
+	   std:: cout << "Pantalla: " << juego->pantalla->getAncho() << " " << juego->pantalla->getAlto()  << "\n";
 	   delete pantalla;
 
-	   std:: cout << "Configuracion: " << configuracion->get_vel_personaje() << " " << configuracion->get_margen_scroll() << "\n";
+	   std:: cout << "Configuracion: " << juego->conf->get_vel_personaje() << " " << juego->conf->get_margen_scroll() << "\n";
 	   delete configuracion;
 
-	   /*for(unsigned i=0;i< conf.tipos.size();i++) {
-			 Objeto_mapa_t tipo = conf.tipos[i];
-			 std:: cout << "Tipo" << i  << " " << tipo.nombre << " " << tipo.imagen << tipo.alto_base << " "<< tipo.ancho_base << " "
-					 << tipo.pixel_ref_x << " "<< tipo.pixel_ref_y << " "<< tipo.fps << " "<< tipo.delay << " " << " " << "\n"  ;
-		 }*/
-
-		 ObjetoMapa*  tipo = tipos["tierra"];
-		 std:: cout << "Tipo" << " " << tipo->nombre << " " << tipo->imagen << tipo->baseLogica->ancho << " "<< tipo->baseLogica->alto << " "
-				 << tipo->pixelsReferencia->x << " "<< tipo->pixelsReferencia->y << "\n"  ;
-
-
+	   ObjetoMapa*  tipo = juego->tipos["tierra"];
+	   std:: cout << "Tipo" << " " << tipo->nombre << " " << tipo->imagen << tipo->baseLogica->ancho << " "<< tipo->baseLogica->alto << " "
+			 << tipo->pixelsReferencia->x << " "<< tipo->pixelsReferencia->y << "\n"  ;
 
 	   std:: cout << "Escenario:  " << conf.escenario.nombre << " " << conf.escenario.size_x << " " << conf.escenario.size_y << "\n"  ;
-	   for(unsigned i=0;i< conf.escenario.entidades.size();i++) {
-			 Entidad_t entidad = conf.escenario.entidades[i];
-			 std:: cout << "    Entidad" << i  << " " << entidad.x << " " << entidad.y << entidad.tipo << "\n"  ;
-		 }
-	   std:: cout << "    Protagonista: "  << " " << conf.escenario.protagonista.tipo << " " << conf.escenario.protagonista.x << " " << conf.escenario.protagonista.y << "\n"  ;
+	   for(unsigned i=0;i< escenario->entidades.size();i++) {
+			 Entidad* entidad = escenario->entidades[i];
+			 std:: cout << "    Entidad" << i  << " " << entidad->posicion->x << " " << entidad->posicion->y << " " <<entidad->objetoMapa->nombre << "\n"  ;
+	   }
+
+	   std::cout << "    Protagonista: " << escenario->protagonista->objetoMapaAnimado->nombre << " " << escenario->protagonista->posicion->x << " " << escenario->protagonista->posicion->y << "\n"  ;
 	   std::cout << "end\n";
 
+	   delete escenario;
+
 	} catch(YAML::Exception& e) {
+			juego = new Juego();
 		    std::cout << e.what() << "\n";//mandar al log
 	}
    return 0;

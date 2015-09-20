@@ -17,12 +17,10 @@ class Escenario {
 public:
 	Escenario();
 	Escenario(string nombre, int size_x, int size_y);
-	Escenario(string nombre, int size_x, int size_y, vector<Entidad> entidades);
-	Escenario(string nombre, int size_x, int size_y, vector<Entidad> entidades, EntidadAnimada* protagonista );
 	string nombre;
 	int size_x;
 	int size_y;
-	vector<Entidad> entidades;
+	vector<Entidad*> entidades;
 	EntidadAnimada* protagonista;
 	Entidad* getTexturaDefault(); //para rellenar todos los espacios del mapa que no vengan del escenario. EJ: Pasto
 	virtual ~Escenario();

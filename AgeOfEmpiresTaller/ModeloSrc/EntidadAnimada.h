@@ -13,6 +13,7 @@
 class EntidadAnimada {
 
 public:
+	EntidadAnimada();
 	EntidadAnimada(ObjetoMapa* objetoMapaAnimado);
 	EntidadAnimada(ObjetoMapa* objetoMapaAnimado, int x, int y);
 	ObjetoMapa* objetoMapaAnimado;
