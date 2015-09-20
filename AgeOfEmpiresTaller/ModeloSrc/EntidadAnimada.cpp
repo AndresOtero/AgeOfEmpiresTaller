@@ -7,11 +7,11 @@
 
 #include "EntidadAnimada.h"
 
-EntidadAnimada::EntidadAnimada(ObjetoMapaAnimado* objetoMapaAnimado){
+EntidadAnimada::EntidadAnimada(ObjetoMapa* objetoMapaAnimado){
 	this -> objetoMapaAnimado = objetoMapaAnimado;
 	this -> posicion = new Posicion();
 }
-EntidadAnimada::EntidadAnimada(ObjetoMapaAnimado* objetoMapaAnimado, int x , int y){
+EntidadAnimada::EntidadAnimada(ObjetoMapa* objetoMapaAnimado, int x , int y){
 	this -> objetoMapaAnimado = objetoMapaAnimado;
 	this -> posicion = new Posicion(x,y);
 }

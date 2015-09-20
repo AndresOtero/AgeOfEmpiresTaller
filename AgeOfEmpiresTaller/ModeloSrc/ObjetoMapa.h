@@ -15,16 +15,16 @@
 
 using namespace std;
 
-class ObjetoMapa {
+class ObjetoMapa{
 
 public:
 	string nombre;
-	vector <string> imagenes;
+	string imagen;
 	BaseLogica* baseLogica;
 	PixelsReferencia* pixelsReferencia;
-	ObjetoMapa(string nombre, vector <string>  imagenes);
-	ObjetoMapa(string nombre,vector <string>  imagenes, int ancho_base, int alto_base );
-	ObjetoMapa(string nombre, vector <string>  imagenes, int ancho_base, int alto_base, int pixel_ref_x, int pixel_ref_y );
+	int fps;
+	int delay;
+	ObjetoMapa(string nombre, string imagen);
 
 	virtual ~ObjetoMapa();
 };

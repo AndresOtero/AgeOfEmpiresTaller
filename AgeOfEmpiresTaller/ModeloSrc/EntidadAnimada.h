@@ -7,15 +7,15 @@
 
 #ifndef ENTIDADANIMADA_H_
 #define ENTIDADANIMADA_H_
-#include "ObjetoMapaAnimado.h"
+#include "ObjetoMapa.h"
 #include "Posicion.h"
 
 class EntidadAnimada {
 
 public:
-	EntidadAnimada(ObjetoMapaAnimado* objetoMapaAnimado);
-	EntidadAnimada(ObjetoMapaAnimado* objetoMapaAnimado, int x, int y);
-	ObjetoMapaAnimado* objetoMapaAnimado;
+	EntidadAnimada(ObjetoMapa* objetoMapaAnimado);
+	EntidadAnimada(ObjetoMapa* objetoMapaAnimado, int x, int y);
+	ObjetoMapa* objetoMapaAnimado;
 	Posicion* posicion;
 	virtual ~EntidadAnimada();
 };

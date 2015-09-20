@@ -130,7 +130,7 @@ bool Vista::loadMedia() {
 		printf("Failed to load walking animation texture!\n");
 	} else {
 		//Set sprite clips
-		vector<size_t> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
+		vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
 		this->personaje->set_cantidad_de_movimientos(8);
 		for(int i=0;i<8;i++){
 			this->personaje->set_cantidad_de_imagenes(i,8);
@@ -192,8 +192,6 @@ void Vista::detectar_mouse_borde() {
 		printf("derecha \n");
 		printf("X: %g\n", this->referencia_mapa_x);
 		printf("Y: %g\n", this->referencia_mapa_y);
-
-	}
 		if(mouse_x > (SCREEN_WIDTH - mov_pantalla_x)){
 			float vel=this->velocidad_de_scroll*(mouse_x-(SCREEN_WIDTH - mov_pantalla_x));
 			this->referencia_mapa_x-=vel;
