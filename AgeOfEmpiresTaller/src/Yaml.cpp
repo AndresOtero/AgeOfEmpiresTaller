@@ -263,10 +263,10 @@ int Yaml::read()
 		}
 
 
-	   std:: cout << "Pantalla: " << pantalla->ancho << " " << pantalla->alto  << "\n";
+	   std:: cout << "Pantalla: " << pantalla->getAncho() << " " << pantalla->getAlto()  << "\n";
 	   delete pantalla;
 
-	   std:: cout << "Configuracion: " << configuracion->vel_personaje << " " << configuracion->margen_scroll << "\n";
+	   std:: cout << "Configuracion: " << configuracion->get_vel_personaje() << " " << configuracion->get_margen_scroll() << "\n";
 	   delete configuracion;
 
 	   /*for(unsigned i=0;i< conf.tipos.size();i++) {

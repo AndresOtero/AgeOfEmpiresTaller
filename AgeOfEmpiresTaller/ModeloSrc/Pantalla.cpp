@@ -8,13 +8,14 @@
 #include "Pantalla.h"
 
 Pantalla::Pantalla() {
-	this -> ancho = 800;
-	this -> alto = 600;
+	this -> ancho = 1024;
+	this -> alto = 768;
 }
 Pantalla::Pantalla(int ancho, int alto){
 	this -> ancho = ancho;
 	this -> alto = alto;
 }
+
 Pantalla::~Pantalla() {
 }
 

@@ -23,16 +23,15 @@
 enum bordes {X_START,Y_START,Y_MIN,X_MAX,Y_MAX};
 
 
-//Screen dimension constants
-const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 700;
 
-Vista::Vista(shared_ptr<Modelo>  modelo) {
+
+Vista::Vista(shared_ptr<Modelo>  modelo,shared_ptr<Pantalla> pantalla,shared_ptr<Configuracion> configuracion) {
 	this -> modelo = modelo;
+	this->pantalla=pantalla;
 	this->referencia_mapa_x=0;
 	this->referencia_mapa_y=0;
 	this->velocidad_de_scroll=0.001;
-	this->sensibilidad_de_scroll=100;
+	this->margen_scroll=configuracion->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
 }
 
@@ -65,7 +64,7 @@ bool Vista::init() {
 
 		//Create window
 		gWindow = SDL_CreateWindow("Age of empires", SDL_WINDOWPOS_UNDEFINED,
-				SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT,
+				SDL_WINDOWPOS_UNDEFINED,  pantalla->getAncho(),pantalla->getAlto(),
 				SDL_WINDOW_SHOWN);
 		if (gWindow == NULL) {
 			printf("Window could not be created! SDL Error: %s\n",
@@ -289,12 +288,12 @@ vector<int> Vista::calcular_bordes(){
 	x_start=x_start-2;
 	int x_max,y;
 	x_max+=2;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+SCREEN_WIDTH,pantalla_refencia_y+SCREEN_HEIGHT,x_max,y);
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+pantalla->getAncho(),pantalla_refencia_y+pantalla->getAlto(),x_max,y);
 	int x,y_max;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y+SCREEN_HEIGHT,x,y_max);
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y+pantalla->getAlto(),x,y_max);
 	y_max=y_max+2;
 	int y_min;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+SCREEN_WIDTH,pantalla_refencia_y,x,y_min);
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+pantalla->getAncho(),pantalla_refencia_y,x,y_min);
 	y_min-=2;
 	vector<int> bordes={x_start,y_start,y_min,x_max,y_max};
 	return bordes;

@@ -9,6 +9,9 @@
 #include <memory>
 #include "FactoryDibujo.h"
 #include "CambioDeCoordendas.h"
+#include "../ModeloSrc/Pantalla.h"
+#include "../ModeloSrc/Configuracion.h".h"
+
 using namespace std;
 
 class Dibujo;
@@ -28,12 +31,13 @@ class Vista {
 	shared_ptr<Modelo>  modelo;
 	shared_ptr<FactoryDibujo> factory;
 	shared_ptr<CambioDeCoordendas> transformador;
-	int sensibilidad_de_scroll;
+	shared_ptr<Pantalla> pantalla;
+	int margen_scroll;
 	float referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	void dibujar_mapa();
 
 public:
-	Vista(shared_ptr<Modelo>  modelo);
+	Vista(shared_ptr<Modelo>  modelo,shared_ptr<Pantalla> pantalla,shared_ptr<Configuracion> configuracion);
 	bool init();
 	int ancho_por_celda();
 	int altura_por_celda();
