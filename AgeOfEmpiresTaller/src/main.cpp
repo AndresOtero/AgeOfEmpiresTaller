@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../ModeloSrc/Modelo.h"
 #include "../VistaSrc/Vista.h"
+#include "../ModeloSrc/Configuracion.h"
 
 using namespace std;
 #include <iostream>
@@ -19,6 +20,9 @@ int main() {
 	int tamnio_y_mapa = 100;
 	modelo->setMapa(tamnio_x_mapa, tamnio_y_mapa);
 //	shared_ptr<Vista> vista ( new Vista(modelo));
+//	vista->init();
+//	vista->loadMedia();
+//	vista->run();
 //	vista->init();
 //	vista->loadMedia();
 //	vista->run();

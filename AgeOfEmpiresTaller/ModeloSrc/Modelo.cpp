@@ -21,8 +21,8 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> dibujos){
 	int ancho =this->mapa->getAncho();
 	int largo =this->mapa->getLargo();
 	int i=0,j=0;
-	for(;i<ancho;i++){
-		for(;j<largo;j++){
+	for(i=0;i<ancho;i++){
+		for(j=0;j<largo;j++){
 			this->mapa->setDibujo(dibujos[i][j],i,j);
 		}
 	}

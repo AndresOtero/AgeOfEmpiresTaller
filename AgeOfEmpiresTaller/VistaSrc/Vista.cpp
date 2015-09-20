@@ -23,16 +23,16 @@
 enum bordes {X_START,Y_START,Y_MIN,X_MAX,Y_MAX};
 
 
-//Screen dimension constants
-const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 700;
 
-Vista::Vista(shared_ptr<Modelo>  modelo) {
+
+Vista::Vista(shared_ptr<Modelo>  modelo,shared_ptr<Pantalla> pantalla,shared_ptr<Configuracion> configuracion) {
 	this -> modelo = modelo;
-	this->referencia_mapa_x=10;
-	this->referencia_mapa_y=10;
+	this->pantalla=pantalla;
+	this->referencia_mapa_x=0;
+	this->referencia_mapa_y=0;
 	this->velocidad_de_scroll=0.001;
-	this->sensibilidad_de_scroll=100;
+	this->margen_scroll=configuracion->get_margen_scroll();
+	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
 }
 
 int Vista::altura_por_celda(){
@@ -46,29 +46,6 @@ int Vista::ancho_por_celda(){
 
 }
 
-
-void Vista::transformar_isometrica_pantalla(float iso_x,float iso_y,int& pant_x,int& pant_y){
-	pant_x = (( iso_x - iso_y ) * this->ancho_por_celda())/2;
-	pant_y =(( iso_x + iso_y)*  this->altura_por_celda()) /2;
-}
-void Vista::transformar_isometrica_pantalla(int iso_x,int iso_y,int& pant_x,int& pant_y){
-	pant_x = (( iso_x - iso_y ) * this->ancho_por_celda())/2;
-	pant_y =(( iso_x + iso_y)*  this->altura_por_celda()) /2;
-}
-
-void Vista::transformar_pantalla_isometrica(int pant_x,int pant_y,float& iso_x,float& iso_y){
-	double termino_x=  ( (float)pant_x/ (this->ancho_por_celda()/2)) ;
-	double termino_y= ( (float)pant_y/ (this->altura_por_celda()/2) );
-	iso_x= (termino_x+ termino_y-1)/2;//MAGIA NEGRA
-	iso_y = (termino_y - termino_x+1)/2;//En serio no se porque funciona
-}
-
-void Vista::transformar_pantalla_isometrica(int pant_x,int pant_y,int& iso_x,int& iso_y){
-	double termino_x=  ( (float)pant_x/ (this->ancho_por_celda()/2)) ;
-	double termino_y= ( (float)pant_y/ (this->altura_por_celda()/2) );
-	iso_x= (termino_x+ termino_y-1)/2;//MAGIA NEGRA
-	iso_y = (termino_y - termino_x+1)/2;//En serio no se porque funciona
-}
 
 bool Vista::init() {
 	//Initialization flag
@@ -87,7 +64,7 @@ bool Vista::init() {
 
 		//Create window
 		gWindow = SDL_CreateWindow("Age of empires", SDL_WINDOWPOS_UNDEFINED,
-				SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT,
+				SDL_WINDOWPOS_UNDEFINED,  pantalla->getAncho(),pantalla->getAlto(),
 				SDL_WINDOW_SHOWN);
 		if (gWindow == NULL) {
 			printf("Window could not be created! SDL Error: %s\n",
@@ -124,7 +101,7 @@ bool Vista::loadMedia() {
 
 	/**Creo el dibujo del pasto**/
 	vector<int> v1d={0,0,249,124};/**(X,Y,Ancho,Alto)**/
-	this->factory->crear_dibujo("img/isometric_tile.png",v1d);
+	this->factory->crear_dibujo("img/isometric_tile_1.png",v1d);
 	dibujo_t pasto_id=this->factory->ultimo_dibujo();
 
 	/**Creo el dibujo del castillo**/
@@ -137,8 +114,10 @@ bool Vista::loadMedia() {
 	int ancho=this->modelo->get_ancho_mapa();
 	vector<dibujo_t> filas(ancho,pasto_id);
 	vector<vector<dibujo_t>> dibujos (largo,filas);
-	dibujos[2][2]=castillo;
-	this->modelo->setDibujoMapa(dibujos);
+
+	dibujos[0][0]=castillo;
+
+	modelo->setDibujoMapa(dibujos);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
 
 
@@ -182,13 +161,13 @@ Vista::~Vista() {
 }
 void Vista::detectar_mouse_borde() {
 	int mouse_x, mouse_y;
-	int actual_x, actual_y;
-	float mov_x, mov_y;
+	//int actual_x, actual_y;
+	//float mov_x, mov_y;
 	SDL_GetMouseState(&mouse_x, &mouse_y);
 
 
-	int mov_pantalla_x = sensibilidad_de_scroll, mov_pantalla_y =
-			sensibilidad_de_scroll;/**
+	//int mov_pantalla_x = sensibilidad_de_scroll, mov_pantalla_y =sensibilidad_de_scroll;
+	/**
 	if ((mouse_x < mov_pantalla_x)) {
 		this->transformar_isometrica_pantalla(iso_x, iso_y, actual_x, actual_y);
 		float vel = this->velocidad_de_scroll * (mov_pantalla_x - mouse_x);
@@ -213,8 +192,6 @@ void Vista::detectar_mouse_borde() {
 		printf("derecha \n");
 		printf("X: %g\n", this->referencia_mapa_x);
 		printf("Y: %g\n", this->referencia_mapa_y);
-
-
 		if(mouse_x > (SCREEN_WIDTH - mov_pantalla_x)){
 			float vel=this->velocidad_de_scroll*(mouse_x-(SCREEN_WIDTH - mov_pantalla_x));
 			this->referencia_mapa_x-=vel;
@@ -252,8 +229,8 @@ int Vista::run() { //Main loop flag
 
 	//While application is running
 	while (!quit) {
-		float tiempo_actual,tiempo_viejo=0;
-		tiempo_viejo=SDL_GetTicks();
+		//float tiempo_actual,tiempo_viejo=0;
+		//tiempo_viejo=SDL_GetTicks();
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0) {
 			//User requests quit
@@ -281,40 +258,44 @@ int Vista::run() { //Main loop flag
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 
 		int x,y;
-		this->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
-		/**printf("iso_x: %d\n",mouse_x);
+		this->transformador->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
+		printf("iso_x: %d\n",mouse_x);
 		printf("iso_y: %d\n",mouse_y);
 		x+=referencia_mapa_x;
 		y+=referencia_mapa_y;
 		printf("Cart_x: %d\n", x);
-		printf("Cart_y: %d\n", y);**/
+		printf("Cart_y: %d\n", y);
 		this->detectar_mouse_borde();
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 
-		tiempo_actual= SDL_GetTicks();
+		//tiempo_actual= SDL_GetTicks();
 		//printf("%f",tiempo_actual-tiempo_viejo);
-		tiempo_viejo=tiempo_actual;
+		//tiempo_viejo=tiempo_actual;
 
 	}
 
 	return 0;
 }
 vector<int> Vista::calcular_bordes(){
-	/**http://www.java-gaming.org/index.php?topic=24922.0**/
+	/**
+	Credit:
+	http://www.java-gaming.org/index.php?topic=24922.0
+	**/
 	int pantalla_refencia_x,pantalla_refencia_y;
-	this->transformar_isometrica_pantalla(referencia_mapa_x,referencia_mapa_y,pantalla_refencia_x,pantalla_refencia_y);
+	this->transformador->transformar_isometrica_pantalla(referencia_mapa_x,referencia_mapa_y,pantalla_refencia_x,pantalla_refencia_y);
 	int x_start,y_start;
-	this->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y,x_start,y_start);
-	x_start=x_start-1;
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y,x_start,y_start);
+	x_start=x_start-2;
 	int x_max,y;
-	x_max+=1;
-	this->transformar_pantalla_isometrica(pantalla_refencia_x+SCREEN_WIDTH,pantalla_refencia_y+SCREEN_HEIGHT,x_max,y);
+	x_max+=2;
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+pantalla->getAncho(),pantalla_refencia_y+pantalla->getAlto(),x_max,y);
 	int x,y_max;
-	this->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y+SCREEN_HEIGHT,x,y_max);
-	y_max=y_max+100;
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y+pantalla->getAlto(),x,y_max);
+	y_max=y_max+2;
 	int y_min;
-	this->transformar_pantalla_isometrica(pantalla_refencia_x+SCREEN_WIDTH,pantalla_refencia_y,x,y_min);
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+pantalla->getAncho(),pantalla_refencia_y,x,y_min);
+	y_min-=2;
 	vector<int> bordes={x_start,y_start,y_min,x_max,y_max};
 	return bordes;
 }
@@ -324,19 +305,39 @@ void Vista::dibujar_mapa() {
 	/****/
 	int x_start=bordes[X_START],y_start=bordes[Y_START],y_min=bordes[Y_MIN],x_max=bordes[X_MAX],y_max=bordes[Y_MAX];
 	int x_imagen,y_imagen;
+	bool llego_min_y=false,llego_max_x=false;
+	int y_offset_max=0,y_offset_min=0;
+	vector<vector<dibujo_t>> dibujo_mapa=this->modelo->dibujar(max(x_start,0),max(y_min,0),min(x_max,modelo->get_ancho_mapa()),min(y_max,modelo->get_alto_mapa()));
 
-	vector<vector<dibujo_t>> dibujo_mapa=this->modelo->dibujar(0,0,100,100);
 	for (int coord_x=x_start; coord_x<x_max; coord_x++) {
-		for (	int coord_y=y_min; coord_y<y_max	;coord_y++) {
-
-
+		for (	int coord_y=y_start-y_offset_min; coord_y<y_start+y_offset_max;coord_y++) {
 			if((coord_x<this->modelo->get_ancho_mapa())&&(coord_y<this->modelo->get_alto_mapa())&&(coord_x>=0)&&(coord_y>=0)){
 				size_t n_imagen=dibujo_mapa[coord_x][coord_y];
 				shared_ptr<Dibujo> dibujo=this->factory->get_dibujo(n_imagen);
-				this->transformar_isometrica_pantalla(coord_x-referencia_mapa_x,coord_y-referencia_mapa_y,x_imagen,y_imagen);
+				if(dibujo==NULL){
+					break;
+				}
+				this->transformador ->transformar_isometrica_pantalla(coord_x-referencia_mapa_x,coord_y-referencia_mapa_y,x_imagen,y_imagen);
 				dibujo->set_posicion_default(x_imagen, y_imagen);
 				dibujo->render(gRenderer);
 			}
+		}
+
+		if(!llego_min_y){
+			y_offset_min++;
+			if(((y_start-y_offset_min)==y_min)){
+				llego_min_y=true;
+			}
+		}else{
+			y_offset_min--;
+		}
+		if (!llego_max_x) {
+			y_offset_max++;
+			if (((y_start + y_offset_max) == y_max)) {
+				llego_min_y = true;
+			}
+		} else {
+			y_offset_max--;
 		}
 	}
 

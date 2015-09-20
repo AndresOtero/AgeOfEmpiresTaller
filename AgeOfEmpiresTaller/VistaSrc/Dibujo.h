@@ -29,10 +29,8 @@ public:
 	int get_ancho();
 
 	virtual ~Dibujo();
-private:
-	SDL_Rect spriteClips;
 protected:
-	void cambiar_frame();
+	SDL_Rect spriteClips;
 	shared_ptr <LTexture> textura;
 	size_t cantidad_de_imagenes;
 	size_t imagen_actual;

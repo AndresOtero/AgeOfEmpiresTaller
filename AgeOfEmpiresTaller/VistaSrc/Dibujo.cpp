@@ -12,7 +12,6 @@ Dibujo::Dibujo() {
 	// TODO Auto-generated constructor stub
 	shared_ptr <LTexture> text(new LTexture());
 	this->textura = text;
-
 	this -> acumulador = 0;
 	this->fps=1;
 }
@@ -49,17 +48,6 @@ int Dibujo::get_x() {
 int Dibujo::get_y() {
 	return this->y_imagen;
 }
-void Dibujo::cambiar_frame(){
-	acumulador++;
-	if((fps)<=acumulador){
-		imagen_actual++;
-		acumulador=0;
-	}
-}
-
-
-
-
 
 int Dibujo::get_alto(){
 	return spriteClips.h;

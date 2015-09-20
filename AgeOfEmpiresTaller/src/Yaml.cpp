@@ -284,13 +284,13 @@ int Yaml::read(Juego* juego)
 			escenario = new Escenario();
 		}
 
+
 	   juego = new Juego(pantalla, configuracion, escenario,tipos);
 		//juego = new Juego();
 	   std:: cout << "Pantalla: " << juego->pantalla->ancho << " " << juego->pantalla->alto  << "\n";
-	   delete pantalla;
+	   std:: cout << "Pantalla: " << juego->pantalla->getAncho() << " " << juego->pantalla->getAlto()  << "\n";
 
-	   std:: cout << "Configuracion: " << juego->conf->vel_personaje << " " << juego->conf->margen_scroll << "\n";
-	   delete configuracion;
+	   std:: cout << "Configuracion: " << juego->conf->get_vel_personaje() << " " << juego->conf->get_margen_scroll() << "\n";
 
 	   ObjetoMapa*  tipo = juego->tipos["tierra"];
 	   std:: cout << "Tipo" << " " << tipo->nombre << " " << tipo->imagen << tipo->baseLogica->ancho << " "<< tipo->baseLogica->alto << " "
@@ -305,7 +305,6 @@ int Yaml::read(Juego* juego)
 	   std::cout << "    Protagonista: " << juego->escenario->protagonista->objetoMapaAnimado->nombre << " " <<juego->escenario->protagonista->objetoMapaAnimado->fps <<" " << juego->escenario->protagonista->posicion->x << " " << juego->escenario->protagonista->posicion->y << "\n"  ;
 	   std::cout << "end\n";
 
-	   delete escenario;
 
 	} catch(YAML::Exception& e) {
 			juego = new Juego();
