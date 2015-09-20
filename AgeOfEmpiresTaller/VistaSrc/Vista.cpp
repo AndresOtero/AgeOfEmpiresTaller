@@ -101,13 +101,25 @@ bool Vista::loadMedia() {
 
 	/**Creo el dibujo del pasto**/
 	vector<int> v1d={0,0,249,124};/**(X,Y,Ancho,Alto)**/
-	this->factory->crear_dibujo("img/isometric_tile_1.png",v1d);
+	this->factory->crear_dibujo("img/isometric_tile.png",v1d);
 	dibujo_t pasto_id=this->factory->ultimo_dibujo();
 
 	/**Creo el dibujo del castillo**/
-	v1d={0,0,368,345};
-	this->factory->crear_dibujo("img/Sprites/castle.png",v1d);
-	dibujo_t castillo=this->factory->ultimo_dibujo();
+	v1d={0,0,66,155};
+	this->factory->crear_dibujo("img/Sprites/pinetree.png",v1d);
+	dibujo_t clock=this->factory->ultimo_dibujo();
+
+	/**Creo el dibujo del pajaro**/
+	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(8);
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			if(3*i+j>7){
+				break;
+			}
+			v2d[3*i+j]={0,0,100*i,110*j};
+		}
+	}
+	this->factory->crear_dibujo_animado("img/mocking_jay.png",8,v2d,2);
 
 	/**Dibujo el mapa**/
 	int largo=this->modelo->get_alto_mapa();
@@ -115,7 +127,12 @@ bool Vista::loadMedia() {
 	vector<dibujo_t> filas(ancho,pasto_id);
 	vector<vector<dibujo_t>> dibujos (largo,filas);
 
-	dibujos[0][0]=castillo;
+	for(int i=0;i<2;i++){
+		for(int j=0;j<2;j++){
+			dibujos[i][j]=VACIO;
+		}
+	}
+	dibujos[0][0]=clock;
 
 	modelo->setDibujoMapa(dibujos);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);

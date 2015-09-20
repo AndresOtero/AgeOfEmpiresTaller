@@ -11,7 +11,6 @@ Juego::Juego() {
 	this -> pantalla = new Pantalla();
 	this -> conf = new Configuracion();
 	this -> escenario = new Escenario();
-
 }
 Juego::Juego(Pantalla* pantalla, Configuracion* conf, Escenario* escenario, std::map<std::string, ObjetoMapa*> &tipos ){
 	this -> pantalla = pantalla;

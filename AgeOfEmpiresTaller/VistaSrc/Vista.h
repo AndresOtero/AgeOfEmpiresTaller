@@ -34,6 +34,8 @@ class Vista {
 	shared_ptr<Pantalla> pantalla;
 	int margen_scroll;
 	float referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
+	static const int VACIO = 0;
+
 	void dibujar_mapa();
 
 public:

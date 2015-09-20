@@ -11,7 +11,6 @@ Escenario::Escenario() {
 	this -> nombre = "default";
 	this -> size_x = 100;
 	this -> size_y = 100;
-	this -> size_y = size_y;
 	this -> protagonista = NULL;
 	//hacer protagonista default
 
