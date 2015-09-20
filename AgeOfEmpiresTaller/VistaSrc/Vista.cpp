@@ -115,8 +115,7 @@ bool Vista::loadMedia() {
 	vector<dibujo_t> filas(ancho,pasto_id);
 	vector<vector<dibujo_t>> dibujos (largo,filas);
 	dibujos[0][0]=castillo;
-	Modelo* modelos=&(*(this->modelo));
-	modelos->setDibujoMapa(dibujos);
+	modelo->setDibujoMapa(dibujos);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
 
 
@@ -306,22 +305,22 @@ void Vista::dibujar_mapa() {
 	int x_imagen,y_imagen;
 	bool llego_min_y=false,llego_max_x=false;
 	int y_offset_max=0,y_offset_min=0;
-	vector<vector<dibujo_t>> dibujo_mapa=this->modelo->dibujar(0,0,100,100);
+	vector<vector<dibujo_t>> dibujo_mapa=this->modelo->dibujar(max(x_start,0),max(y_min,0),min(x_max,modelo->get_ancho_mapa()),min(y_max,modelo->get_alto_mapa()));
 
 	for (int coord_x=x_start; coord_x<x_max; coord_x++) {
 		for (	int coord_y=y_start-y_offset_min; coord_y<y_start+y_offset_max;coord_y++) {
 			if((coord_x<this->modelo->get_ancho_mapa())&&(coord_y<this->modelo->get_alto_mapa())&&(coord_x>=0)&&(coord_y>=0)){
 				size_t n_imagen=dibujo_mapa[coord_x][coord_y];
 				shared_ptr<Dibujo> dibujo=this->factory->get_dibujo(n_imagen);
+				if(dibujo==NULL){
+					break;
+				}
 				this->transformador ->transformar_isometrica_pantalla(coord_x-referencia_mapa_x,coord_y-referencia_mapa_y,x_imagen,y_imagen);
 				dibujo->set_posicion_default(x_imagen, y_imagen);
 				dibujo->render(gRenderer);
 			}
 		}
-		shared_ptr<Dibujo> dibujo=this->factory->get_dibujo(dibujo_mapa[0][0]);
-		this->transformador ->transformar_isometrica_pantalla(0,0,x_imagen,y_imagen);
-		dibujo->set_posicion_default(x_imagen, y_imagen);
-		dibujo->render(gRenderer);
+
 		if(!llego_min_y){
 			y_offset_min++;
 			if(((y_start-y_offset_min)==y_min)){

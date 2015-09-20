@@ -13,9 +13,9 @@ Celda::Celda() {
 	this -> dibujo = DEFAULT;
 	this -> ocupada = false;
 }
-void Celda::setDibujo(dibujo_t dibujo){
+void Celda::setDibujo(dibujo_t dibujo_n){
 	this->ocupada=true;
-	this->dibujo=dibujo;
+	this->dibujo=dibujo_n;
 }
 dibujo_t Celda::dibujar(){
 	return this->dibujo;

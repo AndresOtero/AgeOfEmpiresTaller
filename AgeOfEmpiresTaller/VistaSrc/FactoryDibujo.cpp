@@ -15,7 +15,7 @@ FactoryDibujo::FactoryDibujo(SDL_Renderer* gRenderer) {
 	this->dibujos=vector<shared_ptr<Dibujo>>(DIBUJOS_POR_DEFAULT,NULL);
 	this->gRenderer=gRenderer;
 	this->cantidad_de_dibujos=this->dibujos.size();
-	this->dibujo_actual=0;
+	this->dibujo_actual=1;
 }
 bool FactoryDibujo::crear_dibujo_personaje(string path,size_t cantidad_de_movimientos,vector<size_t> cantidad_de_imagenes,std::vector<std::vector<int> >parametros_de_imagen,int fps,int velocidad){
 	shared_ptr<DibujoPersonaje> dibujo_nuevo = shared_ptr<DibujoPersonaje>(new DibujoPersonaje());
