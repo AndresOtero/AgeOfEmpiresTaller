@@ -115,8 +115,9 @@ bool Vista::loadMedia() {
 	int ancho=this->modelo->get_ancho_mapa();
 	vector<dibujo_t> filas(ancho,pasto_id);
 	vector<vector<dibujo_t>> dibujos (largo,filas);
-	dibujos[2][2]=castillo;
-	this->modelo->setDibujoMapa(dibujos);
+	dibujos[0][0]=castillo;
+	Modelo* modelos=&(*(this->modelo));
+	modelos->setDibujoMapa(dibujos);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
 
 
@@ -320,6 +321,10 @@ void Vista::dibujar_mapa() {
 				dibujo->render(gRenderer);
 			}
 		}
+		shared_ptr<Dibujo> dibujo=this->factory->get_dibujo(dibujo_mapa[0][0]);
+		this->transformador ->transformar_isometrica_pantalla(0,0,x_imagen,y_imagen);
+		dibujo->set_posicion_default(x_imagen, y_imagen);
+		dibujo->render(gRenderer);
 		if(!llego_min_y){
 			y_offset_min++;
 			if(((y_start-y_offset_min)==y_min)){

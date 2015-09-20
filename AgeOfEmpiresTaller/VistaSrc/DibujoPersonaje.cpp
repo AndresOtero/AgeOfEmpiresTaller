@@ -10,6 +10,8 @@
 DibujoPersonaje::DibujoPersonaje() {
 	// TODO Auto-generated constructor stub
 	this -> velocidad = 0;
+	this->imagen_actual = 0;
+	this->movimiento_actual=0;
 }
 
 void DibujoPersonaje::set_cantidad_de_movimientos(size_t cant_de_mov){
@@ -18,7 +20,7 @@ void DibujoPersonaje::set_cantidad_de_movimientos(size_t cant_de_mov){
 	}
 	this->spriteClips=vector<SDL_Rect*>(cant_de_mov,NULL);
 	this->cantidad_de_imagenes=vector<size_t>(cant_de_mov,0);
-	this->cant_mov=cant_mov;
+	this->cant_mov=cant_de_mov;
 }
 void DibujoPersonaje::set_cantidad_de_imagenes(size_t n_mov,size_t cant_de_imagenes) {
 	if(n_mov>=cant_mov){
@@ -27,8 +29,6 @@ void DibujoPersonaje::set_cantidad_de_imagenes(size_t n_mov,size_t cant_de_image
 	if (cant_de_imagenes == 0) {
 		return;
 	}
-	this->imagen_actual = 0;
-	this->movimiento_actual=0;
 	this->spriteClips[n_mov] = new SDL_Rect[cant_de_imagenes];
 	this->cantidad_de_imagenes[n_mov] = cant_de_imagenes;
 }
