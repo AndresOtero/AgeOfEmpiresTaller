@@ -11,6 +11,7 @@
 
 Modelo::Modelo() {
 	this -> mapa = NULL;
+	this -> juego = NULL;
 }
 void Modelo::setMapa(int ancho,int largo){
 	this->mapa=shared_ptr<Mapa>(new Mapa(ancho,largo));
@@ -60,7 +61,7 @@ int Modelo::get_ancho_mapa(){
 
 
 Modelo::~Modelo() {
-	// TODO Auto-generated destructor stub
+	delete this->juego;
 
 
 }

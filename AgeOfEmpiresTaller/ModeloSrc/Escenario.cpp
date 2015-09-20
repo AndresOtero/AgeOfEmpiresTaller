@@ -11,10 +11,10 @@ Escenario::Escenario() {
 	this -> nombre = "default";
 	this -> size_x = 100;
 	this -> size_y = 100;
-	this -> size_y = size_y;
-	this -> protagonista = NULL;
-	//hacer protagonista default
-
+	ObjetoMapa* objeto = new ObjetoMapa("protagonistaDefault","../img/tipo_moviendose.png");
+	objeto->fps = 10;
+	EntidadAnimada* protagonista = new EntidadAnimada(objeto);
+	this -> protagonista =  protagonista;
 }
 Escenario::Escenario(string nombre, int size_x, int size_y){
 	this -> nombre = nombre;
@@ -23,11 +23,9 @@ Escenario::Escenario(string nombre, int size_x, int size_y){
 	this -> protagonista = NULL;
 }
 Entidad* Escenario::getTexturaDefault(){
-	vector<string> imagenes;
-	imagenes.push_back("../img/Sprites/grass_and_water/grass_and_water_0.png");
-	//ObjetoMapa* tipo = new ObjetoMapa("protagonistaDefault",imagenes);
-	//Entidad* entidad = new Entidad(tipo);
-	return NULL;
+	ObjetoMapa* tipo = new ObjetoMapa("pasto","../img/isometric_tile.png");
+	Entidad* entidad = new Entidad(tipo);
+	return entidad;
 }
 Escenario::~Escenario() {
 	delete this-> protagonista;
