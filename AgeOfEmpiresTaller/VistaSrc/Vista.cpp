@@ -114,7 +114,9 @@ bool Vista::loadMedia() {
 	int ancho=this->modelo->get_ancho_mapa();
 	vector<dibujo_t> filas(ancho,pasto_id);
 	vector<vector<dibujo_t>> dibujos (largo,filas);
+
 	dibujos[0][0]=castillo;
+
 	modelo->setDibujoMapa(dibujos);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
 
