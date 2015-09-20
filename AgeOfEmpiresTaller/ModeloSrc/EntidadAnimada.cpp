@@ -7,6 +7,11 @@
 
 #include "EntidadAnimada.h"
 
+EntidadAnimada::EntidadAnimada(){
+	//hacer protagonista default
+	//this -> objetoMapaAnimado = objetoMapaAnimado;
+	this -> posicion = new Posicion();
+}
 EntidadAnimada::EntidadAnimada(ObjetoMapa* objetoMapaAnimado){
 	this -> objetoMapaAnimado = objetoMapaAnimado;
 	this -> posicion = new Posicion();
@@ -19,4 +24,4 @@ EntidadAnimada::~EntidadAnimada() {
 	delete this -> objetoMapaAnimado;
 	delete this -> posicion;
 }
-
+//se le va a agregar el movimiento
