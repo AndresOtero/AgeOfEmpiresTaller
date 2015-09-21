@@ -20,16 +20,16 @@ using namespace std;
 class DibujoPersonaje: public Dibujo {
 	int velocidad;
 	vector<SDL_Rect*> spriteClips;
-	vector<size_t> cantidad_de_imagenes;
-	size_t cant_mov;
-	size_t movimiento_actual;
+	vector<int> cantidad_de_imagenes;
+	int cant_mov;
+	int movimiento_actual;
 	int acumulador;
 	int fps;
 
 public:
-	void set_cantidad_de_movimientos(size_t cant_de_mov);
-	void set_cantidad_de_imagenes(size_t n_mov,size_t cant_de_imagenes);
-	void set_imagen(size_t n_mov,size_t n_imagen, int x, int y, int ancho, int alto);
+	void set_cantidad_de_movimientos(int cant_de_mov);
+	void set_cantidad_de_imagenes(int n_mov,int cant_de_imagenes);
+	void set_imagen(int n_mov,int n_imagen, int x, int y, int ancho, int alto);
 	void set_velocidad(int velocidad);
 	DibujoPersonaje();
 	void mover(int x, int y) ;

@@ -1,1 +1,0 @@
-﻿2015-09-21 11:11:37.395 WARN  [5121] [Yaml::read@273] No existe el tipo 'soldad' definido para el protagonista

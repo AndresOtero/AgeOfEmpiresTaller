@@ -15,16 +15,15 @@ using namespace std;
 using namespace std;
 
 int main() {
-	shared_ptr<Modelo> modelo(new Modelo());
-	int tamnio_x_mapa = 100;
-	int tamnio_y_mapa = 100;
-	modelo->setMapa(tamnio_x_mapa, tamnio_y_mapa);
-	shared_ptr<Pantalla> pantalla(new Pantalla());
-	shared_ptr<Configuracion> configuracion(new Configuracion());
-	shared_ptr<Vista> vista ( new Vista(modelo,pantalla,configuracion));
+	shared_ptr<Yaml> reader(new Yaml());
+	Juego* juego = reader->read();
+
+	shared_ptr<Modelo> modelo(new Modelo(juego));
+
+	shared_ptr<Vista> vista ( new Vista(modelo));
+
 	vista->init();
 	vista->loadMedia();
 	vista->run();
-	shared_ptr<Yaml> reader(new Yaml());
-	reader->read(modelo->juego);
+
 }

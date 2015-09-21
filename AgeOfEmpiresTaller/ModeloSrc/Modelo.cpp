@@ -9,9 +9,9 @@
 #include "../ModeloSrc/Mapa.h"
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
-Modelo::Modelo() {
-	this -> mapa = NULL;
-	this -> juego = NULL;
+Modelo::Modelo(Juego* juego) {
+	this -> juego = juego;
+	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 }
 void Modelo::setMapa(int ancho,int largo){
 	this->mapa=shared_ptr<Mapa>(new Mapa(ancho,largo));

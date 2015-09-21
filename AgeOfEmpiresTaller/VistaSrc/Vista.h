@@ -31,7 +31,7 @@ class Vista {
 	shared_ptr<Modelo>  modelo;
 	shared_ptr<FactoryDibujo> factory;
 	shared_ptr<CambioDeCoordendas> transformador;
-	shared_ptr<Pantalla> pantalla;
+	Pantalla* pantalla;
 	int margen_scroll;
 	float referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;
@@ -39,7 +39,7 @@ class Vista {
 	void dibujar_mapa();
 
 public:
-	Vista(shared_ptr<Modelo>  modelo,shared_ptr<Pantalla> pantalla,shared_ptr<Configuracion> configuracion);
+	Vista(shared_ptr<Modelo>  modelo);
 	bool init();
 	int ancho_por_celda();
 	int altura_por_celda();

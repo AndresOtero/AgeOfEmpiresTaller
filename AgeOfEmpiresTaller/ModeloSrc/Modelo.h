@@ -19,7 +19,7 @@ class Modelo {
 	shared_ptr<Mapa> mapa;
 
 public:
-	Modelo();
+	Modelo(Juego* juego);
 	Juego* juego;
 	void setMapa(int largo,int ancho);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);

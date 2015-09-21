@@ -20,6 +20,6 @@ Juego::Juego(Pantalla* pantalla, Configuracion* conf, Escenario* escenario, std:
 	this->tipos = tipos;
 }
 Juego::~Juego() {
-	// TODO Auto-generated destructor stub
+	delete this-> escenario;
 }
 

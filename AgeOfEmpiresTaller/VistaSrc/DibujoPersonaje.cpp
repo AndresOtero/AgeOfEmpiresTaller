@@ -16,15 +16,15 @@ DibujoPersonaje::DibujoPersonaje() {
 	this->fps=1;
 }
 
-void DibujoPersonaje::set_cantidad_de_movimientos(size_t cant_de_mov){
+void DibujoPersonaje::set_cantidad_de_movimientos(int cant_de_mov){
 	if(cant_de_mov>CANTIDAD_DE_MOVIMIENTOS){
 		//Error
 	}
 	this->spriteClips=vector<SDL_Rect*>(cant_de_mov,NULL);
-	this->cantidad_de_imagenes=vector<size_t>(cant_de_mov,0);
+	this->cantidad_de_imagenes=vector<int>(cant_de_mov,0);
 	this->cant_mov=cant_de_mov;
 }
-void DibujoPersonaje::set_cantidad_de_imagenes(size_t n_mov,size_t cant_de_imagenes) {
+void DibujoPersonaje::set_cantidad_de_imagenes(int n_mov,int cant_de_imagenes) {
 	if(n_mov>=cant_mov){
 		return;
 	}
@@ -35,7 +35,7 @@ void DibujoPersonaje::set_cantidad_de_imagenes(size_t n_mov,size_t cant_de_image
 	this->cantidad_de_imagenes[n_mov] = cant_de_imagenes;
 }
 
-void DibujoPersonaje::set_imagen(size_t n_mov,size_t n_imagen, int x, int y, int ancho, int alto) {
+void DibujoPersonaje::set_imagen(int n_mov,int n_imagen, int x, int y, int ancho, int alto) {
 	if (this->cantidad_de_imagenes[n_mov] <= n_imagen) {
 		return;
 	}

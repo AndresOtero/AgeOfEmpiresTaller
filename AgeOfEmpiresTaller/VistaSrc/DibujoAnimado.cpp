@@ -14,8 +14,7 @@ DibujoAnimado::DibujoAnimado() {
 	this->spriteClips=NULL;
 }
 
-
-void DibujoAnimado::set_cantidad_de_imagenes(size_t cant_de_imagenes) {
+void DibujoAnimado::set_cantidad_de_imagenes(int cant_de_imagenes) {
 	if (cant_de_imagenes == 0) {
 		return;
 	}
@@ -24,7 +23,7 @@ void DibujoAnimado::set_cantidad_de_imagenes(size_t cant_de_imagenes) {
 	this->cantidad_de_imagenes = cant_de_imagenes;
 }
 
-void DibujoAnimado::set_imagen(size_t n_imagen, int x, int y, int ancho, int alto) {
+void DibujoAnimado::set_imagen(int n_imagen, int x, int y, int ancho, int alto) {
 	if (this->cantidad_de_imagenes <= n_imagen) {
 		return;
 	}
