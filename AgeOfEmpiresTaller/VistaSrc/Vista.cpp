@@ -27,8 +27,8 @@ enum bordes {X_START,Y_START,Y_MIN,X_MAX,Y_MAX};
 Vista::Vista(shared_ptr<Modelo>  modelo,shared_ptr<Pantalla> pantalla,shared_ptr<Configuracion> configuracion) {
 	this -> modelo = modelo;
 	this->pantalla=pantalla;
-	this->referencia_mapa_x=0;
-	this->referencia_mapa_y=0;
+	this->referencia_mapa_x=3;
+	this->referencia_mapa_y=3;
 	this->velocidad_de_scroll=0.001;
 	this->margen_scroll=configuracion->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
@@ -327,8 +327,10 @@ vector<int> Vista::calcular_bordes(){
 	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+pantalla->getAncho(),pantalla_refencia_y,x,y_min);
 	y_min-=2;
 	vector<int> bordes={x_start,y_start,y_min,x_max,y_max};
+	printf("Limites:\n xMin: %d \n xMax: %d \n yMin: %d \n yMax: %d \n",x_start,x_max,y_min,y_max);
 	return bordes;
 }
+
 void Vista::dibujar_mapa() {
 	/**Bordes**/
 	vector<int> bordes = this->calcular_bordes();
