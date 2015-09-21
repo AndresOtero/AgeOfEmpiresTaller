@@ -103,10 +103,18 @@ bool Vista::loadMedia() {
 	this->factory->crear_dibujo_estatico("img/isometric_tile.png",v1d);
 	dibujo_t pasto_id=this->factory->ultimo_dibujo();
 
-	/**Creo el dibujo del castillo**/
+	/**Creo el dibujo del arbol**/
 	v1d={0,0,66,155};
 	this->factory->crear_dibujo_estatico("img/Sprites/pinetree.png",v1d);
-	dibujo_t clock=this->factory->ultimo_dibujo();
+	dibujo_t pino=this->factory->ultimo_dibujo();
+	/**Creo el dibujo del bosque**/
+	v1d={0,0,128,120};
+	this->factory->crear_dibujo_estatico("img/Sprites/firtree.png",v1d);
+	dibujo_t bosque=this->factory->ultimo_dibujo();
+	/**Creo el dibujo del clock**/
+	v1d= {0,0,128,243};
+	this->factory->crear_dibujo_estatico("img/Sprites/clock.png", v1d);
+	dibujo_t clock = this->factory->ultimo_dibujo();
 
 	/**Creo el dibujo del pajaro**/
 	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(8);
@@ -129,7 +137,16 @@ bool Vista::loadMedia() {
 	vector<dibujo_t> filas_escenario(ancho,0);
 	vector<vector<dibujo_t>> escenario (largo,filas_escenario);
 	escenario[0][0]=mocking_jay;
-
+	for (int i = 0;  i < 6; ++ i) {
+		for (int j = 0; j < 3; ++j) {
+			escenario[i][j]=bosque;
+		}
+	}
+	escenario[2][1]=pino;
+	escenario[2][0]=clock;
+	escenario[3][1]=clock;
+	escenario[4][2]=0;
+	escenario[5][3]=mocking_jay;
 	modelo->setDibujoMapa(escenario,tiles);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
 
