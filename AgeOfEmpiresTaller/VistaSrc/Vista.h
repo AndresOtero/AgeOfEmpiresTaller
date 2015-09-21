@@ -10,7 +10,7 @@
 #include "FactoryDibujo.h"
 #include "CambioDeCoordendas.h"
 #include "../ModeloSrc/Pantalla.h"
-#include "../ModeloSrc/Configuracion.h".h"
+#include "../ModeloSrc/Configuracion.h"
 
 using namespace std;
 
