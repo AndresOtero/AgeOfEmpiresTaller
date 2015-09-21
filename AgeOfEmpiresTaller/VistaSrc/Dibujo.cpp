@@ -18,17 +18,12 @@ Dibujo::Dibujo() {
 	// TODO Auto-generated constructor stub
 	shared_ptr <LTexture> text(new LTexture());
 	this->textura = text;
-
 }
-
-
 
 void Dibujo::set_posicion_default(int x, int y){
 	this->x_imagen=x;
 	this->y_imagen=y;
 }
-
-
 
 bool Dibujo::cargar_archivo(std::string path, SDL_Renderer* renderer) {
 	return this->textura->loadFromFile(path, renderer);
@@ -36,8 +31,6 @@ bool Dibujo::cargar_archivo(std::string path, SDL_Renderer* renderer) {
 
 Dibujo::~Dibujo() {
 	// TODO Auto-generated destructor stub
-
-
 }
 
 int Dibujo::get_x() {

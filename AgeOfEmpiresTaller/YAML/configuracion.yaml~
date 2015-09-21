@@ -24,13 +24,13 @@ tipos:
 
 escenario:
  nombre: orleans
- size_x: 100
- size_y: 100
+ size_x: 212
+ size_y: 200
  entidades: 
   - { x : 10, y: 15, tipo: tierra}
   - { x : 15, y: 20, tipo: tierra}
   - { x : 30, y: 55, tipo: castillo}
  protagonista:
-  - tipo: soldad
+  - tipo: soldado
     x: 50
     y: 50

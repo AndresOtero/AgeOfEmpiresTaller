@@ -97,8 +97,9 @@ typedef struct {
 
 }ConfiguracionJuego_t;
 
-int Yaml::read(Juego* juego)
+Juego* Yaml::read()
 {
+	Juego* juego;
 	remove( "Log.txt" );
 	plog::init(plog::warning, "Log.txt" );
 
@@ -315,7 +316,7 @@ int Yaml::read(Juego* juego)
 			juego = new Juego();
 			LOG_WARNING << "Problemas para abrir el archivo" << e.what();
 	}
-   return 0;
+   return juego;
 }
 
 Yaml::~Yaml() {

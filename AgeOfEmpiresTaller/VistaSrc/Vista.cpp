@@ -24,13 +24,13 @@ enum bordes {X_START,Y_START,Y_MIN,X_MAX,Y_MAX};
 #define DIMENSIONES 2
 
 
-Vista::Vista(shared_ptr<Modelo>  modelo,shared_ptr<Pantalla> pantalla,shared_ptr<Configuracion> configuracion) {
+Vista::Vista(shared_ptr<Modelo>  modelo) {
 	this -> modelo = modelo;
-	this->pantalla=pantalla;
+	this->pantalla= modelo->juego->pantalla;
 	this->referencia_mapa_x=0;
 	this->referencia_mapa_y=0;
 	this->velocidad_de_scroll=0.001;
-	this->margen_scroll=configuracion->get_margen_scroll();
+	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
 }
 

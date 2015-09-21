@@ -17,8 +17,8 @@ class DibujoAnimado: public Dibujo {
 public:
 	DibujoAnimado();
 	virtual ~DibujoAnimado();
-	void set_cantidad_de_imagenes(size_t cant_de_imagenes);
-	void set_imagen(size_t n_imagen, int x, int y, int ancho, int alto);
+	void set_cantidad_de_imagenes(int cant_de_imagenes);
+	void set_imagen(int n_imagen, int x, int y, int ancho, int alto);
 	void render( SDL_Renderer* gRenderer);
 	void set_fps(int fps);
 	int get_ancho(int n_imagen);

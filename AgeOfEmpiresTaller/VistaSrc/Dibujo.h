@@ -13,8 +13,6 @@ using namespace std;
 #ifndef DIBUJO_H_
 #define DIBUJO_H_
 
-
-
 class Dibujo {
 
 public:

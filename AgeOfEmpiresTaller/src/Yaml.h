@@ -17,7 +17,7 @@
 class Yaml {
 public:
 	Yaml();
-	int read(Juego* juego);
+	Juego* read();
 	virtual ~Yaml();
 };
 
