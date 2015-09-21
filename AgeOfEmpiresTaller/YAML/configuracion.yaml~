@@ -19,6 +19,7 @@ tipos:
    fps: 10
    delay: 5
 
+<<<<<<< HEAD
  - nombre: mocking_jay
    imagen: mocking_jay.png
    fps: 10
@@ -29,15 +30,36 @@ tipos:
 
  - nombre: arbol
    imagen: img/Sprites/firtree.png
+=======
+ - nombre: tierra
+   imagen: path/a/imagen.png
+>>>>>>> branch 'master' of https://github.com/AndresOtero/AgeOfEmpiresTaller.git
+
+ - nombre: arbol
+   imagen: img/Sprites/pinetree.png
+
+ - nombre: arbol
+   imagen: img/Sprites/firtree.png
 
 escenario:
  nombre: orleans
+<<<<<<< HEAD
  size_x: 100
  size_y: 100
+=======
+ size_x: 500
+ size_y: 500
+>>>>>>> branch 'master' of https://github.com/AndresOtero/AgeOfEmpiresTaller.git
  entidades: 
+<<<<<<< HEAD
   - { x : 2, y: 1, tipo: pino }
   - { x : 2, y: 0, tipo: arbol }
   - { x : 3, y: 1, tipo: clock }
+=======
+  - { x : 10, y: 15, tipo: tierra}
+  - { x : 15, y: 20, tipo: tierra}
+  - { x : 30, y: 55, tipo: clock}
+>>>>>>> branch 'master' of https://github.com/AndresOtero/AgeOfEmpiresTaller.git
  protagonista:
   - tipo: soldado
     x: 50

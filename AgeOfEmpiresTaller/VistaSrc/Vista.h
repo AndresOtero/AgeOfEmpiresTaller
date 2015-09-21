@@ -35,21 +35,24 @@ class Vista {
 	int margen_scroll;
 	float referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;
-
+private:
 	void dibujar_mapa();
-
-public:
-	Vista(shared_ptr<Modelo>  modelo);
-	bool init();
+	void mover_referencia(float vel_x,float vel_y);
 	int ancho_por_celda();
 	int altura_por_celda();
 	vector<int> calcular_bordes();
-	bool loadMedia();
 	void detectar_mouse_borde();
+	bool adentro_del_mapa(int coord_x, int coord_y);
+	bool adentro_del_mapa(float coord_x, float coord_y);
+
+
+public:
+	Vista(shared_ptr<Modelo> modelo);
+	bool init();
+	bool loadMedia();
 	int run();
 	virtual ~Vista();
-private:
-	bool adentro_del_mapa(int coord_x,int coord_y);
+
 
 };
 

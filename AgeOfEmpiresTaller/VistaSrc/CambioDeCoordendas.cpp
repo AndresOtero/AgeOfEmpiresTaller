@@ -24,15 +24,15 @@ void CambioDeCoordendas::transformar_isometrica_pantalla(int iso_x,int iso_y,int
 void CambioDeCoordendas::transformar_pantalla_isometrica(int pant_x,int pant_y,float& iso_x,float& iso_y){
 	double termino_x=  ( (float)pant_x/ (this->ancho_por_celda()/2)) ;
 	double termino_y= ( (float)pant_y/ (this->altura_por_celda()/2) );
-	iso_x= (termino_x+ termino_y-1)/2;//MAGIA NEGRA
-	iso_y = (termino_y - termino_x+1)/2;//En serio no se porque funciona
+	iso_x= (termino_x+ termino_y)/2;//MAGIA NEGRA
+	iso_y = (termino_y - termino_x)/2;//En serio no se porque funciona
 }
 
 void CambioDeCoordendas::transformar_pantalla_isometrica(int pant_x,int pant_y,int& iso_x,int& iso_y){
 	double termino_x=  ( (float)pant_x/ (this->ancho_por_celda()/2)) ;
 	double termino_y= ( (float)pant_y/ (this->altura_por_celda()/2) );
-	iso_x= (termino_x+ termino_y-1)/2;//MAGIA NEGRA
-	iso_y = (termino_y - termino_x+1)/2;//En serio no se porque funciona
+	iso_x= (termino_x+ termino_y)/2;//MAGIA NEGRA
+	iso_y = (termino_y - termino_x)/2;//En serio no se porque funciona
 }
 int CambioDeCoordendas::ancho_por_celda(){
 	return ancho_celda;

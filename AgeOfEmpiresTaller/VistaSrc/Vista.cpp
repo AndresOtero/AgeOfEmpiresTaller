@@ -31,7 +31,7 @@ Vista::Vista(shared_ptr<Modelo>  modelo) {
 	this->pantalla= modelo->juego->pantalla;
 	this->referencia_mapa_x=0;// desde el punto del mapa donde se dibuja
 	this->referencia_mapa_y=0;
-	this->velocidad_de_scroll=0.001;
+	this->velocidad_de_scroll=0.1;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
 }
@@ -99,7 +99,6 @@ bool Vista::init() {
 	return success;
 }
 bool Vista::loadMedia() {
-
 	/**Creo el dibujo del pasto**/
 
 	Entidad* entidadPasto = this->modelo->juego->escenario->getTexturaDefault();
@@ -192,72 +191,81 @@ Vista::~Vista() {
 	IMG_Quit();
 	SDL_Quit();
 }
+void Vista::mover_referencia(float vel_x,float vel_y) {
+		int actual_x,actual_y;
+		float ref_x, ref_y;
+		this->transformador->transformar_isometrica_pantalla(referencia_mapa_x,
+						referencia_mapa_y, actual_x, actual_y);
+		actual_x+=vel_x;
+		actual_y+=vel_y;
+		this->transformador->transformar_pantalla_isometrica(actual_x, actual_y,ref_x, ref_y);
+		if(adentro_del_mapa(ref_x,ref_y)){
+			referencia_mapa_x=ref_x;
+			referencia_mapa_y=ref_y;
+		}
+
+		printf("X: %g\n", this->referencia_mapa_x);
+		printf("Y: %g\n", this->referencia_mapa_y);
+}
 void Vista::detectar_mouse_borde() {
 	int mouse_x, mouse_y;
-	//int actual_x, actual_y;
-	//float mov_x, mov_y;
+
 	SDL_GetMouseState(&mouse_x, &mouse_y);
 
-
-	int mov_pantalla_x = margen_scroll, mov_pantalla_y =margen_scroll;
+	int mov_pantalla_x = margen_scroll, mov_pantalla_y = margen_scroll;
 
 	if ((mouse_x < mov_pantalla_x)) {
-		printf("pendiente velocidad: %d/n", mov_pantalla_x - mouse_x);
+		float vel_x = (-1)*this->velocidad_de_scroll
+				* (mov_pantalla_x-mouse_x);
+		printf("Velocidad_x: %g\n",vel_x);
+		mover_referencia(vel_x, 0);
+		printf("pendiente velocidad: %d\n", mov_pantalla_x - mouse_x);
 		printf("izquierda \n");
-
-/**
-		this->transformar_isometrica_pantalla(iso_x, iso_y, actual_x, actual_y);
-		float vel = this->velocidad_de_scroll * (mov_pantalla_x - mouse_x);
-		actual_x -= vel;
-		referencia_mapa_x = ref_x;
-		referencia_mapa_y = ref_y;
-		printf("X: %g\n", this->referencia_mapa_x);
-		printf("Y: %g\n", this->referencia_mapa_y);**/
 
 	}
 	if ((mouse_x > (this->pantalla->getAncho() - mov_pantalla_x))) {
-		/**
-		this->transformar_isometrica_pantalla(iso_x, iso_y, actual_x, actual_y);
-		float vel = this->velocidad_de_scroll
-				* (mouse_x - (SCREEN_WIDTH - mov_pantalla_x));
-		actual_x += vel;
-		float ref_x = referencia_mapa_x;
-		float ref_y = referencia_mapa_y;
-		this->transformar_pantalla_isometrica(actual_x, actual_y, ref_x, ref_y);
-		referencia_mapa_x = ref_x;
-		referencia_mapa_y = ref_y;
-		printf("derecha \n");
-		printf("X: %g\n", this->referencia_mapa_x);
-		printf("Y: %g\n", this->referencia_mapa_y);
-		if(mouse_x > (SCREEN_WIDTH - mov_pantalla_x)){
-			float vel=this->velocidad_de_scroll*(mouse_x-(SCREEN_WIDTH - mov_pantalla_x));
-			this->referencia_mapa_x-=vel;
-			printf("%g\n",this->referencia_mapa_x);
-**/
-		printf("pendiente velocidad: %d/n", (mouse_x-(this->pantalla->getAncho() - mov_pantalla_x)));
+		float vel_x = this->velocidad_de_scroll
+				* (mouse_x - (this->pantalla->getAncho() - mov_pantalla_x));
+		printf("Velocidad_x: %g\n",vel_x);
+		mover_referencia(vel_x, 0);
+		printf("pendiente velocidad: %d/n",
+				(mouse_x - (this->pantalla->getAncho() - mov_pantalla_x)));
 		printf("derecha\n");
 
-		}
-		if(mouse_y < mov_pantalla_y){
-			/**float vel=this->velocidad_de_scroll*(mov_pantalla_y-mouse_y);
-			this->referencia_mapa_y+=vel;**/
-			printf("pendiente velocidad: %d/n", mov_pantalla_y- mouse_y);
+	}
+	if (mouse_y < mov_pantalla_y) {
+		float vel_y = (-1)*this->velocidad_de_scroll * (mov_pantalla_y - mouse_y);
+		printf("Velocidad_y: %g \n",vel_y);
 
-			printf(" arriba\n");/**
-			printf("%g\n",this->referencia_mapa_y);**/
-		}
-		if(mouse_y > (this->pantalla->getAlto() - mov_pantalla_y) ){
-			/**
-			float vel=this->velocidad_de_scroll*(mouse_y-(SCREEN_HEIGHT - mov_pantalla_y));
-			this->referencia_mapa_y-=vel;**/
-			printf("pendiente velocidad: %d/n",mouse_y-(this->pantalla->getAlto() - mov_pantalla_y));
-			printf("abajo\n");
-			//printf("%g\n",this->referencia_mapa_y);
+		mover_referencia(0, vel_y);
 
-		}
-		if((mouse_y < (this->pantalla->getAlto() - mov_pantalla_y))&&(mouse_y > mov_pantalla_y)&&(mouse_x < (this->pantalla->getAncho() - mov_pantalla_x)&&(mouse_x > mov_pantalla_x)) ){
-			printf("in\n");
-		}
+		printf("pendiente velocidad: %d/n", mov_pantalla_y - mouse_y);
+
+		printf(" arriba\n");/**
+		 printf("%g\n",this->referencia_mapa_y);**/
+	}
+	if (mouse_y > (this->pantalla->getAlto() - mov_pantalla_y)) {
+		/**
+		 float vel=this->velocidad_de_scroll*(mouse_y-(SCREEN_HEIGHT - mov_pantalla_y));
+		 this->referencia_mapa_y-=vel;**/
+
+		float vel_y = this->velocidad_de_scroll
+				* (mouse_y - (this->pantalla->getAlto() - mov_pantalla_y));
+		printf("Velocidad_y: %g\n",vel_y);
+
+		mover_referencia(0, vel_y);
+
+		printf("pendiente velocidad: %d\n",
+				mouse_y - (this->pantalla->getAlto() - mov_pantalla_y));
+		printf("abajo\n");
+
+	}
+	if ((mouse_y < (this->pantalla->getAlto() - mov_pantalla_y))
+			&& (mouse_y > mov_pantalla_y)
+			&& (mouse_x < (this->pantalla->getAncho() - mov_pantalla_x)
+					&& (mouse_x > mov_pantalla_x))) {
+		printf("in\n");
+	}
 }
 
 int Vista::run() { //Main loop flag
@@ -302,12 +310,12 @@ int Vista::run() { //Main loop flag
 
 		int x,y;
 		this->transformador->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
-		printf("iso_x: %d\n",mouse_x);
+		/**printf("iso_x: %d\n",mouse_x);
 		printf("iso_y: %d\n",mouse_y);
 		x+=referencia_mapa_x;
 		y+=referencia_mapa_y;
 		printf("Cart_x: %d\n", x);
-		printf("Cart_y: %d\n", y);
+		printf("Cart_y: %d\n", y);**/
 		this->detectar_mouse_borde();
 		//Update screen
 		SDL_RenderPresent(gRenderer);
@@ -331,8 +339,8 @@ vector<int> Vista::calcular_bordes(){
 	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y,x_start,y_start);
 	x_start=x_start-2;
 	int x_max,y;
-	x_max+=2;
 	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+pantalla->getAncho(),pantalla_refencia_y+pantalla->getAlto(),x_max,y);
+	x_max+=2;
 	int x,y_max;
 	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y+pantalla->getAlto(),x,y_max);
 	y_max=y_max+2;
@@ -341,6 +349,12 @@ vector<int> Vista::calcular_bordes(){
 	y_min-=2;
 	vector<int> bordes={x_start,y_start,y_min,x_max,y_max};
 	return bordes;
+}
+
+bool Vista::adentro_del_mapa(float coord_x,float coord_y){
+	return ((coord_x < this->modelo->get_ancho_mapa())
+			&& (coord_y < this->modelo->get_alto_mapa())
+			&& (coord_x > -1) && (coord_y >0));
 }
 
 bool Vista::adentro_del_mapa(int coord_x,int coord_y){
@@ -357,19 +371,17 @@ void Vista::dibujar_mapa() {
 			bordes[Y_MIN], x_max = bordes[X_MAX], y_max = bordes[Y_MAX];
 	int x_imagen, y_imagen;
 
-	vector<vector<vector<dibujo_t>>> dibujo_mapa=this->modelo->dibujar(max(x_start,0),max(y_min,0),min(x_max,modelo->get_ancho_mapa()),min(y_max,modelo->get_alto_mapa()));
 	for (int dim = 0; dim < DIMENSIONES; dim++) {
 		int max=abs(x_max)+abs(y_max);
 		int i=0,j=0;
 		for ( i = x_start-1; i<max; i++) {
 			//printf("\n ");
-			for ( j = y_start ;j<i; j++) {
+			for ( j = y_min ;j<i; j++) {
 				int coord_x=i-j;
 				int coord_y=j;
 				if ((adentro_del_mapa(coord_x,coord_y))&&(coord_x<x_max)&&(coord_y<y_max)) {
-					size_t n_imagen = dibujo_mapa[dim][coord_x][coord_y];
-					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(
-							n_imagen);
+					size_t n_imagen = this->modelo->dibujar(dim,coord_x,coord_y);
+					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(n_imagen);
 					if (dibujo != NULL) {
 
 					this->transformador->transformar_isometrica_pantalla(
