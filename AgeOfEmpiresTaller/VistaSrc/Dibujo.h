@@ -19,15 +19,13 @@ class Dibujo {
 
 public:
 	Dibujo();
-	void set_imagen( int x, int y, int ancho, int alto);
-	bool cargar_archivo(std::string path, SDL_Renderer* renderer);
-	void render( SDL_Renderer* gRenderer);
-	int get_x();
-	int get_y();
-	void set_posicion_default(int x,int y);
-	int get_alto();
-	int get_ancho();
-
+	virtual bool cargar_archivo(std::string path, SDL_Renderer* renderer);
+	virtual void render( SDL_Renderer* gRenderer) =0;
+	virtual int get_x();
+	virtual int get_y();
+	virtual void set_posicion_default(int x,int y);
+	virtual int get_alto();
+	virtual int get_ancho();
 	virtual ~Dibujo();
 protected:
 	SDL_Rect spriteClips;
@@ -36,8 +34,6 @@ protected:
 	size_t imagen_actual;
 	int x_imagen;
 	int y_imagen;
-	int fps;
-	int acumulador;
 };
 
 #endif /* DIBUJO_H_ */

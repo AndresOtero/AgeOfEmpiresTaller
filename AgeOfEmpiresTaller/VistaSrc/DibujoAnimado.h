@@ -26,7 +26,10 @@ public:
 	int get_ancho();
 	int get_alto();
 protected:
+
 	void cambiar_frame();
+	int fps;
+	int acumulador;
 
 };
 

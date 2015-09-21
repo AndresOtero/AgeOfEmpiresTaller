@@ -12,6 +12,8 @@ DibujoPersonaje::DibujoPersonaje() {
 	this -> velocidad = 0;
 	this->imagen_actual = 0;
 	this->movimiento_actual=0;
+	this->acumulador=0;
+	this->fps=1;
 }
 
 void DibujoPersonaje::set_cantidad_de_movimientos(size_t cant_de_mov){
@@ -128,6 +130,13 @@ void DibujoPersonaje::mover(int x, int y) {
 		y_imagen += des_y;
 		this->elegir_frame(des_x,des_y);
 		this->cambiar_frame();
+	}
+}
+void DibujoPersonaje::cambiar_frame(){
+	acumulador++;
+	if((fps)<=acumulador){
+		imagen_actual++;
+		acumulador=0;
 	}
 }
 

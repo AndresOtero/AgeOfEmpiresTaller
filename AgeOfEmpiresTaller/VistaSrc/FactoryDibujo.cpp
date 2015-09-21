@@ -30,7 +30,6 @@ bool FactoryDibujo::crear_dibujo_personaje(string path,size_t cantidad_de_movimi
 			}
 		}
 
-		dibujo_nuevo->set_fps(fps);
 		dibujo_nuevo->set_velocidad(velocidad);
 		this->set_dibujo(dibujo_nuevo);
 		return true;
@@ -52,8 +51,8 @@ bool FactoryDibujo::crear_dibujo_animado(string path,size_t cantidad_de_imagenes
 	}
 	return false;
 }
-bool FactoryDibujo::crear_dibujo(string path, vector<int>parametros_de_imagen){
-	shared_ptr<Dibujo> dibujo_nuevo = shared_ptr<Dibujo>(new Dibujo());
+bool FactoryDibujo::crear_dibujo_estatico(string path, vector<int>parametros_de_imagen){
+	shared_ptr<Dibujo_Estatico> dibujo_nuevo = shared_ptr<Dibujo_Estatico>(new Dibujo_Estatico());
 	if (!dibujo_nuevo->cargar_archivo(path, gRenderer)) {
 		printf("Failed to load image!\n");
 	} else {
