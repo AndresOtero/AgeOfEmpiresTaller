@@ -7,29 +7,37 @@ configuracion:
  margen_scroll: 30
 
 tipos: 
- - nombre: castillo
-   imagen: path/a/imagen.png
+ - nombre: clock
+   imagen: img/Sprites/clock.png
    ancho_base: 2
    alto_base: 2
    pixel_ref_x: 30
    pixel_ref_y: 40
 
  - nombre: soldado
-   imagen: path/a/imagen.png
+   imagen: img/tipo_moviendose.png
    fps: 10
    delay: 5
-       
- - nombre: tierra
-   imagen: path/a/imagen.png
+
+ - nombre: mocking_jay
+   imagen: mocking_jay.png
+   fps: 10
+   delay: 5
+
+ - nombre: pino
+   imagen: img/Sprites/pinetree.png
+
+ - nombre: arbol
+   imagen: img/Sprites/firtree.png
 
 escenario:
  nombre: orleans
- size_x: 212
- size_y: 200
+ size_x: 100
+ size_y: 100
  entidades: 
-  - { x : 10, y: 15, tipo: tierra}
-  - { x : 15, y: 20, tipo: tierra}
-  - { x : 30, y: 55, tipo: castillo}
+  - { x : 2, y: 1, tipo: pino }
+  - { x : 2, y: 0, tipo: arbol }
+  - { x : 3, y: 1, tipo: clock }
  protagonista:
   - tipo: soldado
     x: 50

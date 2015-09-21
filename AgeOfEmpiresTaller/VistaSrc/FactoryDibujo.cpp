@@ -56,7 +56,7 @@ bool FactoryDibujo::crear_dibujo_estatico(string path, vector<int>parametros_de_
 	if (!dibujo_nuevo->cargar_archivo(path, gRenderer)) {
 		printf("Failed to load image!\n");
 	} else {
-		dibujo_nuevo->set_imagen(parametros_de_imagen[X], parametros_de_imagen[Y],parametros_de_imagen[ANCHO], parametros_de_imagen[ALTO]);
+		dibujo_nuevo->set_imagen(parametros_de_imagen[X], parametros_de_imagen[Y]);
 		this->set_dibujo(dibujo_nuevo);
 		return true;
 	}

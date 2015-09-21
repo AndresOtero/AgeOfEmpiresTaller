@@ -14,11 +14,9 @@ Dibujo_Estatico::Dibujo_Estatico() {
 	this -> acumulador = 0;
 	this->fps=1;
 }
-void Dibujo_Estatico::set_imagen( int x, int y, int ancho, int alto) {
+void Dibujo_Estatico::set_imagen( int x, int y) {
 	this->spriteClips.x = x;
 	this->spriteClips.y = y;
-	this->spriteClips.w = ancho;
-	this->spriteClips.h = alto;
 }
 void Dibujo_Estatico::set_posicion_default(int x, int y){
 	this->x_imagen=x;
@@ -28,7 +26,10 @@ void Dibujo_Estatico::render( SDL_Renderer* renderer) {
 	this->textura->render(this->x_imagen, this->y_imagen, &(this->spriteClips),renderer);
 }
 bool Dibujo_Estatico::cargar_archivo(std::string path, SDL_Renderer* renderer) {
-	return this->textura->loadFromFile(path, renderer);
+	bool textBool = this->textura->loadFromFile(path, renderer);
+	this ->spriteClips.h = this->textura->getHeight();
+	this -> spriteClips.w = this -> textura->getWidth();
+	return textBool;
 }
 Dibujo_Estatico::~Dibujo_Estatico() {
 }
