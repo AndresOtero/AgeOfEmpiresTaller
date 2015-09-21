@@ -98,6 +98,7 @@ bool Vista::init() {
 	this -> factory=shared_ptr<FactoryDibujo> ( new FactoryDibujo(gRenderer));
 	return success;
 }
+
 bool Vista::loadMedia() {
 	/**Creo el dibujo del pasto**/
 
@@ -108,33 +109,24 @@ bool Vista::loadMedia() {
 	dibujo_t pasto_id=this->factory->ultimo_dibujo();
 
 	std::map<std::string, ObjetoMapa*> ::iterator it;
-	std::map<std::string, dibujo_t> hashDibujosEstaticos;
-	std::map<std::string, dibujo_t> hashDibujosDinamicos;
+	std::map<std::string, dibujo_t> hashDibujos;
 
+	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(5);
+	for(int i=0;i<5;i++){
+		v2d[i]={128*i,0};
+	}
 	for ( it = modelo->juego->tipos.begin(); it !=modelo->juego->tipos.end(); it++ )
 	{
 	     ObjetoMapa* tipo = it->second;
 	     vector<int> v1d ={tipo->pixelsReferencia->x,tipo->pixelsReferencia->y};
 	     if(tipo->fps == 0){
 	    	 this->factory->crear_dibujo_estatico(tipo->imagen,v1d);
-	    	 dibujo_t dibujo_id=this->factory->ultimo_dibujo();//hasta aca llega bien
-	    	 hashDibujosEstaticos[tipo->nombre] = dibujo_id;
 	     }else{
+	    	 this->factory->crear_dibujo_animado(tipo->imagen,v2d,tipo->fps);
 	     }
+	     dibujo_t dibujo_id=this->factory->ultimo_dibujo();
+	     hashDibujos[tipo->nombre] = dibujo_id;
 	}
-
-	/**Creo el dibujo del pajaro**/
-	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(8);
-		for(int i=0;i<3;i++){
-			for(int j=0;j<3;j++){
-				if(3*i+j>7){
-					break;
-				}
-				v2d[3*i+j]={110*i,100*j,110,100};
-			}
-		}
-	this->factory->crear_dibujo_animado("img/mocking_jay.png",8,v2d,4);
-	dibujo_t mocking_jay=this->factory->ultimo_dibujo();
 
 	/**Dibujo el mapa**/
 	int largo=this->modelo->get_alto_mapa();
@@ -146,19 +138,17 @@ bool Vista::loadMedia() {
 
 	for (unsigned i = 0; i < this->modelo->juego->escenario->entidades.size(); i++){
 			Entidad* entidad = this->modelo->juego->escenario->entidades[i];
-			escenario[entidad->posicion->x][entidad->posicion->y]=hashDibujosEstaticos[entidad->objetoMapa->nombre];
+			escenario[entidad->posicion->x][entidad->posicion->y]=hashDibujos[entidad->objetoMapa->nombre];
 	}
-	escenario[5][3]=mocking_jay;
 	modelo->setDibujoMapa(escenario,tiles);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
-
 
 	//creo dibujo
 	shared_ptr<DibujoPersonaje> personaje(new DibujoPersonaje());
 	this->personaje = personaje;
 
 	//Load sprite sheet texture
-	if (!this->personaje->cargar_archivo("img/tipo_moviendose.png", gRenderer)) {
+	if (!this->personaje->cargar_archivo(this->modelo->juego->escenario->protagonista->objetoMapaAnimado->imagen, gRenderer)) {
 		printf("Failed to load walking animation texture!\n");
 	} else {
 		//Set sprite clips

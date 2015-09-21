@@ -23,14 +23,13 @@ void DibujoAnimado::set_cantidad_de_imagenes(int cant_de_imagenes) {
 	this->cantidad_de_imagenes = cant_de_imagenes;
 }
 
-void DibujoAnimado::set_imagen(int n_imagen, int x, int y, int ancho, int alto) {
+void DibujoAnimado::set_imagen(int n_imagen, int x, int y) {
 	if (this->cantidad_de_imagenes <= n_imagen) {
 		return;
 	}
 	this->spriteClips[n_imagen].x = x;
 	this->spriteClips[n_imagen].y = y;
-	this->spriteClips[n_imagen].w = ancho;
-	this->spriteClips[n_imagen].h = alto;
+	this->spriteClips[n_imagen].w = 128 ;
 }
 
 void DibujoAnimado::render( SDL_Renderer* renderer) {
@@ -50,8 +49,6 @@ void DibujoAnimado::cambiar_frame(){
 		acumulador=0;
 	}
 }
-
-
 
 int DibujoAnimado::get_alto(int n_imagen){
 	return spriteClips[n_imagen].h;

@@ -24,7 +24,7 @@ class FactoryDibujo {
 public:
 	FactoryDibujo(SDL_Renderer* gRenderer);
 	bool crear_dibujo_estatico(string path, vector<int>parametros_de_imagen);
-	bool crear_dibujo_animado(string path,int cantidad_de_imagenes,std::vector<std::vector<int> >parametros_de_imagen,int fps);
+	bool crear_dibujo_animado(string path,std::vector<std::vector<int> >parametros_de_imagen,int fps);
 	bool crear_dibujo_personaje(string path,int cantidad_de_movimientos,vector<int> cantidad_de_imagenes,std::vector<std::vector<int> >parametros_de_imagen,int fps,int velocidad);
 	shared_ptr<Dibujo> get_dibujo(int n_dibujo);
 	int ultimo_dibujo();

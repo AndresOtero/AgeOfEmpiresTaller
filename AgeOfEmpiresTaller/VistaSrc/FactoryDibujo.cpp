@@ -6,7 +6,7 @@
  */
 
 #include "FactoryDibujo.h"
-#define DIBUJOS_POR_DEFAULT 2
+#define DIBUJOS_POR_DEFAULT 5
 #define CANTIDAD_DE_PARAMETROS 4
 enum parametros {X=0,Y=1,ANCHO=2,ALTO=3};
 
@@ -36,14 +36,14 @@ bool FactoryDibujo::crear_dibujo_personaje(string path,int cantidad_de_movimient
 	}
 	return false;
 }
-bool FactoryDibujo::crear_dibujo_animado(string path,int cantidad_de_imagenes,std::vector<std::vector<int> >parametros_de_imagen,int fps){
+bool FactoryDibujo::crear_dibujo_animado(string path,std::vector<std::vector<int> >parametros_de_imagen,int fps){
 	shared_ptr<DibujoAnimado> dibujo_nuevo = shared_ptr<DibujoAnimado>(new DibujoAnimado());
 	if (!dibujo_nuevo->cargar_archivo(path, gRenderer)) {
 		printf("Failed to load image!\n");
 	} else {
-		dibujo_nuevo->set_cantidad_de_imagenes(cantidad_de_imagenes);
-		for (int i = 0; i < cantidad_de_imagenes; i++) {
-			dibujo_nuevo->set_imagen(i, parametros_de_imagen[i][X], parametros_de_imagen[i][Y],parametros_de_imagen[i][ANCHO], parametros_de_imagen[i][ALTO]);
+		dibujo_nuevo->set_cantidad_de_imagenes(DIBUJOS_POR_DEFAULT);
+		for (int i = 0; i < DIBUJOS_POR_DEFAULT; i++) {
+			dibujo_nuevo->set_imagen(i, parametros_de_imagen[i][X], parametros_de_imagen[i][Y]);
 		}
 		dibujo_nuevo->set_fps(fps);
 		this->set_dibujo(dibujo_nuevo);
