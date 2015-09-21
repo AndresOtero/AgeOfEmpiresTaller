@@ -20,7 +20,7 @@
 #include "../ModeloSrc/Modelo.h"
 #include "Dibujo.h"
 #include "DibujoPersonaje.h"
-enum bordes {X_START,Y_START,Y_MIN,X_MAX,Y_MAX};
+enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define DIMENSIONES 2
 
 
@@ -344,7 +344,7 @@ vector<int> Vista::calcular_bordes(){
 	int y_min;
 	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+pantalla->getAncho(),pantalla_refencia_y,x,y_min);
 	y_min-=2;
-	vector<int> bordes={x_start,y_start,y_min,x_max,y_max};
+	vector<int> bordes={x_start,y_min,x_max,y_max};
 	return bordes;
 }
 
@@ -364,7 +364,7 @@ void Vista::dibujar_mapa() {
 	/**Bordes**/
 	vector<int> bordes = this->calcular_bordes();
 	/****/
-	int x_start = bordes[X_START], y_start = bordes[Y_START], y_min =
+	int x_start = bordes[X_START], y_min =
 			bordes[Y_MIN], x_max = bordes[X_MAX], y_max = bordes[Y_MAX];
 	int x_imagen, y_imagen;
 
