@@ -22,8 +22,8 @@ public:
 	Modelo();
 	Juego* juego;
 	void setMapa(int largo,int ancho);
-	void setDibujoMapa(vector<vector<dibujo_t>> dibujos);
-	vector<vector<dibujo_t>> dibujar(int x,int y,int ancho,int alto);
+	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
+	vector<vector<vector<dibujo_t>>> dibujar(int x,int 	y,int ancho,int largo);
 	void eliminarDibujar(int ancho, int alto,dibujo_t** matriz);
 	int get_alto_mapa();
 	int get_ancho_mapa();

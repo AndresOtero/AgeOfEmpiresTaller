@@ -21,8 +21,7 @@
 #include "Dibujo.h"
 #include "DibujoPersonaje.h"
 enum bordes {X_START,Y_START,Y_MIN,X_MAX,Y_MAX};
-
-
+#define DIMENSIONES 2
 
 
 Vista::Vista(shared_ptr<Modelo>  modelo,shared_ptr<Pantalla> pantalla,shared_ptr<Configuracion> configuracion) {
@@ -126,12 +125,12 @@ bool Vista::loadMedia() {
 	int largo=this->modelo->get_alto_mapa();
 	int ancho=this->modelo->get_ancho_mapa();
 	vector<dibujo_t> filas(ancho,pasto_id);
-	vector<vector<dibujo_t>> dibujos (largo,filas);
+	vector<vector<dibujo_t>> tiles (largo,filas);
+	vector<dibujo_t> filas_escenario(ancho,0);
+	vector<vector<dibujo_t>> escenario (largo,filas_escenario);
+	escenario[0][0]=mocking_jay;
 
-
-	dibujos[0][0]=mocking_jay;
-
-	modelo->setDibujoMapa(dibujos);
+	modelo->setDibujoMapa(escenario,tiles);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
 
 
@@ -315,43 +314,52 @@ vector<int> Vista::calcular_bordes(){
 }
 void Vista::dibujar_mapa() {
 	/**Bordes**/
-	vector<int> bordes=this->calcular_bordes();
+	vector<int> bordes = this->calcular_bordes();
 	/****/
-	int x_start=bordes[X_START],y_start=bordes[Y_START],y_min=bordes[Y_MIN],x_max=bordes[X_MAX],y_max=bordes[Y_MAX];
-	int x_imagen,y_imagen;
-	bool llego_min_y=false,llego_max_x=false;
-	int y_offset_max=0,y_offset_min=0;
-	vector<vector<dibujo_t>> dibujo_mapa=this->modelo->dibujar(max(x_start,0),max(y_min,0),min(x_max,modelo->get_ancho_mapa()),min(y_max,modelo->get_alto_mapa()));
+	int x_start = bordes[X_START], y_start = bordes[Y_START], y_min =
+			bordes[Y_MIN], x_max = bordes[X_MAX], y_max = bordes[Y_MAX];
+	int x_imagen, y_imagen;
 
-	for (int coord_x=x_start; coord_x<x_max; coord_x++) {
-		for (	int coord_y=y_start-y_offset_min; coord_y<y_start+y_offset_max;coord_y++) {
-			if((coord_x<this->modelo->get_ancho_mapa())&&(coord_y<this->modelo->get_alto_mapa())&&(coord_x>=0)&&(coord_y>=0)){
-				size_t n_imagen=dibujo_mapa[coord_x][coord_y];
-				shared_ptr<Dibujo> dibujo=this->factory->get_dibujo(n_imagen);
-				if(dibujo==NULL){
-					break;
+	vector<vector<vector<dibujo_t>>> dibujo_mapa=this->modelo->dibujar(max(x_start,0),max(y_min,0),min(x_max,modelo->get_ancho_mapa()),min(y_max,modelo->get_alto_mapa()));
+	for (int dim = 0; dim < DIMENSIONES; dim++) {
+		int y_offset_max = 0, y_offset_min = 0;
+		bool llego_min_y = false, llego_max_x = false;
+		for (int coord_x = x_start; coord_x < x_max; coord_x++) {
+			for (int coord_y = y_start - y_offset_min;
+					coord_y < y_start + y_offset_max; coord_y++) {
+				if ((coord_x < this->modelo->get_ancho_mapa())
+						&& (coord_y < this->modelo->get_alto_mapa())
+						&& (coord_x >= 0) && (coord_y >= 0)) {
+					size_t n_imagen = dibujo_mapa[dim][coord_x][coord_y];
+					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(
+							n_imagen);
+					if (dibujo == NULL) {
+						break;
+					}
+					this->transformador->transformar_isometrica_pantalla(
+							coord_x - referencia_mapa_x,
+							coord_y - referencia_mapa_y, x_imagen, y_imagen);
+					dibujo->set_posicion_default(x_imagen, y_imagen);
+					dibujo->render(gRenderer);
 				}
-				this->transformador ->transformar_isometrica_pantalla(coord_x-referencia_mapa_x,coord_y-referencia_mapa_y,x_imagen,y_imagen);
-				dibujo->set_posicion_default(x_imagen, y_imagen);
-				dibujo->render(gRenderer);
 			}
-		}
 
-		if(!llego_min_y){
-			y_offset_min++;
-			if(((y_start-y_offset_min)==y_min)){
-				llego_min_y=true;
+			if (!llego_min_y) {
+				y_offset_min++;
+				if (((y_start - y_offset_min) == y_min)) {
+					llego_min_y = true;
+				}
+			} else {
+				y_offset_min--;
 			}
-		}else{
-			y_offset_min--;
-		}
-		if (!llego_max_x) {
-			y_offset_max++;
-			if (((y_start + y_offset_max) == y_max)) {
-				llego_min_y = true;
+			if (!llego_max_x) {
+				y_offset_max++;
+				if (((y_start + y_offset_max) == y_max)) {
+					llego_min_y = true;
+				}
+			} else {
+				y_offset_max--;
 			}
-		} else {
-			y_offset_max--;
 		}
 	}
 

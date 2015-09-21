@@ -19,9 +19,10 @@ public:
 	Mapa(int ancho, int largo);
 	int getAncho();
 	int getLargo();
-	dibujo_t dibujar(int x, int y);
-	void setDibujo(dibujo_t dibujo,int x,int y);
-
+	dibujo_t dibujarTiles(int x, int y);
+	dibujo_t dibujarEscenario(int x, int y);
+	void setTiles(dibujo_t dibujo,int x,int y);
+	void setEscenario(dibujo_t dibujo,int x,int y);
 	virtual ~Mapa();
 	bool celdaOcupada(int largo,int ancho);
 private:

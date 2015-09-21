@@ -28,10 +28,11 @@ Mapa::Mapa(int ancho, int largo) {
 Celda* Mapa::getCelda(int x,int y){
 	return this->celdas[x][y];
 }
-
-void Mapa::setDibujo(dibujo_t dibujo,int x,int y){
-	this->getCelda(x,y)->setDibujo(dibujo);
-
+void Mapa::setTiles(dibujo_t dibujo,int x,int y){
+	this->getCelda(x,y)->setTiles(dibujo);
+}
+void Mapa::setEscenario(dibujo_t dibujo,int x,int y){
+	this->getCelda(x,y)->setEscenario(dibujo);
 }
 bool Mapa::celdaOcupada(int x, int y) {
 	Celda* celda=this->getCelda(x,y);
@@ -40,11 +41,18 @@ bool Mapa::celdaOcupada(int x, int y) {
 	}
 	return (celda->estaOcupada());
 }
-dibujo_t Mapa::dibujar(int x, int y) {
+dibujo_t Mapa::dibujarEscenario(int x, int y) {
 	if ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0)) {
 		return AFUERA;
 	}
-	return this->getCelda(x,y)->dibujar();
+	return this->getCelda(x,y)->dibujarEscenario();
+
+}
+dibujo_t Mapa::dibujarTiles(int x, int y) {
+	if ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0)) {
+		return AFUERA;
+	}
+	return this->getCelda(x,y)->dibujarTiles();
 
 }
 
@@ -54,6 +62,7 @@ int Mapa::getAncho(){
 int Mapa::getLargo(){
 	return this->largo;
 }
+
 Mapa::~Mapa() {
 	int largo = this->largo;
 	int ancho = this->ancho;

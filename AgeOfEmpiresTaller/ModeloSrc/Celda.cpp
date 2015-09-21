@@ -10,15 +10,23 @@
 #include "../VistaSrc/Dibujo.h"
 
 Celda::Celda() {
-	this -> dibujo = DEFAULT;
+	this -> escenario = DEFAULT;
+	this -> tiles = DEFAULT;
 	this -> ocupada = false;
 }
-void Celda::setDibujo(dibujo_t dibujo_n){
+void Celda::setEscenario(dibujo_t dibujo_n){
 	this->ocupada=true;
-	this->dibujo=dibujo_n;
+	this->escenario=dibujo_n;
 }
-dibujo_t Celda::dibujar(){
-	return this->dibujo;
+void Celda::setTiles(dibujo_t dibujo_n){
+	this->ocupada=true;
+	this->tiles=dibujo_n;
+}
+dibujo_t Celda::dibujarTiles(){
+	return this->tiles;
+}
+dibujo_t Celda::dibujarEscenario(){
+	return this->escenario;
 }
 bool Celda::estaOcupada(){
 	return this->ocupada;

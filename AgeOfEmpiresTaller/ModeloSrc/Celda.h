@@ -14,12 +14,16 @@ typedef int dibujo_t;
 class Celda {
 private:
 	bool ocupada;
-	dibujo_t dibujo;
+	dibujo_t tiles;
+	dibujo_t escenario;
 public:
 	Celda();
 	bool estaOcupada();
-	void setDibujo(dibujo_t dibujo);
-	dibujo_t dibujar();
+	void setEscenario(dibujo_t dibujo);
+	void setTiles(dibujo_t dibujo);
+	dibujo_t dibujarEscenario();
+	dibujo_t dibujarTiles();
+
 	virtual ~Celda();
 };
 
