@@ -9,6 +9,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "../ModeloSrc/Juego.h"
 
 #ifndef YAML_H_
 #define YAML_H_
@@ -16,8 +17,7 @@
 class Yaml {
 public:
 	Yaml();
-	std::map<std::string, int> hashObjetos;
-	int read();
+	int read(Juego* juego);
 	virtual ~Yaml();
 };
 

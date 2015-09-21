@@ -10,7 +10,7 @@
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
 #include "../ModeloSrc/Escenario.h"
-#include "../ModeloSrc/Juego.h"
+
 //#include "../ModeloSrc/ObjetoMapaAnimado.h"
 #include <map>
 Yaml::Yaml() {
@@ -93,9 +93,8 @@ typedef struct {
 
 }ConfiguracionJuego_t;
 
-int Yaml::read()
+int Yaml::read(Juego* juego)
 {
-	Juego* juego;
 	try {
 	   std::ifstream fin("YAML/configuracion.yaml");
 	   YAML::Parser parser(fin);
@@ -287,26 +286,24 @@ int Yaml::read()
 
 
 	   juego = new Juego(pantalla, configuracion, escenario,tipos);
+		//juego = new Juego();
 	   std:: cout << "Pantalla: " << juego->pantalla->getAncho() << " " << juego->pantalla->getAlto()  << "\n";
-	   delete pantalla;
 
 	   std:: cout << "Configuracion: " << juego->conf->get_vel_personaje() << " " << juego->conf->get_margen_scroll() << "\n";
-	   delete configuracion;
 
 	   ObjetoMapa*  tipo = juego->tipos["tierra"];
 	   std:: cout << "Tipo" << " " << tipo->nombre << " " << tipo->imagen << tipo->baseLogica->ancho << " "<< tipo->baseLogica->alto << " "
 			 << tipo->pixelsReferencia->x << " "<< tipo->pixelsReferencia->y << "\n"  ;
 
-	   std:: cout << "Escenario:  " << conf.escenario.nombre << " " << conf.escenario.size_x << " " << conf.escenario.size_y << "\n"  ;
-	   for(unsigned i=0;i< escenario->entidades.size();i++) {
-			 Entidad* entidad = escenario->entidades[i];
+	   std:: cout << "Escenario:  " << juego->escenario->nombre << " " << juego->escenario->size_x << " " << juego->escenario->size_y << "\n"  ;
+	   for(unsigned i=0;i< juego->escenario->entidades.size();i++) {
+			 Entidad* entidad = juego->escenario->entidades[i];
 			 std:: cout << "    Entidad" << i  << " " << entidad->posicion->x << " " << entidad->posicion->y << " " <<entidad->objetoMapa->nombre << "\n"  ;
 	   }
 
-	   std::cout << "    Protagonista: " << escenario->protagonista->objetoMapaAnimado->nombre << " " << escenario->protagonista->posicion->x << " " << escenario->protagonista->posicion->y << "\n"  ;
+	   std::cout << "    Protagonista: " << juego->escenario->protagonista->objetoMapaAnimado->nombre << " " <<juego->escenario->protagonista->objetoMapaAnimado->fps <<" " << juego->escenario->protagonista->posicion->x << " " << juego->escenario->protagonista->posicion->y << "\n"  ;
 	   std::cout << "end\n";
 
-	   delete escenario;
 
 	} catch(YAML::Exception& e) {
 			juego = new Juego();

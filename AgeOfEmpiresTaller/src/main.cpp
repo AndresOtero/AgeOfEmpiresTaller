@@ -20,13 +20,11 @@ int main() {
 	int tamnio_y_mapa = 100;
 	modelo->setMapa(tamnio_x_mapa, tamnio_y_mapa);
 	shared_ptr<Pantalla> pantalla(new Pantalla());
-	shared_ptr<Configuracion> configuracion(new Configuracion());/**
-	Agregar ancho y alto de la celda( por default el ancho y alto del default). Sacar velocidad del personaje y agregarsela al personaje.
-	**/
+	shared_ptr<Configuracion> configuracion(new Configuracion());
 	shared_ptr<Vista> vista ( new Vista(modelo,pantalla,configuracion));
 	vista->init();
 	vista->loadMedia();
 	vista->run();
 	shared_ptr<Yaml> reader(new Yaml());
-	reader->read();
+	reader->read(modelo->juego);
 }

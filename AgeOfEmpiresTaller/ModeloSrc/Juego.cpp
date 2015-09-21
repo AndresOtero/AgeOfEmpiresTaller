@@ -8,6 +8,7 @@
 #include "Juego.h"
 
 Juego::Juego() {
+	//configuracion default
 	this -> pantalla = new Pantalla();
 	this -> conf = new Configuracion();
 	this -> escenario = new Escenario();

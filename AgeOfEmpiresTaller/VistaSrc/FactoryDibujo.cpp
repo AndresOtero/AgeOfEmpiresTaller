@@ -17,7 +17,7 @@ FactoryDibujo::FactoryDibujo(SDL_Renderer* gRenderer) {
 	this->cantidad_de_dibujos=this->dibujos.size();
 	this->dibujo_actual=1;
 }
-bool FactoryDibujo::crear_dibujo_personaje(string path,size_t cantidad_de_movimientos,vector<size_t> cantidad_de_imagenes,std::vector<std::vector<int> >parametros_de_imagen,int fps,int velocidad){
+bool FactoryDibujo::crear_dibujo_personaje(string path,size_t cantidad_de_movimientos,vector<int> cantidad_de_imagenes,std::vector<std::vector<int> >parametros_de_imagen,int fps,int velocidad){
 	shared_ptr<DibujoPersonaje> dibujo_nuevo = shared_ptr<DibujoPersonaje>(new DibujoPersonaje());
 	if (!dibujo_nuevo->cargar_archivo(path,gRenderer)) {
 		printf("Failed to load image!\n");
@@ -42,7 +42,7 @@ bool FactoryDibujo::crear_dibujo_animado(string path,size_t cantidad_de_imagenes
 		printf("Failed to load image!\n");
 	} else {
 		dibujo_nuevo->set_cantidad_de_imagenes(cantidad_de_imagenes);
-		for (size_t i = 0; i < cantidad_de_imagenes; i++) {
+		for (int i = 0; i < cantidad_de_imagenes; i++) {
 			dibujo_nuevo->set_imagen(i, parametros_de_imagen[i][X], parametros_de_imagen[i][Y],parametros_de_imagen[i][ANCHO], parametros_de_imagen[i][ALTO]);
 		}
 		dibujo_nuevo->set_fps(fps);

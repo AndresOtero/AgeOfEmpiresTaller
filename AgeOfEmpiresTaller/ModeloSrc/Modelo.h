@@ -9,6 +9,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include "../ModeloSrc/Juego.h"
 using namespace std;
 
 #ifndef MODELO_H_
@@ -19,6 +20,7 @@ class Modelo {
 
 public:
 	Modelo();
+	Juego* juego;
 	void setMapa(int largo,int ancho);
 	void setDibujoMapa(vector<vector<dibujo_t>> dibujos);
 	vector<vector<dibujo_t>> dibujar(int x,int y,int ancho,int alto);
