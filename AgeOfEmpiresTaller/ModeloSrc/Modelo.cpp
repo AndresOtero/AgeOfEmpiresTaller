@@ -28,12 +28,19 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibu
 		}
 	}
 }
+dibujo_t Modelo::dibujar(int dim,int x,int y){
+	if(dim==ESCENARIO){
+		return this->mapa->dibujarEscenario(x,y);
+	}
+	return this->mapa->dibujarTiles(x,y);
+}
 
+/**
 vector<vector<vector<dibujo_t>>> Modelo::dibujar(int x,int 	y,int ancho,int largo){
-	/**	Recibe un posicion x,y de comienzo y un ancho y alto para dibujar.
+		Recibe un posicion x,y de comienzo y un ancho y alto para dibujar.
 	 	Dibuja entre (x,y),(x+ancho,y),(x,y+largo),(x+ancho)(y+largo)
 	 	Dibuja los tiles y el escenario.
-	 	**/
+
 	vector<vector<vector<dibujo_t>> >  dibujos(DIMENSIONES);
 	for(int d=0;d<DIMENSIONES;d++){
 		dibujos[d]=vector<vector<dibujo_t>>(ancho);
@@ -49,14 +56,8 @@ vector<vector<vector<dibujo_t>>> Modelo::dibujar(int x,int 	y,int ancho,int larg
 		}
 	}
 	return dibujos;
-}
-void Modelo::eliminarDibujar(int ancho,int largo,dibujo_t** matriz){
-	/**	Elimina la matriz creada por dibujar**/
-	for (int i = 0; i < ancho; ++i) {
-			delete[] matriz[i] ;
-	}
-	delete[] matriz;
-}
+}**/
+
 
 int Modelo::get_alto_mapa(){
 	return mapa->getLargo();
