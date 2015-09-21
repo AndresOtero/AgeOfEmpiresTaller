@@ -10,11 +10,15 @@
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
 #include "../ModeloSrc/Escenario.h"
+#include <plog/Log.h>
+
 
 //#include "../ModeloSrc/ObjetoMapaAnimado.h"
 #include <map>
 Yaml::Yaml() {
 }
+const std::string config_filepath = "YAML/configuracion.yaml";
+
 const std::string tag_pantalla = "pantalla";
 const std::string tag_pantalla_ancho = "ancho";
 const std::string tag_pantalla_alto = "alto";
@@ -95,8 +99,11 @@ typedef struct {
 
 int Yaml::read(Juego* juego)
 {
+	remove( "Log.txt" );
+	plog::init(plog::warning, "Log.txt" );
+
 	try {
-	   std::ifstream fin("YAML/configuracion.yaml");
+	   std::ifstream fin(config_filepath);
 	   YAML::Parser parser(fin);
 	   YAML::Node doc;
 	   parser.GetNextDocument(doc);
@@ -115,17 +122,18 @@ int Yaml::read(Juego* juego)
 				   (*pPantallaAlto) >> conf.pantalla.alto;
 				   pantalla = new Pantalla(conf.pantalla.ancho,conf.pantalla.alto);
 			   }else{
-				   //log pantalla sin alto
+				   LOG_WARNING << "Se define configuracion de pantalla para el ancho pero no para el alto";
 				   pantalla = new Pantalla();
 			   }
 		   }else{
 			   //log conf pantalla sin ancho
-
+			   LOG_WARNING << "Se define configuracion de pantalla pero no su ancho";
 			   pantalla = new Pantalla();
 		   }
 
 	   }else{
 		   // log no tiene pantalla
+		   LOG_WARNING << "No se define configuracion de pantalla, se usa Default 1024x728";
 		   pantalla = new Pantalla();
 	   }
 
@@ -136,15 +144,15 @@ int Yaml::read(Juego* juego)
 					 (*pConfigMargen) >> conf.configuracion.margen_scroll;
 					 configuracion = new Configuracion(conf.configuracion.vel_personaje, conf.configuracion.margen_scroll );
 				}else{
-						 //crear log no tiene margen
+					LOG_WARNING << "No se define el margen para el scroll";
 					configuracion = new Configuracion();
 				}
 			}else{
-					 //crear log no tiene vel personaje
+				LOG_WARNING << "No se define el velocidad del personaje";
 				configuracion = new Configuracion();
 			}
 		}else{
-			//crear log falta seccion configuracion
+			LOG_WARNING << "No se define configuracion para el margen del scroll y velocidad del personaje";
 			configuracion = new Configuracion();
 		}
 		if (const YAML::Node *pTipos = doc.FindValue(tag_tipos)){
@@ -165,7 +173,7 @@ int Yaml::read(Juego* juego)
 									objeto->baseLogica->ancho = tipo.ancho_base;
 									objeto->baseLogica->alto  = tipo.alto_base;
 								}else{
-									 //crear log hay ancho pero no alto
+									LOG_WARNING << "Se define el ancho pero no el alto para la base logica";
 								 }
 						 }
 
@@ -176,7 +184,7 @@ int Yaml::read(Juego* juego)
 								objeto->pixelsReferencia->x = tipo.pixel_ref_x;
 								objeto->pixelsReferencia->y = tipo.pixel_ref_y;
 							 }else{
-								 //crear log hay x pero no y
+								 LOG_WARNING << "Se define el pixel de referencia x pero no el pixel de referencia y";
 							 }
 						 }
 						 if (const YAML::Node *pFps = ((*pTipos)[i]).FindValue(tag_tipos_fps)){
@@ -188,22 +196,21 @@ int Yaml::read(Juego* juego)
 							 objeto -> delay = tipo.delay;
 						 }
 						 tipos[tipo.nombre] = objeto;
-						 //conf.tipos.push_back(tipo);
 					 }else{
-						 //crear log falta imagen del tipo
+						 LOG_WARNING << "No se define la ruta de imagen para el tipo";
 					 }
 				 }else{
-					 //crear log falta nombre del tipo
+					 LOG_WARNING << "No se define nombre para el tipo";
 				 }
 			 }
 		 }else{
-			 // no hay tipos
+			 LOG_WARNING << "No se define ningun tipo";
 		 }
 		if (const YAML::Node *pEscenario = doc.FindValue(tag_escenario)){
 			if (const YAML::Node *pNombre = (*pEscenario).FindValue(tag_escenario_nombre)){
 				(*pNombre) >> conf.escenario.nombre;
 			}else{
-				// log std::map<std::string, ObjetoMapa*> no hay nombre de escenario
+				LOG_WARNING << "No se define el nombre del escenario";
 			}
 			if (const YAML::Node *pSizeX = (*pEscenario).FindValue(tag_escenario_size_x)){
 				(*pSizeX) >> conf.escenario.size_x;
@@ -212,11 +219,11 @@ int Yaml::read(Juego* juego)
 					(*pSizeY) >> conf.escenario.size_y;
 					escenario = new Escenario(conf.escenario.nombre, conf.escenario.size_x, conf.escenario.size_y);
 				}else{
-					// log hay size x pero no y
+					LOG_WARNING << "Se define el tamaño en x del escenario pero no el y ";
 					escenario = new Escenario();
 				}
 			}else{
-				// log no hay size
+				LOG_WARNING << "No se define el tamaño del escenario";
 				escenario = new Escenario();
 			}
 
@@ -233,22 +240,21 @@ int Yaml::read(Juego* juego)
 								 if(ObjetoMapa* obj = tipos[entidad.tipo]){
 									 ent = new Entidad(obj,entidad.x, entidad.y);
 									 escenario->entidades.push_back(ent);
-									 //conf.escenario.entidades.push_back(entidad);
 								 }else{
-									 //log tipo de la entidad no existe
+									 LOG_WARNING << "No se especifica el tipo de la entidad";
 								 }
 							 }else{
-								 // log no hay tipo
+								 LOG_WARNING << "No existe el tipo "<< entidad.tipo << " especificado por la entidad";
 							 }
 						 }else{
-							 // log no hay y
+							 LOG_WARNING << "Se define la posicion inicial x de la entidad pero no la posicion y";
 						 }
 					 }else{
-						 //log no hay x
+						 LOG_WARNING << "No se define la posicion de la entidad";
 					 }
 				 }
 			}else{
-				// log no hay entidades
+				LOG_WARNING << "No hay entidades a instanciar inicialmente";
 			}
 			bool tieneProt = false;
 			if (const YAML::Node *pPersonaje = (*pEscenario).FindValue(tag_escenario_protagonista)){
@@ -263,19 +269,19 @@ int Yaml::read(Juego* juego)
 								 escenario->protagonista = protagonista;
 								 tieneProt = true;
 							 }else{
-								 //log el tipo no existe
+								 LOG_WARNING << "No existe el tipo '"<< conf.escenario.protagonista.tipo <<"' definido para el protagonista";
 							 }
 						}else{
-							//log no hay y del protagonista
+							LOG_WARNING << "No se define la posicion y del protagonista";
 						}
 					}else{
-						//log no hay x del protagonista
+						LOG_WARNING << "La posicion x del protagonista no es valida";
 					}
 				}else{
-					//log no hay tipo del progtagonista
+					LOG_WARNING << "No se define una posicion inicial para el protagonista";
 				}
 			}else{
-				//log no hay personaje principal
+				LOG_WARNING << "No se define un protagonista para el escenario";
 			}
 			if(tieneProt == false){
 				protagonista = new EntidadAnimada();
@@ -286,8 +292,8 @@ int Yaml::read(Juego* juego)
 
 
 	   juego = new Juego(pantalla, configuracion, escenario,tipos);
-		//juego = new Juego();
-	   std:: cout << "Pantalla: " << juego->pantalla->getAncho() << " " << juego->pantalla->getAlto()  << "\n";
+
+	   /*std:: cout << "Pantalla: " << juego->pantalla->getAncho() << " " << juego->pantalla->getAlto()  << "\n";
 
 	   std:: cout << "Configuracion: " << juego->conf->get_vel_personaje() << " " << juego->conf->get_margen_scroll() << "\n";
 
@@ -302,12 +308,12 @@ int Yaml::read(Juego* juego)
 	   }
 
 	   std::cout << "    Protagonista: " << juego->escenario->protagonista->objetoMapaAnimado->nombre << " " <<juego->escenario->protagonista->objetoMapaAnimado->fps <<" " << juego->escenario->protagonista->posicion->x << " " << juego->escenario->protagonista->posicion->y << "\n"  ;
-	   std::cout << "end\n";
+	   std::cout << "end\n";*/
 
 
 	} catch(YAML::Exception& e) {
 			juego = new Juego();
-		    std::cout << e.what() << "\n";//mandar al log
+			LOG_WARNING << "Problemas para abrir el archivo" << e.what();
 	}
    return 0;
 }
