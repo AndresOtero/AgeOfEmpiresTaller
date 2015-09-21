@@ -17,11 +17,22 @@ tipos:
 
  - nombre: wheel
    imagen: img/dibujo_dinamico/wheel.png
+   fps: 6
+   delay: 5
+
+ - nombre: herreria
+   imagen: img/dibujo_dinamico/mirador.png
    fps: 10
    delay: 5
 
  - nombre: pino
    imagen: img/dibujo_estatico/arbol/pinetree.png
+
+ - nombre: church
+   imagen: img/dibujo_estatico/construcciones/church.png
+
+ - nombre: firestation
+   imagen: img/dibujo_estatico/construcciones/firestation.png
 
  - nombre: arbol
    imagen: img/dibujo_estatico/arbol/firtree.png
@@ -33,8 +44,11 @@ escenario:
  entidades: 
   - { x : 2, y: 1, tipo: pino }
   - { x : 2, y: 0, tipo: arbol }
-  - { x : 4, y: 2, tipo: wheel }
+  - { x : 6, y: 6, tipo: church }
+  - { x : 4, y: 0, tipo: herreria }
+  - { x : 4, y: 4, tipo: wheel }
   - { x : 3, y: 1, tipo: barraca }
+  - { x : 3, y: 0, tipo: firestation }
  protagonista:
   - tipo: soldado
     x: 50

@@ -113,7 +113,7 @@ bool Vista::loadMedia() {
 
 	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(5);
 	for(int i=0;i<5;i++){
-		v2d[i]={128*i,0};
+		v2d[i]={i*128,0};
 	}
 	for ( it = modelo->juego->tipos.begin(); it !=modelo->juego->tipos.end(); it++ )
 	{

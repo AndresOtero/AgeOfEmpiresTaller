@@ -43,7 +43,7 @@ bool FactoryDibujo::crear_dibujo_animado(string path,std::vector<std::vector<int
 	} else {
 		dibujo_nuevo->set_cantidad_de_imagenes(DIBUJOS_POR_DEFAULT);
 		for (int i = 0; i < DIBUJOS_POR_DEFAULT; i++) {
-			dibujo_nuevo->set_imagen(i, parametros_de_imagen[i][X], parametros_de_imagen[i][Y]);
+			dibujo_nuevo->set_imagen(i, parametros_de_imagen[i][X], parametros_de_imagen[i][Y],dibujo_nuevo->getHeight(),dibujo_nuevo->getWidth());
 		}
 		dibujo_nuevo->set_fps(fps);
 		this->set_dibujo(dibujo_nuevo);

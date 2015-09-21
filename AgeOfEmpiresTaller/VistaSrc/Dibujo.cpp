@@ -27,11 +27,16 @@ void Dibujo::set_posicion_default(int x, int y){
 
 bool Dibujo::cargar_archivo(std::string path, SDL_Renderer* renderer) {
 	bool loadBool =  this->textura->loadFromFile(path, renderer);
-	this->spriteClips.h = this->textura->getHeight();
-	this->spriteClips.w = this->textura->getWidth();
+	//this->spriteClips.h = this->textura->getHeight();
+	//this->spriteClips.w = this->textura->getWidth();
 	return loadBool;
 }
-
+int Dibujo::getHeight() {
+	return this->textura->getHeight();
+}
+int Dibujo::getWidth() {
+	return this->textura->getWidth();
+}
 Dibujo::~Dibujo() {
 	// TODO Auto-generated destructor stub
 }

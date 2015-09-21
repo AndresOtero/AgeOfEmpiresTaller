@@ -23,13 +23,14 @@ void DibujoAnimado::set_cantidad_de_imagenes(int cant_de_imagenes) {
 	this->cantidad_de_imagenes = cant_de_imagenes;
 }
 
-void DibujoAnimado::set_imagen(int n_imagen, int x, int y) {
+void DibujoAnimado::set_imagen(int n_imagen, int x, int y,int h, int w) {
 	if (this->cantidad_de_imagenes <= n_imagen) {
 		return;
 	}
 	this->spriteClips[n_imagen].x = x;
 	this->spriteClips[n_imagen].y = y;
-	this->spriteClips[n_imagen].w = 128 ;
+	this->spriteClips[n_imagen].w = w / 5 ;
+	this->spriteClips[n_imagen].h = h ;
 }
 
 void DibujoAnimado::render( SDL_Renderer* renderer) {
