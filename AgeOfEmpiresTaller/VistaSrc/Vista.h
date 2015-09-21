@@ -48,6 +48,8 @@ public:
 	void detectar_mouse_borde();
 	int run();
 	virtual ~Vista();
+private:
+	bool adentro_del_mapa(int coord_x,int coord_y);
 
 };
 

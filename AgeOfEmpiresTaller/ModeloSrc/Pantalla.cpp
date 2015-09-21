@@ -9,7 +9,7 @@
 
 Pantalla::Pantalla() {
 	this -> ancho = 1024;
-	this -> alto = 768;
+	this -> alto = 700;
 }
 Pantalla::Pantalla(int ancho, int alto){
 	this -> ancho = ancho;
