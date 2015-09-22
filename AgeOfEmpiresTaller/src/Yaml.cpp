@@ -242,10 +242,10 @@ Juego* Yaml::read()
 									 ent = new Entidad(obj,entidad.x, entidad.y);
 									 escenario->entidades.push_back(ent);
 								 }else{
-									 LOG_WARNING << "No se especifica el tipo de la entidad";
+									 LOG_WARNING << "No existe el tipo "<< entidad.tipo << " especificado por la entidad";
 								 }
 							 }else{
-								 LOG_WARNING << "No existe el tipo "<< entidad.tipo << " especificado por la entidad";
+								 LOG_WARNING << "No se especifica el tipo de la entidad";
 							 }
 						 }else{
 							 LOG_WARNING << "Se define la posicion inicial x de la entidad pero no la posicion y";

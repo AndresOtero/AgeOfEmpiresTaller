@@ -18,7 +18,7 @@ public:
 	DibujoAnimado();
 	virtual ~DibujoAnimado();
 	void set_cantidad_de_imagenes(int cant_de_imagenes);
-	void set_imagen(int n_imagen, int x, int y, int ancho, int alto);
+	void set_imagen(int n_imagen, int x, int y, int h, int w);
 	void render( SDL_Renderer* gRenderer);
 	void set_fps(int fps);
 	int get_ancho(int n_imagen);

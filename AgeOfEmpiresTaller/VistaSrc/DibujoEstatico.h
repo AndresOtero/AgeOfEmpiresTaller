@@ -20,7 +20,7 @@ class Dibujo_Estatico : public Dibujo{
 
 public:
 	Dibujo_Estatico();
-	void set_imagen( int x, int y, int ancho, int alto);
+	void set_imagen( int x, int y);
 	bool cargar_archivo(std::string path, SDL_Renderer* renderer);
 	void render( SDL_Renderer* gRenderer);
 	int get_x();

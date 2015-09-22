@@ -23,11 +23,13 @@
 enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define DIMENSIONES 2
 
+const int ANCHO_BASE = 249;
+const int ALTO_BASE = 124;
 
 Vista::Vista(shared_ptr<Modelo>  modelo) {
 	this -> modelo = modelo;
 	this->pantalla= modelo->juego->pantalla;
-	this->referencia_mapa_x=0;
+	this->referencia_mapa_x=0;// desde el punto del mapa donde se dibuja
 	this->referencia_mapa_y=0;
 	this->velocidad_de_scroll=0.1;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
@@ -96,38 +98,36 @@ bool Vista::init() {
 	this -> factory=shared_ptr<FactoryDibujo> ( new FactoryDibujo(gRenderer));
 	return success;
 }
+
 bool Vista::loadMedia() {
 
 	/**Creo el dibujo del pasto**/
-	vector<int> v1d={0,0,249,124};/**(X,Y,Ancho,Alto)**/
-	this->factory->crear_dibujo_estatico("img/isometric_tile_1.png",v1d);
+
+	Entidad* entidadPasto = this->modelo->juego->escenario->getTexturaDefault();
+
+	vector<int> v1dPasto={0,0,ANCHO_BASE,ALTO_BASE};
+	this->factory->crear_dibujo_estatico(entidadPasto->objetoMapa->imagen,v1dPasto);
 	dibujo_t pasto_id=this->factory->ultimo_dibujo();
 
-	/**Creo el dibujo del arbol**/
-	v1d={0,0,66,155};
-	this->factory->crear_dibujo_estatico("img/Sprites/pinetree.png",v1d);
-	dibujo_t pino=this->factory->ultimo_dibujo();
-	/**Creo el dibujo del bosque**/
-	v1d={0,0,128,120};
-	this->factory->crear_dibujo_estatico("img/Sprites/firtree.png",v1d);
-	dibujo_t bosque=this->factory->ultimo_dibujo();
-	/**Creo el dibujo del clock**/
-	v1d= {0,0,128,243};
-	this->factory->crear_dibujo_estatico("img/Sprites/clock.png", v1d);
-	dibujo_t clock = this->factory->ultimo_dibujo();
+	std::map<std::string, ObjetoMapa*> ::iterator it;
+	std::map<std::string, dibujo_t> hashDibujos;
 
-	/**Creo el dibujo del pajaro**/
-	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(8);
-	for(int i=0;i<3;i++){
-		for(int j=0;j<3;j++){
-			if(3*i+j>7){
-				break;
-			}
-			v2d[3*i+j]={110*i,100*j,110,100};
-		}
+	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(5);
+	for(int i=0;i<5;i++){
+		v2d[i]={i*128,0};
 	}
-	this->factory->crear_dibujo_animado("img/mocking_jay.png",8,v2d,4);
-	dibujo_t mocking_jay=this->factory->ultimo_dibujo();
+	for ( it = modelo->juego->tipos.begin(); it !=modelo->juego->tipos.end(); it++ )
+	{
+	     ObjetoMapa* tipo = it->second;
+	     vector<int> v1d ={tipo->pixelsReferencia->x,tipo->pixelsReferencia->y};
+	     if(tipo->fps == 0){
+	    	 this->factory->crear_dibujo_estatico(tipo->imagen,v1d);
+	     }else{
+	    	 this->factory->crear_dibujo_animado(tipo->imagen,v2d,tipo->fps);
+	     }
+	     dibujo_t dibujo_id=this->factory->ultimo_dibujo();
+	     hashDibujos[tipo->nombre] = dibujo_id;
+	}
 
 	/**Dibujo el mapa**/
 	int largo=this->modelo->get_alto_mapa();
@@ -136,17 +136,11 @@ bool Vista::loadMedia() {
 	vector<vector<dibujo_t>> tiles (largo,filas);
 	vector<dibujo_t> filas_escenario(ancho,0);
 	vector<vector<dibujo_t>> escenario (largo,filas_escenario);
-	escenario[0][0]=mocking_jay;
-	for (int i = 0;  i < 6; ++ i) {
-		for (int j = 0; j < 3; ++j) {
-			escenario[i][j]=bosque;
-		}
+
+	for (unsigned i = 0; i < this->modelo->juego->escenario->entidades.size(); i++){
+			Entidad* entidad = this->modelo->juego->escenario->entidades[i];
+			escenario[entidad->posicion->x][entidad->posicion->y]=hashDibujos[entidad->objetoMapa->nombre];
 	}
-	escenario[2][1]=pino;
-	escenario[2][0]=clock;
-	escenario[3][1]=clock;
-	escenario[4][2]=0;
-	escenario[5][3]=mocking_jay;
 	modelo->setDibujoMapa(escenario,tiles);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
 	vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
@@ -155,12 +149,11 @@ bool Vista::loadMedia() {
 		v3d[i] = vector<vector<dibujo_t>>(8);
 		for (int j = 0; j < 8; j++) {
 			vector<dibujo_t> v ={ j * 128, i * 128, 128, 128 };
-			v3d[i][j] = v;
 		}
 	}
 	vector<int> imagenes= vector<int>(8,8);
 
-	this->factory->crear_dibujo_personaje("img/tipo_moviendose.png",8,imagenes,v3d,1,1);
+	this->factory->crear_dibujo_personaje("img/protagonista/tipo_moviendose.png",8,imagenes,v3d,1,1);
 	int pers=this->factory->ultimo_dibujo();
 	shared_ptr<Dibujo> per= this->factory->get_dibujo(pers);
 	Dibujo* p =&(*per);

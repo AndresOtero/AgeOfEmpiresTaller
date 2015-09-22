@@ -24,6 +24,8 @@ public:
 	virtual void set_posicion_default(int x,int y);
 	virtual int get_alto();
 	virtual int get_ancho();
+	int getHeight() ;
+	int getWidth() ;
 	virtual ~Dibujo();
 protected:
 	SDL_Rect spriteClips;
