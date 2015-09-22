@@ -97,6 +97,7 @@ bool Vista::init() {
 	return success;
 }
 bool Vista::loadMedia() {
+
 	/**Creo el dibujo del pasto**/
 	vector<int> v1d={0,0,249,124};/**(X,Y,Ancho,Alto)**/
 	this->factory->crear_dibujo_estatico("img/isometric_tile_1.png",v1d);
@@ -148,29 +149,23 @@ bool Vista::loadMedia() {
 	escenario[5][3]=mocking_jay;
 	modelo->setDibujoMapa(escenario,tiles);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
-
-
-	//creo dibujo
-	shared_ptr<DibujoPersonaje> personaje(new DibujoPersonaje());
-	this->personaje = personaje;
-
-	//Load sprite sheet texture
-	if (!this->personaje->cargar_archivo("img/tipo_moviendose.png", gRenderer)) {
-		printf("Failed to load walking animation texture!\n");
-	} else {
-		//Set sprite clips
-		vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
-		this->personaje->set_cantidad_de_movimientos(8);
-		for(int i=0;i<8;i++){
-			this->personaje->set_cantidad_de_imagenes(i,8);
-		}
-		for (int i = 0; i < 8; i++) {
-			for(int j=0;j<8;j++){
-				this->personaje->set_imagen(movimientos[i],j, j * 128, i*128, 128, 128);
-			}
+	vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
+	vector<vector<vector<dibujo_t>>> v3d=vector<vector<vector<dibujo_t>>>(8);
+	for (int i = 0; i < 8; i++) {
+		v3d[i] = vector<vector<dibujo_t>>(8);
+		for (int j = 0; j < 8; j++) {
+			vector<dibujo_t> v ={ j * 128, i * 128, 128, 128 };
+			v3d[i][j] = v;
 		}
 	}
+	vector<int> imagenes= vector<int>(8,8);
 
+	this->factory->crear_dibujo_personaje("img/tipo_moviendose.png",8,imagenes,v3d,1,1);
+	int pers=this->factory->ultimo_dibujo();
+	shared_ptr<Dibujo> per= this->factory->get_dibujo(pers);
+	Dibujo* p =&(*per);
+	DibujoPersonaje* persona=(DibujoPersonaje*)p;
+	this->personaje=shared_ptr<DibujoPersonaje>(persona);
 	return true;
 }
 Vista::~Vista() {

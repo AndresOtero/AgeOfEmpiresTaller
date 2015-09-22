@@ -7,15 +7,25 @@
 
 #include "../ModeloSrc/Modelo.h"
 #include "../ModeloSrc/Mapa.h"
+#include "math.h"
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
 Modelo::Modelo(Juego* juego) {
 	this -> juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
+	this->lista_personajes=vector<shared_ptr<Personaje>>(1,NULL);
 }
 void Modelo::setMapa(int ancho,int largo){
 	this->mapa=shared_ptr<Mapa>(new Mapa(ancho,largo));
 }
+void Modelo::agregarPersonaje(float x,float y,dibujo_t dibujo){
+	shared_ptr<Personaje> personaje=shared_ptr<Personaje>(new Personaje(x,y,dibujo));
+	lista_personajes.push_back(personaje);
+}
+shared_ptr<Personaje> Modelo::devolverPersonaje(){
+	return lista_personajes[0];
+}
+
 
 void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles){
 	int ancho =this->mapa->getAncho();
