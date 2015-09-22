@@ -100,7 +100,6 @@ bool Vista::init() {
 }
 
 bool Vista::loadMedia() {
-
 	/**Creo el dibujo del pasto**/
 
 	Entidad* entidadPasto = this->modelo->juego->escenario->getTexturaDefault();
@@ -143,17 +142,19 @@ bool Vista::loadMedia() {
 	}
 	modelo->setDibujoMapa(escenario,tiles);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
+
 	vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
 	vector<vector<vector<dibujo_t>>> v3d=vector<vector<vector<dibujo_t>>>(8);
 	for (int i = 0; i < 8; i++) {
 		v3d[i] = vector<vector<dibujo_t>>(8);
 		for (int j = 0; j < 8; j++) {
 			vector<dibujo_t> v ={ j * 128, i * 128, 128, 128 };
+			v3d[i][j]=v;
 		}
 	}
 	vector<int> imagenes= vector<int>(8,8);
 
-	this->factory->crear_dibujo_personaje("img/protagonista/tipo_moviendose.png",8,imagenes,v3d,1,1);
+	this->factory->crear_dibujo_personaje("img/protagonista/spartan.png",8,imagenes,v3d,1,1);
 	int pers=this->factory->ultimo_dibujo();
 	shared_ptr<Dibujo> per= this->factory->get_dibujo(pers);
 	Dibujo* p =&(*per);
