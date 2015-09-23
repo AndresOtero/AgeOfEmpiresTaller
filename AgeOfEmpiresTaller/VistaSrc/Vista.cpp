@@ -122,7 +122,7 @@ bool Vista::loadMedia() {
 	     if(tipo->fps == 0){
 	    	 this->factory->crear_dibujo_estatico(tipo->imagen,v1d);
 	     }else{
-	    	 this->factory->crear_dibujo_animado(tipo->imagen,v2d,tipo->fps);
+	    	 this->factory->crear_dibujo_animado(tipo->imagen,v2d,tipo->fps, tipo->delay);
 	     }
 	     dibujo_t dibujo_id=this->factory->ultimo_dibujo();
 	     hashDibujos[tipo->nombre] = dibujo_id;

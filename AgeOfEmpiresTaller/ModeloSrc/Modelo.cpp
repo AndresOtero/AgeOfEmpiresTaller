@@ -82,7 +82,7 @@ int Modelo::get_ancho_mapa(){
 
 
 Modelo::~Modelo() {
-
+ delete this->juego;
 
 }
 

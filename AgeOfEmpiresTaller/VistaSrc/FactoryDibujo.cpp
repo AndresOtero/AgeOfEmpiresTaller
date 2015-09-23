@@ -34,7 +34,7 @@ bool FactoryDibujo::crear_dibujo_personaje(string path,int cantidad_de_movimient
 	}
 	return false;
 }
-bool FactoryDibujo::crear_dibujo_animado(string path,std::vector<std::vector<int> >parametros_de_imagen,int fps){
+bool FactoryDibujo::crear_dibujo_animado(string path,std::vector<std::vector<int> >parametros_de_imagen,int fps, int delay){
 	shared_ptr<DibujoAnimado> dibujo_nuevo = shared_ptr<DibujoAnimado>(new DibujoAnimado());
 	if (dibujo_nuevo->cargar_archivo(path, gRenderer)) {
 		dibujo_nuevo->set_cantidad_de_imagenes(DIBUJOS_POR_DEFAULT);
@@ -42,6 +42,7 @@ bool FactoryDibujo::crear_dibujo_animado(string path,std::vector<std::vector<int
 			dibujo_nuevo->set_imagen(i, parametros_de_imagen[i][X], parametros_de_imagen[i][Y],dibujo_nuevo->getHeight(),dibujo_nuevo->getWidth());
 		}
 		dibujo_nuevo->set_fps(fps);
+		dibujo_nuevo->set_delay(delay);
 		this->set_dibujo(dibujo_nuevo);
 		return true;
 	}
