@@ -282,7 +282,7 @@ int Vista::run() {
 		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
 		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
 		int adonde_va_x,adonde_va_y;
-		this->transformador->transformar_isometrica_pantalla(personaje_x,personaje_y,adonde_va_x,adonde_va_y);
+		this->transformador->transformar_isometrica_pantalla(personaje_x-1.5,personaje_y+1,adonde_va_x,adonde_va_y);
 		dibujo_pers->elegir_frame((adonde_va_x- img_personaje_x),(adonde_va_y- img_personaje_y));
 		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+1)){
 			personaje_x=rint(personaje_x);
