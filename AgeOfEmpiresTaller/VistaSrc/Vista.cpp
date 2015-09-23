@@ -32,8 +32,8 @@ const int ALTO_BASE = 124;
 Vista::Vista(Modelo* modelo) {
 	this -> modelo = modelo;
 	this->pantalla= modelo->juego->pantalla;
-	this->referencia_mapa_x=1;// desde el punto del mapa donde se dibuja
-	this->referencia_mapa_y=1;
+	this->referencia_mapa_x=this->modelo->juego->escenario->protagonista->getReferenciaMapaX()-1;// desde el punto del mapa donde se dibuja
+	this->referencia_mapa_y=this->modelo->juego->escenario->protagonista->getReferenciaMapaY()-1;
 	this->velocidad_de_scroll=0.25;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
@@ -272,13 +272,13 @@ int Vista::run() {
 		int adonde_va_x,adonde_va_y;
 		this->transformador->transformar_isometrica_pantalla(personaje_x-referencia_mapa_x,personaje_y - referencia_mapa_y,adonde_va_x,adonde_va_y);
 		dibujo_pers->elegir_frame((adonde_va_x- img_personaje_x),(adonde_va_y- img_personaje_y));
-		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+1)){
+		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+0.5)){
 			personaje_x=rint(personaje_x);
 			personaje_y=rint(personaje_y);
 		}
 		//printf("Pesonaje_x: %g\n",pers->getReferenciaMapaX());
 		//printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
-		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+1)){//Hardcoding
+		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+0.5)){//Hardcoding
 							personaje_x=pers->getReferenciaMapaX();
 							personaje_y=pers->getReferenciaMapaY();
 		}

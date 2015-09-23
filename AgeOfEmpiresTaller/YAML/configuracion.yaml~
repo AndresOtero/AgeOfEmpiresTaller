@@ -1,12 +1,12 @@
-pantalla: 
+-pantalla: 
  ancho: 800
  alto: 600
 
 configuracion:
- vel_personaje: 2
- margen_scroll: 50
+ vel_personaje: 1
+ margen_scroll: 200
 
-tipos: 
+tipos:
  - nombre: barraca
    imagen: img/dibujo_estatico/construcciones/barraks/barraks.png
 
@@ -17,12 +17,12 @@ tipos:
 
  - nombre: wheel
    imagen: img/dibujo_dinamico/wheel.png
-   fps: 10
-   delay: 1
+   fps: 200
+   delay: 0
 
  - nombre: herreria
    imagen: img/dibujo_dinamico/mirador.png
-   fps: 10
+   fps: 50
    delay: 0
 
  - nombre: pino
@@ -58,5 +58,5 @@ escenario:
   - { x : 30, y: 0, tipo: firestation }
  protagonista:
   - tipo: soldado
-    x: 2
-    y: 2
+    x: 3
+    y: 3
