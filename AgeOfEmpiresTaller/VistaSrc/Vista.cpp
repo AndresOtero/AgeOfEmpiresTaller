@@ -16,6 +16,7 @@
 #include <SDL2/SDL_render.h>
 #include <cstdio>
 #include <memory>
+#include <unistd.h>
 
 #include "../ModeloSrc/Modelo.h"
 #include "Dibujo.h"
@@ -261,8 +262,8 @@ int Vista::run() { //Main loop flag
 
 	//While application is running
 	while (!quit) {
-		//float tiempo_actual,tiempo_viejo=0;
-		//tiempo_viejo=SDL_GetTicks();
+		float tiempo_actual,tiempo_viejo=0;
+		tiempo_viejo=SDL_GetTicks();
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0) {
 			//User requests quit
@@ -301,10 +302,10 @@ int Vista::run() { //Main loop flag
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 
-		//tiempo_actual= SDL_GetTicks();
-		//printf("%f",tiempo_actual-tiempo_viejo);
-		//tiempo_viejo=tiempo_actual;
-
+		usleep((40 - (tiempo_actual-tiempo_viejo))*1000);
+		tiempo_actual= SDL_GetTicks();
+		printf("time: %f",tiempo_actual-tiempo_viejo);
+		tiempo_viejo=tiempo_actual;
 	}
 
 	return 0;
