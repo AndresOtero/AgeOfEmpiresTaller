@@ -16,7 +16,7 @@
 
 Dibujo::Dibujo() {
 	// TODO Auto-generated constructor stub
-	shared_ptr <LTexture> text(new LTexture());
+	shared_ptr <Textura> text(new Textura());
 	this->textura = text;
 }
 

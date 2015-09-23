@@ -32,7 +32,6 @@ public:
 	void set_imagen(int n_mov,int n_imagen, int x, int y, int ancho, int alto);
 	void set_velocidad(int velocidad);
 	DibujoPersonaje();
-	void mover(int x, int y) ;
 	int get_alto(int n_mov,int n_imagen);
 	int get_ancho(int n_mov, int n_imagen);
 	int get_alto();

@@ -231,31 +231,24 @@ void Vista::detectar_mouse_borde() {
 	}**/
 }
 
-int Vista::run() { //Main loop flag
-	//Main loop flag
+int Vista::run() {
 	bool quit = false;
 	bool resetear = false;
-	//Event handler
 	SDL_Event e;
 	int mov_x=0, mov_y=0,img_personaje_x,img_personaje_y ;
 	Personaje* pers=this->modelo->devolverPersonaje();
 	this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
-	/**this->personaje->set_posicion_default(mov_x,mov_y);**/
 
 	double personaje_x=pers->getReferenciaMapaX(),personaje_y=pers->getReferenciaMapaY();
 
-	//While application is running
 	while (!quit) {
 		double tiempo_actual,tiempo_viejo=0;
 		tiempo_viejo=SDL_GetTicks();
-		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0) {
-			//User requests quit
 			if (e.type == SDL_QUIT) {
 				quit = true;
 			}
 			if (e.type == SDL_MOUSEBUTTONDOWN) {
-				//Get mouse position
 				SDL_GetMouseState(&mov_x, &mov_y);
 				this->transformador->transformar_pantalla_isometrica(mov_x,mov_y,personaje_x,personaje_y);
 				personaje_x+=referencia_mapa_x;
@@ -275,11 +268,9 @@ int Vista::run() { //Main loop flag
 	            }
 	         }
 		}
-		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0, 0,0, 0);
 		SDL_RenderClear(gRenderer);
 
-		//Render current frame
 
 		dibujar_mapa();
 		pers->mover(personaje_x,personaje_y);
@@ -304,7 +295,6 @@ int Vista::run() { //Main loop flag
 		printf("Cart_x: %d\n", x);
 		printf("Cart_y: %d\n", y);**/
 		this->detectar_mouse_borde();
-		//Update screen
 		SDL_RenderPresent(gRenderer);
 
 
@@ -318,7 +308,7 @@ int Vista::run() { //Main loop flag
 }
 vector<int> Vista::calcular_bordes(){
 	/**
-	Credit:
+	Fuente:
 	http://www.java-gaming.org/index.php?topic=24922.0
 	**/
 	int pantalla_refencia_x,pantalla_refencia_y;

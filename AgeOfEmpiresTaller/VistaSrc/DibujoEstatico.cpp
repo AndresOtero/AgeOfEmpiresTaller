@@ -9,7 +9,7 @@
 
 
 Dibujo_Estatico::Dibujo_Estatico() {
-	shared_ptr <LTexture> text(new LTexture());
+	shared_ptr <Textura> text(new Textura());
 	this->textura = text;
 	this -> acumulador = 0;
 	this->fps=1;

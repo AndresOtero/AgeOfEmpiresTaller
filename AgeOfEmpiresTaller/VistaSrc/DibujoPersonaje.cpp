@@ -6,7 +6,7 @@
  */
 
 #include "DibujoPersonaje.h"
-#include  "LTexture.h"
+#include  "Textura.h"
 DibujoPersonaje::DibujoPersonaje() {
 	// TODO Auto-generated constructor stub
 	this -> velocidad = 0;
@@ -113,7 +113,7 @@ void DibujoPersonaje::render( SDL_Renderer* renderer) {
 	this->textura->render(this->x_imagen - this->get_ancho(n_mov,n_imagen)/2, this->y_imagen-this->get_alto(n_mov,n_imagen)/2 , &(this->spriteClips[n_mov][n_imagen]),renderer);
 }
 
-void DibujoPersonaje::mover(int x, int y) {
+/**void DibujoPersonaje::mover(int x, int y) {
 	double delta_x = (double) (x - x_imagen);
 	double delta_y = (double) (y - y_imagen);
 	double distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
@@ -136,7 +136,7 @@ void DibujoPersonaje::mover(int x, int y) {
 		this->elegir_frame(des_x,des_y);
 
 	}
-}
+}**/
 void DibujoPersonaje::cambiar_frame(){
 	acumulador++;
 	if((fps)<=acumulador){

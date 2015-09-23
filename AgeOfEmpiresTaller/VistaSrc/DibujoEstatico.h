@@ -6,7 +6,7 @@
  */
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "../VistaSrc/LTexture.h"
+#include "../VistaSrc/Textura.h"
 #include "Dibujo.h"
 #include <memory>
 using namespace std;
@@ -32,7 +32,7 @@ public:
 	virtual ~Dibujo_Estatico();
 protected:
 	SDL_Rect spriteClips;
-	shared_ptr <LTexture> textura;
+	shared_ptr <Textura> textura;
 	size_t cantidad_de_imagenes;
 	size_t imagen_actual;
 	int x_imagen;
