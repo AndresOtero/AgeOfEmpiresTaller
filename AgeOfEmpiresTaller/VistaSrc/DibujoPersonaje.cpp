@@ -47,7 +47,7 @@ void DibujoPersonaje::set_imagen(int n_mov,int n_imagen, int x, int y, int ancho
 void DibujoPersonaje::set_velocidad(int velocidad){
 	this->velocidad=velocidad;
 }
-void DibujoPersonaje::elegir_frame(double des_x,double des_y) {
+void DibujoPersonaje::elegir_frame(int des_x,int des_y) {
 	if((des_x>0)&&(des_y==0)){
 		movimiento_actual=DERECHA;
 		//printf("DERECHA\n");

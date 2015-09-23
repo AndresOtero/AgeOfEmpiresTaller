@@ -37,7 +37,7 @@ public:
 	int get_alto();
 	int get_ancho();
 	void render(SDL_Renderer* renderer);
-	void elegir_frame(double des_x,double des_y);
+	void elegir_frame(int des_x,int des_y);
 	void cambiar_frame();
 	~DibujoPersonaje();
 };
