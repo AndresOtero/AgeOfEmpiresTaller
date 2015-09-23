@@ -29,8 +29,8 @@ const int ALTO_BASE = 124;
 Vista::Vista(shared_ptr<Modelo>  modelo) {
 	this -> modelo = modelo;
 	this->pantalla= modelo->juego->pantalla;
-	this->referencia_mapa_x=0;// desde el punto del mapa donde se dibuja
-	this->referencia_mapa_y=0;
+	this->referencia_mapa_x=1;// desde el punto del mapa donde se dibuja
+	this->referencia_mapa_y=1;
 	this->velocidad_de_scroll=0.1;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
@@ -188,13 +188,12 @@ Vista::~Vista() {
 	SDL_Quit();
 }
 void Vista::mover_referencia(float vel_x,float vel_y) {
-		int actual_x,actual_y;
 		float ref_x, ref_y;
-		this->transformador->transformar_isometrica_pantalla(referencia_mapa_x,
-						referencia_mapa_y, actual_x, actual_y);
-		actual_x+=vel_x;
-		actual_y+=vel_y;
-		this->transformador->transformar_pantalla_isometrica(actual_x, actual_y,ref_x, ref_y);
+
+		this->transformador->transformar_pantalla_isometrica(vel_x,vel_y,ref_x,ref_y);
+		ref_x+=referencia_mapa_x;
+		ref_y+=referencia_mapa_y;
+
 		if(adentro_del_mapa(ref_x,ref_y)){
 			referencia_mapa_x=ref_x;
 			referencia_mapa_y=ref_y;
@@ -205,7 +204,6 @@ void Vista::mover_referencia(float vel_x,float vel_y) {
 }
 void Vista::detectar_mouse_borde() {
 	int mouse_x, mouse_y;
-
 	SDL_GetMouseState(&mouse_x, &mouse_y);
 
 	int mov_pantalla_x = margen_scroll, mov_pantalla_y = margen_scroll;
@@ -350,7 +348,7 @@ vector<int> Vista::calcular_bordes(){
 bool Vista::adentro_del_mapa(float coord_x,float coord_y){
 	return ((coord_x < this->modelo->get_ancho_mapa())
 			&& (coord_y < this->modelo->get_alto_mapa())
-			&& (coord_x > -1) && (coord_y >0));
+			&& (coord_x > 0) && (coord_y >0));
 }
 
 bool Vista::adentro_del_mapa(int coord_x,int coord_y){
