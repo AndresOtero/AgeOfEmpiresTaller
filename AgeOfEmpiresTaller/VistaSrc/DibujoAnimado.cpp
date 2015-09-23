@@ -49,6 +49,7 @@ void DibujoAnimado::cambiar_frame(){
 		imagen_actual++;
 		acumulador=0;
 	}
+
 }
 
 int DibujoAnimado::get_alto(int n_imagen){
