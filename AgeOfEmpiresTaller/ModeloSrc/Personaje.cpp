@@ -28,8 +28,7 @@ void Personaje::mover(int x,int y){
 	this->posicion->y=y;
 }
 Personaje::~Personaje() {
-	if (this->objetoMapa)
-		delete this->objetoMapa;
+	delete this->objetoMapa;
 	delete this->posicion;
 }
 

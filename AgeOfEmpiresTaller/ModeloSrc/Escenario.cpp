@@ -26,6 +26,10 @@ Entidad* Escenario::getTexturaDefault(){
 	return entidad;
 }
 Escenario::~Escenario() {
+	for (unsigned int i= 0; i < entidades.size(); i++){
+		Entidad* entidad = entidades[i];
+		delete entidad;
+	}
 	delete this-> protagonista;
 }
 

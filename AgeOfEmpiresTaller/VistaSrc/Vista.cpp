@@ -174,19 +174,6 @@ bool Vista::loadMedia() {
 	this->personaje=shared_ptr<DibujoPersonaje>(persona);
 	return true;
 }
-Vista::~Vista() {
-
-	//Destroy window
-	 SDL_DestroyWindow( gWindow);
-	SDL_DestroyRenderer(gRenderer);
-
-	gWindow = NULL;
-	gRenderer = NULL;
-
-	//Quit SDL subsystems
-	IMG_Quit();
-	SDL_Quit();
-}
 void Vista::mover_referencia(float vel_x,float vel_y) {
 		float ref_x, ref_y;
 
@@ -388,4 +375,17 @@ void Vista::dibujar_mapa() {
 			}
 		}
 	}
+}
+Vista::~Vista() {
+
+	//Destroy window
+	 SDL_DestroyWindow( gWindow);
+	SDL_DestroyRenderer(gRenderer);
+
+	gWindow = NULL;
+	gRenderer = NULL;
+
+	//Quit SDL subsystems
+	IMG_Quit();
+	SDL_Quit();
 }
