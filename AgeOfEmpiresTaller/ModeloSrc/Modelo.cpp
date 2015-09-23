@@ -22,6 +22,7 @@ void Modelo::agregarPersonaje(float x,float y,dibujo_t dibujo){
 	shared_ptr<Personaje> personaje=shared_ptr<Personaje>(new Personaje(x,y,dibujo));
 	lista_personajes.push_back(personaje);
 }
+
 shared_ptr<Personaje> Modelo::devolverPersonaje(){
 	return lista_personajes[0];
 }
@@ -68,7 +69,9 @@ vector<vector<vector<dibujo_t>>> Modelo::dibujar(int x,int 	y,int ancho,int larg
 	return dibujos;
 }**/
 
+void Modelo::mover_personaje(float mov_x,float mov_y){
 
+}
 int Modelo::get_alto_mapa(){
 	return mapa->getLargo();
 }
