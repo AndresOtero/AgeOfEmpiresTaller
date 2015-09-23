@@ -25,7 +25,7 @@ public:
 	ObjetoMapa* objetoMapa;
 	dibujo_t dibujar();
 	virtual ~Personaje();
-	void mover(int x,int y);
+	void mover(double x,double y);
 
 	void setVelocidad(double velocidad) {
 		this->velocidad = velocidad;

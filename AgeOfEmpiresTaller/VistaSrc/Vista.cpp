@@ -281,7 +281,7 @@ int Vista::run() {
 		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
 		this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,img_personaje_x,img_personaje_y);
 		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
-		//dibujo_pers->elegir_frame((mov_x- img_personaje_x),(mov_y- img_personaje_y));
+		dibujo_pers->elegir_frame((mov_x- img_personaje_x),(mov_y- img_personaje_y));
 		dibujo_pers->render(gRenderer);
 		int mouse_x,mouse_y;
 		SDL_GetMouseState(&mouse_x, &mouse_y);

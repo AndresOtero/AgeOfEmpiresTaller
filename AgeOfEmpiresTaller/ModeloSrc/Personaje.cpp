@@ -35,13 +35,21 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 dibujo_t Personaje::dibujar(){
 	return dibujo;
 }
-void Personaje::mover(int x,int y){
+void Personaje::mover(double x, double y) {
 	double delta_x = (double) (x - referencia_mapa_x);
 	double delta_y = (double) (y - referencia_mapa_y);
 	double distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
 	if (distancia != 0) {
 		if (distancia < velocidad) {
 			distancia = velocidad;
+		}
+		if ((sqrt(delta_x * delta_x) > distancia)
+				&& (sqrt(delta_x * delta_x) < distancia)) {
+			this->referencia_mapa_x = x;
+		}
+		if ((sqrt(delta_y * delta_y) > distancia)
+				&& ((sqrt(delta_y * delta_y) < distancia))) {
+			this->referencia_mapa_y = y;
 		}
 		double des_x = (velocidad * delta_x) / distancia;
 		double des_y = (velocidad * delta_y) / distancia;
