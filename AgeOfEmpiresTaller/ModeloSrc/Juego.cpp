@@ -20,6 +20,13 @@ Juego::Juego(Pantalla* pantalla, Configuracion* conf, Escenario* escenario, std:
 	this->tipos = tipos;
 }
 Juego::~Juego() {
+	delete this->pantalla;
+	delete this->conf;
+
+	std::map<std::string, ObjetoMapa*> ::iterator it;
+	for ( it = this->tipos.begin(); it !=this->tipos.end(); it++ ){
+		delete it->second;
+	}
 	delete this-> escenario;
 }
 

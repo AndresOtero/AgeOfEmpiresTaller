@@ -23,7 +23,7 @@ void DibujoAnimado::set_cantidad_de_imagenes(int cant_de_imagenes) {
 	this->cantidad_de_imagenes = cant_de_imagenes;
 }
 
-void DibujoAnimado::set_imagen(int n_imagen, int x, int y,int h, int w) {
+void DibujoAnimado::set_imagen(unsigned int n_imagen, int x, int y,int h, int w) {
 	if (this->cantidad_de_imagenes <= n_imagen) {
 		return;
 	}

@@ -13,18 +13,19 @@ enum dimension{TILES,ESCENARIO};
 Modelo::Modelo(Juego* juego) {
 	this -> juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
-	this->lista_personajes=vector<shared_ptr<Personaje>>();
+	this->personajes=vector<Personaje*>();
+
 }
 void Modelo::setMapa(int ancho,int largo){
 	this->mapa=shared_ptr<Mapa>(new Mapa(ancho,largo));
 }
-void Modelo::agregarPersonaje(float x,float y,dibujo_t dibujo,float velocidad){
-	shared_ptr<Personaje> personaje=shared_ptr<Personaje>(new Personaje(x,y,dibujo,velocidad));
-	lista_personajes.push_back(personaje);
-}
+void Modelo::agregarPersonaje(Personaje* personaje){
 
-shared_ptr<Personaje> Modelo::devolverPersonaje(){
-	return lista_personajes[0];
+	personajes.push_back(personaje);
+
+}
+Personaje* Modelo::devolverPersonaje(){
+	return this->personajes[0];
 }
 
 

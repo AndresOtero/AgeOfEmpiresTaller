@@ -100,7 +100,7 @@ typedef struct {
 Juego* Yaml::read()
 {
 	Juego* juego;
-	remove( "Log.txt" );
+	//remove( "Log.txt" );
 	plog::init(plog::warning, "Log.txt" );
 
 	try {
@@ -114,7 +114,7 @@ Juego* Yaml::read()
 	   Configuracion* configuracion;
 	   std::map<std::string, ObjetoMapa*> tipos;
 	   Escenario* escenario;
-	   EntidadAnimada* protagonista;
+	   Personaje* protagonista;
 
 	   if (const YAML::Node *pPantalla = doc.FindValue(tag_pantalla)){
 		   if (const YAML::Node *pPantallaAncho = (*pPantalla).FindValue(tag_pantalla_ancho)){
@@ -266,7 +266,7 @@ Juego* Yaml::read()
 						if (const YAML::Node *pY = (* pPersonaje)[0].FindValue(tag_escenario_protagonista_y)){
 							(*pY) >> conf.escenario.protagonista.y;
 							 if(ObjetoMapa* obj = tipos[conf.escenario.protagonista.tipo]){
-								 protagonista = new EntidadAnimada(obj,conf.escenario.protagonista.x,conf.escenario.protagonista.y);
+								 protagonista = new Personaje(obj,conf.escenario.protagonista.x,conf.escenario.protagonista.y);
 								 escenario->protagonista = protagonista;
 								 tieneProt = true;
 							 }else{
@@ -285,12 +285,11 @@ Juego* Yaml::read()
 				LOG_WARNING << "No se define un protagonista para el escenario";
 			}
 			if(tieneProt == false){
-				protagonista = new EntidadAnimada();
+				protagonista = new Personaje();
 			}
 		}else{
 			escenario = new Escenario();
 		}
-
 
 	   juego = new Juego(pantalla, configuracion, escenario,tipos);
 

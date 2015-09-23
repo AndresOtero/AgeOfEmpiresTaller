@@ -16,6 +16,7 @@
 #include <SDL2/SDL_render.h>
 #include <cstdio>
 #include <memory>
+#include <unistd.h>
 
 #include "../ModeloSrc/Modelo.h"
 #include "Dibujo.h"
@@ -111,6 +112,7 @@ bool Vista::loadMedia() {
 	std::map<std::string, ObjetoMapa*> ::iterator it;
 	std::map<std::string, dibujo_t> hashDibujos;
 
+	//***********DIBUJOS (TIPOS EN YAML)*****************
 	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(5);
 	for(int i=0;i<5;i++){
 		v2d[i]={i*128,0};
@@ -136,6 +138,8 @@ bool Vista::loadMedia() {
 	vector<dibujo_t> filas_escenario(ancho,0);
 	vector<vector<dibujo_t>> escenario (largo,filas_escenario);
 
+
+	//***********DIBUJOS (ENTIDADES ESTATICAS Y DINAMICAS EN YAML)*****************
 	for (unsigned i = 0; i < this->modelo->juego->escenario->entidades.size(); i++){
 			Entidad* entidad = this->modelo->juego->escenario->entidades[i];
 			escenario[entidad->posicion->x][entidad->posicion->y]=hashDibujos[entidad->objetoMapa->nombre];
@@ -154,30 +158,20 @@ bool Vista::loadMedia() {
 	}
 	vector<int> imagenes= vector<int>(8,8);
 
-	this->factory->crear_dibujo_personaje("img/protagonista/spartan.png",8,imagenes,v3d,1,1);
-	int pers=this->factory->ultimo_dibujo();
-	modelo->agregarPersonaje(2,2,pers,0.01);
-	shared_ptr<Dibujo> per= this->factory->get_dibujo(pers);
-	Dibujo* p =&(*per);
-	DibujoPersonaje* persona=(DibujoPersonaje*)p;
-	/**this->personaje=shared_ptr<DibujoPersonaje>(persona);
-	this->personaje->set_velocidad(10);**/
+
+	//TOMA ENTIDAD ANIMADA SOLO COMO LOS DATOS QUE SACAS DEL YAMLS SINO
+	Personaje* protagonista = this->modelo->juego->escenario->protagonista;
+	Configuracion* configuracion = this->modelo->juego->conf;
+
+	this->factory->crear_dibujo_personaje(protagonista->objetoMapa->imagen,8,imagenes,v3d,protagonista->objetoMapa->fps,configuracion->get_vel_personaje());
+	dibujo_t pers=this->factory->ultimo_dibujo();
+	protagonista->setDibujo(pers);
+	protagonista->setVelocidad(configuracion->get_vel_personaje()/10.0);
+	modelo->agregarPersonaje(protagonista);
+
+
+
 	return true;
-}
-Vista::~Vista() {
-
-
-	//Destroy window
-	 SDL_DestroyWindow( gWindow);
-	SDL_DestroyRenderer(gRenderer);
-
-
-	gWindow = NULL;
-	gRenderer = NULL;
-
-	//Quit SDL subsystems
-	IMG_Quit();
-	SDL_Quit();
 }
 void Vista::mover_referencia(float vel_x,float vel_y) {
 		float ref_x, ref_y;
@@ -244,7 +238,7 @@ int Vista::run() { //Main loop flag
 	//Event handler
 	SDL_Event e;
 	int mov_x, mov_y,img_personaje_x,img_personaje_y ;
-	shared_ptr<Personaje>pers=this->modelo->devolverPersonaje();
+	Personaje* pers=this->modelo->devolverPersonaje();
 	this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX(),pers->getReferenciaMapaY(),mov_x,mov_y);
 	/**this->personaje->set_posicion_default(mov_x,mov_y);**/
 
@@ -299,10 +293,11 @@ int Vista::run() { //Main loop flag
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 
-		tiempo_actual= SDL_GetTicks();
-		//printf("%f",tiempo_actual-tiempo_viejo);
-		tiempo_viejo=tiempo_actual;
 
+		usleep((40 - (tiempo_actual-tiempo_viejo))*1000);
+		tiempo_actual= SDL_GetTicks();
+		//printf("time: %f",tiempo_actual-tiempo_viejo);
+		tiempo_viejo=tiempo_actual;
 	}
 
 	return 0;
@@ -354,7 +349,6 @@ void Vista::dibujar_mapa() {
 		int max=abs(x_max)+abs(y_max);
 		int i=0,j=0;
 		for ( i = x_start-1; i<max; i++) {
-			//printf("\n ");
 			for ( j = y_min ;j<i; j++) {
 				int coord_x=i-j;
 				int coord_y=j;
@@ -373,4 +367,18 @@ void Vista::dibujar_mapa() {
 			}
 		}
 	}
+}
+
+Vista::~Vista() {
+
+	//Destroy window
+	 SDL_DestroyWindow( gWindow);
+	SDL_DestroyRenderer(gRenderer);
+
+	gWindow = NULL;
+	gRenderer = NULL;
+
+	//Quit SDL subsystems
+	IMG_Quit();
+	SDL_Quit();
 }

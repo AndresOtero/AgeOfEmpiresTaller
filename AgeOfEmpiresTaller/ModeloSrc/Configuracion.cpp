@@ -8,7 +8,7 @@
 #include "Configuracion.h"
 
 Configuracion::Configuracion() {
-	this -> vel_personaje = 3;
+	this -> vel_personaje = 1;
 	this -> margen_scroll = 30;
 }
 Configuracion::Configuracion(int vel_personaje, int margen_scroll){
