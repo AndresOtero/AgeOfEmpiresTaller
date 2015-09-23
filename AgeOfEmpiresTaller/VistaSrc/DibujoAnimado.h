@@ -11,6 +11,7 @@
 #include "Dibujo.h"
 #include "vector"
 #include "memory.h"
+#include <sys/time.h>
 using namespace std;
 class DibujoAnimado: public Dibujo {
 	SDL_Rect* spriteClips;
@@ -21,6 +22,7 @@ public:
 	void set_imagen(unsigned int n_imagen, int x, int y, int h, int w);
 	void render( SDL_Renderer* gRenderer);
 	void set_fps(int fps);
+	void set_delay(double delay);
 	int get_ancho(int n_imagen);
 	int get_alto(int n_imagen);
 	int get_ancho();
@@ -30,7 +32,9 @@ protected:
 	void cambiar_frame();
 	int fps;
 	int acumulador;
-
+	struct timeval estado;
+	double delay;
+	int termino_animacion;
 };
 
 #endif /* DIBUJOANIMADO_H_ */
