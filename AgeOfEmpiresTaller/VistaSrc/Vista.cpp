@@ -373,14 +373,12 @@ void Vista::dibujar_mapa() {
 
 Vista::~Vista() {
 
-	//Destroy window
 	 SDL_DestroyWindow( gWindow);
 	SDL_DestroyRenderer(gRenderer);
 
 	gWindow = NULL;
 	gRenderer = NULL;
 
-	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
 }

@@ -58,7 +58,7 @@ void DibujoAnimado::cambiar_frame(){
 	double tiempo = tf - ti;
 	if ( tiempo > delay){
 		acumulador++;
-		if((fps)<=acumulador){
+		if((50/fps)<=acumulador){
 			imagen_actual++;
 			acumulador=0;
 			termino_animacion -= 1;

@@ -6,7 +6,7 @@ configuracion:
  vel_personaje: 1
  margen_scroll: 50
 
-tipos: 
+tipos:
  - nombre: barraca
    imagen: img/dibujo_estatico/construcciones/barraks/barraks.png
 
