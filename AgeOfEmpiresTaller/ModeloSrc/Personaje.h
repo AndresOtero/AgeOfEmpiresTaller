@@ -12,8 +12,9 @@ typedef int dibujo_t;
 class Personaje {
 	float referencia_mapa_x,referencia_mapa_y;
 	dibujo_t dibujo;
+	float velocidad;
 public:
-	Personaje(float referencia_mapa_x,float referencia_mapa_y,	dibujo_t dibujo);
+	Personaje(float referencia_mapa_x,float referencia_mapa_y,	dibujo_t dibujo,float velocidad);
 	dibujo_t dibujar();
 	virtual ~Personaje();
 	void mover(int x,int y);

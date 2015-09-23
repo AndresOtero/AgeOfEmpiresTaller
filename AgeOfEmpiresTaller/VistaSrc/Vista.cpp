@@ -156,10 +156,12 @@ bool Vista::loadMedia() {
 
 	this->factory->crear_dibujo_personaje("img/protagonista/spartan.png",8,imagenes,v3d,1,1);
 	int pers=this->factory->ultimo_dibujo();
+	modelo->agregarPersonaje(2,2,pers,0.01);
 	shared_ptr<Dibujo> per= this->factory->get_dibujo(pers);
 	Dibujo* p =&(*per);
 	DibujoPersonaje* persona=(DibujoPersonaje*)p;
-	this->personaje=shared_ptr<DibujoPersonaje>(persona);
+	/**this->personaje=shared_ptr<DibujoPersonaje>(persona);
+	this->personaje->set_velocidad(10);**/
 	return true;
 }
 Vista::~Vista() {
@@ -201,55 +203,38 @@ void Vista::detectar_mouse_borde() {
 	if ((mouse_x < mov_pantalla_x)) {
 		float vel_x = (-1)*this->velocidad_de_scroll
 				* (mov_pantalla_x-mouse_x);
-		printf("Velocidad_x: %g\n",vel_x);
 		mover_referencia(vel_x, 0);
-		printf("pendiente velocidad: %d\n", mov_pantalla_x - mouse_x);
-		printf("izquierda \n");
 
 	}
 	if ((mouse_x > (this->pantalla->getAncho() - mov_pantalla_x))) {
 		float vel_x = this->velocidad_de_scroll
 				* (mouse_x - (this->pantalla->getAncho() - mov_pantalla_x));
-		printf("Velocidad_x: %g\n",vel_x);
 		mover_referencia(vel_x, 0);
-		printf("pendiente velocidad: %d/n",
-				(mouse_x - (this->pantalla->getAncho() - mov_pantalla_x)));
-		printf("derecha\n");
 
 	}
 	if (mouse_y < mov_pantalla_y) {
 		float vel_y = (-1)*this->velocidad_de_scroll * (mov_pantalla_y - mouse_y);
-		printf("Velocidad_y: %g \n",vel_y);
 
 		mover_referencia(0, vel_y);
 
-		printf("pendiente velocidad: %d/n", mov_pantalla_y - mouse_y);
 
-		printf(" arriba\n");/**
-		 printf("%g\n",this->referencia_mapa_y);**/
 	}
 	if (mouse_y > (this->pantalla->getAlto() - mov_pantalla_y)) {
-		/**
-		 float vel=this->velocidad_de_scroll*(mouse_y-(SCREEN_HEIGHT - mov_pantalla_y));
-		 this->referencia_mapa_y-=vel;**/
+
 
 		float vel_y = this->velocidad_de_scroll
 				* (mouse_y - (this->pantalla->getAlto() - mov_pantalla_y));
-		printf("Velocidad_y: %g\n",vel_y);
 
 		mover_referencia(0, vel_y);
 
-		printf("pendiente velocidad: %d\n",
-				mouse_y - (this->pantalla->getAlto() - mov_pantalla_y));
-		printf("abajo\n");
 
-	}
+	}/**
 	if ((mouse_y < (this->pantalla->getAlto() - mov_pantalla_y))
 			&& (mouse_y > mov_pantalla_y)
 			&& (mouse_x < (this->pantalla->getAncho() - mov_pantalla_x)
 					&& (mouse_x > mov_pantalla_x))) {
 		printf("in\n");
-	}
+	}**/
 }
 
 int Vista::run() { //Main loop flag
@@ -258,9 +243,12 @@ int Vista::run() { //Main loop flag
 
 	//Event handler
 	SDL_Event e;
+	int mov_x, mov_y,img_personaje_x,img_personaje_y ;
+	shared_ptr<Personaje>pers=this->modelo->devolverPersonaje();
+	this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX(),pers->getReferenciaMapaY(),mov_x,mov_y);
+	/**this->personaje->set_posicion_default(mov_x,mov_y);**/
 
-	this->personaje->set_posicion_default(200,200);
-	int mov_x=200, mov_y=200 ;
+	int personaje_x=pers->getReferenciaMapaX(),personaje_y=pers->getReferenciaMapaY();
 
 	//While application is running
 	while (!quit) {
@@ -275,8 +263,9 @@ int Vista::run() { //Main loop flag
 			if (e.type == SDL_MOUSEBUTTONDOWN) {
 				//Get mouse position
 				SDL_GetMouseState(&mov_x, &mov_y);
-
-
+				this->transformador->transformar_pantalla_isometrica(mov_x,mov_y,personaje_x,personaje_y);
+				personaje_x+=referencia_mapa_x;
+				personaje_y+=referencia_mapa_y;
 			}
 		}
 		//Clear screen
@@ -286,9 +275,15 @@ int Vista::run() { //Main loop flag
 		//Render current frame
 
 		dibujar_mapa();
-		this->personaje->render(gRenderer);
-		this->personaje->set_velocidad(10);
-		this->personaje->mover(mov_x, mov_y);
+		pers->mover(personaje_x,personaje_y);
+		printf("Pesonaje_x: %g\n",pers->getReferenciaMapaX());
+		printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
+		this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,img_personaje_x,img_personaje_y);
+		shared_ptr<Dibujo> dibujo_pers=this->factory->get_dibujo(pers->dibujar());
+		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
+		dibujo_pers->render(gRenderer);
+		//this->personaje->render(gRenderer);
+		//this->personaje->mover(mov_x, mov_y);
 		int mouse_x,mouse_y;
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 
@@ -305,7 +300,7 @@ int Vista::run() { //Main loop flag
 		SDL_RenderPresent(gRenderer);
 
 		tiempo_actual= SDL_GetTicks();
-		printf("%f",tiempo_actual-tiempo_viejo);
+		//printf("%f",tiempo_actual-tiempo_viejo);
 		tiempo_viejo=tiempo_actual;
 
 	}
