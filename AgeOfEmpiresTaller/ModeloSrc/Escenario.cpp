@@ -12,10 +12,7 @@ Escenario::Escenario() {
 	this -> size_x = 100;
 	this -> size_y = 100;
 
-	ObjetoMapa* objeto = new ObjetoMapa("protagonistaDefault","img/protagonista/spartan.png");
-	objeto->fps = 10;
-	EntidadAnimada* protagonista = new EntidadAnimada(objeto);
-	this -> protagonista =  protagonista;
+	this -> protagonista = new Personaje();
 }
 Escenario::Escenario(string nombre, int size_x, int size_y){
 	this -> nombre = nombre;

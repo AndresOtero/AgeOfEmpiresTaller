@@ -10,7 +10,7 @@
 #include <string>
 #include <map>
 #include "Entidad.h"
-#include "EntidadAnimada.h"
+#include "Personaje.h"
 
 using namespace std;
 class Escenario {
@@ -21,7 +21,7 @@ public:
 	int size_x;
 	int size_y;
 	vector<Entidad*> entidades;
-	EntidadAnimada* protagonista;
+	Personaje* protagonista;
 	Entidad* getTexturaDefault(); //para rellenar todos los espacios del mapa que no vengan del escenario. EJ: Pasto
 	virtual ~Escenario();
 };

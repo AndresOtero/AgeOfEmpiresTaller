@@ -7,20 +7,29 @@
 
 #include "Personaje.h"
 
-Personaje::Personaje(float referencia_mapa_x,float referencia_mapa_y,	dibujo_t dibujo) {
-	// TODO Auto-generated constructor stub
-	this->referencia_mapa_x=referencia_mapa_x;
-	this->referencia_mapa_y=referencia_mapa_y;
-	this->dibujo=dibujo;
+
+Personaje::Personaje(){
+	this->posicion= new Posicion(); //crea posicion default (0,0)
+	this->objetoMapa = new ObjetoMapa("protagonistaDefault", "img/protagonista/spartan.png");
+	this->objetoMapa->fps = 4; //FPS DEFAULT
+	this->objetoMapa->delay = 0; //delay default
+	this->dibujo = 0;
+}
+Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
+	this->posicion= new Posicion(x,y);
+	this->objetoMapa = objetoMapa;
+	this->dibujo = 0;
 }
 dibujo_t Personaje::dibujar(){
 	return dibujo;
 }
 void Personaje::mover(int x,int y){
-	this->referencia_mapa_x=x;
-	this->referencia_mapa_y=y;
+	this->posicion->x=x;
+	this->posicion->y=y;
 }
 Personaje::~Personaje() {
-	// TODO Auto-generated destructor stub
+	if (this->objetoMapa)
+		delete this->objetoMapa;
+	delete this->posicion;
 }
 

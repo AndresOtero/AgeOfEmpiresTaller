@@ -18,7 +18,6 @@ using namespace std;
 
 class Modelo {
 	shared_ptr<Mapa> mapa;
-	vector<shared_ptr<Personaje>> lista_personajes;
 public:
 	Modelo(Juego* juego);
 	Juego* juego;
@@ -26,7 +25,6 @@ public:
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
 	//vector<vector<vector<dibujo_t>>> dibujar(int x,int 	y,int ancho,int largo);
 	dibujo_t dibujar(int dim,int x,int y);
-	void agregarPersonaje(float x,float y,dibujo_t dibujo);
 	shared_ptr<Personaje> devolverPersonaje();
 
 	int get_ancho_mapa();
