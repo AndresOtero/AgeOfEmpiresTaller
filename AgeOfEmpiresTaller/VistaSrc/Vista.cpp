@@ -17,6 +17,8 @@
 #include <cstdio>
 #include <memory>
 #include <unistd.h>
+#include <plog/Log.h>
+
 
 #include "../ModeloSrc/Modelo.h"
 #include "Dibujo.h"
@@ -50,18 +52,17 @@ int Vista::ancho_por_celda(){
 
 
 bool Vista::init() {
-	//Initialization flag
 	bool success = true;
 	this -> gRenderer = NULL;
 	this -> gWindow = NULL;
-	//Initialize SDL
 	if (SDL_Init( SDL_INIT_VIDEO) < 0) {
+
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		success = false;
 	} else {
 		//Set texture filtering to linear
-		if (!SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
-			printf("Warning: Linear texture filtering not enabled!");
+		if (!SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1S")) {
+			LOG_WARNING << "Atencion no funciona SDL_HINT_RENDER_SCALE_QUALITY \n";
 		}
 
 		//Create window
@@ -69,27 +70,24 @@ bool Vista::init() {
 				SDL_WINDOWPOS_UNDEFINED,  pantalla->getAncho(),pantalla->getAlto(),
 				SDL_WINDOW_SHOWN);
 		if (gWindow == NULL) {
-			printf("Window could not be created! SDL Error: %s\n",
-					SDL_GetError());
+			LOG_WARNING << "No se pudo crear la ventana .SDL Error: %s\n",
+					SDL_GetError();
+
 			success = false;
 		} else {
-			//Create vsynced renderer for window
 			gRenderer = SDL_CreateRenderer(&(*gWindow), -1,
 					SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (gRenderer == NULL) {
-				printf("Renderer could not be created! SDL Error: %s\n",
-						SDL_GetError());
+				LOG_WARNING << "No se pudo crear el renderer .SDL Error: %s\n",
+									SDL_GetError();
 				success = false;
 			} else {
-				//Initialize renderer color
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-				//Initialize PNG loading
 				int imgFlags = IMG_INIT_PNG;
 				if (!(IMG_Init(imgFlags) & imgFlags)) {
-					printf(
-							"SDL_image could not initialize! SDL_image Error: %s\n",
-							IMG_GetError());
+					LOG_WARNING << "No se pudo crear el cargador de imagenes .SDL Error: %s\n",
+										SDL_GetError();
 					success = false;
 				}
 			}

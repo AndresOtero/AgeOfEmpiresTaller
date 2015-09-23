@@ -14,6 +14,7 @@ using namespace std;
 #include <memory>
 using namespace std;
 
+
 int main() {
 	bool reiniciar = true;
 	while (reiniciar){
