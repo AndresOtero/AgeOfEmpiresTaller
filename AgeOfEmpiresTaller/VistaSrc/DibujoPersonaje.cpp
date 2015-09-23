@@ -48,42 +48,44 @@ void DibujoPersonaje::set_velocidad(int velocidad){
 	this->velocidad=velocidad;
 }
 void DibujoPersonaje::elegir_frame(int des_x,int des_y) {
-	if((des_x>0)&&(des_y==0)){
+	double angulo = (std::atan2(des_y,des_x)/M_PI)*180.0;
+
+	if((angulo<10)&&(angulo>-10)&&((des_x!=0)||(des_y!=0))){
 		movimiento_actual=DERECHA;
 		//printf("DERECHA\n");
 		//DERECHA
 	}
-	if((des_x<0)&&(des_y==0)){
+	else if((des_x<-170)||(angulo>170)){
 		movimiento_actual=IZQUIERDA;
 		//printf("IZQUIERDA\n");
 		//IZQUIERDA
 	}
-	if((des_x==0)&&(des_y<0)){
+	else if((angulo<-80)&&(angulo>-100)){
 		movimiento_actual=ARRIBA;
 		//printf("ARRIBA\n");
 		//ARRIBA
 	}
-	if((des_x==0)&&(des_y>0)){
+	else if((angulo>80)&&(angulo<100)){
 		movimiento_actual=ABAJO;
 		//printf("ABAJO\n");
 		//ABAJO
 	}
-	if((des_x>0)&&(des_y<0)){
+	else if((angulo>=-80)&&(angulo<=-10)){
 		movimiento_actual=DIAGONAL_DERECHA_ARRIBA;
 		//printf("ARRIBA_DERECHA\n");
 		//ARRIBA_DERECHA
 	}
-	if((des_x>0)&&(des_y>0)){
+	else if((angulo<=80)&&(angulo>=10)){
 		movimiento_actual=DIAGONAL_DERECHA_ABAJO;
 		//printf("ABAJO_DERECHA\n");
 		//ABAJO_DERECHA
 	}
-	if((des_x<0)&&(des_y<0)){
+	else if((angulo>=-170)&&(angulo<=-100)){
 		movimiento_actual=DIAGONAL_IZQUIERDA_ARRIBA;
 		//printf("ARRIBA_IZQUIERDA\n");
 		//ARRIBA_IZQUIERDA
 	}
-	if((des_x<0)&&(des_y>0)){
+	else if((angulo<=170)&&(angulo>=100)){
 		movimiento_actual=DIAGONAL_IZQUIERDA_ABAJO;
 		//printf("ABAJO_IZQUIERDA\n");
 		//ABAJO_IZQUIERDA
