@@ -11,8 +11,7 @@
 #include "CambioDeCoordendas.h"
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
-#define REINICIAR -2
-#define FIN 0
+
 using namespace std;
 
 class Dibujo;
@@ -29,7 +28,7 @@ class Vista {
 	//The window renderer
 	SDL_Renderer* gRenderer;
 	shared_ptr<DibujoPersonaje> personaje;
-	shared_ptr<Modelo>  modelo;
+	Modelo* modelo;
 	shared_ptr<FactoryDibujo> factory;
 	shared_ptr<CambioDeCoordendas> transformador;
 	Pantalla* pantalla;
@@ -48,7 +47,7 @@ private:
 
 
 public:
-	Vista(shared_ptr<Modelo> modelo);
+	Vista(Modelo* modelo);
 	bool init();
 	bool loadMedia();
 	int run();

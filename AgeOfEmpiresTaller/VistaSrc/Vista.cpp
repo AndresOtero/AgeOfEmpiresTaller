@@ -27,7 +27,7 @@ enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 const int ANCHO_BASE = 250;
 const int ALTO_BASE = 125;
 
-Vista::Vista(shared_ptr<Modelo>  modelo) {
+Vista::Vista(Modelo* modelo) {
 	this -> modelo = modelo;
 	this->pantalla= modelo->juego->pantalla;
 	this->referencia_mapa_x=1;// desde el punto del mapa donde se dibuja
@@ -234,7 +234,7 @@ void Vista::detectar_mouse_borde() {
 int Vista::run() { //Main loop flag
 	//Main loop flag
 	bool quit = false;
-	int fin_corrida = FIN;
+	bool resetear = false;
 	//Event handler
 	SDL_Event e;
 	int mov_x=0, mov_y=0,img_personaje_x,img_personaje_y ;
@@ -270,7 +270,7 @@ int Vista::run() { //Main loop flag
 	                  break;
 	               case SDLK_r:
 	            	   quit=true;
-	            	   fin_corrida = REINICIAR;
+	            	   resetear = true;
 	            	   break;
 	            }
 	         }
@@ -314,7 +314,7 @@ int Vista::run() { //Main loop flag
 		tiempo_viejo=tiempo_actual;
 	}
 
-	return fin_corrida;
+	return resetear;
 }
 vector<int> Vista::calcular_bordes(){
 	/**

@@ -16,7 +16,6 @@ Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	this -> posicion = new Posicion(x, y);
 }
 Entidad::~Entidad() {
-	delete this -> objetoMapa;
-	delete this -> posicion;
+
 }
 

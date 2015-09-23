@@ -54,6 +54,5 @@ void Personaje::mover(int x,int y){
 }
 
 Personaje::~Personaje() {
-	delete this->objetoMapa;
 }
 
