@@ -1,0 +1,1 @@
+﻿2015-09-23 17:20:55.592 WARN  [25500] [Yaml::read@316] Problemas para abrir el archivoyaml-cpp: error at line 0, column 0: bad dereference

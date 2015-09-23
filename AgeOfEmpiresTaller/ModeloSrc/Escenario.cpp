@@ -32,6 +32,8 @@ Escenario::~Escenario() {
 			delete entidad;
 		}
 	}
+	if(this->protagonista){
 	delete this-> protagonista;
+	}
 }
 

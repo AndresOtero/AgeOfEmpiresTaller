@@ -149,5 +149,10 @@ void DibujoPersonaje::cambiar_frame(){
 
 DibujoPersonaje::~DibujoPersonaje() {
 	// TODO Auto-generated destructor stub
+	for (int var = 0; var < CANTIDAD_DE_MOVIMIENTOS; ++var) {
+		if(this->spriteClips[var]){
+			delete this->spriteClips[var];
+		}
+	}
 }
 
