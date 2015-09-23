@@ -281,16 +281,16 @@ int Vista::run() {
 		this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,img_personaje_x,img_personaje_y);
 		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
 		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
-		int referencia_imagen_x,referencia_imagen_y;
-		this->transformador->transformar_isometrica_pantalla(personaje_x,personaje_y,referencia_imagen_x,referencia_imagen_y);
-		dibujo_pers->elegir_frame((referencia_imagen_x- img_personaje_x),(referencia_imagen_y- img_personaje_y));
-		if(!adentro_del_mapa(personaje_x,personaje_y)){
+		int adonde_va_x,adonde_va_y;
+		this->transformador->transformar_isometrica_pantalla(personaje_x,personaje_y,adonde_va_x,adonde_va_y);
+		dibujo_pers->elegir_frame((adonde_va_x- img_personaje_x),(adonde_va_y- img_personaje_y));
+		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+1)){
 			personaje_x=rint(personaje_x);
 			personaje_y=rint(personaje_y);
 		}
 		//printf("Pesonaje_x: %g\n",pers->getReferenciaMapaX());
 		//		printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
-		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+0.5)){//Hardcoding
+		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+1)){//Hardcoding
 							personaje_x=pers->getReferenciaMapaX();
 							personaje_y=pers->getReferenciaMapaY();
 		}
