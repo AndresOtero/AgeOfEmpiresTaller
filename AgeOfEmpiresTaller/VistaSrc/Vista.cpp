@@ -56,8 +56,8 @@ bool Vista::init() {
 	this -> gRenderer = NULL;
 	this -> gWindow = NULL;
 	if (SDL_Init( SDL_INIT_VIDEO) < 0) {
+		LOG_WARNING << "No pudo inicializarse SDL. SDL Error: %s\n", SDL_GetError());
 
-		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		success = false;
 	} else {
 		//Set texture filtering to linear
@@ -165,6 +165,7 @@ bool Vista::loadMedia() {
 	dibujo_t pers=this->factory->ultimo_dibujo();
 	protagonista->setDibujo(pers);
 	protagonista->setVelocidad(configuracion->get_vel_personaje()/10.0);
+
 	modelo->agregarPersonaje(protagonista);
 
 
@@ -183,8 +184,6 @@ void Vista::mover_referencia(double vel_x,double vel_y) {
 			referencia_mapa_y=ref_y;
 		}
 
-		//printf("X: %g\n", this->referencia_mapa_x);
-		//printf("Y: %g\n", this->referencia_mapa_y);
 }
 void Vista::detectar_mouse_borde() {
 	int mouse_x, mouse_y;
@@ -220,13 +219,7 @@ void Vista::detectar_mouse_borde() {
 		mover_referencia(0, vel_y);
 
 
-	}/**
-	if ((mouse_y < (this->pantalla->getAlto() - mov_pantalla_y))
-			&& (mouse_y > mov_pantalla_y)
-			&& (mouse_x < (this->pantalla->getAncho() - mov_pantalla_x)
-					&& (mouse_x > mov_pantalla_x))) {
-		printf("in\n");
-	}**/
+	}
 }
 
 int Vista::run() {
@@ -280,14 +273,14 @@ int Vista::run() {
 		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
 		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
 		int adonde_va_x,adonde_va_y;
-		this->transformador->transformar_isometrica_pantalla(personaje_x-1.5,personaje_y+1,adonde_va_x,adonde_va_y);
+		this->transformador->transformar_isometrica_pantalla(personaje_x,personaje_y,adonde_va_x,adonde_va_y);
 		dibujo_pers->elegir_frame((adonde_va_x- img_personaje_x),(adonde_va_y- img_personaje_y));
 		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+1)){
 			personaje_x=rint(personaje_x);
 			personaje_y=rint(personaje_y);
 		}
 		//printf("Pesonaje_x: %g\n",pers->getReferenciaMapaX());
-		//		printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
+		//printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
 		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+1)){//Hardcoding
 							personaje_x=pers->getReferenciaMapaX();
 							personaje_y=pers->getReferenciaMapaY();
@@ -300,14 +293,8 @@ int Vista::run() {
 
 		double x,y;
 		this->transformador->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
-		printf("iso_x: %d\n",mouse_x);
-		printf("iso_y: %d\n",mouse_y);
-		printf("Referencia_x: %g\n",this->referencia_mapa_x);
-		printf("Referencia_y: %g\n",this->referencia_mapa_y);
 		x+=referencia_mapa_x;
 		y+=referencia_mapa_y;
-		printf("Cart_x: %g\n", x);
-		printf("Cart_y: %g\n", y);
 		this->detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
 

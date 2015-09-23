@@ -51,5 +51,5 @@ escenario:
   - { x : 3, y: 0, tipo: firestation }
  protagonista:
   - tipo: soldado
-    x: 3
-    y: 3
+    x: 5
+    y: 5
