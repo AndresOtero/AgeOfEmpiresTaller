@@ -24,10 +24,9 @@ void CambioDeCoordendas::transformar_isometrica_pantalla(int iso_x,int iso_y,int
 void CambioDeCoordendas::transformar_pantalla_isometrica(int pant_x,int pant_y,double& iso_x,double& iso_y){
 	double termino_x=  ( (double)pant_x/ (this->ancho_por_celda()/2)) ;
 	double termino_y= ( (double)pant_y/ (this->altura_por_celda()/2) );
-	iso_x= (termino_x+ termino_y)/2;//MAGIA NEGRA
-	iso_y = (termino_y - termino_x)/2;//En serio no se porque funciona
+	iso_x= (termino_x+ termino_y)/2;
+	iso_y = (termino_y - termino_x)/2;
 }
-
 void CambioDeCoordendas::transformar_pantalla_isometrica(int pant_x,int pant_y,int& iso_x,int& iso_y){
 	double termino_x=  ( (double)pant_x/ (this->ancho_por_celda()/2)) ;
 	double termino_y= ( (double)pant_y/ (this->altura_por_celda()/2) );

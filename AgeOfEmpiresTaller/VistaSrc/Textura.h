@@ -5,8 +5,8 @@
  *      Author: andres
  */
 
-#ifndef Textura_H_
-#define Textura_H_
+#ifndef TEXTURA_H_
+#define TEXTURA_H_
 
 #include <string>
 #include<SDL2/SDL.h>

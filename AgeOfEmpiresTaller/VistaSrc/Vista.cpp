@@ -24,8 +24,8 @@
 enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define DIMENSIONES 2
 
-const int ANCHO_BASE = 250;
-const int ALTO_BASE = 125;
+const int ANCHO_BASE = 249;
+const int ALTO_BASE = 124;
 
 Vista::Vista(Modelo* modelo) {
 	this -> modelo = modelo;
@@ -275,22 +275,22 @@ int Vista::run() {
 
 		dibujar_mapa();
 
-		printf("Adonde voy x: %g\n",personaje_x);
-		printf("Adonde voy y: %g\n",personaje_y);
+		//printf("Adonde voy x: %g\n",personaje_x);
+		//printf("Adonde voy y: %g\n",personaje_y);
 
-		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
 		this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,img_personaje_x,img_personaje_y);
+		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
 		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
-		//int referencia_imagen_x,referencia_imagen_y;
-		//this->transformador->transformar_isometrica_pantalla(personaje_x,personaje_y,referencia_imagen_x,referencia_imagen_y);
-		dibujo_pers->elegir_frame((mov_x- img_personaje_x),(mov_y- img_personaje_y));
+		int referencia_imagen_x,referencia_imagen_y;
+		this->transformador->transformar_isometrica_pantalla(personaje_x,personaje_y,referencia_imagen_x,referencia_imagen_y);
+		dibujo_pers->elegir_frame((referencia_imagen_x- img_personaje_x),(referencia_imagen_y- img_personaje_y));
 		if(!adentro_del_mapa(personaje_x,personaje_y)){
 			personaje_x=rint(personaje_x);
 			personaje_y=rint(personaje_y);
 		}
-		printf("Pesonaje_x: %g\n",pers->getReferenciaMapaX());
-				printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
-		if(!adentro_del_mapa(personaje_x,personaje_y)){
+		//printf("Pesonaje_x: %g\n",pers->getReferenciaMapaX());
+		//		printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
+		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+0.5)){//Hardcoding
 							personaje_x=pers->getReferenciaMapaX();
 							personaje_y=pers->getReferenciaMapaY();
 		}
@@ -300,14 +300,16 @@ int Vista::run() {
 		int mouse_x,mouse_y;
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 
-		int x,y;
+		double x,y;
 		this->transformador->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
-		/**printf("iso_x: %d\n",mouse_x);
+		printf("iso_x: %d\n",mouse_x);
 		printf("iso_y: %d\n",mouse_y);
+		printf("Referencia_x: %g\n",this->referencia_mapa_x);
+		printf("Referencia_y: %g\n",this->referencia_mapa_y);
 		x+=referencia_mapa_x;
 		y+=referencia_mapa_y;
-		printf("Cart_x: %d\n", x);
-		printf("Cart_y: %d\n", y);**/
+		printf("Cart_x: %g\n", x);
+		printf("Cart_y: %g\n", y);
 		this->detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
 
