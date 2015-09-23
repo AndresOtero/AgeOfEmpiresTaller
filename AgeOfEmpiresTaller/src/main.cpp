@@ -15,15 +15,18 @@ using namespace std;
 using namespace std;
 
 int main() {
-	shared_ptr<Yaml> reader(new Yaml());
-	Juego* juego = reader->read();
+	int reiniciar = REINICIAR;
+	//while (reiniciar==REINICIAR){
+		shared_ptr<Yaml> reader(new Yaml());
+		Juego* juego = reader->read();
 
-	shared_ptr<Modelo> modelo(new Modelo(juego));
+		shared_ptr<Modelo> modelo(new Modelo(juego));
 
-	shared_ptr<Vista> vista ( new Vista(modelo));
+		shared_ptr<Vista> vista ( new Vista(modelo));
 
-	vista->init();
-	vista->loadMedia();
-	vista->run();
+		vista->init();
+		vista->loadMedia();
+		reiniciar = vista->run();
+	//}
 
 }
