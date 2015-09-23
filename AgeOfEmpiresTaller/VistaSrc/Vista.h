@@ -11,7 +11,8 @@
 #include "CambioDeCoordendas.h"
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
-
+#define REINICIAR -2
+#define FIN 0
 using namespace std;
 
 class Dibujo;

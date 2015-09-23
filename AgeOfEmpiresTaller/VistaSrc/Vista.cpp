@@ -234,7 +234,7 @@ void Vista::detectar_mouse_borde() {
 int Vista::run() { //Main loop flag
 	//Main loop flag
 	bool quit = false;
-
+	int fin_corrida = FIN;
 	//Event handler
 	SDL_Event e;
 	int mov_x=0, mov_y=0,img_personaje_x,img_personaje_y ;
@@ -261,6 +261,19 @@ int Vista::run() { //Main loop flag
 				personaje_x+=referencia_mapa_x;
 				personaje_y+=referencia_mapa_y;
 			}
+			if (e.type == SDL_KEYDOWN) {
+	            SDL_Keycode keyPressed = e.key.keysym.sym;
+
+	            switch (keyPressed){
+	               case SDLK_ESCAPE:
+	                  quit = true;
+	                  break;
+	               case SDLK_r:
+	            	   quit=true;
+	            	   fin_corrida = REINICIAR;
+	            	   break;
+	            }
+	         }
 		}
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0, 0,0, 0);
@@ -301,7 +314,7 @@ int Vista::run() { //Main loop flag
 		tiempo_viejo=tiempo_actual;
 	}
 
-	return 0;
+	return fin_corrida;
 }
 vector<int> Vista::calcular_bordes(){
 	/**
