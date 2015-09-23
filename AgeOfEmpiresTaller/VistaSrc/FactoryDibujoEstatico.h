@@ -10,7 +10,7 @@
 #include "memory.h"
 
 #include "DibujoEstatico.h"
-#include "DibujoEstaticoAnimado.h"
+#include "DibujoAnimado.h"
 using namespace std;
 #ifndef FACTORYDIBUJO_H_
 #define FACTORYDIBUJO_H_
@@ -27,7 +27,7 @@ public:
 	bool crear_dibujo_animado(string path,size_t cantidad_de_imagenes,std::vector<std::vector<int> >parametros_de_imagen,int fps);
 	bool crear_dibujo_personaje(string path,size_t cantidad_de_movimientos,vector<int> cantidad_de_imagenes,std::vector<std::vector<int> >parametros_de_imagen,int fps,int velocidad);
 	shared_ptr<Dibujo_Estatico> get_dibujo(size_t n_dibujo);
-	size_t ultimo_dibujo();
+	int ultimo_dibujo();
 	virtual ~FactoryDibujo();
 private:
 	void set_dibujo(shared_ptr<Dibujo_Estatico> dibujo);
