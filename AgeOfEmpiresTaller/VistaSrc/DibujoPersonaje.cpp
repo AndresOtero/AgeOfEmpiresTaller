@@ -88,6 +88,9 @@ void DibujoPersonaje::elegir_frame(double des_x,double des_y) {
 		//printf("ABAJO_IZQUIERDA\n");
 		//ABAJO_IZQUIERDA
 	}
+	if((des_x!=0)&&(des_y!=0)){
+		this->cambiar_frame();
+	}
 }
 int DibujoPersonaje::get_alto(int n_mov,int n_imagen){
 	return spriteClips[n_mov][n_imagen].h;
@@ -131,7 +134,7 @@ void DibujoPersonaje::mover(int x, int y) {
 		x_imagen += des_x;
 		y_imagen += des_y;
 		this->elegir_frame(des_x,des_y);
-		this->cambiar_frame();
+
 	}
 }
 void DibujoPersonaje::cambiar_frame(){

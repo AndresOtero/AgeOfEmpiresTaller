@@ -33,17 +33,17 @@ class Vista {
 	shared_ptr<CambioDeCoordendas> transformador;
 	Pantalla* pantalla;
 	int margen_scroll;
-	float referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
+	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;
 private:
 	void dibujar_mapa();
-	void mover_referencia(float vel_x,float vel_y);
+	void mover_referencia(double vel_x,double vel_y);
 	int ancho_por_celda();
 	int altura_por_celda();
 	vector<int> calcular_bordes();
 	void detectar_mouse_borde();
 	bool adentro_del_mapa(int coord_x, int coord_y);
-	bool adentro_del_mapa(float coord_x, float coord_y);
+	bool adentro_del_mapa(double coord_x, double coord_y);
 
 
 public:

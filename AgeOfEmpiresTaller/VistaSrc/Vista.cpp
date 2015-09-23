@@ -24,8 +24,8 @@
 enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define DIMENSIONES 2
 
-const int ANCHO_BASE = 249;
-const int ALTO_BASE = 124;
+const int ANCHO_BASE = 250;
+const int ALTO_BASE = 125;
 
 Vista::Vista(shared_ptr<Modelo>  modelo) {
 	this -> modelo = modelo;
@@ -38,12 +38,12 @@ Vista::Vista(shared_ptr<Modelo>  modelo) {
 }
 
 int Vista::altura_por_celda(){
-	return 124;
+	return ALTO_BASE;
 	//devuelve alto de imagen
 }
 
 int Vista::ancho_por_celda(){
-	return 249;
+	return ANCHO_BASE;
 	//devuelve ancho de imagen
 
 }
@@ -173,8 +173,8 @@ bool Vista::loadMedia() {
 
 	return true;
 }
-void Vista::mover_referencia(float vel_x,float vel_y) {
-		float ref_x, ref_y;
+void Vista::mover_referencia(double vel_x,double vel_y) {
+		double ref_x, ref_y;
 
 		this->transformador->transformar_pantalla_isometrica(vel_x,vel_y,ref_x,ref_y);
 		ref_x+=referencia_mapa_x;
@@ -195,19 +195,19 @@ void Vista::detectar_mouse_borde() {
 	int mov_pantalla_x = margen_scroll, mov_pantalla_y = margen_scroll;
 
 	if ((mouse_x < mov_pantalla_x)) {
-		float vel_x = (-1)*this->velocidad_de_scroll
+		double vel_x = (-1)*this->velocidad_de_scroll
 				* (mov_pantalla_x-mouse_x);
 		mover_referencia(vel_x, 0);
 
 	}
 	if ((mouse_x > (this->pantalla->getAncho() - mov_pantalla_x))) {
-		float vel_x = this->velocidad_de_scroll
+		double vel_x = this->velocidad_de_scroll
 				* (mouse_x - (this->pantalla->getAncho() - mov_pantalla_x));
 		mover_referencia(vel_x, 0);
 
 	}
 	if (mouse_y < mov_pantalla_y) {
-		float vel_y = (-1)*this->velocidad_de_scroll * (mov_pantalla_y - mouse_y);
+		double vel_y = (-1)*this->velocidad_de_scroll * (mov_pantalla_y - mouse_y);
 
 		mover_referencia(0, vel_y);
 
@@ -216,7 +216,7 @@ void Vista::detectar_mouse_borde() {
 	if (mouse_y > (this->pantalla->getAlto() - mov_pantalla_y)) {
 
 
-		float vel_y = this->velocidad_de_scroll
+		double vel_y = this->velocidad_de_scroll
 				* (mouse_y - (this->pantalla->getAlto() - mov_pantalla_y));
 
 		mover_referencia(0, vel_y);
@@ -237,16 +237,16 @@ int Vista::run() { //Main loop flag
 
 	//Event handler
 	SDL_Event e;
-	int mov_x, mov_y,img_personaje_x,img_personaje_y ;
+	int mov_x=0, mov_y=0,img_personaje_x,img_personaje_y ;
 	Personaje* pers=this->modelo->devolverPersonaje();
-	this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX(),pers->getReferenciaMapaY(),mov_x,mov_y);
+	this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
 	/**this->personaje->set_posicion_default(mov_x,mov_y);**/
 
-	int personaje_x=pers->getReferenciaMapaX(),personaje_y=pers->getReferenciaMapaY();
+	double personaje_x=pers->getReferenciaMapaX(),personaje_y=pers->getReferenciaMapaY();
 
 	//While application is running
 	while (!quit) {
-		float tiempo_actual,tiempo_viejo=0;
+		double tiempo_actual,tiempo_viejo=0;
 		tiempo_viejo=SDL_GetTicks();
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0) {
@@ -272,12 +272,13 @@ int Vista::run() { //Main loop flag
 		pers->mover(personaje_x,personaje_y);
 		printf("Pesonaje_x: %g\n",pers->getReferenciaMapaX());
 		printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
+		printf("Adonde voy x: %g\n",referencia_mapa_x);
+		printf("Adonde voy y: %g\n",referencia_mapa_y);
+		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
 		this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,img_personaje_x,img_personaje_y);
-		shared_ptr<Dibujo> dibujo_pers=this->factory->get_dibujo(pers->dibujar());
 		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
+		//dibujo_pers->elegir_frame((mov_x- img_personaje_x),(mov_y- img_personaje_y));
 		dibujo_pers->render(gRenderer);
-		//this->personaje->render(gRenderer);
-		//this->personaje->mover(mov_x, mov_y);
 		int mouse_x,mouse_y;
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 
@@ -325,7 +326,7 @@ vector<int> Vista::calcular_bordes(){
 	return bordes;
 }
 
-bool Vista::adentro_del_mapa(float coord_x,float coord_y){
+bool Vista::adentro_del_mapa(double coord_x,double coord_y){
 	return ((coord_x < this->modelo->get_ancho_mapa())
 			&& (coord_y < this->modelo->get_alto_mapa())
 			&& (coord_x > 0) && (coord_y >0));

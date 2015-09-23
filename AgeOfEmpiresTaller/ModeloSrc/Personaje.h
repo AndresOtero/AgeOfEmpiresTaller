@@ -13,9 +13,9 @@ typedef int dibujo_t;
 
 class Personaje {
 
-	float referencia_mapa_x,referencia_mapa_y;
+	double referencia_mapa_x,referencia_mapa_y;
 	dibujo_t dibujo;
-	float velocidad;
+	double velocidad;
 
 public:
 	Personaje();
@@ -27,7 +27,7 @@ public:
 	virtual ~Personaje();
 	void mover(int x,int y);
 
-	void setVelocidad(float velocidad) {
+	void setVelocidad(double velocidad) {
 		this->velocidad = velocidad;
 	}
 
@@ -35,11 +35,11 @@ public:
 		this->dibujo = dibujo;
 	}
 
-	float getReferenciaMapaX() const {
+	double getReferenciaMapaX() const {
 		return referencia_mapa_x;
 	}
 
-	float getReferenciaMapaY() const {
+	double getReferenciaMapaY() const {
 		return referencia_mapa_y;
 	}
 };

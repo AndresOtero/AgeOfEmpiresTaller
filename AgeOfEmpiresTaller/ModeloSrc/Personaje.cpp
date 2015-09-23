@@ -55,6 +55,7 @@ void Personaje::mover(int x,int y){
 		}
 		this->referencia_mapa_x += des_x;
 		this->referencia_mapa_y += des_y;
+
 	}
 
 }
