@@ -7,11 +7,14 @@
 
 #include "DibujoAnimado.h"
 
+
 DibujoAnimado::DibujoAnimado() {
 	// TODO Auto-generated constructor stub
 	this -> acumulador = 0;
 	this->fps=1;
 	this->spriteClips=NULL;
+	this->delay=1;
+	gettimeofday(&estado,NULL);
 }
 
 void DibujoAnimado::set_cantidad_de_imagenes(int cant_de_imagenes) {
@@ -21,6 +24,7 @@ void DibujoAnimado::set_cantidad_de_imagenes(int cant_de_imagenes) {
 	this->imagen_actual = 0;
 	this->spriteClips = new SDL_Rect[cant_de_imagenes];
 	this->cantidad_de_imagenes = cant_de_imagenes;
+	this->termino_animacion = cant_de_imagenes;
 }
 
 void DibujoAnimado::set_imagen(unsigned int n_imagen, int x, int y,int h, int w) {
@@ -42,12 +46,27 @@ void DibujoAnimado::render( SDL_Renderer* renderer) {
 void DibujoAnimado::set_fps(int fps) {
 	this->fps = fps;
 }
+void DibujoAnimado::set_delay(double delay){
+	this->delay = delay;
+}
 
 void DibujoAnimado::cambiar_frame(){
-	acumulador++;
-	if((fps)<=acumulador){
-		imagen_actual++;
-		acumulador=0;
+	struct timeval actual;
+	gettimeofday(&actual,NULL);
+	double ti = estado.tv_sec+(estado.tv_usec/1000000.0);
+	double tf = actual.tv_sec+(actual.tv_usec/1000000.0);
+	double tiempo = tf - ti;
+	if ( tiempo > delay){
+		acumulador++;
+		if((fps)<=acumulador){
+			imagen_actual++;
+			acumulador=0;
+			termino_animacion -= 1;
+		}
+		if (termino_animacion == 0){
+			gettimeofday(&estado,NULL);
+			termino_animacion = this->cantidad_de_imagenes;
+		}
 	}
 
 }
