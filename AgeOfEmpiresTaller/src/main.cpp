@@ -16,7 +16,7 @@ using namespace std;
 
 int main() {
 	int reiniciar = REINICIAR;
-	//while (reiniciar==REINICIAR){
+	while (reiniciar==REINICIAR){
 		shared_ptr<Yaml> reader(new Yaml());
 		Juego* juego = reader->read();
 
@@ -27,6 +27,6 @@ int main() {
 		vista->init();
 		vista->loadMedia();
 		reiniciar = vista->run();
-	//}
+	}
 
 }

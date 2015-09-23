@@ -45,14 +45,7 @@ void Personaje::mover(int x,int y){
 		}
 		double des_x = (velocidad * delta_x) / distancia;
 		double des_y = (velocidad * delta_y) / distancia;
-		if ((sqrt(des_x * des_x) > distancia)
-				&& (sqrt(des_y * des_y) < distancia)) {
-			this->referencia_mapa_x = x;
-		}
-		if ((sqrt(des_y * des_y) > distancia)
-				&& ((sqrt(des_x * des_x) < distancia))) {
-			this->referencia_mapa_y = y;
-		}
+
 		this->referencia_mapa_x += des_x;
 		this->referencia_mapa_y += des_y;
 

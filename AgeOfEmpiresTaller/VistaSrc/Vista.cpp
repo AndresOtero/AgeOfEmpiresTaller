@@ -185,8 +185,8 @@ void Vista::mover_referencia(double vel_x,double vel_y) {
 			referencia_mapa_y=ref_y;
 		}
 
-		printf("X: %g\n", this->referencia_mapa_x);
-		printf("Y: %g\n", this->referencia_mapa_y);
+		//printf("X: %g\n", this->referencia_mapa_x);
+		//printf("Y: %g\n", this->referencia_mapa_y);
 }
 void Vista::detectar_mouse_borde() {
 	int mouse_x, mouse_y;
@@ -285,8 +285,8 @@ int Vista::run() { //Main loop flag
 		pers->mover(personaje_x,personaje_y);
 		printf("Pesonaje_x: %g\n",pers->getReferenciaMapaX());
 		printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
-		printf("Adonde voy x: %g\n",referencia_mapa_x);
-		printf("Adonde voy y: %g\n",referencia_mapa_y);
+		printf("Adonde voy x: %g\n",personaje_x);
+		printf("Adonde voy y: %g\n",personaje_y);
 		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
 		this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,img_personaje_x,img_personaje_y);
 		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
