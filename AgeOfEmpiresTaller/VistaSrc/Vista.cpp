@@ -150,7 +150,7 @@ bool Vista::loadMedia() {
 	for (int i = 0; i < 8; i++) {
 		v3d[i] = vector<vector<dibujo_t>>(8);
 		for (int j = 0; j < 8; j++) {
-			vector<dibujo_t> v ={ j * 128, i * 128, 128, 128 };
+			vector<dibujo_t> v ={ j * 64, i * 64, 64, 64 };
 			v3d[i][j]=v;
 		}
 	}
@@ -224,7 +224,6 @@ void Vista::detectar_mouse_borde() {
 
 int Vista::run() {
 	bool quit = false;
-	bool resetear = false;
 	SDL_Event e;
 	int mov_x=0, mov_y=0,img_personaje_x,img_personaje_y ;
 	Personaje* pers=this->modelo->devolverPersonaje();

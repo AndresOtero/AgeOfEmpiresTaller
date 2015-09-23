@@ -3,15 +3,15 @@ pantalla:
  alto: 600
 
 configuracion:
- vel_personaje: 1
- margen_scroll: 300
+ vel_personaje: 2
+ margen_scroll: 50
 
 tipos: 
  - nombre: barraca
    imagen: img/dibujo_estatico/construcciones/barraks/barraks.png
 
  - nombre: soldado
-   imagen: img/protagonista/spartan.png
+   imagen: img/protagonista/spartan_small.png
    fps: 10
    delay: 5
 
@@ -49,6 +49,13 @@ escenario:
   - { x : 4, y: 4, tipo: wheel }
   - { x : 3, y: 1, tipo: barraca }
   - { x : 3, y: 0, tipo: firestation }
+  - { x : 20, y: 10, tipo: pino }
+  - { x : 20, y: 00, tipo: arbol }
+  - { x : 60, y: 6, tipo: church }
+  - { x : 40, y: 0, tipo: herreria }
+  - { x : 40, y: 4, tipo: wheel }
+  - { x : 30, y: 10, tipo: barraca }
+  - { x : 30, y: 0, tipo: firestation }
  protagonista:
   - tipo: soldado
     x: 2
