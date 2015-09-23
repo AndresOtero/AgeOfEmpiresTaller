@@ -253,6 +253,7 @@ int Vista::run() {
 				this->transformador->transformar_pantalla_isometrica(mov_x,mov_y,personaje_x,personaje_y);
 				personaje_x+=referencia_mapa_x;
 				personaje_y+=referencia_mapa_y;
+
 			}
 			if (e.type == SDL_KEYDOWN) {
 	            SDL_Keycode keyPressed = e.key.keysym.sym;
@@ -277,12 +278,18 @@ int Vista::run() {
 		printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
 		printf("Adonde voy x: %g\n",personaje_x);
 		printf("Adonde voy y: %g\n",personaje_y);
+
 		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
 		this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,img_personaje_x,img_personaje_y);
 		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
 		//int referencia_imagen_x,referencia_imagen_y;
 		//this->transformador->transformar_isometrica_pantalla(personaje_x,personaje_y,referencia_imagen_x,referencia_imagen_y);
-		dibujo_pers->elegir_frame((mov_x- img_personaje_x),(mov_y- img_personaje_y));
+		if(!adentro_del_mapa(personaje_x,personaje_y)){
+			personaje_x=round(pers->getReferenciaMapaX());
+			personaje_y=round(pers->getReferenciaMapaY());
+		}else{
+			dibujo_pers->elegir_frame((mov_x- img_personaje_x),(mov_y- img_personaje_y));
+		}
 		pers->mover(personaje_x,personaje_y);
 		dibujo_pers->render(gRenderer);
 		int mouse_x,mouse_y;
