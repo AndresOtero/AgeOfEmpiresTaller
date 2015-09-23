@@ -34,7 +34,7 @@ Vista::Vista(Modelo* modelo) {
 	this->pantalla= modelo->juego->pantalla;
 	this->referencia_mapa_x=1;// desde el punto del mapa donde se dibuja
 	this->referencia_mapa_y=1;
-	this->velocidad_de_scroll=0.1;
+	this->velocidad_de_scroll=0.25;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
 }
@@ -50,11 +50,11 @@ int Vista::ancho_por_celda(){
 
 }
 
-
 bool Vista::init() {
 	bool success = true;
 	this -> gRenderer = NULL;
 	this -> gWindow = NULL;
+	plog::init(plog::warning, "Log.txt" );
 	if (SDL_Init( SDL_INIT_VIDEO) < 0) {
 		LOG_WARNING << "No pudo inicializarse SDL. SDL Error: %s\n", SDL_GetError();
 
@@ -254,9 +254,7 @@ int Vista::run() {
 	                  quit = true;
 	                  break;
 	               case SDLK_r:
-	            	   quit=true;
-	            	   resetear = true;
-	            	   break;
+	            	   return true;
 	            }
 	         }
 		}
@@ -305,7 +303,7 @@ int Vista::run() {
 		tiempo_viejo=tiempo_actual;
 	}
 
-	return resetear;
+	return false;
 }
 vector<int> Vista::calcular_bordes(){
 	/**

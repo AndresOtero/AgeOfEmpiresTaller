@@ -17,21 +17,22 @@ using namespace std;
 
 int main() {
 	bool reiniciar = true;
+
+
 	while (reiniciar){
 		Yaml* reader=new Yaml();
 		Juego* juego = reader->read();
-
+		delete reader;
 		Modelo* modelo=new Modelo(juego);
-
 		Vista* vista=new Vista(modelo);
-
 		vista->init();
 		vista->loadMedia();
 		reiniciar = vista->run();
-		delete reader;
-		delete juego;
 		delete modelo;
 		delete vista;
+
 	}
+
+
 
 }
