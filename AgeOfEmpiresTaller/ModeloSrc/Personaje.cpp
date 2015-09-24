@@ -13,6 +13,7 @@ Personaje::Personaje(){
 	this->objetoMapa = new ObjetoMapa("protagonistaDefault", "img/protagonista/spartan_small.png");
 	this->referencia_mapa_x=5;
 	this->referencia_mapa_y=2;
+
 	this->objetoMapa->fps = 20; //FPS DEFAULT
 	this->velocidad=1;
 	this->objetoMapa->delay = 0; //delay default

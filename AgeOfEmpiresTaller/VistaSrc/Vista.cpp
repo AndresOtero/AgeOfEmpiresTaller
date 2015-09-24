@@ -32,8 +32,8 @@ const int ALTO_BASE = 124;
 Vista::Vista(Modelo* modelo) {
 	this -> modelo = modelo;
 	this->pantalla= modelo->juego->pantalla;
-	this->referencia_mapa_x=1;// desde el punto del mapa donde se dibuja
-	this->referencia_mapa_y=1;
+	this->referencia_mapa_x=this->modelo->juego->escenario->protagonista->getReferenciaMapaX()-1;// desde el punto del mapa donde se dibuja
+	this->referencia_mapa_y=this->modelo->juego->escenario->protagonista->getReferenciaMapaY()-1;
 	this->velocidad_de_scroll=0.25;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
@@ -106,7 +106,7 @@ bool Vista::loadMedia() {
 	vector<int> v1dPasto={0,0,ANCHO_BASE,ALTO_BASE};
 	this->factory->crear_dibujo_estatico(entidadPasto->objetoMapa->imagen,v1dPasto);
 	dibujo_t pasto_id=this->factory->ultimo_dibujo();
-
+	delete entidadPasto;
 	std::map<std::string, ObjetoMapa*> ::iterator it;
 	std::map<std::string, dibujo_t> hashDibujos;
 
@@ -372,9 +372,8 @@ void Vista::dibujar_mapa() {
 }
 
 Vista::~Vista() {
-
-	 SDL_DestroyWindow( gWindow);
 	SDL_DestroyRenderer(gRenderer);
+	SDL_DestroyWindow( gWindow);
 
 	gWindow = NULL;
 	gRenderer = NULL;

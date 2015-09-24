@@ -21,9 +21,7 @@ Textura::Textura() {
 }
 
 Textura::~Textura() {
-	if(this->mTexture){
-
-	}
+	free();
 }
 
 bool Textura::loadFromFile(std::string path, SDL_Renderer* gRenderer) {
