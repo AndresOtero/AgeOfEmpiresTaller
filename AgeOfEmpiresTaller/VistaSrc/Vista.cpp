@@ -25,6 +25,8 @@
 #include "DibujoPersonaje.h"
 enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define DIMENSIONES 2
+#define ANIMACIONES 5
+#define MOVIMIENTOS 8
 
 const int ANCHO_BASE = 249;
 const int ALTO_BASE = 124;
@@ -111,8 +113,8 @@ bool Vista::loadMedia() {
 	std::map<std::string, dibujo_t> hashDibujos;
 
 	//***********DIBUJOS (TIPOS EN YAML)*****************
-	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(5);
-	for(int i=0;i<5;i++){
+	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(ANIMACIONES);
+	for(int i=0;i<ANIMACIONES;i++){
 		v2d[i]={i*128,0};
 	}
 	for ( it = modelo->juego->tipos.begin(); it !=modelo->juego->tipos.end(); it++ )
@@ -225,7 +227,7 @@ void Vista::detectar_mouse_borde() {
 int Vista::run() {
 	bool quit = false;
 	SDL_Event e;
-	int mov_x=0, mov_y=0,img_personaje_x,img_personaje_y ;
+	int mov_x=0, mov_y=0;
 	Personaje* pers=this->modelo->devolverPersonaje();
 	this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
 
@@ -262,29 +264,8 @@ int Vista::run() {
 
 
 		dibujar_mapa();
+		dibujar_personaje(personaje_x,personaje_y,pers);
 
-		//printf("Adonde voy x: %g\n",personaje_x);
-		//printf("Adonde voy y: %g\n",personaje_y);
-
-		this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,img_personaje_x,img_personaje_y);
-		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(pers->dibujar()));
-		dibujo_pers->set_posicion_default(img_personaje_x,img_personaje_y);
-		int adonde_va_x,adonde_va_y;
-		this->transformador->transformar_isometrica_pantalla(personaje_x-referencia_mapa_x,personaje_y - referencia_mapa_y,adonde_va_x,adonde_va_y);
-		dibujo_pers->elegir_frame((adonde_va_x- img_personaje_x),(adonde_va_y- img_personaje_y));
-		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+0.5)){
-			personaje_x=rint(personaje_x);
-			personaje_y=rint(personaje_y);
-		}
-		//printf("Pesonaje_x: %g\n",pers->getReferenciaMapaX());
-		//printf("Pesonaje_y: %g\n",pers->getReferenciaMapaY());
-		if(!adentro_del_mapa(personaje_x-1.5,personaje_y+0.5)){//Hardcoding
-							personaje_x=pers->getReferenciaMapaX();
-							personaje_y=pers->getReferenciaMapaY();
-		}
-
-		pers->mover(personaje_x,personaje_y);
-		dibujo_pers->render(gRenderer);
 		int mouse_x,mouse_y;
 		SDL_GetMouseState(&mouse_x, &mouse_y);
 
@@ -298,7 +279,6 @@ int Vista::run() {
 
 		usleep((40 - (tiempo_actual-tiempo_viejo))*1000);
 		tiempo_actual= SDL_GetTicks();
-		//printf("time: %f",tiempo_actual-tiempo_viejo);
 		tiempo_viejo=tiempo_actual;
 	}
 
@@ -337,6 +317,31 @@ bool Vista::adentro_del_mapa(int coord_x,int coord_y){
 	return ((coord_x < this->modelo->get_ancho_mapa())
 			&& (coord_y < this->modelo->get_alto_mapa())
 			&& (coord_x >= 0) && (coord_y >= 0));
+}
+
+void Vista::dibujar_personaje(double mover_x, double mover_y,Personaje* personaje) {
+	int img_personaje_x,img_personaje_y ;
+	this->transformador->transformar_isometrica_pantalla(
+			personaje->getReferenciaMapaX() - referencia_mapa_x,
+			personaje->getReferenciaMapaY() - referencia_mapa_y, img_personaje_x,
+			img_personaje_y);
+	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
+			DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
+	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
+	int adonde_va_x, adonde_va_y;
+	this->transformador->transformar_isometrica_pantalla(
+			mover_x - referencia_mapa_x, mover_y - referencia_mapa_y,
+			adonde_va_x, adonde_va_y);
+	dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
+			(adonde_va_y - img_personaje_y));
+
+	if (!adentro_del_mapa(mover_x - 1.5, mover_y + 0.5)) { //Hardcoding
+		mover_x = personaje->getReferenciaMapaX();
+		mover_y = personaje->getReferenciaMapaY();
+	}
+
+	personaje->mover(mover_x, mover_y);
+	dibujo_pers->render(gRenderer);
 }
 
 void Vista::dibujar_mapa() {

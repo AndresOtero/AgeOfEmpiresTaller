@@ -11,7 +11,7 @@
 #include "CambioDeCoordendas.h"
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
-
+#include "../ModeloSrc/Personaje.h"
 using namespace std;
 
 class Dibujo;
@@ -23,9 +23,7 @@ struct SDL_Renderer;
 #define VISTA_H_
 
 class Vista {
-	//The window we'll be rendering to
 	SDL_Window* gWindow;
-	//The window renderer
 	SDL_Renderer* gRenderer;
 	shared_ptr<DibujoPersonaje> personaje;
 	Modelo* modelo;
@@ -44,6 +42,7 @@ private:
 	void detectar_mouse_borde();
 	bool adentro_del_mapa(int coord_x, int coord_y);
 	bool adentro_del_mapa(double coord_x, double coord_y);
+	void dibujar_personaje(double mover_x, double mover_y,Personaje* personje);
 
 
 public:
