@@ -12,7 +12,6 @@
 typedef int dibujo_t;
 
 class Personaje {
-
 	double referencia_mapa_x,referencia_mapa_y;
 	dibujo_t dibujo;
 	double velocidad;
@@ -42,6 +41,8 @@ public:
 	double getReferenciaMapaY() const {
 		return referencia_mapa_y;
 	}
+private:
+	Posicion calcular_camino(double x,double y);
 };
 
 #endif /* PERSONAJE_H_ */

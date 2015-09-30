@@ -19,7 +19,6 @@ void Celda::setEscenario(dibujo_t dibujo_n){
 	this->escenario=dibujo_n;
 }
 void Celda::setTiles(dibujo_t dibujo_n){
-	this->ocupada=true;
 	this->tiles=dibujo_n;
 }
 dibujo_t Celda::dibujarTiles(){

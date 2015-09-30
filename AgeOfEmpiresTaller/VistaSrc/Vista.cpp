@@ -27,9 +27,12 @@ enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define DIMENSIONES 2
 #define ANIMACIONES 5
 #define MOVIMIENTOS 8
-
-const int ANCHO_BASE = 249;
-const int ALTO_BASE = 124;
+#define CANTIDAD_DE_IMAGENES 8
+#define ANCHO_BASE  249
+#define ALTO_BASE  124
+#define ANCHO_ANIMACION 128
+#define ANCHO_PERSONAJE 64
+#define ALTO_PERSONAJE 64
 
 Vista::Vista(Modelo* modelo) {
 	this -> modelo = modelo;
@@ -115,7 +118,7 @@ bool Vista::loadMedia() {
 	//***********DIBUJOS (TIPOS EN YAML)*****************
 	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(ANIMACIONES);
 	for(int i=0;i<ANIMACIONES;i++){
-		v2d[i]={i*128,0};
+		v2d[i]={i*ANCHO_ANIMACION,0};
 	}
 	for ( it = modelo->juego->tipos.begin(); it !=modelo->juego->tipos.end(); it++ )
 	{
@@ -142,28 +145,28 @@ bool Vista::loadMedia() {
 	//***********DIBUJOS (ENTIDADES ESTATICAS Y DINAMICAS EN YAML)*****************
 	for (unsigned i = 0; i < this->modelo->juego->escenario->entidades.size(); i++){
 			Entidad* entidad = this->modelo->juego->escenario->entidades[i];
-			escenario[entidad->posicion->x][entidad->posicion->y]=hashDibujos[entidad->objetoMapa->nombre];
+			escenario[entidad->posicion->getX()][entidad->posicion->getY()]=hashDibujos[entidad->objetoMapa->nombre];
 	}
 	modelo->setDibujoMapa(escenario,tiles);
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
 
 	vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
 	vector<vector<vector<dibujo_t>>> v3d=vector<vector<vector<dibujo_t>>>(8);
-	for (int i = 0; i < 8; i++) {
-		v3d[i] = vector<vector<dibujo_t>>(8);
-		for (int j = 0; j < 8; j++) {
-			vector<dibujo_t> v ={ j * 64, i * 64, 64, 64 };
+	for (int i = 0; i < CANTIDAD_DE_MOVIMIENTOS; i++) {
+		v3d[i] = vector<vector<dibujo_t>>(CANTIDAD_DE_MOVIMIENTOS);
+		for (int j = 0; j < CANTIDAD_DE_IMAGENES; j++) {
+			vector<dibujo_t> v ={ j * ANCHO_PERSONAJE, i * ALTO_PERSONAJE, ANCHO_PERSONAJE, ALTO_PERSONAJE };
 			v3d[i][j]=v;
 		}
 	}
-	vector<int> imagenes= vector<int>(8,8);
+	vector<int> imagenes= vector<int>(CANTIDAD_DE_MOVIMIENTOS,CANTIDAD_DE_IMAGENES);
 
 
 	//TOMA ENTIDAD ANIMADA SOLO COMO LOS DATOS QUE SACAS DEL YAMLS SINO
 	Personaje* protagonista = this->modelo->juego->escenario->protagonista;
 	Configuracion* configuracion = this->modelo->juego->conf;
 
-	this->factory->crear_dibujo_personaje(protagonista->objetoMapa->imagen,8,imagenes,v3d,protagonista->objetoMapa->fps,configuracion->get_vel_personaje());
+	this->factory->crear_dibujo_personaje(protagonista->objetoMapa->imagen,CANTIDAD_DE_MOVIMIENTOS,imagenes,v3d,protagonista->objetoMapa->fps,configuracion->get_vel_personaje());
 	dibujo_t pers=this->factory->ultimo_dibujo();
 	protagonista->setDibujo(pers);
 	protagonista->setVelocidad(configuracion->get_vel_personaje()/10.0);
@@ -187,6 +190,7 @@ void Vista::mover_referencia(double vel_x,double vel_y) {
 		}
 
 }
+
 void Vista::detectar_mouse_borde() {
 	int mouse_x, mouse_y;
 	SDL_GetMouseState(&mouse_x, &mouse_y);
@@ -264,7 +268,7 @@ int Vista::run() {
 
 
 		dibujar_mapa();
-		dibujar_personaje(personaje_x,personaje_y,pers);
+		dibujar_personaje(personaje_x,personaje_y);
 
 		int mouse_x,mouse_y;
 		SDL_GetMouseState(&mouse_x, &mouse_y);
@@ -319,7 +323,8 @@ bool Vista::adentro_del_mapa(int coord_x,int coord_y){
 			&& (coord_x >= 0) && (coord_y >= 0));
 }
 
-void Vista::dibujar_personaje(double mover_x, double mover_y,Personaje* personaje) {
+void Vista::dibujar_personaje(double mover_x, double mover_y) {
+	Personaje* personaje=this->modelo->devolverPersonaje();
 	int img_personaje_x,img_personaje_y ;
 	this->transformador->transformar_isometrica_pantalla(
 			personaje->getReferenciaMapaX() - referencia_mapa_x,
@@ -328,19 +333,20 @@ void Vista::dibujar_personaje(double mover_x, double mover_y,Personaje* personaj
 	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
 			DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
+
+	if (!adentro_del_mapa(mover_x - 1.5, mover_y + 0.5)) { //Hardcoding
+		mover_x = personaje->getReferenciaMapaX();
+		mover_y = personaje->getReferenciaMapaY();
+	}
 	int adonde_va_x, adonde_va_y;
+
 	this->transformador->transformar_isometrica_pantalla(
 			mover_x - referencia_mapa_x, mover_y - referencia_mapa_y,
 			adonde_va_x, adonde_va_y);
 	dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
 			(adonde_va_y - img_personaje_y));
 
-	if (!adentro_del_mapa(mover_x - 1.5, mover_y + 0.5)) { //Hardcoding
-		mover_x = personaje->getReferenciaMapaX();
-		mover_y = personaje->getReferenciaMapaY();
-	}
-
-	personaje->mover(mover_x, mover_y);
+	modelo->mover_personaje(mover_x, mover_y);
 	dibujo_pers->render(gRenderer);
 }
 

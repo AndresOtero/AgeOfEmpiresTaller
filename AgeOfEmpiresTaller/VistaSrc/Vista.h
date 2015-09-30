@@ -25,7 +25,6 @@ struct SDL_Renderer;
 class Vista {
 	SDL_Window* gWindow;
 	SDL_Renderer* gRenderer;
-	shared_ptr<DibujoPersonaje> personaje;
 	Modelo* modelo;
 	shared_ptr<FactoryDibujo> factory;
 	shared_ptr<CambioDeCoordendas> transformador;
@@ -42,7 +41,7 @@ private:
 	void detectar_mouse_borde();
 	bool adentro_del_mapa(int coord_x, int coord_y);
 	bool adentro_del_mapa(double coord_x, double coord_y);
-	void dibujar_personaje(double mover_x, double mover_y,Personaje* personje);
+	void dibujar_personaje(double mover_x, double mover_y);
 
 
 public:

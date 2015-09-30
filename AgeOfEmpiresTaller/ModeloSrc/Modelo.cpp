@@ -69,7 +69,8 @@ vector<vector<vector<dibujo_t>>> Modelo::dibujar(int x,int 	y,int ancho,int larg
 }**/
 
 void Modelo::mover_personaje(double mov_x,double mov_y){
-
+	Personaje* personaje=devolverPersonaje();
+	personaje->mover(mov_x,mov_y);
 }
 int Modelo::get_alto_mapa(){
 	return mapa->getLargo();
