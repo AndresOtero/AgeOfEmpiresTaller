@@ -13,11 +13,10 @@ Celda::Celda() {
 	this -> escenario = DEFAULT;
 	this -> tiles = DEFAULT;
 	this -> ocupada = false;
+	this->entidad = NULL;
 }
 void Celda::setEscenario(dibujo_t dibujo_n){
-	if(dibujo_n!=VACIO){
-		this->ocupada=true;
-	}
+
 	this->escenario=dibujo_n;
 }
 void Celda::setTiles(dibujo_t dibujo_n){
@@ -29,9 +28,16 @@ dibujo_t Celda::dibujarTiles(){
 dibujo_t Celda::dibujarEscenario(){
 	return this->escenario;
 }
+
 bool Celda::estaOcupada(){
-	return this->ocupada;
+	if (this->entidad!=NULL)
+		return true;
+	return false;
 }
+void Celda::ocuparCelda(Entidad * entidad){
+	this->entidad=entidad;
+}
+
 Celda::~Celda() {
 	// TODO Auto-generated destructor stub
 

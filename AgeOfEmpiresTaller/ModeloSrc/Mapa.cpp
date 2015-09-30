@@ -77,6 +77,19 @@ vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion){
 	return adyacentes;
 }
 
+void Mapa::posicionarEntidad(Entidad* entidad){
+	int i,j,x,y,alto,ancho;
+	alto = entidad->objetoMapa->baseLogica->alto;
+	ancho = entidad->objetoMapa->baseLogica->ancho;
+	x = entidad->posicion->getX();
+	y = entidad->posicion->getY();
+	for (i = x; i < alto; i++ ){
+		for (j = y; j< ancho;j++){
+			this->getCelda(i,j)->ocuparCelda(entidad);//guardar referencias en celdas
+		}
+	}
+}
+
 Mapa::~Mapa() {
 	int largo = this->largo;
 	int ancho = this->ancho;

@@ -5,6 +5,7 @@
  *      Author: andres
  */
 #include <iostream>
+#include "Entidad.h"
 typedef int dibujo_t;
 #define DEFAULT 0
 #define AFUERA -1
@@ -16,6 +17,7 @@ private:
 	bool ocupada;
 	dibujo_t tiles;
 	dibujo_t escenario;
+	Entidad* entidad;
 public:
 	Celda();
 	bool estaOcupada();
@@ -23,7 +25,7 @@ public:
 	void setTiles(dibujo_t dibujo);
 	dibujo_t dibujarEscenario();
 	dibujo_t dibujarTiles();
-
+	void ocuparCelda(Entidad*entidad);
 	virtual ~Celda();
 };
 

@@ -28,6 +28,7 @@ public:
 	virtual ~Mapa();
 	bool celdaOcupada(int x,int y);
 	vector<Posicion> adyacenciasNoOcupadas(Posicion posicion);
+	void posicionarEntidad(Entidad* entidad);
 private:
 	Celda* getCelda(int x,int y);
 

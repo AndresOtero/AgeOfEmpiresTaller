@@ -3,7 +3,7 @@
 #include "../ModeloSrc/Modelo.h"
 #include "../VistaSrc/Vista.h"
 #include "../ModeloSrc/Configuracion.h"
-
+#include "../VistaSrc/CambioDeCoordendas.h"
 using namespace std;
 #include <iostream>
 #include "yaml-cpp/yaml.h"
@@ -32,7 +32,5 @@ int main() {
 		delete vista;
 
 	}
-
-
 
 }

@@ -16,7 +16,13 @@ Modelo::Modelo(Juego* juego) {
 	this -> juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 	this->personajes=vector<Personaje*>();
-
+	this->insertarEntidades();
+}
+void Modelo::insertarEntidades(){
+	for(int i =0; i < this->juego->escenario->entidades.size(); i++){
+			Entidad* entidad=this->juego->escenario->entidades[i];
+			this->mapa->posicionarEntidad(entidad);
+	}
 }
 void Modelo::setMapa(int ancho,int largo){
 	this->mapa=shared_ptr<Mapa>(new Mapa(ancho,largo));
