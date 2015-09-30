@@ -17,6 +17,7 @@ Personaje::Personaje(){
 	this->velocidad=1;
 	this->objetoMapa->delay = 0; //delay default
 	this->dibujo = 0;
+	this->recursos = new RecursosJugador();
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->referencia_mapa_x=1;
@@ -24,6 +25,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->velocidad=1;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
+	this->recursos = new RecursosJugador();
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_x=x;
@@ -31,6 +33,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->velocidad=1;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
+	this->recursos = new RecursosJugador();
 }
 dibujo_t Personaje::dibujar(){
 	return dibujo;
@@ -67,6 +70,6 @@ void Personaje::mover(double x, double y) {
 }
 
 Personaje::~Personaje() {
-
+	delete recursos;
 }
 

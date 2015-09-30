@@ -7,11 +7,13 @@
 #include "../VistaSrc/Dibujo.h"
 #include "ObjetoMapa.h"
 #include "Posicion.h"
+#include "RecursosJugador.h"
 #ifndef PERSONAJE_H_
 #define PERSONAJE_H_
 typedef int dibujo_t;
 
 class Personaje {
+	RecursosJugador * recursos;
 	double referencia_mapa_x,referencia_mapa_y;
 	dibujo_t dibujo;
 	double velocidad;
