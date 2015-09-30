@@ -82,7 +82,7 @@ public:
     }
 };
 double heuristica(Posicion adonde_voy,Posicion adonde_estoy){
-	return adonde_voy.distancia(adonde_estoy);
+	return adonde_voy.distancia_manhattan(adonde_estoy);
 }
 struct cmp
 {
@@ -119,7 +119,7 @@ Posicion Modelo::calcular_camino(double x, double y) {
 		vector<Posicion>::iterator it = adyacentes.begin();
 		for (; it != adyacentes.end(); ++it) {
 			Posicion ady = (*it);
-			double nueva_distancia = cuanto_recorri[posicion_actual]+ady.distancia(posicion_actual);
+			double nueva_distancia = cuanto_recorri[posicion_actual]+ady.distancia_manhattan(posicion_actual);
 			if ((!(cuanto_recorri[ady]))
 					|| (nueva_distancia < cuanto_recorri[ady])) {
 				cuanto_recorri[ady] = nueva_distancia;

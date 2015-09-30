@@ -31,6 +31,7 @@ public:
 		return y;
 	}
 	double distancia(Posicion posicion);
+	double distancia_manhattan(Posicion posicion);
     friend bool operator== (Posicion &cP1, Posicion &cP2);
 
 };
