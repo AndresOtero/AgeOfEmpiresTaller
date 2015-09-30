@@ -339,7 +339,6 @@ void Vista::dibujar_personaje(double mover_x, double mover_y) {
 		mover_y = personaje->getReferenciaMapaY();
 	}
 	int adonde_va_x, adonde_va_y;
-
 	this->transformador->transformar_isometrica_pantalla(
 			mover_x - referencia_mapa_x, mover_y - referencia_mapa_y,
 			adonde_va_x, adonde_va_y);

@@ -35,15 +35,15 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 dibujo_t Personaje::dibujar(){
 	return dibujo;
 }
-Posicion Personaje::calcular_camino(double x,double y){
-	Posicion adonde_voy=Posicion(x,y);
-	return adonde_voy;
+
+Posicion Personaje::get_posicion(){
+	return Posicion(referencia_mapa_x,referencia_mapa_y);
 }
 
 void Personaje::mover(double x, double y) {
-	Posicion adonde_voy=calcular_camino(x,y);
-	double delta_x = (double) (adonde_voy.get_x_exacta() - referencia_mapa_x);
-	double delta_y = (double) (adonde_voy.get_y_exacta() - referencia_mapa_y);
+
+	double delta_x = (double) (x - referencia_mapa_x);
+	double delta_y = (double) (y - referencia_mapa_y);
 	double distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
 	if (distancia != 0) {
 		if (distancia < velocidad) {
@@ -51,11 +51,11 @@ void Personaje::mover(double x, double y) {
 		}
 		if ((sqrt(delta_x * delta_x) > distancia)
 				&& (sqrt(delta_x * delta_x) < distancia)) {
-			this->referencia_mapa_x = adonde_voy.get_x_exacta();
+			this->referencia_mapa_x = x;
 		}
 		if ((sqrt(delta_y * delta_y) > distancia)
 				&& ((sqrt(delta_y * delta_y) < distancia))) {
-			this->referencia_mapa_y = adonde_voy.get_y_exacta();
+			this->referencia_mapa_y = y;
 		}
 		double des_x = (velocidad * delta_x) / distancia;
 		double des_y = (velocidad * delta_y) / distancia;

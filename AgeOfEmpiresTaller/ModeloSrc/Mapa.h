@@ -24,9 +24,9 @@ public:
 	void setTiles(dibujo_t dibujo,int x,int y);
 	void setEscenario(dibujo_t dibujo,int x,int y);
 	virtual ~Mapa();
-	bool celdaOcupada(int largo,int ancho);
+	bool celdaOcupada(int x,int y);
 private:
-	Celda* getCelda(int largo,int ancho);
+	Celda* getCelda(int x,int y);
 
 };
 

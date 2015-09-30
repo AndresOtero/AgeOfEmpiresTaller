@@ -25,7 +25,7 @@ public:
 	dibujo_t dibujar();
 	virtual ~Personaje();
 	void mover(double x,double y);
-
+	Posicion get_posicion();
 	void setVelocidad(double velocidad) {
 		this->velocidad = velocidad;
 	}
@@ -41,8 +41,7 @@ public:
 	double getReferenciaMapaY() const {
 		return referencia_mapa_y;
 	}
-private:
-	Posicion calcular_camino(double x,double y);
+
 };
 
 #endif /* PERSONAJE_H_ */

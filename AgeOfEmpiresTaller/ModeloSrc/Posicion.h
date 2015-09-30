@@ -4,7 +4,7 @@
  *  Created on: 17/9/2015
  *      Author: ger
  */
-
+#include "math.h"
 #ifndef POSICION_H_
 #define POSICION_H_
 
@@ -18,11 +18,11 @@ public:
 	virtual ~Posicion();
 
 	int getX() const {
-		return x;
+		return floor(x);
 	}
 
 	int getY() const {
-		return y;
+		return floor(y);
 	}
 	double get_x_exacta() const {
 		return x;

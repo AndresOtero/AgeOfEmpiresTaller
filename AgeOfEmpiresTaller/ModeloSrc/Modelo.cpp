@@ -68,9 +68,23 @@ vector<vector<vector<dibujo_t>>> Modelo::dibujar(int x,int 	y,int ancho,int larg
 	return dibujos;
 }**/
 
-void Modelo::mover_personaje(double mov_x,double mov_y){
+bool Modelo::celdaOcupada(Posicion posicion){
+	return this->mapa->celdaOcupada(posicion.getX(),posicion.getY());
+}
+
+Posicion Modelo::calcular_camino(double x,double y){
+	Posicion adonde_voy=Posicion(x,y);
+	printf("Adonde estoy: x: %g, y: %g \n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
+
 	Personaje* personaje=devolverPersonaje();
-	personaje->mover(mov_x,mov_y);
+	Posicion donde_estoy=personaje->get_posicion();
+	printf("Donde estoy: x: %g, y: %g \n",donde_estoy.get_x_exacta(),donde_estoy.get_y_exacta());
+	return adonde_voy;
+}
+void Modelo::mover_personaje(double mov_x,double mov_y){
+	Posicion adonde_voy=calcular_camino(mov_x,mov_y);
+	Personaje* personaje=devolverPersonaje();
+	personaje->mover(adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 }
 int Modelo::get_alto_mapa(){
 	return mapa->getLargo();

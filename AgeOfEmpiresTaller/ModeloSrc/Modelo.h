@@ -32,6 +32,9 @@ public:
 	int get_ancho_mapa();
 	int get_alto_mapa();
 	~Modelo();
+private:
+	Posicion calcular_camino(double x,double y);
+	bool celdaOcupada(Posicion);
 };
 
 #endif /* MODELO_H_ */
