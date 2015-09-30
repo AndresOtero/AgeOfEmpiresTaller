@@ -8,6 +8,8 @@
 #include "../ModeloSrc/Modelo.h"
 #include "../ModeloSrc/Mapa.h"
 #include "math.h"
+#include "queue"
+#include "iterator"
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
 Modelo::Modelo(Juego* juego) {
@@ -72,17 +74,72 @@ bool Modelo::celdaOcupada(Posicion posicion){
 	return this->mapa->celdaOcupada(posicion.getX(),posicion.getY());
 }
 
-Posicion Modelo::calcular_camino(double x,double y){
-	Posicion adonde_voy=Posicion(x,y);
-	printf("Adonde estoy: x: %g, y: %g \n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
+class CompDistancias
+{
+public:
+    bool operator()(pair<Posicion,double> p1,pair<Posicion,double> p2) {
+        return p1.second>p2.second;
+    }
+};
+double heuristica(Posicion adonde_voy,Posicion adonde_estoy){
+	return adonde_voy.distancia(adonde_estoy);
+}
+struct cmp
+{
+    bool operator()( Posicion const& a, Posicion const& b ) const
+    {
+    	return (a.getX()<b.getY());
+    }
+};
+Posicion Modelo::calcular_camino(double x, double y) {
+	/**
+	 *http://www.redblobgames.com/pathfinding/a-star/introduction.html
+	 **/
+	Posicion adonde_voy = Posicion(x, y);
+	Personaje* personaje = devolverPersonaje();
+	Posicion adonde_estoy = personaje->get_posicion();
+	vector<Posicion> adyacentes = mapa->adyacenciasNoOcupadas(adonde_estoy);
+	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
+			CompDistancias> pila;
+	pair<Posicion, double> primero(adonde_estoy, 0);
+	pila.push(primero);
+	map<Posicion, Posicion,cmp> donde_vengo;
+	map<Posicion, double,cmp> cuanto_recorri;
+	donde_vengo.insert(pair<Posicion, Posicion>(adonde_estoy, adonde_estoy));
+	cuanto_recorri.insert(primero);
 
-	Personaje* personaje=devolverPersonaje();
-	Posicion donde_estoy=personaje->get_posicion();
-	printf("Donde estoy: x: %g, y: %g \n",donde_estoy.get_x_exacta(),donde_estoy.get_y_exacta());
+	while (!pila.empty()) {
+		pair<Posicion, double> actual = pila.top();
+		Posicion posicion_actual = actual.first;
+		pila.pop();
+		if (posicion_actual == adonde_voy) {
+			break;
+		}
+		vector<Posicion> adyacentes = mapa->adyacenciasNoOcupadas(actual.first);
+		vector<Posicion>::iterator it = adyacentes.begin();
+		for (; it != adyacentes.end(); ++it) {
+			Posicion ady = (*it);
+			double nueva_distancia = cuanto_recorri[posicion_actual]+ady.distancia(posicion_actual);
+			if ((!(cuanto_recorri[ady]))
+					|| (nueva_distancia < cuanto_recorri[ady])) {
+				cuanto_recorri[ady] = nueva_distancia;
+				double prioridad = nueva_distancia
+						+ heuristica(adonde_voy, ady);
+				pila.push(pair<Posicion, double>(ady, prioridad));
+				donde_vengo[ady] = posicion_actual;
+
+			}
+		}
+	}
+	//m("Adonde estoy: x: %g, y: %g \n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
+	//printf("Donde estoy: x: %g, y: %g \n",donde_estoy.get_x_exacta(),donde_estoy.get_y_exacta());
+
 	return adonde_voy;
 }
 void Modelo::mover_personaje(double mov_x,double mov_y){
-	Posicion adonde_voy=calcular_camino(mov_x,mov_y);
+	//Posicion adonde_voy=calcular_camino(mov_x,mov_y);
+	Posicion adonde_voy = Posicion(mov_x, mov_y);
+
 	Personaje* personaje=devolverPersonaje();
 	personaje->mover(adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 }

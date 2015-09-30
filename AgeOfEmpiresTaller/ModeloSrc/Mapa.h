@@ -7,6 +7,8 @@
 #include "../ModeloSrc/Celda.h"
 #include <memory>
 #include <vector>
+#include "Posicion.h"
+
 using namespace std;
 #ifndef MAPA_H_
 #define MAPA_H_
@@ -25,6 +27,7 @@ public:
 	void setEscenario(dibujo_t dibujo,int x,int y);
 	virtual ~Mapa();
 	bool celdaOcupada(int x,int y);
+	vector<Posicion> adyacenciasNoOcupadas(Posicion posicion);
 private:
 	Celda* getCelda(int x,int y);
 

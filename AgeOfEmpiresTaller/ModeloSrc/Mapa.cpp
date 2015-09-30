@@ -7,6 +7,7 @@
 
 #include "Mapa.h"
 #include "Celda.h"
+#include "Posicion.h"
 #include <iostream>
 
 Mapa::Mapa(int ancho, int largo) {
@@ -61,6 +62,19 @@ int Mapa::getAncho(){
 }
 int Mapa::getLargo(){
 	return this->largo;
+}
+vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion){
+	vector<Posicion> adyacentes=vector<Posicion>();
+	int x=posicion.getX(),y=posicion.getY();
+	int i=x-1;
+	for(;i<x+2;i++) {
+		for(int j=y-1;j<y+2;j++){
+			if(((i!=x)||(j!=y))&&(!celdaOcupada(i,j))){
+				adyacentes.push_back(Posicion(i,j));
+			}
+		}
+	}
+	return adyacentes;
 }
 
 Mapa::~Mapa() {

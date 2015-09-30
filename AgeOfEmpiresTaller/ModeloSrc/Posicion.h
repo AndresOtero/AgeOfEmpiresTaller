@@ -15,7 +15,7 @@ public:
 	Posicion();
 	Posicion(int x, int y);
 	Posicion(double x, double y);
-	virtual ~Posicion();
+	 ~Posicion();
 
 	int getX() const {
 		return floor(x);
@@ -31,6 +31,8 @@ public:
 		return y;
 	}
 	double distancia(Posicion posicion);
+    friend bool operator== (Posicion &cP1, Posicion &cP2);
+
 };
 
 #endif /* POSICION_H_ */

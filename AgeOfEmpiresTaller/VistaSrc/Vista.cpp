@@ -277,6 +277,8 @@ int Vista::run() {
 		this->transformador->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
 		x+=referencia_mapa_x;
 		y+=referencia_mapa_y;
+		printf("Adonde estoy: x: %g, y: %g \n",x,y);
+
 		this->detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
 

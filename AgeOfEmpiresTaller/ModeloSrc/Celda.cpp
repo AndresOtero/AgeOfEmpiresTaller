@@ -8,14 +8,16 @@
 #include "../ModeloSrc/Celda.h"
 #include <iostream>
 #include "../VistaSrc/Dibujo.h"
-
+#define VACIO 0
 Celda::Celda() {
 	this -> escenario = DEFAULT;
 	this -> tiles = DEFAULT;
 	this -> ocupada = false;
 }
 void Celda::setEscenario(dibujo_t dibujo_n){
-	this->ocupada=true;
+	if(dibujo_n!=VACIO){
+		this->ocupada=true;
+	}
 	this->escenario=dibujo_n;
 }
 void Celda::setTiles(dibujo_t dibujo_n){

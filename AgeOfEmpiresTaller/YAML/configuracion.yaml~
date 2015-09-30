@@ -1,4 +1,5 @@
--pantalla: 2000
+-pantalla: 
+ ancho: 2000
  alto: 768
 
 configuracion:
@@ -41,8 +42,7 @@ escenario:
  size_x: 100
  size_y: 100
  entidades: 
-  - { x : 2, y: 1, tipo: pino }
-  - { x : 2, y: 0, tipo: arbol }
+  - { x : 1, y: 1, tipo: arbol }
   - { x : 6, y: 6, tipo: church }
   - { x : 4, y: 0, tipo: herreria }
   - { x : 4, y: 4, tipo: wheel }
