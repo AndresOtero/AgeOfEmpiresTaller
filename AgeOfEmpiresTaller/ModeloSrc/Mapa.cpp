@@ -63,14 +63,20 @@ int Mapa::getAncho(){
 int Mapa::getLargo(){
 	return this->largo;
 }
-vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion){
-	vector<Posicion> adyacentes=vector<Posicion>();
-	int x=posicion.getX(),y=posicion.getY();
-	int i=x-1;
-	for(;i<x+2;i++) {
-		for(int j=y-1;j<y+2;j++){
-			if(((i!=x)||(j!=y))&&(!celdaOcupada(i,j))){
-				adyacentes.push_back(Posicion(i,j));
+bool Mapa::afueraDelMapa(int x,int y){
+	return ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0));
+}
+vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
+	vector<Posicion> adyacentes = vector<Posicion>();
+	int x = posicion.getX(), y = posicion.getY();
+	int i = x - 1;
+	for (; i < x + 2; i++) {
+		for (int j = y - 1; j < y + 2; j++) {
+			if (((i != x) || (j != y)) && (!afueraDelMapa(i, j))
+					&& (!celdaOcupada(i, j))) {
+
+				adyacentes.push_back(Posicion(i, j));
+
 			}
 		}
 	}

@@ -26,6 +26,7 @@ public:
 	void setTiles(dibujo_t dibujo,int x,int y);
 	void setEscenario(dibujo_t dibujo,int x,int y);
 	virtual ~Mapa();
+	bool afueraDelMapa(int x,int y);
 	bool celdaOcupada(int x,int y);
 	vector<Posicion> adyacenciasNoOcupadas(Posicion posicion);
 	void posicionarEntidad(Entidad* entidad);

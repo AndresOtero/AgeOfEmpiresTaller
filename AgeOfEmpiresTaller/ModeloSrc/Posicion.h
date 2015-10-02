@@ -32,7 +32,9 @@ public:
 	}
 	double distancia(Posicion posicion);
 	double distancia_manhattan(Posicion posicion);
-    friend bool operator== (Posicion &cP1, Posicion &cP2);
+    friend bool operator== ( Posicion &P1,  Posicion &P2);
+    friend bool operator== ( Posicion const &P1, const  Posicion &P2);
+
 
 };
 

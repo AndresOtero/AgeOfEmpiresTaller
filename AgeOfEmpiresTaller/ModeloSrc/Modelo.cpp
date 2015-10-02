@@ -9,9 +9,16 @@
 #include "../ModeloSrc/Mapa.h"
 #include "math.h"
 #include "queue"
+#include "stack"
 #include "iterator"
+#include <map>
+#include "unordered_map"
+using namespace std;
+
+
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
+
 Modelo::Modelo(Juego* juego) {
 	this -> juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
@@ -90,12 +97,18 @@ public:
 double heuristica(Posicion adonde_voy,Posicion adonde_estoy){
 	return adonde_voy.distancia_manhattan(adonde_estoy);
 }
-struct cmp
-{
-    bool operator()( Posicion const& a, Posicion const& b ) const
-    {
-    	return (a.getX()<b.getY());
-    }
+struct cmp { /**Comparador aparte porque no soporta el de la propia funcion no se si funciona bien con exactitud...**/
+	bool operator()(Posicion const& a, Posicion const& b) const {
+		if (a.getX() < b.getX())
+			return true;
+		if (a.getX() == b.getX()) {
+			if (a.getY() < b.getY())
+				return true;
+			return false;
+		}
+		return false;
+
+	}
 };
 Posicion Modelo::calcular_camino(double x, double y) {
 	/**
@@ -126,7 +139,11 @@ Posicion Modelo::calcular_camino(double x, double y) {
 		for (; it != adyacentes.end(); ++it) {
 			Posicion ady = (*it);
 			double nueva_distancia = cuanto_recorri[posicion_actual]+ady.distancia_manhattan(posicion_actual);
-			if ((!(cuanto_recorri[ady]))
+			bool ya_pase =cuanto_recorri.count(ady);
+			if(ya_pase) {
+				double distancia_vieja=cuanto_recorri[ady];
+			}
+			if ((!(cuanto_recorri.count(ady)))
 					|| (nueva_distancia < cuanto_recorri[ady])) {
 				cuanto_recorri[ady] = nueva_distancia;
 				double prioridad = nueva_distancia
@@ -137,14 +154,24 @@ Posicion Modelo::calcular_camino(double x, double y) {
 			}
 		}
 	}
+	stack<Posicion> camino;
+	camino.push(adonde_voy);
+	while(!(adonde_estoy==adonde_voy)){
+		camino.push(donde_vengo[adonde_voy]);
+		adonde_voy=donde_vengo[adonde_voy];
+	}
 	//m("Adonde estoy: x: %g, y: %g \n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 	//printf("Donde estoy: x: %g, y: %g \n",donde_estoy.get_x_exacta(),donde_estoy.get_y_exacta());
-
+	while(!camino.empty()){
+		Posicion pos=camino.top();
+		camino.pop();
+		//printf("Posicion: X:%d,Y:%d\n",pos.getX(),pos.getY());
+	}
 	return adonde_voy;
 }
 void Modelo::mover_personaje(double mov_x,double mov_y){
-	//Posicion adonde_voy=calcular_camino(mov_x,mov_y);
-	Posicion adonde_voy = Posicion(mov_x, mov_y);
+	Posicion adonde_voy=calcular_camino(mov_x,mov_y);
+	adonde_voy = Posicion(mov_x, mov_y);
 
 	Personaje* personaje=devolverPersonaje();
 	personaje->mover(adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());

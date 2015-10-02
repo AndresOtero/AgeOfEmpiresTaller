@@ -28,13 +28,19 @@ double Posicion::distancia(Posicion posicion) {
 double Posicion::distancia_manhattan(Posicion posicion) {
 	double delta_x = (double) (getX() - posicion.getX());
 	double delta_y = (double) (getY() - posicion.getY());
-	return sqrt(delta_x * delta_x)+sqrt( delta_y * delta_y);
+	return floor(sqrt(delta_x * delta_x)+sqrt( delta_y * delta_y));
 }
 bool operator== (Posicion &P1, Posicion &P2)
 {
-    return (P1.getX()== P2.getX()&&
-            P1.getY() == P2.getY());
+    return ((P1.getX()== P2.getX())&&
+            (P1.getY() == P2.getY()));
 }
+bool operator== (Posicion const &P1, Posicion const &P2)
+{
+    return ((P1.getX()== P2.getX())&&
+            (P1.getY() == P2.getY()));
+}
+
 Posicion::~Posicion(){
 
 }
