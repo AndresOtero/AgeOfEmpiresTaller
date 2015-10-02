@@ -40,3 +40,6 @@
 2015-10-02 17:35:17.684 WARN  [6967] [Yaml::read@137] No se define configuracion de pantalla, se usa Default 1024x728
 2015-10-02 17:43:04.802 WARN  [7307] [Yaml::read@137] No se define configuracion de pantalla, se usa Default 1024x728
 2015-10-02 17:48:57.909 WARN  [7555] [Yaml::read@137] No se define configuracion de pantalla, se usa Default 1024x728
+2015-10-02 18:30:33.002 WARN  [8941] [Yaml::read@137] No se define configuracion de pantalla, se usa Default 1024x728
+2015-10-02 18:31:01.426 WARN  [8980] [Yaml::read@137] No se define configuracion de pantalla, se usa Default 1024x728
+2015-10-02 18:31:55.692 WARN  [9022] [Yaml::read@137] No se define configuracion de pantalla, se usa Default 1024x728

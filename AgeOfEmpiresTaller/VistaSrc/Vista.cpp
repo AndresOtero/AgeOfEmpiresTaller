@@ -370,10 +370,10 @@ void Vista::dibujar_mapa() {
 					size_t n_imagen = this->modelo->dibujar(dim,coord_x,coord_y);
 					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(n_imagen);
 					if (dibujo != NULL) {
-
+					/**ATENCION MUY HARDCODEADO**/
 					this->transformador->transformar_isometrica_pantalla(
-							coord_x - referencia_mapa_x,
-							coord_y - referencia_mapa_y, x_imagen, y_imagen);
+							coord_x - referencia_mapa_x+dim*1.5,
+							coord_y - referencia_mapa_y-dim*0.5, x_imagen, y_imagen);
 					dibujo->set_posicion_default(x_imagen, y_imagen);
 					dibujo->render(gRenderer);
 					}
