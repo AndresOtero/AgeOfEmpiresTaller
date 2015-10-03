@@ -18,11 +18,11 @@ public:
 	 ~Posicion();
 
 	int getX() const {
-		return floor(x);
+		return ceil(x);
 	}
 
 	int getY() const {
-		return floor(y);
+		return ceil(y);
 	}
 	double get_x_exacta() const {
 		return x;
@@ -34,6 +34,8 @@ public:
 	double distancia_manhattan(Posicion posicion);
     friend bool operator== ( Posicion &P1,  Posicion &P2);
     friend bool operator== ( Posicion const &P1, const  Posicion &P2);
+    friend Posicion operator+(const Posicion &c1, const Posicion &c2);
+    friend Posicion operator-(const Posicion &c1, const Posicion &c2);
 
 
 };

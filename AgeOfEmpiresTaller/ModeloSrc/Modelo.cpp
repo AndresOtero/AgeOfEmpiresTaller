@@ -60,29 +60,6 @@ dibujo_t Modelo::dibujar(int dim,int x,int y){
 	return this->mapa->dibujarTiles(x,y);
 }
 
-/**
-vector<vector<vector<dibujo_t>>> Modelo::dibujar(int x,int 	y,int ancho,int largo){
-		Recibe un posicion x,y de comienzo y un ancho y alto para dibujar.
-	 	Dibuja entre (x,y),(x+ancho,y),(x,y+largo),(x+ancho)(y+largo)
-	 	Dibuja los tiles y el escenario.
-
-	vector<vector<vector<dibujo_t>> >  dibujos(DIMENSIONES);
-	for(int d=0;d<DIMENSIONES;d++){
-		dibujos[d]=vector<vector<dibujo_t>>(ancho);
-		for (int a = 0; a < ancho;a++) {
-			dibujos[d][a]=vector<dibujo_t>(largo);
-			for(int l=0;l<largo;l++) {
-				if(d==TILES){
-					dibujos[TILES][a][l]=this->mapa->dibujarTiles(x+a,y+l);
-				}else{
-					dibujos[ESCENARIO][a][l]=this->mapa->dibujarEscenario(x+a,y+l);
-				}
-			}
-		}
-	}
-	return dibujos;
-}**/
-
 bool Modelo::celdaOcupada(Posicion posicion){
 	return this->mapa->celdaOcupada(posicion.getX(),posicion.getY());
 }
@@ -94,10 +71,15 @@ public:
         return p1.second>p2.second;
     }
 };
+
 double heuristica(Posicion adonde_voy,Posicion adonde_estoy){
 	return adonde_voy.distancia_manhattan(adonde_estoy);
 }
-struct cmp { /**Comparador aparte porque no soporta el de la propia funcion no se si funciona bien con exactitud...**/
+
+struct cmp { /**
+	Necesita un comparador para funcionar el diccionario (igualar claves), luego de mucho buscar encontre el
+	que funciona.
+ 	 	**/
 	bool operator()(Posicion const& a, Posicion const& b) const {
 		if (a.getX() < b.getX())
 			return true;
@@ -117,6 +99,11 @@ Posicion Modelo::calcular_camino(double x, double y) {
 	Posicion adonde_voy = Posicion(x, y);
 	Personaje* personaje = devolverPersonaje();
 	Posicion adonde_estoy = personaje->get_posicion();
+	/**HARDCODE HARD**/
+	Posicion defasaje=Posicion(-1.5,0.5);
+	adonde_estoy=adonde_estoy+defasaje;
+	adonde_voy=adonde_voy+defasaje;
+	/**END OF HARDCODING**/
 	vector<Posicion> adyacentes = mapa->adyacenciasNoOcupadas(adonde_estoy);
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
 			CompDistancias> pila;
@@ -154,24 +141,32 @@ Posicion Modelo::calcular_camino(double x, double y) {
 			}
 		}
 	}
+
 	stack<Posicion> camino;
 	camino.push(adonde_voy);
-	while(!(adonde_estoy==adonde_voy)){
-		camino.push(donde_vengo[adonde_voy]);
-		adonde_voy=donde_vengo[adonde_voy];
+	Posicion anterior=adonde_voy;
+	while(!(adonde_estoy==anterior)){
+		camino.push(donde_vengo[anterior]);
+		anterior=donde_vengo[anterior];
 	}
-	//m("Adonde estoy: x: %g, y: %g \n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
-	//printf("Donde estoy: x: %g, y: %g \n",donde_estoy.get_x_exacta(),donde_estoy.get_y_exacta());
+	camino.pop();
+	if(!camino.empty()){
+		adonde_voy=camino.top();
+	}
 	while(!camino.empty()){
 		Posicion pos=camino.top();
 		camino.pop();
 		//printf("Posicion: X:%d,Y:%d\n",pos.getX(),pos.getY());
 	}
+	//printf("Adonde estoy: X:%g, Y:%g\n",adonde_estoy.get_x_exacta(),adonde_estoy.get_y_exacta());
+	//printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
+	/**End of HARDODING**/
+	adonde_voy=adonde_voy-defasaje;
+	/****/
 	return adonde_voy;
 }
 void Modelo::mover_personaje(double mov_x,double mov_y){
 	Posicion adonde_voy=calcular_camino(mov_x,mov_y);
-	adonde_voy = Posicion(mov_x, mov_y);
 
 	Personaje* personaje=devolverPersonaje();
 	personaje->mover(adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());

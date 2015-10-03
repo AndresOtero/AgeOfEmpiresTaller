@@ -40,6 +40,15 @@ bool operator== (Posicion const &P1, Posicion const &P2)
     return ((P1.getX()== P2.getX())&&
             (P1.getY() == P2.getY()));
 }
+Posicion operator+(const Posicion &c1, const Posicion &c2)
+{
+    return Posicion(c1.x+c2.x,c1.y+c2.y);
+}
+Posicion operator-(const Posicion &c1, const Posicion &c2)
+{
+    return Posicion(c1.x-c2.x,c1.y-c2.y);
+}
+
 
 Posicion::~Posicion(){
 

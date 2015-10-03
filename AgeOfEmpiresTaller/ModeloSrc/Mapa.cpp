@@ -69,15 +69,17 @@ bool Mapa::afueraDelMapa(int x,int y){
 vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 	vector<Posicion> adyacentes = vector<Posicion>();
 	int x = posicion.getX(), y = posicion.getY();
-	int i = x - 1;
-	for (; i < x + 2; i++) {
-		for (int j = y - 1; j < y + 2; j++) {
-			if (((i != x) || (j != y)) && (!afueraDelMapa(i, j))
-					&& (!celdaOcupada(i, j))) {
 
-				adyacentes.push_back(Posicion(i, j));
+	for (int i = x - 1; i < x + 2; i++) {
+		if ((i != x) && (!afueraDelMapa(i, y)) && (!celdaOcupada(i, y))) {
+			adyacentes.push_back(Posicion(i, y));
+		}
+	}
+	for (int j = y - 1; j < y + 2; j++) {
+		if ((j != y) && (!afueraDelMapa(x, j)) && (!celdaOcupada(x, j))) {
 
-			}
+			adyacentes.push_back(Posicion(x, j));
+
 		}
 	}
 	return adyacentes;

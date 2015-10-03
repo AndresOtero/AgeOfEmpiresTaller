@@ -277,7 +277,7 @@ int Vista::run() {
 		this->transformador->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
 		x+=referencia_mapa_x;
 		y+=referencia_mapa_y;
-		printf("Adonde estoy: x: %g, y: %g \n",x,y);
+		//printf("Adonde estoy: x: %g, y: %g \n",x,y);
 
 		this->detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
@@ -328,6 +328,7 @@ bool Vista::adentro_del_mapa(int coord_x,int coord_y){
 void Vista::dibujar_personaje(double mover_x, double mover_y) {
 	Personaje* personaje=this->modelo->devolverPersonaje();
 	int img_personaje_x,img_personaje_y ;
+
 	this->transformador->transformar_isometrica_pantalla(
 			personaje->getReferenciaMapaX() - referencia_mapa_x,
 			personaje->getReferenciaMapaY() - referencia_mapa_y, img_personaje_x,
@@ -341,12 +342,10 @@ void Vista::dibujar_personaje(double mover_x, double mover_y) {
 		mover_y = personaje->getReferenciaMapaY();
 	}
 	int adonde_va_x, adonde_va_y;
-	this->transformador->transformar_isometrica_pantalla(
-			mover_x - referencia_mapa_x, mover_y - referencia_mapa_y,
+	this->transformador->transformar_isometrica_pantalla(mover_x - referencia_mapa_x, mover_y - referencia_mapa_y,
 			adonde_va_x, adonde_va_y);
 	dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
 			(adonde_va_y - img_personaje_y));
-
 	modelo->mover_personaje(mover_x, mover_y);
 	dibujo_pers->render(gRenderer);
 }
