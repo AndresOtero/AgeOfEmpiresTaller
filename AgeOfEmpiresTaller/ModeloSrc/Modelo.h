@@ -28,7 +28,7 @@ public:
 	dibujo_t dibujar(int dim,int x,int y);
 	void agregarPersonaje(Personaje*);
 	Personaje* devolverPersonaje();
-	void mover_personaje(double mov_x,double mov_y);
+	Posicion mover_personaje(double mov_x,double mov_y);
 	int get_ancho_mapa();
 	int get_alto_mapa();
 	~Modelo();

@@ -157,11 +157,12 @@ Posicion Modelo::calcular_camino(double x, double y) {
 	printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 	return adonde_voy;
 }
-void Modelo::mover_personaje(double mov_x,double mov_y){
+Posicion Modelo::mover_personaje(double mov_x,double mov_y){
 	Posicion adonde_voy=calcular_camino(mov_x,mov_y);
 
 	Personaje* personaje=devolverPersonaje();
 	personaje->mover(adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
+	return adonde_voy;
 }
 int Modelo::get_alto_mapa(){
 	return mapa->getLargo();

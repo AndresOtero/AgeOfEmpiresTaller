@@ -343,12 +343,14 @@ void Vista::dibujar_personaje(double mover_x, double mover_y) {
 		mover_y = personaje->getReferenciaMapaY();
 	}
 	int adonde_va_x, adonde_va_y;
+	Posicion adonde_va =modelo->mover_personaje(mover_x, mover_y);
+	mover_x=adonde_va.get_x_exacta();
+	mover_y=adonde_va.get_y_exacta();
 	/*HARDCODE*/
 	this->transformador->transformar_isometrica_pantalla(mover_x - referencia_mapa_x+1.5, mover_y - referencia_mapa_y-0.5,
 			adonde_va_x, adonde_va_y);
 	dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
 			(adonde_va_y - img_personaje_y));
-	modelo->mover_personaje(mover_x, mover_y);
 	dibujo_pers->render(gRenderer);
 }
 
