@@ -99,11 +99,6 @@ Posicion Modelo::calcular_camino(double x, double y) {
 	Posicion adonde_voy = Posicion(x, y);
 	Personaje* personaje = devolverPersonaje();
 	Posicion adonde_estoy = personaje->get_posicion();
-	/**HARDCODE HARD**/
-	Posicion defasaje=Posicion(-1.5,0.5);
-	adonde_estoy=adonde_estoy+defasaje;
-	adonde_voy=adonde_voy+defasaje;
-	/**END OF HARDCODING**/
 	vector<Posicion> adyacentes = mapa->adyacenciasNoOcupadas(adonde_estoy);
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
 			CompDistancias> pila;
@@ -158,11 +153,8 @@ Posicion Modelo::calcular_camino(double x, double y) {
 		camino.pop();
 		//printf("Posicion: X:%d,Y:%d\n",pos.getX(),pos.getY());
 	}
-	//printf("Adonde estoy: X:%g, Y:%g\n",adonde_estoy.get_x_exacta(),adonde_estoy.get_y_exacta());
-	//printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
-	/**End of HARDODING**/
-	adonde_voy=adonde_voy-defasaje;
-	/****/
+	printf("Adonde estoy: X:%g, Y:%g\n",adonde_estoy.get_x_exacta(),adonde_estoy.get_y_exacta());
+	printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 	return adonde_voy;
 }
 void Modelo::mover_personaje(double mov_x,double mov_y){

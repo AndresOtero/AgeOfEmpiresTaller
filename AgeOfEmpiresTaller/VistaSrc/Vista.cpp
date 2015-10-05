@@ -37,8 +37,8 @@ enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 Vista::Vista(Modelo* modelo) {
 	this -> modelo = modelo;
 	this->pantalla= modelo->juego->pantalla;
-	this->referencia_mapa_x=this->modelo->juego->escenario->protagonista->getReferenciaMapaX()-1;// desde el punto del mapa donde se dibuja
-	this->referencia_mapa_y=this->modelo->juego->escenario->protagonista->getReferenciaMapaY()-1;
+	this->referencia_mapa_x=this->modelo->juego->escenario->protagonista->getReferenciaMapaX();// desde el punto del mapa donde se dibuja
+	this->referencia_mapa_y=this->modelo->juego->escenario->protagonista->getReferenciaMapaY();
 	this->velocidad_de_scroll=0.25;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
@@ -236,7 +236,6 @@ int Vista::run() {
 	this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
 
 	double personaje_x=pers->getReferenciaMapaX(),personaje_y=pers->getReferenciaMapaY();
-
 	while (!quit) {
 		double tiempo_actual,tiempo_viejo=0;
 		tiempo_viejo=SDL_GetTicks();
@@ -247,9 +246,11 @@ int Vista::run() {
 			if (e.type == SDL_MOUSEBUTTONDOWN) {
 				SDL_GetMouseState(&mov_x, &mov_y);
 				this->transformador->transformar_pantalla_isometrica(mov_x,mov_y,personaje_x,personaje_y);
-				personaje_x+=referencia_mapa_x;
-				personaje_y+=referencia_mapa_y;
-
+				/*HARDCODE*/
+				personaje_x+=referencia_mapa_x-1.5;
+				personaje_y+=referencia_mapa_y+0.5;
+				printf("Personaje : x: %g, y: %g \n",personaje_x,personaje_y);
+				printf("Adonde estoy: x: %g, y: %g \n",personaje_x,personaje_y);
 			}
 			if (e.type == SDL_KEYDOWN) {
 	            SDL_Keycode keyPressed = e.key.keysym.sym;
@@ -328,21 +329,22 @@ bool Vista::adentro_del_mapa(int coord_x,int coord_y){
 void Vista::dibujar_personaje(double mover_x, double mover_y) {
 	Personaje* personaje=this->modelo->devolverPersonaje();
 	int img_personaje_x,img_personaje_y ;
-
+	/*HARDCODE*/
 	this->transformador->transformar_isometrica_pantalla(
-			personaje->getReferenciaMapaX() - referencia_mapa_x,
-			personaje->getReferenciaMapaY() - referencia_mapa_y, img_personaje_x,
+			personaje->getReferenciaMapaX() - referencia_mapa_x+1.5,
+			personaje->getReferenciaMapaY() - referencia_mapa_y-0.5, img_personaje_x,
 			img_personaje_y);
 	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
 			DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
-
-	if (!adentro_del_mapa(mover_x - 1.5, mover_y + 0.5)) { //Hardcoding
+	/*HARDCODE*/
+	if (!adentro_del_mapa(mover_x - 1.5, mover_y + 0.5)) {
 		mover_x = personaje->getReferenciaMapaX();
 		mover_y = personaje->getReferenciaMapaY();
 	}
 	int adonde_va_x, adonde_va_y;
-	this->transformador->transformar_isometrica_pantalla(mover_x - referencia_mapa_x, mover_y - referencia_mapa_y,
+	/*HARDCODE*/
+	this->transformador->transformar_isometrica_pantalla(mover_x - referencia_mapa_x+1.5, mover_y - referencia_mapa_y-0.5,
 			adonde_va_x, adonde_va_y);
 	dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
 			(adonde_va_y - img_personaje_y));
@@ -369,7 +371,7 @@ void Vista::dibujar_mapa() {
 					size_t n_imagen = this->modelo->dibujar(dim,coord_x,coord_y);
 					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(n_imagen);
 					if (dibujo != NULL) {
-					/**ATENCION MUY HARDCODEADO**/
+						/*HARDCODE*/
 					this->transformador->transformar_isometrica_pantalla(
 							coord_x - referencia_mapa_x+dim*1.5,
 							coord_y - referencia_mapa_y-dim*0.5, x_imagen, y_imagen);

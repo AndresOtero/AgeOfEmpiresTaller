@@ -18,11 +18,11 @@ public:
 	 ~Posicion();
 
 	int getX() const {
-		return ceil(x);
+		return floor(x);
 	}
 
 	int getY() const {
-		return ceil(y);
+		return floor(y);
 	}
 	double get_x_exacta() const {
 		return x;
