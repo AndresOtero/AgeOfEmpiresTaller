@@ -9,7 +9,8 @@
 #include "Celda.h"
 #include "Posicion.h"
 #include <iostream>
-
+#include <queue>
+#include "CmpDistanciasTuplas.h"
 Mapa::Mapa(int ancho, int largo) {
 	this->largo = largo;
 	this->ancho = ancho;
@@ -66,6 +67,20 @@ int Mapa::getLargo(){
 bool Mapa::afueraDelMapa(int x,int y){
 	return ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0));
 }
+Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
+	if (!celdaOcupada(adonde_voy.getX(), adonde_voy.getY())) {
+		return adonde_voy;
+	}
+	vector<Posicion> adyacentes = adyacenciasNoOcupadas(adonde_voy);
+	vector<Posicion>::iterator it = adyacentes.begin();
+	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
+				CompDistancias> pila;
+	for (; it != adyacentes.end(); ++it) {
+		Posicion ady = (*it);
+		pila.push(pair<Posicion, double>(ady, adonde_estoy.distancia_euclidia(ady)));
+	}
+	return pila.top().first;
+}
 vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 	vector<Posicion> adyacentes = vector<Posicion>();
 	int x = posicion.getX(), y = posicion.getY();
@@ -82,6 +97,14 @@ vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 
 		}
 	}
+	/**for (int i = x - 1; i < x + 2; i++) {
+			for (int j = y - 1; j < y + 2; j++) {
+				if ((i != x)&&(j != y) && (!afueraDelMapa(x, j)) && (!celdaOcupada(x, j))) {
+					adyacentes.push_back(Posicion(i, j));
+
+				}
+			}
+		}**/
 	return adyacentes;
 }
 

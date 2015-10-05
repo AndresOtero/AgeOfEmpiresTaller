@@ -12,7 +12,9 @@
 #include "stack"
 #include "iterator"
 #include <map>
+#include "CmpDistanciasTuplas.h"
 #include "unordered_map"
+#include "CmpPosicion.h"
 using namespace std;
 
 
@@ -64,34 +66,16 @@ bool Modelo::celdaOcupada(Posicion posicion){
 	return this->mapa->celdaOcupada(posicion.getX(),posicion.getY());
 }
 
-class CompDistancias
-{
-public:
-    bool operator()(pair<Posicion,double> p1,pair<Posicion,double> p2) {
-        return p1.second>p2.second;
-    }
-};
 
-double heuristica(Posicion adonde_voy,Posicion adonde_estoy){
-	return adonde_voy.distancia_manhattan(adonde_estoy);
+
+double Modelo::heuristica(Posicion adonde_voy,Posicion adonde_estoy){
+	return adonde_voy.distancia_euclidia(adonde_estoy);
+}
+double Modelo::distancia(Posicion a,Posicion b){
+	return a.distancia_euclidia(b);
 }
 
-struct cmp { /**
-	Necesita un comparador para funcionar el diccionario (igualar claves), luego de mucho buscar encontre el
-	que funciona.
- 	 	**/
-	bool operator()(Posicion const& a, Posicion const& b) const {
-		if (a.getX() < b.getX())
-			return true;
-		if (a.getX() == b.getX()) {
-			if (a.getY() < b.getY())
-				return true;
-			return false;
-		}
-		return false;
 
-	}
-};
 Posicion Modelo::calcular_camino(double x, double y) {
 	/**
 	 *http://www.redblobgames.com/pathfinding/a-star/introduction.html
@@ -99,16 +83,19 @@ Posicion Modelo::calcular_camino(double x, double y) {
 	Posicion adonde_voy = Posicion(x, y);
 	Personaje* personaje = devolverPersonaje();
 	Posicion adonde_estoy = personaje->get_posicion();
+	if(adonde_estoy==adonde_voy){
+		return adonde_voy;
+	}
+	adonde_voy=mapa->validar_destino(adonde_voy,adonde_estoy);
 	vector<Posicion> adyacentes = mapa->adyacenciasNoOcupadas(adonde_estoy);
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
 			CompDistancias> pila;
 	pair<Posicion, double> primero(adonde_estoy, 0);
 	pila.push(primero);
-	map<Posicion, Posicion,cmp> donde_vengo;
-	map<Posicion, double,cmp> cuanto_recorri;
+	map<Posicion, Posicion,cmp_posiciones> donde_vengo;
+	map<Posicion, double,cmp_posiciones> cuanto_recorri;
 	donde_vengo.insert(pair<Posicion, Posicion>(adonde_estoy, adonde_estoy));
 	cuanto_recorri.insert(primero);
-
 	while (!pila.empty()) {
 		pair<Posicion, double> actual = pila.top();
 		Posicion posicion_actual = actual.first;
@@ -120,16 +107,11 @@ Posicion Modelo::calcular_camino(double x, double y) {
 		vector<Posicion>::iterator it = adyacentes.begin();
 		for (; it != adyacentes.end(); ++it) {
 			Posicion ady = (*it);
-			double nueva_distancia = cuanto_recorri[posicion_actual]+ady.distancia_manhattan(posicion_actual);
-			bool ya_pase =cuanto_recorri.count(ady);
-			if(ya_pase) {
-				double distancia_vieja=cuanto_recorri[ady];
-			}
+			double nueva_distancia = cuanto_recorri[posicion_actual]+distancia(ady,posicion_actual);
 			if ((!(cuanto_recorri.count(ady)))
 					|| (nueva_distancia < cuanto_recorri[ady])) {
 				cuanto_recorri[ady] = nueva_distancia;
-				double prioridad = nueva_distancia
-						+ heuristica(adonde_voy, ady);
+				double prioridad = nueva_distancia+ heuristica(adonde_voy, ady);
 				pila.push(pair<Posicion, double>(ady, prioridad));
 				donde_vengo[ady] = posicion_actual;
 
@@ -159,7 +141,6 @@ Posicion Modelo::calcular_camino(double x, double y) {
 }
 Posicion Modelo::mover_personaje(double mov_x,double mov_y){
 	Posicion adonde_voy=calcular_camino(mov_x,mov_y);
-
 	Personaje* personaje=devolverPersonaje();
 	personaje->mover(adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 	return adonde_voy;

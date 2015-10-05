@@ -338,7 +338,7 @@ void Vista::dibujar_personaje(double mover_x, double mover_y) {
 			DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
 	/*HARDCODE*/
-	if (!adentro_del_mapa(mover_x - 1.5, mover_y + 0.5)) {
+	if (!adentro_del_mapa(mover_x, mover_y)) {
 		mover_x = personaje->getReferenciaMapaX();
 		mover_y = personaje->getReferenciaMapaY();
 	}

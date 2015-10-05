@@ -25,6 +25,11 @@ double Posicion::distancia(Posicion posicion) {
 	double delta_y = (double) (y - posicion.get_y_exacta());
 	return sqrt(delta_x * delta_x + delta_y * delta_y);
 }
+double Posicion::distancia_euclidia(Posicion posicion) {
+	double delta_x = (double) (x - posicion.get_x_exacta());
+	double delta_y = (double) (y - posicion.get_y_exacta());
+	return (delta_x * delta_x + delta_y * delta_y);
+}
 double Posicion::distancia_manhattan(Posicion posicion) {
 	double delta_x = (double) (getX() - posicion.getX());
 	double delta_y = (double) (getY() - posicion.getY());

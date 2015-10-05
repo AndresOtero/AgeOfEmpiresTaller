@@ -53,6 +53,7 @@ escenario:
   - { x : 12, y: 8, tipo: arbol }
   - { x : 13, y: 8, tipo: arbol }
   - { x : 10, y: 9, tipo: arbol }
+
   - { x : 10, y: 11, tipo: arbol }
   - { x : 10, y: 12, tipo: arbol }
   - { x : 11, y: 12, tipo: arbol }

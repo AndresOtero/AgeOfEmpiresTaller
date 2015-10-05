@@ -36,6 +36,10 @@ private:
 	Posicion calcular_camino(double x,double y);
 	void insertarEntidades();
 	bool celdaOcupada(Posicion);
+	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);
+	double distancia(Posicion a,Posicion b);
+
+
 };
 
 #endif /* MODELO_H_ */

@@ -31,6 +31,9 @@ public:
 		return y;
 	}
 	double distancia(Posicion posicion);
+	double distancia_euclidia(Posicion posicion);
+
+
 	double distancia_manhattan(Posicion posicion);
     friend bool operator== ( Posicion &P1,  Posicion &P2);
     friend bool operator== ( Posicion const &P1, const  Posicion &P2);

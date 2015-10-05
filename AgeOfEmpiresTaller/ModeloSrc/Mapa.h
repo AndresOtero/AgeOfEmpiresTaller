@@ -30,6 +30,7 @@ public:
 	bool celdaOcupada(int x,int y);
 	vector<Posicion> adyacenciasNoOcupadas(Posicion posicion);
 	void posicionarEntidad(Entidad* entidad);
+	Posicion validar_destino(Posicion adonde_voy,Posicion adonde_estoy);
 private:
 	Celda* getCelda(int x,int y);
 
