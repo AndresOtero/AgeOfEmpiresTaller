@@ -29,6 +29,7 @@ public:
 	void agregarPersonaje(Personaje*);
 	void seleccionar(double mov_x,double mov_y);
 	Personaje* devolverPersonaje();
+	void actualizarMapa();
 	Posicion mover_personaje(double mov_x,double mov_y);
 	int get_ancho_mapa();
 	int get_alto_mapa();

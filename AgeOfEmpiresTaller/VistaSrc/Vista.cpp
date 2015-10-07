@@ -233,8 +233,7 @@ int Vista::run() {
 	SDL_Event e;
 	int mov_x=0, mov_y=0;
 	Personaje* pers=this->modelo->devolverPersonaje();
-	this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
-
+	//this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
 	double personaje_x=pers->getReferenciaMapaX(),personaje_y=pers->getReferenciaMapaY();
 	while (!quit) {
 		double tiempo_actual,tiempo_viejo=0;
@@ -276,20 +275,10 @@ int Vista::run() {
 		SDL_SetRenderDrawColor(gRenderer, 0, 0,0, 0);
 		SDL_RenderClear(gRenderer);
 
-
+		modelo->actualizarMapa();
 		dibujar_mapa();
 		dibujar_personaje(personaje_x,personaje_y);
-
-		int mouse_x,mouse_y;
-		SDL_GetMouseState(&mouse_x, &mouse_y);
-
-		double x,y;
-		this->transformador->transformar_pantalla_isometrica(mouse_x,mouse_y,x,y);
-		x+=referencia_mapa_x;
-		y+=referencia_mapa_y;
-		//printf("Adonde estoy: x: %g, y: %g \n",x,y);
-
-		this->detectar_mouse_borde();
+		detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
 
 
@@ -327,8 +316,8 @@ void Vista::corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, doubl
 	coord_y+=referencia_mapa_y+0.5;
 }
 void Vista::corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y){
-	coord_x-=(referencia_mapa_x-1.5);
-	coord_y-=(referencia_mapa_y+0.5);
+	coord_x=(coord_x-referencia_mapa_x+1.5);
+	coord_y=(coord_y-referencia_mapa_y-0.5);
 }
 
 
@@ -350,7 +339,6 @@ void Vista::dibujar_personaje(double mover_x, double mover_y) {
 	double personaje_x=personaje->getReferenciaMapaX();
 	double personaje_y=personaje->getReferenciaMapaX();
 	this->corregir_referencia_coordenadas_mapa_pantalla(personaje_x,personaje_y);
-	/*HARDCODE*/
 	this->transformador->transformar_isometrica_pantalla(
 			personaje->getReferenciaMapaX() - referencia_mapa_x+1.5,
 			personaje->getReferenciaMapaY() - referencia_mapa_y-0.5, img_personaje_x,

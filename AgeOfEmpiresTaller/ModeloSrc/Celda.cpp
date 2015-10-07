@@ -14,6 +14,7 @@ Celda::Celda() {
 	this -> tiles = DEFAULT;
 	this -> ocupada = false;
 	this->entidad = NULL;
+	this->personaje=NULL;
 }
 void Celda::setEscenario(dibujo_t dibujo_n){
 
@@ -28,9 +29,14 @@ dibujo_t Celda::dibujarTiles(){
 dibujo_t Celda::dibujarEscenario(){
 	return this->escenario;
 }
-
+void Celda::actualizar(){
+	this->personaje=NULL;
+}
+void Celda::ocuparCeldaPersonaje(Personaje* personaje){
+	this->personaje=personaje;
+}
 bool Celda::estaOcupada(){
-	if (this->entidad!=NULL)
+	if ((this->entidad!=NULL)||(this->personaje!=NULL))
 		return true;
 	return false;
 }
@@ -41,6 +47,9 @@ void Celda::mostrar_contenido(){
 	if (this->entidad!=NULL){
 		this->entidad->mostrar_contenido();
 	}
+	if (this->personaje!=NULL){
+			this->personaje->mostrar_contenido();
+		}
 
 }
 Celda::~Celda() {

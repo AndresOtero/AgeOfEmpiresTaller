@@ -58,7 +58,19 @@ dibujo_t Mapa::dibujarTiles(int x, int y) {
 		return AFUERA;
 	}
 	return this->getCelda(x,y)->dibujarTiles();
-
+}
+void Mapa::actualizar(vector<Personaje*> personajes) {
+	for(int i=0;i<ancho;i++){
+		for (int j = 0;  j < largo;  j++) {
+			this->getCelda(i,j)->actualizar();
+		}
+	}
+	vector<Personaje*>::iterator it =personajes.begin();
+	for (; it != personajes.end(); ++it) {
+		Personaje* p=(*it);
+		Posicion pos=p->get_posicion();
+		this->getCelda(pos.getX(),pos.getY())->ocuparCeldaPersonaje(p);
+	}
 }
 
 int Mapa::getAncho(){
@@ -71,6 +83,9 @@ bool Mapa::afueraDelMapa(int x,int y){
 	return ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0));
 }
 Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
+	if(adonde_estoy==adonde_voy){
+			return adonde_voy;
+		}
 	if (!celdaOcupada(adonde_voy.getX(), adonde_voy.getY())) {
 		return adonde_voy;
 	}
