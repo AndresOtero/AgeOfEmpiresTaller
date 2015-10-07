@@ -36,6 +36,9 @@ void Modelo::insertarEntidades(){
 void Modelo::setMapa(int ancho,int largo){
 	this->mapa=shared_ptr<Mapa>(new Mapa(ancho,largo));
 }
+void Modelo::actualizarMapa(){
+	mapa->actualizar(personajes);
+}
 void Modelo::agregarPersonaje(Personaje* personaje){
 	personajes.push_back(personaje);
 }
@@ -64,6 +67,17 @@ dibujo_t Modelo::dibujar(int dim,int x,int y){
 
 bool Modelo::celdaOcupada(Posicion posicion){
 	return this->mapa->celdaOcupada(posicion.getX(),posicion.getY());
+}
+void Modelo::seleccionar(double mov_x,double mov_y){
+	Posicion posicion= Posicion(mov_x,mov_y);
+	printf(celdaOcupada(posicion) ? "true\n" : "false\n");
+	if(!celdaOcupada(posicion)){
+		vector<Personaje*>::iterator it = personajes.begin();
+		for (; it != personajes.end(); ++it) {
+		}
+
+	}
+	this->mapa->mostrar_contenido(posicion.getX(),posicion.getY());
 }
 
 

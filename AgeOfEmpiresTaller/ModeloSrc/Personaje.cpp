@@ -38,6 +38,9 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 dibujo_t Personaje::dibujar(){
 	return dibujo;
 }
+void Personaje::mostrar_contenido(){
+	printf("%s\n",objetoMapa->nombre.c_str());
+}
 
 Posicion Personaje::get_posicion(){
 	return Posicion(referencia_mapa_x,referencia_mapa_y);

@@ -27,7 +27,9 @@ public:
 	//vector<vector<vector<dibujo_t>>> dibujar(int x,int 	y,int ancho,int largo);
 	dibujo_t dibujar(int dim,int x,int y);
 	void agregarPersonaje(Personaje*);
+	void seleccionar(double mov_x,double mov_y);
 	Personaje* devolverPersonaje();
+	void actualizarMapa();
 	Posicion mover_personaje(double mov_x,double mov_y);
 	int get_ancho_mapa();
 	int get_alto_mapa();
