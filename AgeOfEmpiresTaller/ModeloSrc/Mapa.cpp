@@ -36,6 +36,9 @@ void Mapa::setTiles(dibujo_t dibujo,int x,int y){
 void Mapa::setEscenario(dibujo_t dibujo,int x,int y){
 	this->getCelda(x,y)->setEscenario(dibujo);
 }
+void Mapa::mostrar_contenido(int x,int y){
+	this->getCelda(x,y)->mostrar_contenido();
+}
 bool Mapa::celdaOcupada(int x, int y) {
 	Celda* celda=this->getCelda(x,y);
 	if (celda==NULL) {

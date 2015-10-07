@@ -65,6 +65,11 @@ dibujo_t Modelo::dibujar(int dim,int x,int y){
 bool Modelo::celdaOcupada(Posicion posicion){
 	return this->mapa->celdaOcupada(posicion.getX(),posicion.getY());
 }
+void Modelo::seleccionar(double mov_x,double mov_y){
+	Posicion posicion= Posicion(mov_x,mov_y);
+	printf(this->mapa->celdaOcupada(posicion.getX(),posicion.getY()) ? "true\n" : "false\n");
+	this->mapa->mostrar_contenido(posicion.getX(),posicion.getY());
+}
 
 
 

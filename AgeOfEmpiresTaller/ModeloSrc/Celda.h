@@ -25,6 +25,7 @@ public:
 	void setTiles(dibujo_t dibujo);
 	dibujo_t dibujarEscenario();
 	dibujo_t dibujarTiles();
+	void mostrar_contenido();
 	void ocuparCelda(Entidad*entidad);
 	virtual ~Celda();
 };

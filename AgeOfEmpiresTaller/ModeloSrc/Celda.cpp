@@ -37,7 +37,12 @@ bool Celda::estaOcupada(){
 void Celda::ocuparCelda(Entidad * entidad){
 	this->entidad=entidad;
 }
+void Celda::mostrar_contenido(){
+	if (this->entidad!=NULL){
+		this->entidad->mostrar_contenido();
+	}
 
+}
 Celda::~Celda() {
 	// TODO Auto-generated destructor stub
 
