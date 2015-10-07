@@ -22,10 +22,11 @@ class Textura
 
 		void free();
 
-
+		void setAsRenderTarget(SDL_Renderer * renderer);
 		//Renders texture at given point
 		void render( int x, int y, SDL_Rect* clip ,SDL_Renderer* gRenderer );
-
+		void renderEx(double angle, SDL_Rect* srcrect, SDL_Rect* dsrect,SDL_Renderer* renderer);
+		bool createBlank(int width, int height, SDL_TextureAccess access,SDL_Renderer *renderer);
 		//Gets image dimensions
 		int getWidth();
 		int getHeight();
