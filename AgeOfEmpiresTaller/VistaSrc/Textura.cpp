@@ -62,7 +62,11 @@ void Textura::free() {
 		mHeight = 0;
 	}
 }
-
+void Textura::setAsRenderTarget(SDL_Renderer* renderer)
+{
+    //Make self render target
+    SDL_SetRenderTarget( renderer, mTexture );
+}
 void Textura::render(int x, int y, SDL_Rect* clip, SDL_Renderer* gRenderer) {
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 
@@ -73,6 +77,29 @@ void Textura::render(int x, int y, SDL_Rect* clip, SDL_Renderer* gRenderer) {
 
 	SDL_RenderCopy(gRenderer, mTexture, clip, &renderQuad);
 }
+
+void Textura::renderEx(double angle, SDL_Rect* srcrect, SDL_Rect* dsrect,SDL_Renderer* renderer){
+
+	SDL_RenderCopyEx(renderer,this->mTexture,srcrect,dsrect,angle,NULL,SDL_FLIP_NONE);
+}
+
+bool Textura::createBlank( int width, int height, SDL_TextureAccess access,SDL_Renderer *renderer)
+{
+    //Create uninitialized texture
+    mTexture = SDL_CreateTexture( renderer, SDL_PIXELFORMAT_RGBA8888, access, width, height );
+    if( mTexture == NULL )
+    {
+        printf( "Unable to create blank texture! SDL Error: %s\n", SDL_GetError() );
+    }
+    else
+    {
+        mWidth = width;
+        mHeight = height;
+    }
+
+    return mTexture != NULL;
+}
+
 
 int Textura::getWidth() {
 	return mWidth;

@@ -1,6 +1,6 @@
--pantalla: 
- ancho: 2000
- alto: 768
+pantalla: 
+ ancho: 1000
+ alto: 700
 
 configuracion:
  vel_personaje: 1

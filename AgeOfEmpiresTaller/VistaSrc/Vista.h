@@ -12,6 +12,7 @@
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
 #include "../ModeloSrc/Personaje.h"
+#include "Minimapa.h"
 using namespace std;
 
 class Dibujo;
@@ -29,6 +30,7 @@ class Vista {
 	shared_ptr<FactoryDibujo> factory;
 	shared_ptr<CambioDeCoordendas> transformador;
 	Pantalla* pantalla;
+	Minimapa* minimapa;
 	int margen_scroll;
 	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;

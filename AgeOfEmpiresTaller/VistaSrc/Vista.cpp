@@ -42,6 +42,7 @@ Vista::Vista(Modelo* modelo) {
 	this->velocidad_de_scroll=0.25;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
+	this->minimapa = new Minimapa(modelo);
 }
 
 int Vista::altura_por_celda(){
@@ -173,6 +174,7 @@ bool Vista::loadMedia() {
 
 	modelo->agregarPersonaje(protagonista);
 
+	this->minimapa->inicializar("img/minimap.png",gRenderer);
 
 
 	return true;
@@ -278,6 +280,7 @@ int Vista::run() {
 		modelo->actualizarMapa();
 		dibujar_mapa();
 		dibujar_personaje();
+		minimapa->render(gRenderer);
 		detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
 

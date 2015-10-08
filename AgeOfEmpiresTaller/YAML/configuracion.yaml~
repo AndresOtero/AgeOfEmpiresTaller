@@ -1,6 +1,6 @@
--pantalla: 
- ancho: 2000
- alto: 768
+pantalla: 
+ ancho: 1000
+ alto: 700
 
 configuracion:
  vel_personaje: 1
@@ -39,8 +39,8 @@ tipos:
 
 escenario:
  nombre: orleans
- size_x: 100
- size_y: 100
+ size_x: 60
+ size_y: 60
  entidades: 
   - { x : 1, y: 2, tipo: arbol }
   - { x : 6, y: 6, tipo: church }
@@ -53,7 +53,7 @@ escenario:
   - { x : 12, y: 8, tipo: arbol }
   - { x : 13, y: 8, tipo: arbol }
   - { x : 10, y: 9, tipo: arbol }
-  - { x : 10, y: 10, tipo: arbol }
+
   - { x : 10, y: 11, tipo: arbol }
   - { x : 10, y: 12, tipo: arbol }
   - { x : 11, y: 12, tipo: arbol }
