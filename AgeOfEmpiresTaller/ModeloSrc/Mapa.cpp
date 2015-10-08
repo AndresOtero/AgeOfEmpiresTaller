@@ -91,6 +91,7 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	if((adonde_estoy==adonde_voy)||(!celdaOcupada(adonde_voy.getX(), adonde_voy.getY()))) {
 		return adonde_voy;
 	}
+	return adonde_estoy;
 	vector<Posicion> adyacentes = adyacenciasNoOcupadas(adonde_voy);
 	vector<Posicion>::iterator it = adyacentes.begin();
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
