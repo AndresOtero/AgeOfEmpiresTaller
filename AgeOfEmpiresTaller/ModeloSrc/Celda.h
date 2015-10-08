@@ -21,6 +21,7 @@ private:
 	Entidad* entidad;
 	Personaje* personaje;
 public:
+	Personaje* devolver_personaje();
 	Celda();
 	bool estaOcupada();
 	void setEscenario(dibujo_t dibujo);

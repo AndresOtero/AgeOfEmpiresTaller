@@ -25,6 +25,7 @@ Modelo::Modelo(Juego* juego) {
 	this -> juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 	this->personajes=vector<Personaje*>();
+	personaje_seleccionado=NULL;
 	this->insertarEntidades();
 }
 void Modelo::insertarEntidades(){
@@ -43,9 +44,11 @@ void Modelo::agregarPersonaje(Personaje* personaje){
 	personajes.push_back(personaje);
 }
 Personaje* Modelo::devolverPersonaje(){
-	return this->personajes[0];
+	return personaje_seleccionado;
 }
-
+vector<Personaje*> Modelo::devolverTodosLosPersonajes(){
+	return personajes;
+}
 
 void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles){
 	int ancho =this->mapa->getAncho();
@@ -70,33 +73,24 @@ bool Modelo::celdaOcupada(Posicion posicion){
 }
 void Modelo::seleccionar(double mov_x,double mov_y){
 	Posicion posicion= Posicion(mov_x,mov_y);
-	printf(celdaOcupada(posicion) ? "true\n" : "false\n");
-	if(!celdaOcupada(posicion)){
-		vector<Personaje*>::iterator it = personajes.begin();
-		for (; it != personajes.end(); ++it) {
-		}
-
-	}
 	this->mapa->mostrar_contenido(posicion.getX(),posicion.getY());
+	personaje_seleccionado=this->mapa->personaje_celda(posicion.getX(),posicion.getY());
 }
 
 
 
 double Modelo::heuristica(Posicion adonde_voy,Posicion adonde_estoy){
-	return adonde_voy.distancia_euclidia(adonde_estoy);
+	return adonde_voy.distancia(adonde_estoy);
 }
 double Modelo::distancia(Posicion a,Posicion b){
 	return a.distancia_euclidia(b);
 }
 
 
-Posicion Modelo::calcular_camino(double x, double y) {
+Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	/**
 	 *http://www.redblobgames.com/pathfinding/a-star/introduction.html
 	 **/
-	Posicion adonde_voy = Posicion(x, y);
-	Personaje* personaje = devolverPersonaje();
-	Posicion adonde_estoy = personaje->get_posicion();
 	if(adonde_estoy==adonde_voy){
 		return adonde_voy;
 	}
@@ -153,12 +147,21 @@ Posicion Modelo::calcular_camino(double x, double y) {
 	printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 	return adonde_voy;
 }
-Posicion Modelo::mover_personaje(double mov_x,double mov_y){
-	Posicion adonde_voy=calcular_camino(mov_x,mov_y);
-	Personaje* personaje=devolverPersonaje();
-	personaje->mover(adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
+Posicion Modelo::mover_personaje(Personaje* personaje){
+	Posicion destino= personaje->get_destino();
+	Posicion adonde_estoy= personaje->get_posicion();
+	Posicion adonde_voy=calcular_camino(adonde_estoy,destino);
+	personaje->set_camino(adonde_voy);
+	personaje->mover();
 	return adonde_voy;
 }
+void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
+	Personaje* personaje= 	this->devolverPersonaje();
+	if(personaje!=NULL){
+		personaje->set_destino(Posicion(mov_x,mov_y));
+	}
+}
+
 int Modelo::get_alto_mapa(){
 	return mapa->getLargo();
 }

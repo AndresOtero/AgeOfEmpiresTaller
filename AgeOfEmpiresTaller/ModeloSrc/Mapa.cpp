@@ -51,7 +51,9 @@ dibujo_t Mapa::dibujarEscenario(int x, int y) {
 		return AFUERA;
 	}
 	return this->getCelda(x,y)->dibujarEscenario();
-
+}
+Personaje* Mapa::personaje_celda(int x, int y) {
+	return this->getCelda(x,y)->devolver_personaje();
 }
 dibujo_t Mapa::dibujarTiles(int x, int y) {
 	if ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0)) {
@@ -83,10 +85,10 @@ bool Mapa::afueraDelMapa(int x,int y){
 	return ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0));
 }
 Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
-	if(adonde_estoy==adonde_voy){
-			return adonde_voy;
-		}
-	if (!celdaOcupada(adonde_voy.getX(), adonde_voy.getY())) {
+	if(afueraDelMapa(adonde_voy.getX(),adonde_voy.getY())){
+		return adonde_estoy;
+	}
+	if((adonde_estoy==adonde_voy)||(!celdaOcupada(adonde_voy.getX(), adonde_voy.getY()))) {
 		return adonde_voy;
 	}
 	vector<Posicion> adyacentes = adyacenciasNoOcupadas(adonde_voy);
@@ -102,7 +104,6 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 	vector<Posicion> adyacentes = vector<Posicion>();
 	int x = posicion.getX(), y = posicion.getY();
-
 	for (int i = x - 1; i < x + 2; i++) {
 		if ((i != x) && (!afueraDelMapa(i, y)) && (!celdaOcupada(i, y))) {
 			adyacentes.push_back(Posicion(i, y));

@@ -13,6 +13,7 @@ Personaje::Personaje(){
 	this->objetoMapa = new ObjetoMapa("protagonistaDefault", "img/protagonista/spartan_small.png");
 	this->referencia_mapa_x=5;
 	this->referencia_mapa_y=2;
+	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->objetoMapa->fps = 20; //FPS DEFAULT
 	this->velocidad=1;
 	this->objetoMapa->delay = 0; //delay default
@@ -22,6 +23,7 @@ Personaje::Personaje(){
 Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->referencia_mapa_x=1;
 	this->referencia_mapa_y=1;
+	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->velocidad=1;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
@@ -30,6 +32,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_x=x;
 	this->referencia_mapa_y=y;
+	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->velocidad=1;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
@@ -45,9 +48,18 @@ void Personaje::mostrar_contenido(){
 Posicion Personaje::get_posicion(){
 	return Posicion(referencia_mapa_x,referencia_mapa_y);
 }
-
-void Personaje::mover(double x, double y) {
-
+void Personaje::set_destino(Posicion destino){
+	this->destino=destino;
+}
+void Personaje::set_camino(Posicion camino){
+	this->camino=camino;
+}
+Posicion Personaje::get_destino(){
+	return destino;
+}
+void Personaje::mover() {
+	double x = camino.get_x_exacta();
+	double y = camino.get_y_exacta();
 	double delta_x = (double) (x - referencia_mapa_x);
 	double delta_y = (double) (y - referencia_mapa_y);
 	double distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
@@ -57,6 +69,7 @@ void Personaje::mover(double x, double y) {
 		}
 		if ((sqrt(delta_x * delta_x) > distancia)
 				&& (sqrt(delta_x * delta_x) < distancia)) {
+
 			this->referencia_mapa_x = x;
 		}
 		if ((sqrt(delta_y * delta_y) > distancia)

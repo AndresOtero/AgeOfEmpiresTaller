@@ -50,7 +50,9 @@ void Celda::mostrar_contenido(){
 	if (this->personaje!=NULL){
 			this->personaje->mostrar_contenido();
 		}
-
+}
+Personaje* Celda::devolver_personaje(){
+	return personaje;
 }
 Celda::~Celda() {
 	// TODO Auto-generated destructor stub

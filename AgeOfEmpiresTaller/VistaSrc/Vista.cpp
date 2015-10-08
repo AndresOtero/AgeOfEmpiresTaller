@@ -232,9 +232,8 @@ int Vista::run() {
 	bool quit = false;
 	SDL_Event e;
 	int mov_x=0, mov_y=0;
-	Personaje* pers=this->modelo->devolverPersonaje();
 	//this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
-	double personaje_x=pers->getReferenciaMapaX(),personaje_y=pers->getReferenciaMapaY();
+	double personaje_x,personaje_y;
 	while (!quit) {
 		double tiempo_actual,tiempo_viejo=0;
 		tiempo_viejo=SDL_GetTicks();
@@ -247,17 +246,18 @@ int Vista::run() {
 					SDL_GetMouseState(&mov_x, &mov_y);
 					this->transformador->transformar_pantalla_isometrica(mov_x,mov_y,personaje_x,personaje_y);
 					this->corregir_referencia_coordenadas_pantalla_mapa(personaje_x,personaje_y);
-					printf("Personaje : x: %g, y: %g \n",personaje_x,personaje_y);
-					printf("Adonde estoy: x: %g, y: %g \n",personaje_x,personaje_y);
+					modelo->cambiar_destino_personaje(personaje_x,personaje_y);
+					//printf("Personaje : x: %g, y: %g \n",personaje_x,personaje_y);
+					//printf("Adonde estoy: x: %g, y: %g \n",personaje_x,personaje_y);
 				}
 				if(e.button.button==SDL_BUTTON_LEFT){
 					double a,b;
 					SDL_GetMouseState(&mov_x, &mov_y);
 					this->transformador->transformar_pantalla_isometrica(mov_x,mov_y,a,b);
 					this->corregir_referencia_coordenadas_pantalla_mapa(a,b);
-					printf("Donde toco : x: %g, y: %g \n",a,b);
+					//printf("Donde toco : x: %g, y: %g \n",a,b);
 					modelo->seleccionar(a,b);
-					printf("Selecciono\n");
+					//printf("Selecciono\n");
 				}
 			}
 			if (e.type == SDL_KEYDOWN) {
@@ -277,7 +277,7 @@ int Vista::run() {
 
 		modelo->actualizarMapa();
 		dibujar_mapa();
-		dibujar_personaje(personaje_x,personaje_y);
+		dibujar_personaje();
 		detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
 
@@ -333,34 +333,44 @@ bool Vista::adentro_del_mapa(int coord_x,int coord_y){
 			&& (coord_x >= 0) && (coord_y >= 0));
 }
 
-void Vista::dibujar_personaje(double mover_x, double mover_y) {
-	Personaje* personaje=this->modelo->devolverPersonaje();
-	int img_personaje_x,img_personaje_y ;
-	double personaje_x=personaje->getReferenciaMapaX();
-	double personaje_y=personaje->getReferenciaMapaX();
-	this->corregir_referencia_coordenadas_mapa_pantalla(personaje_x,personaje_y);
-	this->transformador->transformar_isometrica_pantalla(
-			personaje->getReferenciaMapaX() - referencia_mapa_x+1.5,
-			personaje->getReferenciaMapaY() - referencia_mapa_y-0.5, img_personaje_x,
-			img_personaje_y);
-	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
-			DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
-	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
-	/*HARDCODE*/
-	if (!adentro_del_mapa(mover_x, mover_y)) {
-		mover_x = personaje->getReferenciaMapaX();
-		mover_y = personaje->getReferenciaMapaY();
+void Vista::dibujar_personaje() {
+	vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*>::iterator it =personajes.begin();
+	for (; it != personajes.end(); ++it) {
+		Personaje* personaje = (*it);
+		int img_personaje_x, img_personaje_y;
+		double personaje_x = personaje->getReferenciaMapaX();
+		double personaje_y = personaje->getReferenciaMapaX();
+		this->corregir_referencia_coordenadas_mapa_pantalla(personaje_x,
+				personaje_y);
+		/*HARDCODE*/
+		this->transformador->transformar_isometrica_pantalla(
+				personaje->getReferenciaMapaX() - referencia_mapa_x + 1.5,
+				personaje->getReferenciaMapaY() - referencia_mapa_y - 0.5,
+				img_personaje_x, img_personaje_y);
+		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
+				DibujoPersonaje>(
+				this->factory->get_dibujo(personaje->dibujar()));
+		dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
+		Posicion destino= modelo->mover_personaje(personaje);
+		double mover_x =destino.get_x_exacta();
+		double mover_y=destino.get_y_exacta();
+		if (!adentro_del_mapa(mover_x, mover_y)) {
+			mover_x = personaje->getReferenciaMapaX();
+			mover_y = personaje->getReferenciaMapaY();
+		}
+		int adonde_va_x, adonde_va_y;
+		Posicion adonde_va = modelo->mover_personaje(personaje);
+		mover_x = adonde_va.get_x_exacta();
+		mover_y = adonde_va.get_y_exacta();
+		/*HARDCODE*/
+		this->transformador->transformar_isometrica_pantalla(
+				mover_x - referencia_mapa_x + 1.5,
+				mover_y - referencia_mapa_y - 0.5, adonde_va_x, adonde_va_y);
+		dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
+				(adonde_va_y - img_personaje_y));
+		dibujo_pers->render(gRenderer);
 	}
-	int adonde_va_x, adonde_va_y;
-	Posicion adonde_va =modelo->mover_personaje(mover_x, mover_y);
-	mover_x=adonde_va.get_x_exacta();
-	mover_y=adonde_va.get_y_exacta();
-	/*HARDCODE*/
-	this->transformador->transformar_isometrica_pantalla(mover_x - referencia_mapa_x+1.5, mover_y - referencia_mapa_y-0.5,
-			adonde_va_x, adonde_va_y);
-	dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
-			(adonde_va_y - img_personaje_y));
-	dibujo_pers->render(gRenderer);
 }
 
 void Vista::dibujar_mapa() {

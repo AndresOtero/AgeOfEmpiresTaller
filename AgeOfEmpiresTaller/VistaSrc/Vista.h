@@ -41,7 +41,7 @@ private:
 	void detectar_mouse_borde();
 	bool adentro_del_mapa(int coord_x, int coord_y);
 	bool adentro_del_mapa(double coord_x, double coord_y);
-	void dibujar_personaje(double mover_x, double mover_y);
+	void dibujar_personaje();
 	void corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, double& coord_y);
 	void corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y);
 

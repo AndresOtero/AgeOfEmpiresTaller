@@ -17,6 +17,7 @@ using namespace std;
 #define MODELO_H_
 
 class Modelo {
+	Personaje* personaje_seleccionado;
 	shared_ptr<Mapa> mapa;
 	vector<Personaje*> personajes;
 public:
@@ -27,15 +28,18 @@ public:
 	//vector<vector<vector<dibujo_t>>> dibujar(int x,int 	y,int ancho,int largo);
 	dibujo_t dibujar(int dim,int x,int y);
 	void agregarPersonaje(Personaje*);
-	void seleccionar(double mov_x,double mov_y);
+	void seleccionar(double x,double y);
+	vector<Personaje*> devolverTodosLosPersonajes();
 	Personaje* devolverPersonaje();
 	void actualizarMapa();
-	Posicion mover_personaje(double mov_x,double mov_y);
+	void cambiar_destino_personaje(double mov_x,double mov_y);
+	Posicion mover_personaje(Personaje* personaje);
+
 	int get_ancho_mapa();
 	int get_alto_mapa();
 	~Modelo();
 private:
-	Posicion calcular_camino(double x,double y);
+	Posicion calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy);
 	void insertarEntidades();
 	bool celdaOcupada(Posicion);
 	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);

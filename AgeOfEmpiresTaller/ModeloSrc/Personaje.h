@@ -17,6 +17,8 @@ class Personaje {
 	double referencia_mapa_x,referencia_mapa_y;
 	dibujo_t dibujo;
 	double velocidad;
+	Posicion destino;
+	Posicion camino;
 
 public:
 	Personaje();
@@ -26,7 +28,10 @@ public:
 	ObjetoMapa* objetoMapa;
 	dibujo_t dibujar();
 	virtual ~Personaje();
-	void mover(double x,double y);
+	void  mover();
+	void set_destino(Posicion destino);
+	void set_camino(Posicion camino);
+	Posicion get_destino();
 	Posicion get_posicion();
 	void setVelocidad(double velocidad) {
 		this->velocidad = velocidad;
