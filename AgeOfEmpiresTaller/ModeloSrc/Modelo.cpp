@@ -80,10 +80,10 @@ void Modelo::seleccionar(double mov_x,double mov_y){
 
 
 double Modelo::heuristica(Posicion adonde_voy,Posicion adonde_estoy){
-	return adonde_voy.distancia(adonde_estoy);
+	return adonde_voy.distancia_octal(adonde_estoy);
 }
 double Modelo::distancia(Posicion a,Posicion b){
-	return a.distancia_euclidia(b);
+	return a.distancia_octal(b);
 }
 
 
@@ -95,7 +95,6 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 		return adonde_voy;
 	}
 	adonde_voy=mapa->validar_destino(adonde_voy,adonde_estoy);
-	vector<Posicion> adyacentes = mapa->adyacenciasNoOcupadas(adonde_estoy);
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
 			CompDistancias> pila;
 	pair<Posicion, double> primero(adonde_estoy, 0);

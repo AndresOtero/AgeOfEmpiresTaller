@@ -32,6 +32,7 @@ public:
 	}
 	double distancia(Posicion posicion);
 	double distancia_euclidia(Posicion posicion);
+	double distancia_octal(Posicion posicion);
 
 
 	double distancia_manhattan(Posicion posicion);

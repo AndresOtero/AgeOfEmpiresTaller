@@ -6,8 +6,10 @@
  */
 
 #include "Posicion.h"
-#include "math.h"
+#include <cmath>
+#include <algorithm>
 
+using namespace std;
 Posicion::Posicion() {
 	this -> x = 0;
 	this -> y = 0;
@@ -29,6 +31,15 @@ double Posicion::distancia_euclidia(Posicion posicion) {
 	double delta_x = (double) (x - posicion.get_x_exacta());
 	double delta_y = (double) (y - posicion.get_y_exacta());
 	return (delta_x * delta_x + delta_y * delta_y);
+}
+double Posicion::distancia_octal(Posicion posicion) {
+	double delta_x = abs (x - posicion.get_x_exacta());
+	double delta_y = abs (y - posicion.get_y_exacta());
+	if (delta_x > delta_y){
+	     return 14*delta_y + 10*(delta_x-delta_y);
+	}else{
+	     return 14*delta_x + 10*(delta_y-delta_x);
+	}
 }
 double Posicion::distancia_manhattan(Posicion posicion) {
 	double delta_x = (double) (getX() - posicion.getX());

@@ -104,7 +104,7 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 	vector<Posicion> adyacentes = vector<Posicion>();
 	int x = posicion.getX(), y = posicion.getY();
-	for (int i = x - 1; i < x + 2; i++) {
+	/**for (int i = x - 1; i < x + 2; i++) {
 		if ((i != x) && (!afueraDelMapa(i, y)) && (!celdaOcupada(i, y))) {
 			adyacentes.push_back(Posicion(i, y));
 		}
@@ -115,15 +115,16 @@ vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 			adyacentes.push_back(Posicion(x, j));
 
 		}
-	}
-	/**for (int i = x - 1; i < x + 2; i++) {
+	}**/
+	for (int i = x - 1; i < x + 2; i++) {
 			for (int j = y - 1; j < y + 2; j++) {
-				if ((i != x)&&(j != y) && (!afueraDelMapa(x, j)) && (!celdaOcupada(x, j))) {
-					adyacentes.push_back(Posicion(i, j));
-
+				if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j))) {
+					if((i != x)||(j != y)){
+						adyacentes.push_back(Posicion(i, j));
+					}
 				}
 			}
-		}**/
+		}
 	return adyacentes;
 }
 
