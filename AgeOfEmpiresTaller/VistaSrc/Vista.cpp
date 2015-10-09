@@ -101,7 +101,7 @@ bool Vista::init() {
 				else{
 					//Initialize SDL_ttf
 					if( TTF_Init() == -1 ){
-						printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+						LOG_WARNING << "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError();
 						success = false;
 					}
 				}

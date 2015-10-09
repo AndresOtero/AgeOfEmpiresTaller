@@ -50,9 +50,10 @@ void Barra::renderTexto(SDL_Renderer*renderer){
 }
 
 bool Barra::cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display){
+	plog::init(plog::warning, "Log.txt" );
 	bool success = true;
 	if( !textura->loadFromRenderedText( display.c_str(), color,this->font,renderer ) ){
-			printf( "Failed to render text texture!\n" );
+			LOG_WARNING << "Atencion no pudo escribir texto\n";
 			success = false;
 		}
 	else{
@@ -62,7 +63,6 @@ bool Barra::cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color, shar
 }
 
 void Barra::render(SDL_Renderer*renderer){
-	//renderTexto(renderer);
 	SDL_Rect rect = {0,this->referencia_y,this->mapa->anchoPantalla(),this->mapa->altoMapa()};
 	this->textura->renderEx(0,NULL,&rect,renderer);
 	this->renderTexto(renderer);

@@ -84,15 +84,14 @@ void Textura::renderEx(double angle, SDL_Rect* srcrect, SDL_Rect* dsrect,SDL_Ren
 }
 bool Textura::loadFromRenderedText( string textureText, SDL_Color textColor, TTF_Font *gFont, SDL_Renderer* renderer)
 {
-	printf("Entro a renderTexto\n");
-    //Get rid of preexisting texture
+	plog::init(plog::warning, "Log.txt" );
+	//Get rid of preexisting texture
 	free();
-	printf("Entro a renderTexto\n");
     //Render text surface
     SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
     if( textSurface == NULL )
     {
-        printf( "Unable to render text surface! SDL_ttf Error:\n",SDL_GetError());
+		LOG_WARNING << "Unable to render text surface! SDL_ttf\n";
     }
     else
     {
@@ -100,7 +99,7 @@ bool Textura::loadFromRenderedText( string textureText, SDL_Color textColor, TTF
         mTexture = SDL_CreateTextureFromSurface( renderer, textSurface );
         if( mTexture == NULL )
         {
-            printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+            LOG_WARNING << "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() ;
         }
         else
         {
