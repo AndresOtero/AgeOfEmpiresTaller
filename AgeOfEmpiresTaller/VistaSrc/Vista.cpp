@@ -14,6 +14,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_ttf.h>
 #include <cstdio>
 #include <memory>
 #include <unistd.h>
@@ -42,7 +43,8 @@ Vista::Vista(Modelo* modelo) {
 	this->velocidad_de_scroll=0.25;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
-	this->minimapa = new Minimapa(modelo);
+	shared_ptr<Barra> barra(new Barra(modelo));
+	this->barra=barra;
 }
 
 int Vista::altura_por_celda(){
@@ -96,10 +98,18 @@ bool Vista::init() {
 										SDL_GetError();
 					success = false;
 				}
+				else{
+					//Initialize SDL_ttf
+					if( TTF_Init() == -1 ){
+						printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+						success = false;
+					}
+				}
 			}
 		}
 
 	}
+
 	this -> factory=shared_ptr<FactoryDibujo> ( new FactoryDibujo(gRenderer));
 	return success;
 }
@@ -174,7 +184,13 @@ bool Vista::loadMedia() {
 
 	modelo->agregarPersonaje(protagonista);
 
-	this->minimapa->inicializar("img/minimap.png",gRenderer);
+
+	TTF_Font* font = TTF_OpenFont( "font.ttf", 25 );
+	if( font == NULL ){
+		printf( "Failed to load font!%s\n" , TTF_GetError() );
+	}
+
+	this->barra->load(gRenderer,font);
 
 
 	return true;
@@ -258,7 +274,7 @@ int Vista::run() {
 					this->transformador->transformar_pantalla_isometrica(mov_x,mov_y,a,b);
 					this->corregir_referencia_coordenadas_pantalla_mapa(a,b);
 					//printf("Donde toco : x: %g, y: %g \n",a,b);
-					modelo->seleccionar(a,b);
+					this->barra->setDisplay(modelo->seleccionar(a,b));
 					//printf("Selecciono\n");
 				}
 			}
@@ -280,7 +296,7 @@ int Vista::run() {
 		modelo->actualizarMapa();
 		dibujar_mapa();
 		dibujar_personaje();
-		minimapa->render(gRenderer);
+		dibujar_barra();
 		detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
 
@@ -408,7 +424,12 @@ void Vista::dibujar_mapa() {
 	}
 }
 
+void Vista::dibujar_barra(){
+	this->barra->render(gRenderer);
+}
+
 Vista::~Vista() {
+	TTF_Quit();
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow( gWindow);
 

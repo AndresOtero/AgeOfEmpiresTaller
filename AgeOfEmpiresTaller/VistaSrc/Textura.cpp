@@ -82,6 +82,41 @@ void Textura::renderEx(double angle, SDL_Rect* srcrect, SDL_Rect* dsrect,SDL_Ren
 
 	SDL_RenderCopyEx(renderer,this->mTexture,srcrect,dsrect,angle,NULL,SDL_FLIP_NONE);
 }
+bool Textura::loadFromRenderedText( string textureText, SDL_Color textColor, TTF_Font *gFont, SDL_Renderer* renderer)
+{
+	printf("Entro a renderTexto\n");
+    //Get rid of preexisting texture
+	free();
+	printf("Entro a renderTexto\n");
+    //Render text surface
+    SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
+    if( textSurface == NULL )
+    {
+        printf( "Unable to render text surface! SDL_ttf Error:\n",SDL_GetError());
+    }
+    else
+    {
+        //Create texture from surface pixels
+        mTexture = SDL_CreateTextureFromSurface( renderer, textSurface );
+        if( mTexture == NULL )
+        {
+            printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+        }
+        else
+        {
+            //Get image dimensions
+            mWidth = textSurface->w;
+            mHeight = textSurface->h;
+        }
+
+        //Get rid of old surface
+        SDL_FreeSurface( textSurface );
+    }
+
+    //Return success
+    return mTexture != NULL;
+}
+
 
 bool Textura::createBlank( int width, int height, SDL_TextureAccess access,SDL_Renderer *renderer)
 {

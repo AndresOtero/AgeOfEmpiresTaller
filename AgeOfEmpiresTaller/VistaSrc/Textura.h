@@ -11,6 +11,7 @@
 #include <string>
 #include<SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 using namespace std;
 
 class Textura
@@ -19,7 +20,7 @@ class Textura
 		Textura();
 		~Textura();
 		bool loadFromFile( std::string path ,SDL_Renderer* gRenderer );
-
+		bool loadFromRenderedText( string textureText, SDL_Color textColor, TTF_Font *gFont, SDL_Renderer* renderer);
 		void free();
 
 		void setAsRenderTarget(SDL_Renderer * renderer);

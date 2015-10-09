@@ -17,7 +17,7 @@ class Entidad {
 public:
 	Entidad(ObjetoMapa* objetoMapa);
 	Entidad(ObjetoMapa* objetoMapa, int x, int y);
-	void mostrar_contenido();
+	string mostrar_contenido();
 	ObjetoMapa* objetoMapa;
 	Posicion* posicion;
 	virtual ~Entidad();

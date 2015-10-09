@@ -15,8 +15,8 @@ Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	this -> objetoMapa = objetoMapa;
 	this -> posicion = new Posicion(x, y);
 }
-void Entidad::mostrar_contenido() {
-	printf("%s\n",objetoMapa->nombre.c_str());
+string Entidad::mostrar_contenido() {
+	return objetoMapa->nombre;
 
 }
 Entidad::~Entidad() {

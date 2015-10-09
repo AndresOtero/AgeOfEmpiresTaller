@@ -19,7 +19,9 @@ public:
 	Minimapa(Modelo* modelo);
 	virtual ~Minimapa();
 	void render( SDL_Renderer* gRenderer);
-	bool inicializar(string path,SDL_Renderer * render);
+	bool inicializar(SDL_Renderer * render);
+	int altoMapa();
+	int anchoPantalla();
 
 private:
 	int x;
@@ -28,8 +30,6 @@ private:
 	int lado;
 	int ancho_por_celda;
 	int alto_por_celda;
-	Textura * girar;
-	CambioDeCoordendas* transformador;
 	Modelo * modelo;
 	void cambiar_coordenadas(int x, int y, int&pant_x, int &pant_y);
 	void dibujarPuntoMapa(int pant_x,int pant_y, SDL_Color color,SDL_Renderer*renderer);

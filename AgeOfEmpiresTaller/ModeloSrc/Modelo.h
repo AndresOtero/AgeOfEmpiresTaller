@@ -28,7 +28,7 @@ public:
 	//vector<vector<vector<dibujo_t>>> dibujar(int x,int 	y,int ancho,int largo);
 	dibujo_t dibujar(int dim,int x,int y);
 	void agregarPersonaje(Personaje*);
-	void seleccionar(double x,double y);
+	string seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();
 	Personaje* devolverPersonaje();
 	void actualizarMapa();

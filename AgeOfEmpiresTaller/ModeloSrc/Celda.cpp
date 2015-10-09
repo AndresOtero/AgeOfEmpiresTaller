@@ -43,13 +43,17 @@ bool Celda::estaOcupada(){
 void Celda::ocuparCelda(Entidad * entidad){
 	this->entidad=entidad;
 }
-void Celda::mostrar_contenido(){
+string Celda::mostrar_contenido(){
+	string nombre;
 	if (this->entidad!=NULL){
-		this->entidad->mostrar_contenido();
+		nombre = this->entidad->mostrar_contenido();
 	}
-	if (this->personaje!=NULL){
-			this->personaje->mostrar_contenido();
-		}
+	else if (this->personaje!=NULL){
+			nombre = this->personaje->mostrar_contenido();
+	}
+	else
+		nombre = "";
+	return nombre;
 }
 Personaje* Celda::devolver_personaje(){
 	return personaje;

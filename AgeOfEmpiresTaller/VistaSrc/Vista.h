@@ -12,7 +12,7 @@
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
 #include "../ModeloSrc/Personaje.h"
-#include "Minimapa.h"
+#include "Barra.h"
 using namespace std;
 
 class Dibujo;
@@ -27,6 +27,7 @@ class Vista {
 	SDL_Window* gWindow;
 	SDL_Renderer* gRenderer;
 	Modelo* modelo;
+	shared_ptr<Barra> barra;
 	shared_ptr<FactoryDibujo> factory;
 	shared_ptr<CambioDeCoordendas> transformador;
 	Pantalla* pantalla;
@@ -46,6 +47,7 @@ private:
 	void dibujar_personaje();
 	void corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, double& coord_y);
 	void corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y);
+	void dibujar_barra();
 
 
 public:

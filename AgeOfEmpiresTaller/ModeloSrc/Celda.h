@@ -30,7 +30,7 @@ public:
 	void ocuparCeldaPersonaje(Personaje* personaje);
 	dibujo_t dibujarEscenario();
 	dibujo_t dibujarTiles();
-	void mostrar_contenido();
+	string mostrar_contenido();
 	void ocuparCelda(Entidad*entidad);
 	virtual ~Celda();
 };

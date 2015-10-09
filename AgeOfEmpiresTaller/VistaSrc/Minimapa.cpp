@@ -31,8 +31,13 @@ Minimapa::Minimapa(Modelo *modelo) {
 	this->lado = int(double(diagonal)/sqrt(2));
 	this-> ancho_por_celda = modelo->juego->pantalla->getAncho()/modelo->get_ancho_mapa();
 	this-> alto_por_celda = modelo->juego->pantalla->getAlto()/modelo->get_alto_mapa();
-	this->transformador = new CambioDeCoordendas(ancho_por_celda,alto_por_celda);
-	this->girar=new Textura();
+}
+
+int Minimapa::altoMapa(){
+	return this->diagonal;
+}
+int Minimapa::anchoPantalla(){
+	return this->modelo->juego->pantalla->getAncho();
 }
 
 void Minimapa::dibujarPuntoMapa(int pant_x, int pant_y, SDL_Color color, SDL_Renderer *renderer){
@@ -41,9 +46,8 @@ void Minimapa::dibujarPuntoMapa(int pant_x, int pant_y, SDL_Color color, SDL_Ren
 	SDL_RenderFillRect( renderer, &fillRect );
 }
 
-bool Minimapa::inicializar(string path,SDL_Renderer * render){
-	this->cargar_archivo(path,render);
-	bool err = girar->createBlank(modelo->juego->pantalla->getAncho(),modelo->juego->pantalla->getAncho(),SDL_TEXTUREACCESS_TARGET,render);
+bool Minimapa::inicializar(SDL_Renderer * render){
+	bool err = this-textura->createBlank(modelo->juego->pantalla->getAncho(),modelo->juego->pantalla->getAncho(),SDL_TEXTUREACCESS_TARGET,render);
 	//no estoy chequeando un error
 	return err;
 }
@@ -51,7 +55,7 @@ bool Minimapa::inicializar(string path,SDL_Renderer * render){
 void Minimapa::render(SDL_Renderer* renderer){
 	int pos_x,pos_y;
 	SDL_Rect dsRect = { x+(x/3-lado)/2, ((7*y)/3-diagonal)/2, lado, lado };
-	this->girar->setAsRenderTarget(renderer);
+	this->textura->setAsRenderTarget(renderer);
     SDL_SetRenderDrawColor( renderer, 0x00, 0xFF, 0x00, 0x00 );
     SDL_RenderClear( renderer );
 
@@ -71,19 +75,11 @@ void Minimapa::render(SDL_Renderer* renderer){
 		this->dibujarPuntoMapa(x, y, ROJO, renderer);
 	}
 	SDL_SetRenderTarget(renderer,NULL);
-	this->girar->renderEx(45,NULL,&dsRect,renderer);
+	this->textura->renderEx(45,NULL,&dsRect,renderer);
 }
-
-void Minimapa::cambiar_coordenadas(int x, int y, int&pantalla_x, int&pantalla_y){
-	transformador->transformar_isometrica_pantalla(x,y,pantalla_x,pantalla_y);
-	pantalla_x+= modelo->juego->pantalla->getAncho()-diagonal/2;
-	pantalla_y+= modelo->juego->pantalla->getAlto()-diagonal;
-}
-
 
 
 Minimapa::~Minimapa() {
-	delete (girar);
-	delete (transformador);// TODO Auto-generated destructor stub
+	// TODO Auto-generated destructor stub
 }
 
