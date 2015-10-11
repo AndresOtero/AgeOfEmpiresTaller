@@ -39,6 +39,9 @@ void Mapa::setEscenario(dibujo_t dibujo,int x,int y){
 string Mapa::mostrar_contenido(int x,int y){
 	return this->getCelda(x,y)->mostrar_contenido();
 }
+Entidad* Mapa::entidad_celda(int x, int y){
+	return this->getCelda(x,y)->devolver_entidad();
+}
 bool Mapa::celdaOcupada(int x, int y) {
 	Celda* celda=this->getCelda(x,y);
 	if (celda==NULL) {
@@ -141,7 +144,21 @@ void Mapa::posicionarEntidad(Entidad* entidad){
 		}
 	}
 }
-
+void Mapa::sacarEntidad(Entidad * entidad){
+	int i,j,x,y,alto,ancho;
+		alto = entidad->objetoMapa->baseLogica->alto;
+		ancho = entidad->objetoMapa->baseLogica->ancho;
+		x = entidad->posicion->getX();
+		y = entidad->posicion->getY();
+		for (i = x; i < alto+x; i++ ){
+			for (j = y; j< ancho+y;j++){
+				this->getCelda(i,j)->liberarCelda();
+			}
+		}
+}
+bool Mapa::hayRecursosEn(Posicion posicion){
+	return this->getCelda(posicion.getX(),posicion.getY())->tieneRecurso();
+}
 Mapa::~Mapa() {
 	int largo = this->largo;
 	int ancho = this->ancho;

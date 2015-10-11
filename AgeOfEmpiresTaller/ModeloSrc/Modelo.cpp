@@ -15,6 +15,7 @@
 #include "CmpDistanciasTuplas.h"
 #include "unordered_map"
 #include "CmpPosicion.h"
+#include "Recurso.h"
 using namespace std;
 
 
@@ -153,7 +154,21 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 	Posicion adonde_voy=calcular_camino(adonde_estoy,destino);
 	personaje->set_camino(adonde_voy);
 	personaje->mover();
+	//Usar cuando el tipo cambia de posicion
+	 if ( this->mapa->hayRecursosEn(personaje->get_posicion())){
+		Entidad* entidad = this->mapa->entidad_celda(personaje->get_posicion().getX(),personaje->get_posicion().getY());
+		Recurso * recurso =(Recurso*)entidad;
+		printf("%d\n",recurso->obtenerRecurso());
+		recurso->recolectar(personaje->recursosJugador());
+		this->eliminarEntidad(entidad);
+	}
 	return adonde_voy;
+}
+
+void Modelo::eliminarEntidad(Entidad * entidad){
+	this->mapa->sacarEntidad(entidad);
+	//delete(entidad);
+	//falta sacarla de memoria
 }
 void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 	Personaje* personaje= 	this->devolverPersonaje();

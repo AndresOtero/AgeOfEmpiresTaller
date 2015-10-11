@@ -10,6 +10,9 @@
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
 #include "../ModeloSrc/Escenario.h"
+#include "../ModeloSrc/Oro.h"
+#include "../ModeloSrc/Piedra.h"
+#include "../ModeloSrc/Madera.h"
 #include <plog/Log.h>
 
 
@@ -96,6 +99,20 @@ typedef struct {
 	Escenario_t escenario;
 
 }ConfiguracionJuego_t;
+
+Entidad* elegirEntidad(ObjetoMapa * objeto,Entidad_t entidad_t){
+	Entidad* entidad;
+	int x=entidad_t.x,y=entidad_t.y;
+	if (objeto->nombre.compare("oro")==0)
+		entidad = new Oro(objeto,x,y);
+	else if (objeto->nombre.compare("piedra")==0)
+		entidad = new Madera(objeto,x,y);
+	else if (objeto->nombre.compare("madera")==0)
+		entidad = new Piedra(objeto,x,y);
+	else
+		entidad = new Entidad(objeto,x,y);
+	return entidad;
+}
 
 Juego* Yaml::read()
 {
@@ -239,7 +256,7 @@ Juego* Yaml::read()
 							if (const YAML::Node *pTipo = ((*pEntidades)[i]).FindValue(tag_escenario_entidades_tipo)){
 								(*pTipo) >> entidad.tipo;
 								 if(ObjetoMapa* obj = tipos[entidad.tipo]){
-									 ent = new Entidad(obj,entidad.x, entidad.y);
+									 ent = elegirEntidad(obj,entidad);
 									 escenario->entidades.push_back(ent);
 								 }else{
 									 LOG_WARNING << "No existe el tipo "<< entidad.tipo << " especificado por la entidad";

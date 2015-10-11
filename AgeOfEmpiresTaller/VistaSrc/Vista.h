@@ -31,7 +31,6 @@ class Vista {
 	shared_ptr<FactoryDibujo> factory;
 	shared_ptr<CambioDeCoordendas> transformador;
 	Pantalla* pantalla;
-	Minimapa* minimapa;
 	int margen_scroll;
 	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;

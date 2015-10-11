@@ -7,7 +7,13 @@
 
 #ifndef MINIMAPA_H_
 #define MINIMAPA_H_
-
+#define AZUL 1
+#define ROJO 2
+#define VERDE 3
+#define NEGRO 4
+#define BLANCO 5
+#define VERDE_OSCURO 6
+#define NARANJA 7
 #include "Dibujo.h"
 #include "../ModeloSrc/Modelo.h"
 #include <math.h>
@@ -16,16 +22,20 @@
 
 class Minimapa: public Dibujo {
 public:
-	Minimapa(Modelo* modelo);
+	Minimapa(Modelo* modelo, double *x_ref, double *y_ref);
 	virtual ~Minimapa();
 	void render( SDL_Renderer* gRenderer);
 	bool inicializar(SDL_Renderer * render);
 	int altoMapa();
 	int anchoPantalla();
-
+	SDL_Color paleta(int color);
+	int altoPorCelda();
+	int anchoPorCelda();
 private:
 	int x;
 	int y;
+	double *x_ref;
+	double *y_ref;
 	int diagonal;
 	int lado;
 	int ancho_por_celda;

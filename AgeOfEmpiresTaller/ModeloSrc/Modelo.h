@@ -34,7 +34,7 @@ public:
 	void actualizarMapa();
 	void cambiar_destino_personaje(double mov_x,double mov_y);
 	Posicion mover_personaje(Personaje* personaje);
-
+	void eliminarEntidad(Entidad *entidad);
 	int get_ancho_mapa();
 	int get_alto_mapa();
 	~Modelo();

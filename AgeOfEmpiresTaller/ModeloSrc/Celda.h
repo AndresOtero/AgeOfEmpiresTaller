@@ -22,16 +22,19 @@ private:
 	Personaje* personaje;
 public:
 	Personaje* devolver_personaje();
+	Entidad * devolver_entidad();
 	Celda();
 	bool estaOcupada();
 	void setEscenario(dibujo_t dibujo);
 	void setTiles(dibujo_t dibujo);
 	void actualizar();
 	void ocuparCeldaPersonaje(Personaje* personaje);
+	bool tieneRecurso();
 	dibujo_t dibujarEscenario();
 	dibujo_t dibujarTiles();
 	string mostrar_contenido();
 	void ocuparCelda(Entidad*entidad);
+	void liberarCelda();
 	virtual ~Celda();
 };
 

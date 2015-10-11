@@ -7,6 +7,7 @@
 
 #include "../ModeloSrc/Celda.h"
 #include <iostream>
+#include "Recurso.h"
 #include "../VistaSrc/Dibujo.h"
 #define VACIO 0
 Celda::Celda() {
@@ -35,9 +36,31 @@ void Celda::actualizar(){
 void Celda::ocuparCeldaPersonaje(Personaje* personaje){
 	this->personaje=personaje;
 }
+void Celda::liberarCelda(){
+	this->entidad=NULL;
+	this->escenario=DEFAULT;
+	//nose si este ultimo es necesario pero por las dudas
+	//this->tiles=DEFAULT;
+}
+
+bool Celda::tieneRecurso(){
+	if (this->entidad!=NULL){
+		if (Recurso* rec = dynamic_cast<Recurso*>(entidad)){
+			return true;
+		}
+	}
+	return false;
+}
+
 bool Celda::estaOcupada(){
-	if ((this->entidad!=NULL)||(this->personaje!=NULL))
+	if ((this->entidad!=NULL)){
+		//si no es un recurso deberia poder moverse, no se si es el mejor lugar para poner esto
+		//capaz en el lugar a donde se mueve tendria que preguntarse si esta ocupado y no es recurso
+		return !(this->tieneRecurso());
+	}
+	if (this->personaje!=NULL)
 		return true;
+
 	return false;
 }
 void Celda::ocuparCelda(Entidad * entidad){
@@ -55,8 +78,12 @@ string Celda::mostrar_contenido(){
 		nombre = "";
 	return nombre;
 }
+
 Personaje* Celda::devolver_personaje(){
 	return personaje;
+}
+Entidad* Celda::devolver_entidad(){
+	return entidad;
 }
 Celda::~Celda() {
 	// TODO Auto-generated destructor stub

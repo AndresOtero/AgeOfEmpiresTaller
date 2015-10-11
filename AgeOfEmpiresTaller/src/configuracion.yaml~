@@ -17,7 +17,7 @@ tipos:
    imagen: path/a/imagen.png
    fps: 10
    delay: 5
-       
+   
  - nombre: tierra
    imagen: path/a/imagen.png
 

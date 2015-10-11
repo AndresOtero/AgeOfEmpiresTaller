@@ -24,6 +24,7 @@ public:
 	Personaje();
 	Personaje(ObjetoMapa* objetoMapa);
 	Personaje(ObjetoMapa* objetoMapa, int x, int y);
+	RecursosJugador * recursosJugador();
 	string mostrar_contenido();
 	ObjetoMapa* objetoMapa;
 	dibujo_t dibujar();

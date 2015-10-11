@@ -15,6 +15,7 @@ Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	this -> objetoMapa = objetoMapa;
 	this -> posicion = new Posicion(x, y);
 }
+
 string Entidad::mostrar_contenido() {
 	return objetoMapa->nombre;
 

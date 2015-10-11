@@ -305,3 +305,57 @@
 2015-10-07 21:56:06.383 WARN  [10763] [Yaml::read@137] No se define configuracion de pantalla, se usa Default 1024x728
 2015-10-07 21:56:26.979 WARN  [10776] [Yaml::read@137] No se define configuracion de pantalla, se usa Default 1024x728
 2015-10-07 21:56:54.930 WARN  [10817] [Yaml::read@137] No se define configuracion de pantalla, se usa Default 1024x728
+2015-10-11 16:20:03.335 WARN  [4029] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:20:03.335 WARN  [4029] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:21:28.309 WARN  [4050] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:21:28.309 WARN  [4050] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:24:47.718 WARN  [4121] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:24:47.718 WARN  [4121] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:26:02.281 WARN  [4178] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:26:02.281 WARN  [4178] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:42:13.183 WARN  [4595] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:42:13.183 WARN  [4595] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:43:31.354 WARN  [4652] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:43:31.354 WARN  [4652] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:49:10.680 WARN  [4883] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:49:10.680 WARN  [4883] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:50:33.712 WARN  [5025] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:50:33.712 WARN  [5025] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:51:20.030 WARN  [5186] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 16:51:20.030 WARN  [5186] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 17:01:28.958 WARN  [5499] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 17:01:28.958 WARN  [5499] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 17:06:27.807 WARN  [5659] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 17:06:27.807 WARN  [5659] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 17:22:25.033 WARN  [5903] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 17:22:25.033 WARN  [5903] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 17:23:01.666 WARN  [5920] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 17:23:01.666 WARN  [5920] [Textura::loadFromFile@34] No se pudo cargar: %s. SDL_image Error: %s
+
+2015-10-11 17:23:42.775 WARN  [5938] [Yaml::read@262] No existe el tipo mader especificado por la entidad
+2015-10-11 17:24:18.561 WARN  [5956] [Yaml::read@262] No existe el tipo mader especificado por la entidad

@@ -15,7 +15,6 @@ Recurso::Recurso(ObjetoMapa* objetoMapa): Entidad(objetoMapa) {
 Recurso::Recurso(ObjetoMapa* objetoMapa,int x , int y): Entidad( objetoMapa,x,y) {
 
 	cantidad = rand() % 150 + 100;//random entre 100 y 250
-
 }
 
 int Recurso::obtenerRecurso(){

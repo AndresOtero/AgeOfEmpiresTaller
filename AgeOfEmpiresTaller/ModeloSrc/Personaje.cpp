@@ -84,6 +84,9 @@ void Personaje::mover() {
 	}
 
 }
+RecursosJugador* Personaje::recursosJugador(){
+	return recursos;
+}
 
 Personaje::~Personaje() {
 	delete recursos;

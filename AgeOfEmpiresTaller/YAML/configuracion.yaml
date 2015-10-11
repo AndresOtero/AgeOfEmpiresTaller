@@ -31,6 +31,15 @@ tipos:
  - nombre: church
    imagen: img/dibujo_estatico/construcciones/church.png
 
+ - nombre: oro
+   imagen: img/oro.png
+
+ - nombre: piedra
+   imagen: img/piedra.png
+
+ - nombre: madera
+   imagen: img/madera.png
+
  - nombre: firestation
    imagen: img/dibujo_estatico/construcciones/firestation.png
 
@@ -53,7 +62,8 @@ escenario:
   - { x : 12, y: 8, tipo: arbol }
   - { x : 13, y: 8, tipo: arbol }
   - { x : 10, y: 9, tipo: arbol }
-
+  - { x : 2, y: 2, tipo: madera }
+  - { x : 10, y: 7, tipo: oro }
   - { x : 10, y: 11, tipo: arbol }
   - { x : 10, y: 12, tipo: arbol }
   - { x : 11, y: 12, tipo: arbol }

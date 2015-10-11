@@ -43,7 +43,7 @@ Vista::Vista(Modelo* modelo) {
 	this->velocidad_de_scroll=0.25;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
-	shared_ptr<Barra> barra(new Barra(modelo));
+	shared_ptr<Barra> barra(new Barra(modelo,&referencia_mapa_x,&referencia_mapa_y));
 	this->barra=barra;
 }
 
@@ -185,12 +185,7 @@ bool Vista::loadMedia() {
 	modelo->agregarPersonaje(protagonista);
 
 
-	TTF_Font* font = TTF_OpenFont( "font.ttf", 25 );
-	if( font == NULL ){
-		printf( "Failed to load font!%s\n" , TTF_GetError() );
-	}
-
-	this->barra->load(gRenderer,font);
+	this->barra->load(gRenderer,"font.ttf",this->ancho_por_celda(),this->altura_por_celda());
 
 
 	return true;
@@ -425,6 +420,8 @@ void Vista::dibujar_mapa() {
 }
 
 void Vista::dibujar_barra(){
+	//HARCODE
+	this->barra->actualizar(this->modelo->devolverTodosLosPersonajes()[0]);
 	this->barra->render(gRenderer);
 }
 
