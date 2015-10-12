@@ -33,6 +33,8 @@ tipos:
 
  - nombre: oro
    imagen: img/oro.png
+   pixel_ref_x: 100
+   pixel_ref_y: -50
 
  - nombre: piedra
    imagen: img/piedra.png
@@ -63,6 +65,7 @@ escenario:
   - { x : 13, y: 8, tipo: arbol }
   - { x : 10, y: 9, tipo: arbol }
   - { x : 2, y: 2, tipo: madera }
+  - { x : 10, y: 7, tipo: oro }
   - { x : 10, y: 11, tipo: arbol }
   - { x : 10, y: 12, tipo: arbol }
   - { x : 11, y: 12, tipo: arbol }

@@ -13,6 +13,9 @@
 #include "Dibujo.h"
 #include "Minimapa.h"
 #include "CambioDeCoordendas.h"
+#include "RecursoVista.h"
+
+
 
 class Barra: public Dibujo {
 public:
@@ -21,24 +24,22 @@ public:
 	void load(SDL_Renderer * renderer,string path, int ancho_por_celda, int alto_por_celda);
 	void setDisplay(string display);
 	void actualizar(Personaje * protagonista);
+	void closeFont();
 	virtual ~Barra();
 private:
+	int imprimirNumeroDeRecurso(SDL_Renderer* renderer,shared_ptr<RecursoVista> recurso, int x_ref);
 	void dimensionRectanguloDeMiniMapa(int ancho, int alto);
 	void renderFondo(SDL_Renderer*renderer);
 	void renderTexto(SDL_Renderer*renderer);
 	bool cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color,shared_ptr<Textura> textura, string display);
 	shared_ptr<Minimapa> mapa;
 	shared_ptr<Textura> texto;
-	shared_ptr<Textura> textOro;
-	shared_ptr<Textura> textMadera;
-	shared_ptr<Textura> textPiedra;
-	shared_ptr<CambioDeCoordendas> transformador;
+	shared_ptr<RecursoVista> oro;
+	shared_ptr<RecursoVista> madera;
+	shared_ptr<RecursoVista> piedra;
 	TTF_Font* font;
 	string display;
 	int referencia_y;
-	int oro;
-	int madera;
-	int piedra;
 	int tamFont;
 };
 

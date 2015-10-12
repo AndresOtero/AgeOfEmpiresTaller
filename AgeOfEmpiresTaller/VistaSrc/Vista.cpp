@@ -426,6 +426,7 @@ void Vista::dibujar_barra(){
 }
 
 Vista::~Vista() {
+	this->barra->closeFont();
 	TTF_Quit();
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow( gWindow);

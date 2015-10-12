@@ -158,7 +158,6 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 	 if ( this->mapa->hayRecursosEn(personaje->get_posicion())){
 		Entidad* entidad = this->mapa->entidad_celda(personaje->get_posicion().getX(),personaje->get_posicion().getY());
 		Recurso * recurso =(Recurso*)entidad;
-		printf("%d\n",recurso->obtenerRecurso());
 		recurso->recolectar(personaje->recursosJugador());
 		this->eliminarEntidad(entidad);
 	}

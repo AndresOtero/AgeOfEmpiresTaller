@@ -106,9 +106,9 @@ Entidad* elegirEntidad(ObjetoMapa * objeto,Entidad_t entidad_t){
 	if (objeto->nombre.compare("oro")==0)
 		entidad = new Oro(objeto,x,y);
 	else if (objeto->nombre.compare("piedra")==0)
-		entidad = new Madera(objeto,x,y);
-	else if (objeto->nombre.compare("madera")==0)
 		entidad = new Piedra(objeto,x,y);
+	else if (objeto->nombre.compare("madera")==0)
+		entidad = new Madera(objeto,x,y);
 	else
 		entidad = new Entidad(objeto,x,y);
 	return entidad;
