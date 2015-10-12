@@ -9,10 +9,12 @@
 #define ENTIDAD_H_
 #include "ObjetoMapa.h"
 #include "Posicion.h"
+#include "GenerarID.h"
 
 /*obs: la entidad tiene el tipo (ObjetoMapa donde guardo imagen, bases, pixels ref. Se comparte para todas las entidades de un mismo tipo).
  *  Incluye la posicion de cada entidad
  */
+
 class Entidad {
 public:
 	Entidad(ObjetoMapa* objetoMapa);
@@ -20,7 +22,10 @@ public:
 	string mostrar_contenido();
 	ObjetoMapa* objetoMapa;
 	Posicion* posicion;
+	bool esUnRecurso();
 	virtual ~Entidad();
+	int id;
+
 };
 
 #endif /* ENTIDAD_H_ */

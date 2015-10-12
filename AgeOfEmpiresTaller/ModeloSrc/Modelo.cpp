@@ -30,7 +30,7 @@ Modelo::Modelo(Juego* juego) {
 	this->insertarEntidades();
 }
 void Modelo::insertarEntidades(){
-	for(int i =0; i < this->juego->escenario->entidades.size(); i++){
+	for(unsigned int i =0; i < this->juego->escenario->entidades.size(); i++){
 			Entidad* entidad=this->juego->escenario->entidades[i];
 			this->mapa->posicionarEntidad(entidad);
 	}
@@ -166,7 +166,20 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 
 void Modelo::eliminarEntidad(Entidad * entidad){
 	this->mapa->sacarEntidad(entidad);
-	//delete(entidad);
+	vector<Entidad*> *lista = &this->juego->escenario->entidades;
+	for (unsigned int i=0; i < lista->size(); i++){
+		if (entidad->id == (*lista)[i]->id){
+			printf("%d %d \n",entidad->id,(*lista)[i]->id);
+			if (i+1!=lista->size())
+				std::swap((*lista)[i], lista->back());
+			lista->pop_back();
+
+			break;
+		}
+
+	}
+
+
 	//falta sacarla de memoria
 }
 void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){

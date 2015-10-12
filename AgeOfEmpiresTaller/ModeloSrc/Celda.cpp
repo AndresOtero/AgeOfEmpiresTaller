@@ -45,9 +45,7 @@ void Celda::liberarCelda(){
 
 bool Celda::tieneRecurso(){
 	if (this->entidad!=NULL){
-		if (Recurso* rec = dynamic_cast<Recurso*>(entidad)){
-			return true;
-		}
+		return entidad->esUnRecurso();
 	}
 	return false;
 }

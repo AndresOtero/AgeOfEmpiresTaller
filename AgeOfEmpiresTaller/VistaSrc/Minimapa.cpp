@@ -71,7 +71,10 @@ void Minimapa::render(SDL_Renderer* renderer){
 		Entidad* entidad = this->modelo->juego->escenario->entidades[i];
 		pos_x = ancho_por_celda*entidad->posicion->getX();
 		pos_y= alto_por_celda*entidad->posicion->getY();
-		dibujarPuntoMapa(pos_x,pos_y,paleta(AZUL),renderer);
+		if (entidad->esUnRecurso())
+			dibujarPuntoMapa(pos_x,pos_y,paleta(NARANJA),renderer);
+		else
+			dibujarPuntoMapa(pos_x,pos_y,paleta(AZUL),renderer);
 	}
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator it = personajes.begin();
