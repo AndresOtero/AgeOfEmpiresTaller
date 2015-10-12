@@ -139,11 +139,14 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	if(!camino.empty()){
 		adonde_voy=camino.top();
 	}
+	printf("camino\n");
 	while(!camino.empty()){
 		Posicion pos=camino.top();
 		camino.pop();
-		//printf("Posicion: X:%d,Y:%d\n",pos.getX(),pos.getY());
+		printf("Posicion: X:%g,Y:%g\n",pos.get_x_exacta(),pos.get_y_exacta());
 	}
+	printf("end\n");
+
 	printf("Adonde estoy: X:%g, Y:%g\n",adonde_estoy.get_x_exacta(),adonde_estoy.get_y_exacta());
 	printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 	return adonde_voy;

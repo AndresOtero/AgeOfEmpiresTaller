@@ -109,27 +109,40 @@ vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 	vector<Posicion> adyacentes = vector<Posicion>();
 	int x = posicion.getX(), y = posicion.getY();
 	/**for (int i = x - 1; i < x + 2; i++) {
-		if ((i != x) && (!afueraDelMapa(i, y)) && (!celdaOcupada(i, y))) {
-			adyacentes.push_back(Posicion(i, y));
-		}
-	}
-	for (int j = y - 1; j < y + 2; j++) {
-		if ((j != y) && (!afueraDelMapa(x, j)) && (!celdaOcupada(x, j))) {
-
-			adyacentes.push_back(Posicion(x, j));
-
-		}
-	}**/
-	for (int i = x - 1; i < x + 2; i++) {
-			for (int j = y - 1; j < y + 2; j++) {
-				if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j))) {
-					if((i != x)||(j != y)){
-						adyacentes.push_back(Posicion(i, j));
-					}
-				}
+		for (int j = y - 1; j < y + 2; j++) {
+			if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j))
+					&& ((i != x) || (j != y))) {
+				adyacentes.push_back(Posicion(i+0.5, j+0.5));
 			}
 		}
-	return adyacentes;
+	}**/
+
+	for (int i = x - 1; i < x + 2; i+=2) {
+		if ((!afueraDelMapa(i, y)) && (!celdaOcupada(i, y))) {
+					adyacentes.push_back(Posicion(i,y));
+		}
+	}
+	for (int j = y - 1; j < y + 2; j+=2) {
+		if ((!afueraDelMapa(x, j)) && (!celdaOcupada(x, j))) {
+			adyacentes.push_back(Posicion(x, j));
+		}
+	}
+
+	for (int i=x-1,j=y-1; i < x + 2; i += 2,j+=2) {
+		if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j))
+				&&(!celdaOcupada(x, j))&&(!celdaOcupada(i, y))) {
+			adyacentes.push_back(Posicion(i, j));
+		}
+	}
+	for (int i=x+1,j=y+1; i > x - 2; i -= 2,j-=2) {
+		if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j))
+						&&(!celdaOcupada(x, j))&&(!celdaOcupada(i, y))) {
+			adyacentes.push_back(Posicion(i, j));
+		}
+	}
+
+
+		return adyacentes;
 }
 
 void Mapa::posicionarEntidad(Entidad* entidad){
