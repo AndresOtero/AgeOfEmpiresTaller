@@ -44,7 +44,7 @@ void Modelo::actualizarMapa(){
 void Modelo::agregarPersonaje(Personaje* personaje){
 	personajes.push_back(personaje);
 }
-Personaje* Modelo::devolverPersonaje(){
+Personaje* Modelo::devolverPersonajeSeleccionado(){
 	return personaje_seleccionado;
 }
 vector<Personaje*> Modelo::devolverTodosLosPersonajes(){
@@ -99,10 +99,10 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	adonde_voy=mapa->validar_destino(adonde_voy,adonde_estoy);
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
 			CompDistancias> pila;
-	pair<Posicion, double> primero(adonde_estoy, 0);
-	pila.push(primero);
 	map<Posicion, Posicion,cmp_posiciones> donde_vengo;
 	map<Posicion, double,cmp_posiciones> cuanto_recorri;
+	pair<Posicion, double> primero(adonde_estoy, 0);
+	pila.push(primero);
 	donde_vengo.insert(pair<Posicion, Posicion>(adonde_estoy, adonde_estoy));
 	cuanto_recorri.insert(primero);
 	while (!pila.empty()) {
@@ -139,16 +139,13 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	if(!camino.empty()){
 		adonde_voy=camino.top();
 	}
-	printf("camino\n");
 	while(!camino.empty()){
 		Posicion pos=camino.top();
 		camino.pop();
-		printf("Posicion: X:%g,Y:%g\n",pos.get_x_exacta(),pos.get_y_exacta());
 	}
-	printf("end\n");
 
-	printf("Adonde estoy: X:%g, Y:%g\n",adonde_estoy.get_x_exacta(),adonde_estoy.get_y_exacta());
-	printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
+	//printf("Adonde estoy: X:%g, Y:%g\n",adonde_estoy.get_x_exacta(),adonde_estoy.get_y_exacta());
+	//printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 	return adonde_voy;
 }
 Posicion Modelo::mover_personaje(Personaje* personaje){
@@ -186,11 +183,15 @@ void Modelo::eliminarEntidad(Entidad * entidad){
 	//falta sacarla de memoria
 }
 void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
-	Personaje* personaje= 	this->devolverPersonaje();
+	Personaje* personaje= 	this->devolverPersonajeSeleccionado();
 	if(personaje!=NULL){
 		personaje->set_destino(Posicion(mov_x,mov_y));
 	}
 }
+Personaje* Modelo::devolverPersonaje(int x,int y){
+	return mapa->personaje_celda(x,y);
+}
+
 
 int Modelo::get_alto_mapa(){
 	return mapa->getLargo();

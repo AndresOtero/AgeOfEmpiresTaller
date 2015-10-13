@@ -58,6 +58,9 @@ dibujo_t Mapa::dibujarEscenario(int x, int y) {
 Personaje* Mapa::personaje_celda(int x, int y) {
 	return this->getCelda(x,y)->devolver_personaje();
 }
+bool Mapa::hay_personaje(int x, int y) {
+	return (this->getCelda(x,y)->devolver_personaje()!=NULL);
+}
 dibujo_t Mapa::dibujarTiles(int x, int y) {
 	if ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0)) {
 		return AFUERA;

@@ -28,6 +28,8 @@ public:
 	string mostrar_contenido(int x,int y);
 	virtual ~Mapa();
 	Personaje* personaje_celda(int x, int y);
+	bool hay_personaje(int x, int y);
+
 	Entidad * entidad_celda(int x, int y);
 	bool hayRecursosEn(Posicion posicion);
 	bool afueraDelMapa(int x,int y);

@@ -25,15 +25,15 @@ public:
 	Juego* juego;
 	void setMapa(int largo,int ancho);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
-	//vector<vector<vector<dibujo_t>>> dibujar(int x,int 	y,int ancho,int largo);
 	dibujo_t dibujar(int dim,int x,int y);
 	void agregarPersonaje(Personaje*);
 	string seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();
-	Personaje* devolverPersonaje();
+	Personaje* devolverPersonajeSeleccionado();
 	void actualizarMapa();
 	void cambiar_destino_personaje(double mov_x,double mov_y);
 	Posicion mover_personaje(Personaje* personaje);
+	Personaje* devolverPersonaje(int x,int y);
 	void eliminarEntidad(Entidad *entidad);
 	int get_ancho_mapa();
 	int get_alto_mapa();

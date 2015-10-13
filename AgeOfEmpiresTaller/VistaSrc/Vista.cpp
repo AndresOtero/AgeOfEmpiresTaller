@@ -25,6 +25,8 @@
 #include "Dibujo.h"
 #include "DibujoPersonaje.h"
 enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
+#define ESCENARIO 1
+
 #define DIMENSIONES 2
 #define ANIMACIONES 5
 #define MOVIMIENTOS 8
@@ -290,7 +292,6 @@ int Vista::run() {
 
 		modelo->actualizarMapa();
 		dibujar_mapa();
-		dibujar_personaje();
 		dibujar_barra();
 		detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
@@ -330,8 +331,8 @@ void Vista::corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, doubl
 	coord_y+=referencia_mapa_y+0.5;
 }
 void Vista::corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y){
-	coord_x=(coord_x-referencia_mapa_x+1.5);
-	coord_y=(coord_y-referencia_mapa_y-0.5);
+	coord_x+=(-referencia_mapa_x+1.5);
+	coord_y+=(-referencia_mapa_y-0.5);
 }
 
 
@@ -347,20 +348,15 @@ bool Vista::adentro_del_mapa(int coord_x,int coord_y){
 			&& (coord_x >= 0) && (coord_y >= 0));
 }
 
-void Vista::dibujar_personaje() {
-	vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();
-	vector<Personaje*>::iterator it =personajes.begin();
-	for (; it != personajes.end(); ++it) {
-		Personaje* personaje = (*it);
+void Vista::dibujar_personaje(Personaje* personaje) {
 		int img_personaje_x, img_personaje_y;
 		double personaje_x = personaje->getReferenciaMapaX();
-		double personaje_y = personaje->getReferenciaMapaX();
+		double personaje_y = personaje->getReferenciaMapaY();
 		this->corregir_referencia_coordenadas_mapa_pantalla(personaje_x,
 				personaje_y);
-		/*HARDCODE*/
 		this->transformador->transformar_isometrica_pantalla(
-				personaje->getReferenciaMapaX() - referencia_mapa_x + 1.5,
-				personaje->getReferenciaMapaY() - referencia_mapa_y - 0.5,
+				personaje_x,
+				personaje_y,
 				img_personaje_x, img_personaje_y);
 		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
 				DibujoPersonaje>(
@@ -377,41 +373,50 @@ void Vista::dibujar_personaje() {
 		Posicion adonde_va = modelo->mover_personaje(personaje);
 		mover_x = adonde_va.get_x_exacta();
 		mover_y = adonde_va.get_y_exacta();
-		/*HARDCODE*/
+		this->corregir_referencia_coordenadas_mapa_pantalla(mover_x,
+				mover_y);
 		this->transformador->transformar_isometrica_pantalla(
-				mover_x - referencia_mapa_x + 1.5,
-				mover_y - referencia_mapa_y - 0.5, adonde_va_x, adonde_va_y);
+				mover_x,
+				mover_y, adonde_va_x, adonde_va_y);
 		dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
 				(adonde_va_y - img_personaje_y));
 		dibujo_pers->render(gRenderer);
-	}
+
 }
 
 void Vista::dibujar_mapa() {
 	/**Bordes**/
 	vector<int> bordes = this->calcular_bordes();
 	/****/
-	int x_start = bordes[X_START], y_min =
-			bordes[Y_MIN], x_max = bordes[X_MAX], y_max = bordes[Y_MAX];
+	int x_start = bordes[X_START], y_min = bordes[Y_MIN], x_max = bordes[X_MAX],
+			y_max = bordes[Y_MAX];
 	int x_imagen, y_imagen;
 
 	for (int dim = 0; dim < DIMENSIONES; dim++) {
-		int max=abs(x_max)+abs(y_max);
-		int i=0,j=0;
-		for ( i = x_start-1; i<max; i++) {
-			for ( j = y_min ;j<i; j++) {
-				int coord_x=i-j;
-				int coord_y=j;
-				if ((adentro_del_mapa(coord_x,coord_y))&&(coord_x<x_max)&&(coord_y<y_max)) {
-					size_t n_imagen = this->modelo->dibujar(dim,coord_x,coord_y);
-					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(n_imagen);
+		int max = abs(x_max) + abs(y_max);
+		int i = 0, j = 0;
+		for (i = x_start - 1; i < max; i++) {
+			for (j = y_min; j < i; j++) {
+				int coord_x = i - j;
+				int coord_y = j;
+				if ((adentro_del_mapa(coord_x, coord_y)) && (coord_x < x_max)
+						&& (coord_y < y_max)) {
+					size_t n_imagen = this->modelo->dibujar(dim, coord_x,
+							coord_y);
+					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(
+							n_imagen);
 					if (dibujo != NULL) {
 						/*HARDCODE*/
-					this->transformador->transformar_isometrica_pantalla(
-							coord_x - referencia_mapa_x+dim*1.5,
-							coord_y - referencia_mapa_y-dim*0.5, x_imagen, y_imagen);
-					dibujo->set_posicion_default(x_imagen, y_imagen);
-					dibujo->render(gRenderer);
+							this->transformador->transformar_isometrica_pantalla(
+									coord_x - referencia_mapa_x + dim * 1.5,
+									coord_y - referencia_mapa_y - dim * 0.5,
+									x_imagen, y_imagen);
+							dibujo->set_posicion_default(x_imagen, y_imagen);
+							dibujo->render(gRenderer);
+
+					}
+					if(this->modelo->devolverPersonaje(coord_x,coord_y)){
+						dibujar_personaje(this->modelo->devolverPersonaje(coord_x,coord_y));
 					}
 				}
 			}
