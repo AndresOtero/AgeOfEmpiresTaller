@@ -199,7 +199,7 @@ void Vista::mover_referencia(double vel_x,double vel_y) {
 		ref_x+=referencia_mapa_x;
 		ref_y+=referencia_mapa_y;
 
-		if(adentro_del_mapa(ref_x,ref_y)){
+		if(adentro_del_mapa(ref_x+1,ref_y+1)){
 			referencia_mapa_x=ref_x;
 			referencia_mapa_y=ref_y;
 		}
@@ -327,11 +327,11 @@ vector<int> Vista::calcular_bordes(){
 	return bordes;
 }
 void Vista::corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, double& coord_y){
-	coord_x+=referencia_mapa_x-1.5;
+	coord_x+=referencia_mapa_x-0.5;
 	coord_y+=referencia_mapa_y+0.5;
 }
 void Vista::corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y){
-	coord_x+=(-referencia_mapa_x+1.5);
+	coord_x+=(-referencia_mapa_x+0.5);
 	coord_y+=(-referencia_mapa_y-0.5);
 }
 
@@ -339,7 +339,7 @@ void Vista::corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, doubl
 bool Vista::adentro_del_mapa(double coord_x,double coord_y){
 	return ((coord_x < this->modelo->get_ancho_mapa())
 			&& (coord_y < this->modelo->get_alto_mapa())
-			&& (coord_x > 0) && (coord_y >0));
+			&& (coord_x >= 0) && (coord_y >=0));
 }
 
 bool Vista::adentro_del_mapa(int coord_x,int coord_y){
@@ -397,7 +397,7 @@ void Vista::dibujar_mapa() {
 		int i = 0, j = 0;
 		for (i = x_start - 1; i < max; i++) {
 			for (j = y_min; j < i; j++) {
-				int coord_x = i - j;
+				int coord_x = i - j-1;
 				int coord_y = j;
 				if ((adentro_del_mapa(coord_x, coord_y)) && (coord_x < x_max)
 						&& (coord_y < y_max)) {
@@ -408,8 +408,8 @@ void Vista::dibujar_mapa() {
 					if (dibujo != NULL) {
 						/*HARDCODE*/
 							this->transformador->transformar_isometrica_pantalla(
-									coord_x - referencia_mapa_x + dim * 1.5,
-									coord_y - referencia_mapa_y - dim * 0.5,
+									coord_x - referencia_mapa_x ,
+									coord_y - referencia_mapa_y,
 									x_imagen, y_imagen);
 							dibujo->set_posicion_default(x_imagen, y_imagen);
 							dibujo->render(gRenderer);

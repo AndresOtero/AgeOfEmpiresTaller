@@ -33,8 +33,6 @@ tipos:
 
  - nombre: oro
    imagen: img/oro.png
-   pixel_ref_x: 100
-   pixel_ref_y: -50
 
  - nombre: piedra
    imagen: img/piedra.png
@@ -55,7 +53,6 @@ escenario:
  entidades: 
   - { x : 1, y: 2, tipo: arbol }
   - { x : 6, y: 6, tipo: church }
-  - { x : 4, y: 0, tipo: herreria }
   - { x : 4, y: 4, tipo: wheel }
   - { x : 3, y: 1, tipo: barraca }
   - { x : 3, y: 0, tipo: firestation }
