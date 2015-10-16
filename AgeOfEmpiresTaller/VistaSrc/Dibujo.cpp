@@ -12,14 +12,23 @@
  */
 
 #include "../VistaSrc/Dibujo.h"
-
+#define ILUMINAR 150
+#define RESET 255
 
 Dibujo::Dibujo() {
 	// TODO Auto-generated constructor stub
 	shared_ptr <Textura> text(new Textura());
 	this->textura = text;
+
+}
+void Dibujo::iluminar(){
+	Uint8 alpha=127;
+	this->textura->setAlpha(alpha);
 }
 
+void Dibujo::resetear(){
+	this->textura->setAlpha(RESET);
+}
 void Dibujo::set_posicion_default(int x, int y){
 	this->x_imagen=x;
 	this->y_imagen=y;
@@ -27,6 +36,7 @@ void Dibujo::set_posicion_default(int x, int y){
 
 bool Dibujo::cargar_archivo(std::string path, SDL_Renderer* renderer) {
 	bool loadBool =  this->textura->loadFromFile(path, renderer);
+
 	//this->spriteClips.h = this->textura->getHeight();
 	//this->spriteClips.w = this->textura->getWidth();
 	return loadBool;

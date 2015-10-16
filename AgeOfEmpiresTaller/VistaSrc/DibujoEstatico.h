@@ -28,7 +28,8 @@ public:
 	void set_posicion_default(int x,int y);
 	int get_alto();
 	int get_ancho();
-
+	void iluminar();
+	void resetear();
 	virtual ~Dibujo_Estatico();
 protected:
 	SDL_Rect spriteClips;

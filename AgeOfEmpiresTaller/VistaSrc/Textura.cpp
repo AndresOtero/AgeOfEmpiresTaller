@@ -33,7 +33,6 @@ bool Textura::loadFromFile(std::string path, SDL_Renderer* gRenderer) {
 	if (loadedSurface == NULL) {
 		LOG_WARNING << "No se pudo cargar: %s. SDL_image Error: %s\n", path.c_str(),
 				IMG_GetError();
-
 	} else {
 		SDL_SetColorKey(loadedSurface, SDL_TRUE,
 				SDL_MapRGB(loadedSurface->format, 0xFF, 0xFF, 0xFF));
@@ -49,7 +48,7 @@ bool Textura::loadFromFile(std::string path, SDL_Renderer* gRenderer) {
 
 		SDL_FreeSurface(loadedSurface);
 	}
-
+    SDL_SetTextureBlendMode( mTexture, SDL_BLENDMODE_BLEND );
 	mTexture = newTexture;
 	return mTexture != NULL;
 }
@@ -67,6 +66,15 @@ void Textura::setAsRenderTarget(SDL_Renderer* renderer)
     //Make self render target
     SDL_SetRenderTarget( renderer, mTexture );
 }
+void Textura::setBlendMode( SDL_BlendMode blending )
+{
+    SDL_SetTextureBlendMode( mTexture, blending );
+}
+
+void Textura::setAlpha( Uint8 alpha )
+{	 SDL_SetTextureAlphaMod( mTexture, alpha );
+}
+
 void Textura::render(int x, int y, SDL_Rect* clip, SDL_Renderer* gRenderer) {
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 

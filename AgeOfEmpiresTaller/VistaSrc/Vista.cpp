@@ -26,7 +26,7 @@
 #include "DibujoPersonaje.h"
 enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define ESCENARIO 1
-
+#define TILES 0
 #define DIMENSIONES 2
 #define ANIMACIONES 5
 #define MOVIMIENTOS 8
@@ -372,15 +372,13 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 		int adonde_va_x, adonde_va_y;
 		Posicion adonde_va = modelo->mover_personaje(personaje);
 		mover_x = adonde_va.get_x_exacta();
-		mover_y = adonde_va.get_y_exacta();
-		this->corregir_referencia_coordenadas_mapa_pantalla(mover_x,
-				mover_y);
-		this->transformador->transformar_isometrica_pantalla(
-				mover_x,
-				mover_y, adonde_va_x, adonde_va_y);
-		dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
-				(adonde_va_y - img_personaje_y));
-		dibujo_pers->render(gRenderer);
+	mover_y = adonde_va.get_y_exacta();
+	this->corregir_referencia_coordenadas_mapa_pantalla(mover_x, mover_y);
+	this->transformador->transformar_isometrica_pantalla(mover_x, mover_y,
+			adonde_va_x, adonde_va_y);
+	dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x),
+			(adonde_va_y - img_personaje_y));
+	dibujo_pers->render(gRenderer);
 
 }
 
@@ -397,7 +395,7 @@ void Vista::dibujar_mapa() {
 		int i = 0, j = 0;
 		for (i = x_start - 1; i < max; i++) {
 			for (j = y_min; j < i; j++) {
-				int coord_x = i - j-1;
+				int coord_x = i - j - 1;
 				int coord_y = j;
 				if ((adentro_del_mapa(coord_x, coord_y)) && (coord_x < x_max)
 						&& (coord_y < y_max)) {
@@ -405,18 +403,24 @@ void Vista::dibujar_mapa() {
 							coord_y);
 					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(
 							n_imagen);
+
+					if (this->modelo->devolverPersonaje(coord_x, coord_y)) {
+						dibujar_personaje(
+								this->modelo->devolverPersonaje(coord_x,
+										coord_y));
+						if(dim==TILES){
+							dibujo->iluminar();
+						}
+					}
 					if (dibujo != NULL) {
 						/*HARDCODE*/
-							this->transformador->transformar_isometrica_pantalla(
-									coord_x - referencia_mapa_x ,
-									coord_y - referencia_mapa_y,
-									x_imagen, y_imagen);
-							dibujo->set_posicion_default(x_imagen, y_imagen);
-							dibujo->render(gRenderer);
-
-					}
-					if(this->modelo->devolverPersonaje(coord_x,coord_y)){
-						dibujar_personaje(this->modelo->devolverPersonaje(coord_x,coord_y));
+						this->transformador->transformar_isometrica_pantalla(
+								coord_x - referencia_mapa_x,
+								coord_y - referencia_mapa_y, x_imagen,
+								y_imagen);
+						dibujo->set_posicion_default(x_imagen, y_imagen);
+						dibujo->render(gRenderer);
+						dibujo->resetear();
 					}
 				}
 			}

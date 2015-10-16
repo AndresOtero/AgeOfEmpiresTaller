@@ -22,7 +22,8 @@ class Textura
 		bool loadFromFile( std::string path ,SDL_Renderer* gRenderer );
 		bool loadFromRenderedText( string textureText, SDL_Color textColor, TTF_Font *gFont, SDL_Renderer* renderer);
 		void free();
-
+        void setBlendMode( SDL_BlendMode blending );
+        void setAlpha( Uint8 alpha );
 		void setAsRenderTarget(SDL_Renderer * renderer);
 		//Renders texture at given point
 		void render( int x, int y, SDL_Rect* clip ,SDL_Renderer* gRenderer );
@@ -35,7 +36,6 @@ class Textura
 	private:
 		//The actual hardware texture
 		SDL_Texture* mTexture;
-
 		//Image dimensions
 		int mWidth;
 		int mHeight;

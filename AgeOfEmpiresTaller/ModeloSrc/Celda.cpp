@@ -35,6 +35,7 @@ void Celda::actualizar(){
 }
 void Celda::ocuparCeldaPersonaje(Personaje* personaje){
 	this->personaje=personaje;
+
 }
 void Celda::liberarCelda(){
 	this->entidad=NULL;

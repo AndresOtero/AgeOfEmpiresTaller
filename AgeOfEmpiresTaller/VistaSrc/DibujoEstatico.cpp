@@ -6,13 +6,20 @@
  */
 
 #include "DibujoEstatico.h"
-
+#define RESET 255
 
 Dibujo_Estatico::Dibujo_Estatico() {
 	shared_ptr <Textura> text(new Textura());
 	this->textura = text;
 	this -> acumulador = 0;
 	this->fps=1;
+}
+void Dibujo_Estatico::iluminar(){
+	Uint8 alpha=127;
+	this->textura->setAlpha(alpha);
+}
+void Dibujo_Estatico::resetear(){
+	this->textura->setAlpha(RESET);
 }
 void Dibujo_Estatico::set_imagen( int x, int y) {
 	this->spriteClips.x = x;

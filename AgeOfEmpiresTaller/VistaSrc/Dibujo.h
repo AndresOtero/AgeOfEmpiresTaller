@@ -26,6 +26,8 @@ public:
 	virtual int get_ancho();
 	int getHeight() ;
 	int getWidth() ;
+	virtual void iluminar();
+	virtual void resetear();
 	virtual ~Dibujo();
 protected:
 	SDL_Rect spriteClips;
