@@ -27,6 +27,7 @@ public:
 	int get_alto(int n_imagen);
 	int get_ancho();
 	int get_alto();
+	void setPixeles(int x, int y);
 protected:
 
 	void cambiar_frame();
@@ -35,6 +36,8 @@ protected:
 	struct timeval estado;
 	double delay;
 	int termino_animacion;
+	int pixel_x;
+	int pixel_y;
 };
 
 #endif /* DIBUJOANIMADO_H_ */

@@ -14,6 +14,8 @@ DibujoAnimado::DibujoAnimado() {
 	this->fps=1;
 	this->spriteClips=NULL;
 	this->delay=1;
+	pixel_x=0;
+	pixel_y=0;
 	gettimeofday(&estado,NULL);
 }
 
@@ -37,8 +39,12 @@ void DibujoAnimado::set_imagen(unsigned int n_imagen, int x, int y,int h, int w)
 	this->spriteClips[n_imagen].h = h ;
 }
 
+void DibujoAnimado::setPixeles(int x, int y){
+	this->pixel_x = x;
+	this->pixel_y =y;
+}
 void DibujoAnimado::render( SDL_Renderer* renderer) {
-	this->textura->render(this->x_imagen, this->y_imagen, &(this->spriteClips[this->imagen_actual%this->cantidad_de_imagenes]),renderer);
+	this->textura->render(this->x_imagen+pixel_x, this->y_imagen-pixel_y, &(this->spriteClips[this->imagen_actual%this->cantidad_de_imagenes]),renderer);
 	this->cambiar_frame();
 }
 

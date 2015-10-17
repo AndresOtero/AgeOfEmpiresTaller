@@ -30,7 +30,8 @@ void Dibujo_Estatico::set_posicion_default(int x, int y){
 	this->y_imagen=y;
 }
 void Dibujo_Estatico::render( SDL_Renderer* renderer) {
-	this->textura->render(this->x_imagen, this->y_imagen, &(this->spriteClips),renderer);
+	this->textura->render(this->x_imagen+this->spriteClips.x, this->y_imagen-this->spriteClips.y
+			,NULL,renderer);
 }
 bool Dibujo_Estatico::cargar_archivo(std::string path, SDL_Renderer* renderer) {
 	bool textBool = this->textura->loadFromFile(path, renderer);

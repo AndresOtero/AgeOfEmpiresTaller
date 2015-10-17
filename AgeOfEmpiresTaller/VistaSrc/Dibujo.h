@@ -18,7 +18,7 @@ class Dibujo {
 public:
 	Dibujo();
 	virtual bool cargar_archivo(std::string path, SDL_Renderer* renderer);
-	virtual void render( SDL_Renderer* gRenderer) =0;
+	virtual void render( SDL_Renderer* gRenderer){};
 	virtual int get_x();
 	virtual int get_y();
 	virtual void set_posicion_default(int x,int y);
