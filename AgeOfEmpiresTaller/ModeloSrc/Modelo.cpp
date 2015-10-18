@@ -18,7 +18,7 @@
 #include "Recurso.h"
 using namespace std;
 
-
+#define CICLOS_MAX 100
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
 
@@ -105,7 +105,9 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	pila.push(primero);
 	donde_vengo.insert(pair<Posicion, Posicion>(adonde_estoy, adonde_estoy));
 	cuanto_recorri.insert(primero);
-	while (!pila.empty()) {
+	int cont=0;
+	while ((!pila.empty())&&(cont<CICLOS_MAX)) {
+		cont++;
 		pair<Posicion, double> actual = pila.top();
 		Posicion posicion_actual = actual.first;
 		pila.pop();
@@ -126,6 +128,9 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 
 			}
 		}
+	}
+	if(cont==CICLOS_MAX){
+		return adonde_estoy;
 	}
 
 	stack<Posicion> camino;

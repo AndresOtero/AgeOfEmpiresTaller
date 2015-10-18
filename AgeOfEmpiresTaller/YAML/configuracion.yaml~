@@ -93,7 +93,6 @@ escenario:
   - { x : 13, y: 9, tipo: arbol }
   - { x : 13, y: 10, tipo: arbol }
   - { x : 13, y: 11, tipo: arbol }
-  - { x : 13, y: 12, tipo: arbol }
   - { x : 20, y: 10, tipo: pino }
   - { x : 20, y: 00, tipo: arbol }
   - { x : 60, y: 6, tipo: church }
@@ -103,5 +102,5 @@ escenario:
   - { x : 30, y: 0, tipo: firestation }
  protagonista:
   - tipo: soldado
-    x: 10
-    y: 10
+    x: 9
+    y: 9
