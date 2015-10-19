@@ -20,6 +20,7 @@ class Modelo {
 	Personaje* personaje_seleccionado;
 	shared_ptr<Mapa> mapa;
 	vector<Personaje*> personajes;
+	vector<Posicion> pisadas;
 public:
 	Modelo(Juego* juego);
 	Juego* juego;
@@ -45,7 +46,8 @@ private:
 	bool celdaOcupada(Posicion);
 	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);
 	double distancia(Posicion a,Posicion b);
-
+	void agregarPosicion(Posicion pos);
+	bool pisado(double x,double y);
 
 };
 
