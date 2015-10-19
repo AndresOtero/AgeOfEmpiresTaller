@@ -419,6 +419,7 @@ void Vista::dibujar_mapa() {
 								coord_y - referencia_mapa_y, x_imagen,
 								y_imagen);
 						dibujo->set_posicion_default(x_imagen, y_imagen);
+						dibujo->oscurecer();
 						dibujo->render(gRenderer);
 						dibujo->resetear();
 					}

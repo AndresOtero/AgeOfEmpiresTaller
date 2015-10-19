@@ -29,6 +29,15 @@ void Dibujo::iluminar(){
 void Dibujo::resetear(){
 	this->textura->setAlpha(RESET);
 }
+
+void Dibujo::oscurecer(){
+	this->textura->oscurecer();
+}
+
+void Dibujo::reiniciar(){
+	this->textura->reiniciar();
+}
+
 void Dibujo::set_posicion_default(int x, int y){
 	this->x_imagen=x;
 	this->y_imagen=y;
