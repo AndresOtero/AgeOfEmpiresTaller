@@ -11,6 +11,7 @@
 #include <vector>
 #include "../ModeloSrc/Juego.h"
 #include "Personaje.h"
+#include <sys/time.h>
 using namespace std;
 
 #ifndef MODELO_H_
@@ -32,6 +33,7 @@ public:
 	Personaje* devolverPersonajeSeleccionado();
 	void actualizarMapa();
 	void cambiar_destino_personaje(double mov_x,double mov_y);
+	void generarRecursoRandom();
 	Posicion mover_personaje(Personaje* personaje);
 	Personaje* devolverPersonaje(int x,int y);
 	void eliminarEntidad(Entidad *entidad);
@@ -44,8 +46,8 @@ private:
 	bool celdaOcupada(Posicion);
 	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);
 	double distancia(Posicion a,Posicion b);
-
-
+	int totalRecursos;
+	struct timeval estado;
 };
 
 #endif /* MODELO_H_ */

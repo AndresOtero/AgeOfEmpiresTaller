@@ -7,9 +7,9 @@
 
 #ifndef ENTIDAD_H_
 #define ENTIDAD_H_
+#include "GeneradorNumeros.h"
 #include "ObjetoMapa.h"
 #include "Posicion.h"
-#include "GenerarID.h"
 
 /*obs: la entidad tiene el tipo (ObjetoMapa donde guardo imagen, bases, pixels ref. Se comparte para todas las entidades de un mismo tipo).
  *  Incluye la posicion de cada entidad

@@ -172,6 +172,20 @@ void Mapa::sacarEntidad(Entidad * entidad){
 			}
 		}
 }
+
+Posicion Mapa::posicionVacia(){
+	GeneradorNumeros num;
+	int x;
+	int y;
+	Celda * celda;
+	do{
+	x = num.numeroRandom(0,this->ancho);
+	y = num.numeroRandom(0,this->largo);
+	celda = this->getCelda(x,y);
+	}while (celda->estaOcupada()||celda->tieneRecurso());
+	Posicion pos={x,y};
+	return pos;
+}
 bool Mapa::hayRecursosEn(Posicion posicion){
 	return this->getCelda(posicion.getX(),posicion.getY())->tieneRecurso();
 }

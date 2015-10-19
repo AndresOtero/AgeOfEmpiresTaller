@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 #include "Posicion.h"
+#include "GeneradorNumeros.h"
 
 using namespace std;
 #ifndef MAPA_H_
@@ -29,7 +30,7 @@ public:
 	virtual ~Mapa();
 	Personaje* personaje_celda(int x, int y);
 	bool hay_personaje(int x, int y);
-
+	Posicion posicionVacia();
 	Entidad * entidad_celda(int x, int y);
 	bool hayRecursosEn(Posicion posicion);
 	bool afueraDelMapa(int x,int y);

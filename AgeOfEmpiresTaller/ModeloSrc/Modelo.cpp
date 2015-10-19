@@ -16,6 +16,11 @@
 #include "unordered_map"
 #include "CmpPosicion.h"
 #include "Recurso.h"
+#include "Oro.h"
+#include "Madera.h"
+#include "Piedra.h"
+#define MAX_RECURSOS 30
+#define RITMO 5
 using namespace std;
 
 
@@ -28,6 +33,9 @@ Modelo::Modelo(Juego* juego) {
 	this->personajes=vector<Personaje*>();
 	personaje_seleccionado=NULL;
 	this->insertarEntidades();
+	this->totalRecursos=0;
+	gettimeofday(&estado,NULL);
+
 }
 void Modelo::insertarEntidades(){
 	for(unsigned int i =0; i < this->juego->escenario->entidades.size(); i++){
@@ -40,6 +48,15 @@ void Modelo::setMapa(int ancho,int largo){
 }
 void Modelo::actualizarMapa(){
 	mapa->actualizar(personajes);
+	struct timeval actual;
+	gettimeofday(&actual,NULL);
+	double ti = estado.tv_sec+(estado.tv_usec/1000000.0);
+	double tf = actual.tv_sec+(actual.tv_usec/1000000.0);
+	double tiempo = tf - ti;
+	if (tiempo>RITMO){
+		this->generarRecursoRandom();
+		gettimeofday(&estado,NULL);
+	}
 }
 void Modelo::agregarPersonaje(Personaje* personaje){
 	personajes.push_back(personaje);
@@ -169,7 +186,6 @@ void Modelo::eliminarEntidad(Entidad * entidad){
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
 	for (unsigned int i=0; i < lista->size(); i++){
 		if (entidad->id == (*lista)[i]->id){
-			printf("%d %d \n",entidad->id,(*lista)[i]->id);
 			if (i+1!=lista->size())
 				std::swap((*lista)[i], lista->back());
 			lista->pop_back();
@@ -200,8 +216,39 @@ int Modelo::get_alto_mapa(){
 int Modelo::get_ancho_mapa(){
 	return mapa->getAncho();
 }
+void Modelo::generarRecursoRandom(){
+	Posicion pos;
+	Recurso* recurso;
+	ObjetoMapa * objeto;
+	GeneradorNumeros num;
+	if (this->totalRecursos+1>MAX_RECURSOS){
+		return;
+	}
+	pos = this->mapa->posicionVacia();
+	int x = pos.getX();
+	int y = pos.getY();
+	switch (num.numeroRandom(0,3)){
+		case 0:
+			objeto = this->juego->tipos["oro"];
+			recurso = new Oro(objeto,x,y);
+			break;
+		case 1:
+			objeto = this->juego->tipos["madera"];
+			recurso = new Madera(objeto,x,y);
+			break;
+		default:
+			objeto = this->juego->tipos["piedra"];
+			recurso = new Piedra(objeto,x,y);
+			break;
+	}
 
+	this->mapa->posicionarEntidad(recurso);
+	int size = this->juego->escenario->entidades.size();
+	this->juego->escenario->entidades.resize(size+1);
+	this->juego->escenario->entidades[size]=recurso;
+	this->totalRecursos++;
 
+}
 
 Modelo::~Modelo() {
  delete this->juego;
