@@ -62,6 +62,18 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibu
 		}
 	}
 }
+
+int Modelo::oscuridad(int dim,int x,int y){
+	for(size_t i = 0; i < this->personajes.size(); i++){
+		Posicion pos = personajes[i]->get_posicion();
+		float d = (pos.getX() - x)*(pos.getX() - x) + (pos.getY() - y)*(pos.getY() - y);
+		d = sqrt(d);
+		if (d < 5){
+			return 0;
+		}
+	}
+	return 1;
+}
 dibujo_t Modelo::dibujar(int dim,int x,int y){
 	if(dim==ESCENARIO){
 		return this->mapa->dibujarEscenario(x,y);

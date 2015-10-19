@@ -26,6 +26,7 @@ public:
 	void setMapa(int largo,int ancho);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
 	dibujo_t dibujar(int dim,int x,int y);
+	int oscuridad(int dim,int x,int y);
 	void agregarPersonaje(Personaje*);
 	string seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();

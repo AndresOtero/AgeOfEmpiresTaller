@@ -23,6 +23,10 @@ void Dibujo_Estatico::oscurecer(){
 	this->textura->oscurecer();
 }
 
+void Dibujo_Estatico::reiniciar(){
+	this->textura->reiniciar();
+}
+
 void Dibujo_Estatico::resetear(){
 	this->textura->setAlpha(RESET);
 }

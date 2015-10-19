@@ -401,8 +401,7 @@ void Vista::dibujar_mapa() {
 						&& (coord_y < y_max)) {
 					size_t n_imagen = this->modelo->dibujar(dim, coord_x,
 							coord_y);
-					//int oscuro = modelo->oscuridad(dim,coord_x,coord_y);
-					int oscuro = 1;
+					int oscuro = modelo->oscuridad(dim,coord_x,coord_y);
 					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(
 							n_imagen);
 
@@ -423,7 +422,9 @@ void Vista::dibujar_mapa() {
 						dibujo->set_posicion_default(x_imagen, y_imagen);
 						if(oscuro == 1)
 							dibujo->oscurecer();
-						dibujo->render(gRenderer);
+						if(oscuro < 2){
+							dibujo->render(gRenderer);
+						}
 						dibujo->resetear();
 						dibujo->reiniciar(); //pone el color original
 					}
