@@ -26,8 +26,8 @@ public:
 	virtual int get_ancho();
 	int getHeight() ;
 	int getWidth() ;
-	void oscurecer();
-	void reiniciar();
+	virtual void oscurecer();
+	virtual void reiniciar();
 	virtual void iluminar();
 	virtual void resetear();
 	virtual ~Dibujo();
