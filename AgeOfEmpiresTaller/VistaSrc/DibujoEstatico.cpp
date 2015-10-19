@@ -18,6 +18,11 @@ void Dibujo_Estatico::iluminar(){
 	Uint8 alpha=127;
 	this->textura->setAlpha(alpha);
 }
+
+void Dibujo_Estatico::oscurecer(){
+	this->textura->oscurecer();
+}
+
 void Dibujo_Estatico::resetear(){
 	this->textura->setAlpha(RESET);
 }
