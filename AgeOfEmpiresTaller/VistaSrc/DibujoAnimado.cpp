@@ -45,7 +45,8 @@ void DibujoAnimado::setPixeles(int x, int y){
 }
 void DibujoAnimado::render( SDL_Renderer* renderer) {
 	this->textura->render(this->x_imagen+pixel_x, this->y_imagen-pixel_y, &(this->spriteClips[this->imagen_actual%this->cantidad_de_imagenes]),renderer);
-	this->cambiar_frame();
+	if(this->animado)
+		this->cambiar_frame();
 }
 
 

@@ -19,6 +19,7 @@ void Dibujo_Estatico::iluminar(){
 	this->textura->setAlpha(alpha);
 }
 
+
 void Dibujo_Estatico::oscurecer(){
 	this->textura->oscurecer();
 }

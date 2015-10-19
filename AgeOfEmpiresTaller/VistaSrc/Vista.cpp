@@ -422,6 +422,10 @@ void Vista::dibujar_mapa() {
 						dibujo->set_posicion_default(x_imagen, y_imagen);
 						if(oscuro == 1)
 							dibujo->oscurecer();
+							dibujo->setAnimar(false);
+						if(oscuro != 1 && oscuro < 2){
+							dibujo->setAnimar(true);
+						}
 						if(oscuro < 2){
 							dibujo->render(gRenderer);
 						}

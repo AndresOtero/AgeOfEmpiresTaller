@@ -19,6 +19,7 @@ Dibujo::Dibujo() {
 	// TODO Auto-generated constructor stub
 	shared_ptr <Textura> text(new Textura());
 	this->textura = text;
+	this->animado = true;
 
 }
 void Dibujo::iluminar(){
@@ -63,6 +64,11 @@ Dibujo::~Dibujo() {
 int Dibujo::get_x() {
 	return this->x_imagen;
 }
+
+void Dibujo::setAnimar(bool a){
+	this->animado = a;
+}
+
 int Dibujo::get_y() {
 	return this->y_imagen;
 }
