@@ -18,6 +18,9 @@ Textura::Textura() {
 	mTexture = NULL;
 	mWidth = 0;
 	mHeight = 0;
+	r = 0;
+	g= 0;
+	b = 0;
 }
 
 Textura::~Textura() {
@@ -48,9 +51,17 @@ bool Textura::loadFromFile(std::string path, SDL_Renderer* gRenderer) {
 
 		SDL_FreeSurface(loadedSurface);
 	}
+	SDL_GetTextureColorMod(newTexture,&r,&g,&b);
     SDL_SetTextureBlendMode( mTexture, SDL_BLENDMODE_BLEND );
 	mTexture = newTexture;
 	return mTexture != NULL;
+}
+void Textura::oscurecer(){
+	SDL_SetTextureColorMod(this->mTexture,100,100,100);
+}
+
+void Textura::reiniciar(){
+	SDL_SetTextureColorMod(this->mTexture,r,g,b);
 }
 
 void Textura::free() {

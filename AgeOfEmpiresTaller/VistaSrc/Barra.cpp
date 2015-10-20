@@ -9,7 +9,7 @@
 #define PIXELESDIGITOS 200
 
 Barra::Barra(Modelo * modelo,double * x, double *y) {
-	shared_ptr<Minimapa> mapa(new Minimapa(modelo,x,y));
+	shared_ptr<Minimapa> mapa(new Minimapa(modelo));
 	this->mapa= mapa;
 	shared_ptr<Textura> text(new Textura());
 	this->texto = text;
@@ -19,12 +19,14 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	this->oro=oro;
 	this->madera=madera;
 	this->piedra=piedra;
-
+	this->x_ref=x;
+	this->y_ref=y;
 	this->referencia_y = modelo->juego->pantalla->getAlto()-mapa->altoMapa();
 	this->font=NULL;
 	this->tamFont = 20;
-	//shared_ptr<CambioDeCoordendas> trans(new CambioDeCoordendas(this->mapa->anchoPorCelda(),this->mapa->altoPorCelda()));
-	//this->transformador = trans;
+	this->celda_mini = this->mapa->altoMapa()/ (modelo->mapa->getLargo()); //HARCODE
+	shared_ptr<CambioDeCoordendas> trans(new CambioDeCoordendas(celda_mini,celda_mini));
+	this->transformador = trans;
 
 }
 
@@ -56,6 +58,7 @@ void  Barra::actualizar(Personaje * jugador){
 	madera->cambiarCant(jugador->recursosJugador()->cantMadera());
 	piedra->cambiarCant(jugador->recursosJugador()->cantPiedra());
 }
+
 void Barra::renderTexto(SDL_Renderer*renderer){
 	if (!this->display.empty()){
 		SDL_Color color = this->mapa->paleta(NEGRO);
@@ -97,6 +100,20 @@ void Barra::render(SDL_Renderer*renderer){
 	this->textura->renderEx(0,NULL,&rect,renderer);
 	this->renderTexto(renderer);
 	this->mapa->render(renderer);
+	this->dibujarDondeMiro(renderer);
+}
+
+void Barra::dibujarDondeMiro(SDL_Renderer * renderer){
+	//5 a lo ancho
+	//4 a lo alto
+	int x;
+	int y;
+	this->transformador->transformar_isometrica_pantalla(*x_ref,*y_ref,x,y);
+	x+=this->mapa->anchoPantalla()-this->mapa->altoMapa()/2+celda_mini/2;
+	y+=this->referencia_y+celda_mini;
+	SDL_Rect rect = {x,y,6*celda_mini,5*celda_mini};
+	SDL_SetRenderDrawColor(renderer,0xFF,0xFF,0xFF,0xFF);
+	SDL_RenderDrawRect(renderer,&rect);
 }
 void Barra::closeFont(){
 	TTF_CloseFont(this->font);

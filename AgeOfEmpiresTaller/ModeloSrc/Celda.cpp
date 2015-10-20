@@ -64,20 +64,28 @@ bool Celda::estaOcupada(){
 }
 void Celda::ocuparCelda(Entidad * entidad){
 	this->entidad=entidad;
+	//deberia setear el escenario con el modelo en que estamos
 }
 string Celda::mostrar_contenido(){
 	string nombre;
-	if (this->entidad!=NULL){
-		nombre = this->entidad->mostrar_contenido();
-	}
-	else if (this->personaje!=NULL){
+	if (this->personaje!=NULL){
 			nombre = this->personaje->mostrar_contenido();
 	}
 	else
-		nombre = "";
+		nombre = this->mostrar_entidad();
 	return nombre;
 }
 
+string Celda::mostrar_entidad(){
+	string nombre;
+	if (this->entidad!=NULL){
+			nombre = this->entidad->mostrar_contenido();
+		}
+	else {
+		nombre = "";
+	}
+	return nombre;
+}
 Personaje* Celda::devolver_personaje(){
 	return personaje;
 }

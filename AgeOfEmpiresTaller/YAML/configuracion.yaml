@@ -95,7 +95,7 @@ escenario:
   - { x : 13, y: 11, tipo: arbol }
   - { x : 20, y: 10, tipo: pino }
   - { x : 20, y: 00, tipo: arbol }
-  - { x : 60, y: 6, tipo: church }
+  - { x : 40, y: 6, tipo: church }
   - { x : 40, y: 0, tipo: herreria }
   - { x : 40, y: 4, tipo: wheel }
   - { x : 30, y: 10, tipo: barraca }

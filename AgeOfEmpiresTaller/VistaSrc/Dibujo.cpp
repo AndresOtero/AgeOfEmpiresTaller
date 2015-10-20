@@ -19,6 +19,7 @@ Dibujo::Dibujo() {
 	// TODO Auto-generated constructor stub
 	shared_ptr <Textura> text(new Textura());
 	this->textura = text;
+	this->animado = true;
 
 }
 void Dibujo::iluminar(){
@@ -29,6 +30,15 @@ void Dibujo::iluminar(){
 void Dibujo::resetear(){
 	this->textura->setAlpha(RESET);
 }
+
+void Dibujo::oscurecer(){
+	this->textura->oscurecer();
+}
+
+void Dibujo::reiniciar(){
+	this->textura->reiniciar();
+}
+
 void Dibujo::set_posicion_default(int x, int y){
 	this->x_imagen=x;
 	this->y_imagen=y;
@@ -54,6 +64,11 @@ Dibujo::~Dibujo() {
 int Dibujo::get_x() {
 	return this->x_imagen;
 }
+
+void Dibujo::setAnimar(bool a){
+	this->animado = a;
+}
+
 int Dibujo::get_y() {
 	return this->y_imagen;
 }

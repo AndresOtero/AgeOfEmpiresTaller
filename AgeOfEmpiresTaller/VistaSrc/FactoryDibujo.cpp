@@ -76,7 +76,17 @@ shared_ptr<Dibujo> FactoryDibujo::get_dibujo(int n_dibujo){
 	}
 	return this->dibujos[n_dibujo];
 }
+dibujo_t FactoryDibujo::get_idDibujo(string nombre){
+	//no chequea q no exista el nombre!!!!!!
+	if (nombre.empty()){
+		return DEFAULT;
+	}
+	return this->hashDibujos[nombre];
+}
 
+void FactoryDibujo::setHashDibujos(std::map<std::string, dibujo_t> hashDibujos){
+	this->hashDibujos=hashDibujos;
+}
 
 FactoryDibujo::~FactoryDibujo() {
 

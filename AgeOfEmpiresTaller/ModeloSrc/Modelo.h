@@ -19,14 +19,16 @@ using namespace std;
 
 class Modelo {
 	Personaje* personaje_seleccionado;
-	shared_ptr<Mapa> mapa;
 	vector<Personaje*> personajes;
+	vector<Posicion> pisadas;
 public:
+	shared_ptr<Mapa> mapa;
 	Modelo(Juego* juego);
 	Juego* juego;
 	void setMapa(int largo,int ancho);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
 	dibujo_t dibujar(int dim,int x,int y);
+	int oscuridad(int dim,int x,int y);
 	void agregarPersonaje(Personaje*);
 	string seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();
@@ -46,6 +48,8 @@ private:
 	bool celdaOcupada(Posicion);
 	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);
 	double distancia(Posicion a,Posicion b);
+	void agregarPosicion(Posicion pos);
+	bool pisado(double x,double y);
 	int totalRecursos;
 	struct timeval estado;
 };

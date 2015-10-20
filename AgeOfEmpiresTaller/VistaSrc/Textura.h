@@ -32,6 +32,9 @@ class Textura
 		//Gets image dimensions
 		int getWidth();
 		int getHeight();
+		//Para fog war
+		void oscurecer();
+		void reiniciar();
 
 	private:
 		//The actual hardware texture
@@ -39,5 +42,6 @@ class Textura
 		//Image dimensions
 		int mWidth;
 		int mHeight;
+		unsigned char r,g,b;
 };
 #endif /* Textura_H_ */

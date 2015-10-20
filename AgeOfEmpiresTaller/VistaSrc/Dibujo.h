@@ -26,7 +26,10 @@ public:
 	virtual int get_ancho();
 	int getHeight() ;
 	int getWidth() ;
+	virtual void oscurecer();
+	virtual void reiniciar();
 	virtual void iluminar();
+	virtual void setAnimar(bool a);
 	virtual void resetear();
 	virtual ~Dibujo();
 protected:
@@ -36,6 +39,7 @@ protected:
 	size_t imagen_actual;
 	int x_imagen;
 	int y_imagen;
+	bool animado;
 };
 
 #endif /* DIBUJO_H_ */

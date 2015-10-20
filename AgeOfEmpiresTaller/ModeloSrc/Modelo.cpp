@@ -23,7 +23,7 @@
 #define RITMO 5
 using namespace std;
 
-
+#define CICLOS_MAX 100
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
 
@@ -31,6 +31,7 @@ Modelo::Modelo(Juego* juego) {
 	this -> juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 	this->personajes=vector<Personaje*>();
+	this->pisadas = vector<Posicion>();
 	personaje_seleccionado=NULL;
 	this->insertarEntidades();
 	this->totalRecursos=0;
@@ -79,6 +80,33 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibu
 		}
 	}
 }
+
+int Modelo::oscuridad(int dim,int x,int y){
+	for(size_t i = 0; i < this->personajes.size(); i++){
+		Posicion pos = personajes[i]->get_posicion();
+		agregarPosicion(pos);
+		float d = (pos.getX() - x)*(pos.getX() - x) + (pos.getY() - y)*(pos.getY() - y);
+		d = sqrt(d);
+		if (d < 5){
+			Posicion *pos2 = new Posicion(x,y);
+			agregarPosicion(*pos2);
+			return 0;
+		}
+	}
+	if(pisado(x,y))
+		return 1;
+	return 2;
+}
+
+bool Modelo::pisado(double x, double y){
+	for(size_t i = 0; i < this->pisadas.size();i++){
+			if(this->pisadas[i].getX() == x && this->pisadas[i].getY() == y){
+				return true;
+			}
+		}
+	return false;
+}
+
 dibujo_t Modelo::dibujar(int dim,int x,int y){
 	if(dim==ESCENARIO){
 		return this->mapa->dibujarEscenario(x,y);
@@ -122,7 +150,9 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	pila.push(primero);
 	donde_vengo.insert(pair<Posicion, Posicion>(adonde_estoy, adonde_estoy));
 	cuanto_recorri.insert(primero);
-	while (!pila.empty()) {
+	int cont=0;
+	while ((!pila.empty())&&(cont<CICLOS_MAX)) {
+		cont++;
 		pair<Posicion, double> actual = pila.top();
 		Posicion posicion_actual = actual.first;
 		pila.pop();
@@ -143,6 +173,9 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 
 			}
 		}
+	}
+	if(cont==CICLOS_MAX){
+		return adonde_estoy;
 	}
 
 	stack<Posicion> camino;
@@ -165,6 +198,16 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	//printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 	return adonde_voy;
 }
+
+void Modelo::agregarPosicion(Posicion pos){
+	for(size_t i = 0; i < this->pisadas.size();i++){
+		if(pisadas[i].getX() == pos.getX() && pisadas[i].getY() == pos.getY()){
+			return;
+		}
+	}
+	pisadas.push_back(pos);
+}
+
 Posicion Modelo::mover_personaje(Personaje* personaje){
 	Posicion destino= personaje->get_destino();
 	Posicion adonde_estoy= personaje->get_posicion();

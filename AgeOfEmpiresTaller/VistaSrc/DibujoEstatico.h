@@ -29,7 +29,9 @@ public:
 	int get_alto();
 	int get_ancho();
 	void iluminar();
+	void oscurecer();
 	void resetear();
+	void reiniciar();
 	virtual ~Dibujo_Estatico();
 protected:
 	SDL_Rect spriteClips;

@@ -11,6 +11,12 @@
 #include "DibujoEstatico.h"
 #include "vector"
 #include "memory.h"
+#include <unistd.h>
+#include <cstdio>
+#include <memory>
+#include <iostream>
+#include <map>
+
 using namespace std;
 #ifndef FACTORYDIBUJO_H_
 #define FACTORYDIBUJO_H_
@@ -21,6 +27,7 @@ class FactoryDibujo {
 	int cantidad_de_dibujos;
 	int dibujo_actual;
 	SDL_Renderer* gRenderer;
+	std::map<std::string, dibujo_t> hashDibujos;
 public:
 	FactoryDibujo(SDL_Renderer* gRenderer);
 	bool crear_dibujo_estatico(string path, vector<int>parametros_de_imagen);
@@ -28,6 +35,8 @@ public:
 	bool crear_dibujo_animado(string path,vector<int> pixeles,std::vector<std::vector<int> >parametros_de_imagen,int fps, int delay);
 	shared_ptr<Dibujo> get_dibujo(int n_dibujo);
 	int ultimo_dibujo();
+	int get_idDibujo(string nombre);
+	void setHashDibujos(std::map<std::string, dibujo_t> hashDibujos);
 	virtual ~FactoryDibujo();
 private:
 	void set_dibujo(shared_ptr<Dibujo> dibujo);

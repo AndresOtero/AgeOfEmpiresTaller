@@ -39,6 +39,9 @@ void Mapa::setEscenario(dibujo_t dibujo,int x,int y){
 string Mapa::mostrar_contenido(int x,int y){
 	return this->getCelda(x,y)->mostrar_contenido();
 }
+string Mapa::mostrar_entidad(int x, int y){
+	return this->getCelda(x,y)->mostrar_entidad();
+}
 Entidad* Mapa::entidad_celda(int x, int y){
 	return this->getCelda(x,y)->devolver_entidad();
 }
