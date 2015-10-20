@@ -49,6 +49,11 @@ void Modelo::setMapa(int ancho,int largo){
 }
 void Modelo::actualizarMapa(){
 	mapa->actualizar(personajes);
+	vector<Personaje*>::iterator it = personajes.begin();
+	for (; it != personajes.end(); ++it) {
+		Personaje* p = (*it);
+		mover_personaje(p);
+	}
 	struct timeval actual;
 	gettimeofday(&actual,NULL);
 	double ti = estado.tv_sec+(estado.tv_usec/1000000.0);

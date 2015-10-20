@@ -20,6 +20,7 @@ class Personaje {
 	Posicion destino;
 	Posicion camino;
 
+
 public:
 	Personaje();
 	Personaje(ObjetoMapa* objetoMapa);
@@ -34,6 +35,7 @@ public:
 	void set_camino(Posicion camino);
 	Posicion get_destino();
 	Posicion get_posicion();
+	Posicion get_camino();
 	void setVelocidad(double velocidad) {
 		this->velocidad = velocidad;
 	}

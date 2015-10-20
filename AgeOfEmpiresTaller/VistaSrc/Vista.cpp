@@ -361,7 +361,7 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 				DibujoPersonaje>(
 				this->factory->get_dibujo(personaje->dibujar()));
 		dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
-		Posicion destino= modelo->mover_personaje(personaje);
+		Posicion destino= personaje->get_camino();
 		double mover_x =destino.get_x_exacta();
 		double mover_y=destino.get_y_exacta();
 		if (!adentro_del_mapa(mover_x, mover_y)) {
