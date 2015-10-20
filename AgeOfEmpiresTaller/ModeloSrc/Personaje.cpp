@@ -14,6 +14,7 @@ Personaje::Personaje(){
 	this->referencia_mapa_x=5;
 	this->referencia_mapa_y=2;
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
+	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->objetoMapa->fps = 20; //FPS DEFAULT
 	this->velocidad=1;
 	this->objetoMapa->delay = 0; //delay default
@@ -24,6 +25,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->referencia_mapa_x=1;
 	this->referencia_mapa_y=1;
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
+	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->velocidad=1;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
@@ -33,6 +35,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_x=x;
 	this->referencia_mapa_y=y;
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
+	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->velocidad=1;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
@@ -56,6 +59,9 @@ void Personaje::set_camino(Posicion camino){
 }
 Posicion Personaje::get_destino(){
 	return destino;
+}
+Posicion Personaje::get_camino(){
+	return camino;
 }
 void Personaje::mover() {
 	double x = camino.get_x_exacta();

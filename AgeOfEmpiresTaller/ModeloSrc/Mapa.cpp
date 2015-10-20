@@ -78,6 +78,7 @@ void Mapa::actualizar(vector<Personaje*> personajes) {
 		Personaje* p=(*it);
 		Posicion pos=p->get_posicion();
 		this->getCelda(pos.getX(),pos.getY())->ocuparCeldaPersonaje(p);
+
 	}
 }
 

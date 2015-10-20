@@ -41,6 +41,11 @@ void Modelo::setMapa(int ancho,int largo){
 }
 void Modelo::actualizarMapa(){
 	mapa->actualizar(personajes);
+	vector<Personaje*>::iterator it = personajes.begin();
+	for (; it != personajes.end(); ++it) {
+		Personaje* p = (*it);
+		mover_personaje(p);
+	}
 }
 void Modelo::agregarPersonaje(Personaje* personaje){
 	personajes.push_back(personaje);
