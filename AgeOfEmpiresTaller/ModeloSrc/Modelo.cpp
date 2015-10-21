@@ -31,11 +31,19 @@ Modelo::Modelo(Juego* juego) {
 	this -> juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 	this->personajes=vector<Personaje*>();
-	this->pisadas = vector<Posicion>();
+	this->pisadas = vector<vector<int>>();
 	personaje_seleccionado=NULL;
 	this->insertarEntidades();
 	this->totalRecursos=0;
 	gettimeofday(&estado,NULL);
+
+	for (int i = 0; i < this->juego->escenario->size_x; i++) {
+	    vector<int> row; // Create an empty row
+	    for (int j = 0; j < this->juego->escenario->size_y; j++) {
+	        row.push_back(0); // Add an element (column) to the row
+	    }
+	    pisadas.push_back(row); // Add the row to the main vector
+	}
 
 }
 void Modelo::insertarEntidades(){
@@ -103,13 +111,8 @@ int Modelo::oscuridad(int dim,int x,int y){
 	return 2;
 }
 
-bool Modelo::pisado(double x, double y){
-	for(size_t i = 0; i < this->pisadas.size();i++){
-			if(this->pisadas[i].getX() == x && this->pisadas[i].getY() == y){
-				return true;
-			}
-		}
-	return false;
+bool Modelo::pisado(int x, int y){
+	return(pisadas[x][y] == 1);
 }
 
 dibujo_t Modelo::dibujar(int dim,int x,int y){
@@ -205,12 +208,7 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 }
 
 void Modelo::agregarPosicion(Posicion pos){
-	for(size_t i = 0; i < this->pisadas.size();i++){
-		if(pisadas[i].getX() == pos.getX() && pisadas[i].getY() == pos.getY()){
-			return;
-		}
-	}
-	pisadas.push_back(pos);
+	pisadas[pos.getX()][pos.getY()] = 1;
 }
 
 Posicion Modelo::mover_personaje(Personaje* personaje){
