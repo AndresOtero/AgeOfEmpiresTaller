@@ -32,6 +32,7 @@ public:
 	int altoPorCelda();
 	int anchoPorCelda();
 private:
+	bool invertir;
 	int x;
 	int y;
 	int diagonal;
@@ -40,7 +41,7 @@ private:
 	int alto_por_celda;
 	Modelo * modelo;
 	SDL_Color fondo;
-	void dibujarElemento(int x,int y,SDL_Renderer * renderer);
+	void dibujarElemento(int x,int y,SDL_Renderer * renderer,int * count);
 	int sombra(int color);
 	void cambiar_coordenadas(int x, int y, int&pant_x, int &pant_y);
 	void dibujarPuntoMapa(int pant_x,int pant_y, SDL_Color color,SDL_Renderer*renderer);

@@ -26,13 +26,13 @@
 Minimapa::Minimapa(Modelo *modelo) {
 
 	this->modelo = modelo;
-	this->x = (modelo->juego->pantalla->getAncho()*3)/4;
-	this->y = (modelo->juego->pantalla->getAlto()*3)/4;
-	this->diagonal = x/3;
+	this->diagonal = modelo->juego->pantalla->getAlto()/3;
+	this->x = modelo->juego->pantalla->getAncho()-diagonal/2;
+	this->y = modelo->juego->pantalla->getAlto()-diagonal;
 	this->lado = int(double(diagonal)/sqrt(2));
 	this-> ancho_por_celda = modelo->juego->pantalla->getAncho()/modelo->get_ancho_mapa();
 	this-> alto_por_celda = modelo->juego->pantalla->getAlto()/modelo->get_alto_mapa();
-
+	this->invertir = false;
 }
 
 int Minimapa::altoMapa(){
@@ -57,25 +57,26 @@ void Minimapa::dibujarPuntoMapa(int pant_x, int pant_y, SDL_Color color, SDL_Ren
 }
 
 bool Minimapa::inicializar(SDL_Renderer * render){
-	bool err = this-textura->createBlank(modelo->juego->pantalla->getAncho(),modelo->juego->pantalla->getAncho(),SDL_TEXTUREACCESS_TARGET,render);
+	bool err = this-textura->createBlank(modelo->juego->pantalla->getAncho(),modelo->juego->pantalla->getAlto(),SDL_TEXTUREACCESS_TARGET,render);
 	this->fondo=this->paleta(NEGRO);
 	return err;
 }
 
 void Minimapa::render(SDL_Renderer* renderer){
 	int pos_x,pos_y;
-	SDL_Rect dsRect = { x+(x/3-lado)/2, ((7*y)/3-diagonal)/2, lado, lado };
+	SDL_Rect dsRect = { x-lado/2, y+(diagonal-lado)/2, lado, lado };
 	this->textura->setAsRenderTarget(renderer);
 	SDL_Color colorMapa = fondo;
     SDL_SetRenderDrawColor( renderer, colorMapa.r, colorMapa.g, colorMapa.b, colorMapa.a );
     SDL_RenderClear( renderer );
     //FOG ANDA LENTO
-    /*for (int i=0; i < this->modelo->get_ancho_mapa();i++){
+    int count=0;
+    for (int i=0; i < this->modelo->get_ancho_mapa();i++){
     	for (int j=0; j < this->modelo->get_alto_mapa();j++){
-    		this->dibujarElemento(i,j,renderer);
+    		this->dibujarElemento(i,j,renderer,&count);
     	}
-    }*/
-
+    }
+    /*
     //marco polo
 	this->fondo = this->paleta(VERDE);
 	 for (unsigned int i = 0; i < this->modelo->juego->escenario->entidades.size();i++){
@@ -95,14 +96,21 @@ void Minimapa::render(SDL_Renderer* renderer){
 		int y = personaje->get_posicion().getY()
 				* alto_por_celda;
 		this->dibujarPuntoMapa(x, y, paleta(ROJO), renderer);
-	}
+	}*/
 	SDL_SetRenderTarget(renderer,NULL);
-	this->textura->renderEx(45,NULL,&dsRect,renderer);
+	this->textura->renderEx(45,NULL,&dsRect,renderer,NULL);
+	if (count > (this->modelo->mapa->getAncho()*this->modelo->mapa->getLargo()/2)){
+		//si mas de la mitad esta a la vista
+		this->invertir=true;
+		this->fondo=paleta(VERDE_OSCURO);
+	}
 }
 
-void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer){
+void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer,int * count){
 	int d = this->modelo->oscuridad(0, x, y);
 	Posicion pos={x,y};
+	int x_pant = x *ancho_por_celda;
+	int y_pant = y *alto_por_celda;
 	if (d != 2) {
 		int color;
 		if (this->modelo->mapa->celdaOcupada(x, y)) {
@@ -118,11 +126,18 @@ void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer){
 		}
 
 		if (d==1){
+			//si inverti los colores el verde oscuro no lo tengo q dibujar
+			if((invertir) && (color==VERDE)){
+				return;
+			}
 			color = this->sombra(color);
 		}
+		*count+=1;
 		SDL_Color paleta = this->paleta(color);
-		int x_pant = x *ancho_por_celda;
-		int y_pant = y *alto_por_celda;
+		this->dibujarPuntoMapa(x_pant, y_pant, paleta, renderer);
+	}else if (invertir){
+		//si hay mas ocupado que negro dibujo lo negro y el fondo es verde
+		SDL_Color paleta = this->paleta(NEGRO);
 		this->dibujarPuntoMapa(x_pant, y_pant, paleta, renderer);
 	}
 }

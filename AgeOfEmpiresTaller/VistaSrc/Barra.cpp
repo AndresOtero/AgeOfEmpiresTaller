@@ -7,6 +7,8 @@
 
 #include "Barra.h"
 #define PIXELESDIGITOS 200
+#define ANCHO_BASE  249
+#define ALTO_BASE  124
 
 Barra::Barra(Modelo * modelo,double * x, double *y) {
 	shared_ptr<Minimapa> mapa(new Minimapa(modelo));
@@ -79,7 +81,7 @@ int Barra::imprimirNumeroDeRecurso(SDL_Renderer* renderer, shared_ptr<RecursoVis
 	SDL_Color color = this->mapa->paleta(BLANCO);
 	SDL_Rect rect= {x_ref,referencia_y,ancho,largo};
 	cargarTexto(x_ref, referencia_y,renderer,color,texto,to_string(recurso->cantidad()));
-	recurso->imagen()->renderEx(0,NULL,&rect,renderer);
+	recurso->imagen()->renderEx(0,NULL,&rect,renderer,NULL);
 	return x_ref+ancho+PIXELESDIGITOS;
 }
 bool Barra::cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display){
@@ -97,21 +99,22 @@ bool Barra::cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color, shar
 
 void Barra::render(SDL_Renderer*renderer){
 	SDL_Rect rect = {0,this->referencia_y,this->mapa->anchoPantalla(),this->mapa->altoMapa()};
-	this->textura->renderEx(0,NULL,&rect,renderer);
+	this->textura->renderEx(0,NULL,&rect,renderer,NULL);
 	this->renderTexto(renderer);
 	this->mapa->render(renderer);
 	this->dibujarDondeMiro(renderer);
 }
 
 void Barra::dibujarDondeMiro(SDL_Renderer * renderer){
-	//5 a lo ancho
-	//4 a lo alto
 	int x;
 	int y;
 	this->transformador->transformar_isometrica_pantalla(*x_ref,*y_ref,x,y);
-	x+=this->mapa->anchoPantalla()-this->mapa->altoMapa()/2+celda_mini/2;
-	y+=this->referencia_y+celda_mini;
-	SDL_Rect rect = {x,y,6*celda_mini,5*celda_mini};
+	//SUPER HARCODE funciona en parte del mapa
+	x+=this->mapa->anchoPantalla()-this->mapa->altoMapa()/2-celda_mini/2;
+	y+=this->referencia_y+celda_mini/2;
+	int celdas_por_ancho = this->mapa->anchoPantalla()/ANCHO_BASE;
+	int celdas_por_alto = (this->mapa->altoMapa()*2)/ALTO_BASE;
+	SDL_Rect rect = {x,y,(celdas_por_ancho)*celda_mini,(celdas_por_alto+1)*celda_mini};
 	SDL_SetRenderDrawColor(renderer,0xFF,0xFF,0xFF,0xFF);
 	SDL_RenderDrawRect(renderer,&rect);
 }
