@@ -195,9 +195,9 @@ Posicion Mapa::posicionVacia(){
 	int y;
 	Celda * celda;
 	do{
-	x = num.numeroRandom(0,this->ancho);
-	y = num.numeroRandom(0,this->largo);
-	celda = this->getCelda(x,y);
+		x = num.numeroRandom(0,this->ancho);
+		y = num.numeroRandom(0,this->largo);
+		celda = this->getCelda(x,y);
 	}while (celda->estaOcupada()||celda->tieneRecurso());
 	Posicion pos={x,y};
 	return pos;

@@ -48,6 +48,13 @@ string Personaje::mostrar_contenido(){
 	return objetoMapa->nombre;
 }
 
+void Personaje::set_posicion(Posicion pos){
+	this->referencia_mapa_x=pos.get_x_exacta();
+	this->referencia_mapa_y=pos.get_y_exacta();
+	this->destino=pos;
+	this->camino=pos;
+}
+
 Posicion Personaje::get_posicion(){
 	return Posicion(referencia_mapa_x,referencia_mapa_y);
 }

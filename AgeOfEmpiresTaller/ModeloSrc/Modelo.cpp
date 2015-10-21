@@ -44,6 +44,9 @@ Modelo::Modelo(Juego* juego) {
 	    }
 	    pisadas.push_back(row); // Add the row to the main vector
 	}
+	//cambia lo cargado por YAML
+	Posicion pos = this->mapa->posicionVacia();
+	this->juego->escenario->protagonista->set_posicion(pos);
 
 }
 void Modelo::insertarEntidades(){
@@ -131,6 +134,7 @@ bool Modelo::celdaOcupada(Posicion posicion){
 	return this->mapa->celdaOcupada(posicion.getX(),posicion.getY());
 }
 
+
 bool Modelo::estaSeleccionada(int x,int y){
 	if(personaje_seleccionado){
 		Posicion pos_p=this->personaje_seleccionado->get_posicion();
@@ -146,6 +150,9 @@ bool Modelo::estaSeleccionada(int x,int y){
 string Modelo::seleccionar(double mov_x,double mov_y){
 	this->mapa->deseleccionar();
 	Posicion seleccionada= Posicion(mov_x,mov_y);
+	if (this->oscuridad(0,seleccionada.getX(),seleccionada.getY())==2){
+			return "";
+	}
 	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
 	personaje_seleccionado=this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY());
 	return this->mapa->mostrar_contenido(seleccionada.getX(),seleccionada.getY());
