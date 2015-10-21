@@ -15,7 +15,13 @@ DibujoPersonaje::DibujoPersonaje() {
 	this->acumulador=0;
 	this->fps=1;
 }
+void DibujoPersonaje::congelar(){
+	this->textura->congelar();
+}
 
+void DibujoPersonaje::descongelar(){
+	this->textura->descongelar();
+}
 void DibujoPersonaje::set_cantidad_de_movimientos(int cant_de_mov){
 	if(cant_de_mov>CANTIDAD_DE_MOVIMIENTOS){
 		//Error

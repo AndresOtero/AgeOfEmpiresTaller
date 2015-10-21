@@ -32,15 +32,17 @@ public:
 	string seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();
 	Personaje* devolverPersonajeSeleccionado();
+	void congelarPersonaje(Personaje* personaje);
+	void descongelarPersonaje(Personaje* personaje);
 	void actualizarMapa();
 	void cambiar_destino_personaje(double mov_x,double mov_y);
-	Posicion mover_personaje(Personaje* personaje);
 	Personaje* devolverPersonaje(int x,int y);
 	void eliminarEntidad(Entidad *entidad);
 	int get_ancho_mapa();
 	int get_alto_mapa();
 	~Modelo();
 private:
+	Posicion mover_personaje(Personaje* personaje);
 	Posicion calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy);
 	void insertarEntidades();
 	bool celdaOcupada(Posicion);

@@ -35,6 +35,9 @@ class Textura
 		//Para fog war
 		void oscurecer();
 		void reiniciar();
+		//Para congelar un jugador
+		void congelar();
+		void descongelar();
 
 	private:
 		//The actual hardware texture

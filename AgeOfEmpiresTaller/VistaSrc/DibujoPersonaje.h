@@ -28,6 +28,8 @@ class DibujoPersonaje: public Dibujo {
 	int fps;
 
 public:
+	void congelar();
+	void descongelar();
 	void set_cantidad_de_movimientos(int cant_de_mov);
 	void set_cantidad_de_imagenes(int n_mov,int cant_de_imagenes);
 	void set_imagen(int n_mov,int n_imagen, int x, int y, int ancho, int alto);

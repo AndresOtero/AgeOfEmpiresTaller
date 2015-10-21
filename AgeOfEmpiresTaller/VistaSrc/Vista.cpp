@@ -276,18 +276,30 @@ int Vista::run() {
 				}
 			}
 			if (e.type == SDL_KEYDOWN) {
-	            SDL_Keycode keyPressed = e.key.keysym.sym;
+				SDL_Keycode keyPressed = e.key.keysym.sym;
 
-	            switch (keyPressed){
-	               case SDLK_ESCAPE:
-	                  quit = true;
-	                  break;
-	               case SDLK_r:
-	            	   return true;
-	            }
-	         }
+				switch (keyPressed) {
+				case SDLK_ESCAPE:
+					quit = true;
+					break;
+				case SDLK_r:
+					return true;
+				case SDLK_c:
+					if (modelo->devolverPersonajeSeleccionado()) {
+						modelo->congelarPersonaje(
+								modelo->devolverPersonajeSeleccionado());
+					}
+					break;
+				case SDLK_d:
+					if (modelo->devolverPersonajeSeleccionado()) {
+						modelo->descongelarPersonaje(
+								modelo->devolverPersonajeSeleccionado());
+					}
+					break;
+				}
+			}
 		}
-		SDL_SetRenderDrawColor(gRenderer, 0, 0,0, 0);
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 		SDL_RenderClear(gRenderer);
 
 		modelo->actualizarMapa();
@@ -349,29 +361,31 @@ bool Vista::adentro_del_mapa(int coord_x,int coord_y){
 }
 
 void Vista::dibujar_personaje(Personaje* personaje) {
-		int img_personaje_x, img_personaje_y;
-		double personaje_x = personaje->getReferenciaMapaX();
-		double personaje_y = personaje->getReferenciaMapaY();
-		this->corregir_referencia_coordenadas_mapa_pantalla(personaje_x,
-				personaje_y);
-		this->transformador->transformar_isometrica_pantalla(
-				personaje_x,
-				personaje_y,
-				img_personaje_x, img_personaje_y);
-		shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
-				DibujoPersonaje>(
-				this->factory->get_dibujo(personaje->dibujar()));
-		dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
-		Posicion destino= personaje->get_camino();
-		double mover_x =destino.get_x_exacta();
-		double mover_y=destino.get_y_exacta();
-		if (!adentro_del_mapa(mover_x, mover_y)) {
-			mover_x = personaje->getReferenciaMapaX();
-			mover_y = personaje->getReferenciaMapaY();
-		}
-		int adonde_va_x, adonde_va_y;
-		Posicion adonde_va = modelo->mover_personaje(personaje);
-		mover_x = adonde_va.get_x_exacta();
+	int img_personaje_x, img_personaje_y;
+	double personaje_x = personaje->getReferenciaMapaX();
+	double personaje_y = personaje->getReferenciaMapaY();
+	this->corregir_referencia_coordenadas_mapa_pantalla(personaje_x,
+			personaje_y);
+	this->transformador->transformar_isometrica_pantalla(personaje_x,
+			personaje_y, img_personaje_x, img_personaje_y);
+	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
+			DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
+	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
+	Posicion destino = personaje->get_camino();
+	double mover_x = destino.get_x_exacta();
+	double mover_y = destino.get_y_exacta();
+	if (!adentro_del_mapa(mover_x, mover_y)) {
+		mover_x = personaje->getReferenciaMapaX();
+		mover_y = personaje->getReferenciaMapaY();
+	}
+	if (personaje->estaCongelado()){
+		dibujo_pers->congelar();
+	}else{
+		dibujo_pers->descongelar();
+	}
+	int adonde_va_x, adonde_va_y;
+	Posicion adonde_va = personaje->get_camino();
+	mover_x = adonde_va.get_x_exacta();
 	mover_y = adonde_va.get_y_exacta();
 	this->corregir_referencia_coordenadas_mapa_pantalla(mover_x, mover_y);
 	this->transformador->transformar_isometrica_pantalla(mover_x, mover_y,

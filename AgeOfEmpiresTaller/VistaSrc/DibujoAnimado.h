@@ -25,6 +25,7 @@ public:
 	void set_delay(double delay);
 	int get_ancho(int n_imagen);
 	int get_alto(int n_imagen);
+
 	int get_ancho();
 	int get_alto();
 	void setPixeles(int x, int y);

@@ -44,7 +44,9 @@ void Modelo::actualizarMapa(){
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
-		mover_personaje(p);
+		if(!p->estaCongelado()){
+			mover_personaje(p);
+		}
 	}
 }
 void Modelo::agregarPersonaje(Personaje* personaje){
@@ -196,6 +198,7 @@ void Modelo::agregarPosicion(Posicion pos){
 	pisadas.push_back(pos);
 }
 
+
 Posicion Modelo::mover_personaje(Personaje* personaje){
 	Posicion destino= personaje->get_destino();
 	Posicion adonde_estoy= personaje->get_posicion();
@@ -212,6 +215,12 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 	return adonde_voy;
 }
 
+void Modelo::congelarPersonaje(Personaje* personaje){
+	personaje->congelar();
+}
+void Modelo::descongelarPersonaje(Personaje* personaje){
+	personaje->descongelar();
+}
 void Modelo::eliminarEntidad(Entidad * entidad){
 	this->mapa->sacarEntidad(entidad);
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
@@ -232,7 +241,7 @@ void Modelo::eliminarEntidad(Entidad * entidad){
 }
 void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 	Personaje* personaje= 	this->devolverPersonajeSeleccionado();
-	if(personaje!=NULL){
+	if((personaje!=NULL)&&(!personaje->estaCongelado())){
 		personaje->set_destino(Posicion(mov_x,mov_y));
 	}
 }

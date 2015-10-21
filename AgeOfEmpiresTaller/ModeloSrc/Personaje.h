@@ -19,7 +19,7 @@ class Personaje {
 	double velocidad;
 	Posicion destino;
 	Posicion camino;
-
+	bool congelado;
 
 public:
 	Personaje();
@@ -52,6 +52,15 @@ public:
 		return referencia_mapa_y;
 	}
 
+	void congelar() {
+		this->congelado = true;
+	}
+	void descongelar() {
+			this->congelado = false;
+		}
+	bool estaCongelado() {
+			return this->congelado;
+	}
 };
 
 #endif /* PERSONAJE_H_ */
