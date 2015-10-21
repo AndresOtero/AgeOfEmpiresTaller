@@ -45,19 +45,36 @@ Modelo::Modelo(Juego* juego) {
 	    pisadas.push_back(row); // Add the row to the main vector
 	}
 	//cambia lo cargado por YAML
-	Posicion pos = this->mapa->posicionVacia();
-	this->juego->escenario->protagonista->set_posicion(pos);
+	//Posicion pos = this->mapa->posicionVacia();
+	//this->juego->escenario->protagonista->set_posicion(pos);
 
 }
+
+//llama server al agregar personaje
+void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
+	Posicion pos = this->mapa->posicionVacia();
+	personaje->set_posicion(pos);
+	//manda en que posicion ubicarlo
+}
+
+//cliente respuesta a moverse o para ubicarlo en lugar
+void Modelo::ubicarPersonaje(Personaje * personaje,Posicion pos){
+	//lo estanca si no vuele a calcular el proximo lugar
+	personaje->set_posicion(pos);
+}
+
+
 void Modelo::insertarEntidades(){
 	for(unsigned int i =0; i < this->juego->escenario->entidades.size(); i++){
 			Entidad* entidad=this->juego->escenario->entidades[i];
 			this->mapa->posicionarEntidad(entidad);
 	}
 }
+
 void Modelo::setMapa(int ancho,int largo){
 	this->mapa=shared_ptr<Mapa>(new Mapa(ancho,largo));
 }
+
 void Modelo::actualizarMapa(){
 	mapa->actualizar(personajes);
 	vector<Personaje*>::iterator it = personajes.begin();
@@ -74,6 +91,11 @@ void Modelo::actualizarMapa(){
 		this->generarRecursoRandom();
 		gettimeofday(&estado,NULL);
 	}
+}
+
+//cliente
+void crearPersonaje(ObjetoMapa){
+
 }
 void Modelo::agregarPersonaje(Personaje* personaje){
 	personajes.push_back(personaje);
@@ -125,9 +147,12 @@ dibujo_t Modelo::dibujar(int dim,int x,int y){
 	return this->mapa->dibujarTiles(x,y);
 }
 
+
 bool Modelo::celdaOcupada(Posicion posicion){
 	return this->mapa->celdaOcupada(posicion.getX(),posicion.getY());
 }
+
+//cliente
 string Modelo::seleccionar(double mov_x,double mov_y){
 	Posicion posicion= Posicion(mov_x,mov_y);
 	if (this->oscuridad(0,floor(mov_x),floor(mov_y))==2){
@@ -147,7 +172,7 @@ double Modelo::distancia(Posicion a,Posicion b){
 	return a.distancia_octal(b);
 }
 
-
+//server
 Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	/**
 	 *http://www.redblobgames.com/pathfinding/a-star/introduction.html
@@ -217,6 +242,7 @@ void Modelo::agregarPosicion(Posicion pos){
 	pisadas[pos.getX()][pos.getY()] = 1;
 }
 
+//server
 Posicion Modelo::mover_personaje(Personaje* personaje){
 	Posicion destino= personaje->get_destino();
 	Posicion adonde_estoy= personaje->get_posicion();
@@ -224,38 +250,61 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 	personaje->set_camino(adonde_voy);
 	personaje->mover();
 	//Usar cuando el tipo cambia de posicion
-	 if ( this->mapa->hayRecursosEn(personaje->get_posicion())){
-		Entidad* entidad = this->mapa->entidad_celda(personaje->get_posicion().getX(),personaje->get_posicion().getY());
-		Recurso * recurso =(Recurso*)entidad;
-		recurso->recolectar(personaje->recursosJugador());
-		this->eliminarEntidad(entidad);
-	}
-	return adonde_voy;
+	recolectar(personaje);
+	return adonde_voy;//mandar adonde_voy a cliente
 }
 
+//cliente con la cantidad q recolecto
+void Modelo::actualizarRecursos(int oro,int madera,int piedra){
+	this->personaje_seleccionado->recursosJugador()->colectarMadera(madera);
+	this->personaje_seleccionado->recursosJugador()->colectarOro(oro);
+	this->personaje_seleccionado->recursosJugador()->colectarPiedra(piedra);
+}
+
+//server
+void Modelo::recolectar(Personaje * personaje){
+	if (this->mapa->hayRecursosEn(personaje->get_posicion())) {
+		Entidad* entidad = this->mapa->entidad_celda(
+				personaje->get_posicion().getX(),
+				personaje->get_posicion().getY());
+		Recurso * recurso = (Recurso*) entidad;
+		recurso->recolectar(personaje->recursosJugador());
+		//mandar actualizarcion recursos (cuanto aumento)
+		this->eliminarEntidad(entidad);
+		//mandar eliminar entidad
+	}
+}
+//server
 void Modelo::eliminarEntidad(Entidad * entidad){
-	this->mapa->sacarEntidad(entidad);
+	eliminarEntidadPorID(entidad->id);
+	//falta sacarla de memoria
+}
+
+//cliente
+//elimino una entidad con un solo parametro
+void Modelo::eliminarEntidadPorID(int id){
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
-	for (unsigned int i=0; i < lista->size(); i++){
-		if (entidad->id == (*lista)[i]->id){
-			if (i+1!=lista->size())
+	for (unsigned int i = 0; i < lista->size(); i++) {
+		if (id == (*lista)[i]->id) {
+			this->mapa->sacarEntidad((*lista)[i]);
+			if (i + 1 != lista->size())
 				std::swap((*lista)[i], lista->back());
 			lista->pop_back();
-
 			break;
 		}
 
 	}
 
-
-	//falta sacarla de memoria
 }
+//cliente
 void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 	Personaje* personaje= 	this->devolverPersonajeSeleccionado();
 	if(personaje!=NULL){
+		//cambia su destino, deberia mandarlo hasta q llegue o camine a otro lado
 		personaje->set_destino(Posicion(mov_x,mov_y));
 	}
 }
+
 Personaje* Modelo::devolverPersonaje(int x,int y){
 	return mapa->personaje_celda(x,y);
 }
@@ -268,10 +317,10 @@ int Modelo::get_alto_mapa(){
 int Modelo::get_ancho_mapa(){
 	return mapa->getAncho();
 }
+
+//server
 void Modelo::generarRecursoRandom(){
 	Posicion pos;
-	Recurso* recurso;
-	ObjetoMapa * objeto;
 	GeneradorNumeros num;
 	if (this->totalRecursos+1>MAX_RECURSOS){
 		return;
@@ -279,31 +328,47 @@ void Modelo::generarRecursoRandom(){
 	pos = this->mapa->posicionVacia();
 	int x = pos.getX();
 	int y = pos.getY();
+	string nombre;
 	switch (num.numeroRandom(0,3)){
 		case 0:
-			objeto = this->juego->tipos["oro"];
-			recurso = new Oro(objeto,x,y);
+			nombre="oro";
 			break;
 		case 1:
-			objeto = this->juego->tipos["madera"];
-			recurso = new Madera(objeto,x,y);
+			nombre="madera";
 			break;
 		default:
-			objeto = this->juego->tipos["piedra"];
-			recurso = new Piedra(objeto,x,y);
+			nombre="piedra";
 			break;
 	}
 
-	this->mapa->posicionarEntidad(recurso);
-	int size = this->juego->escenario->entidades.size();
-	this->juego->escenario->entidades.resize(size+1);
-	this->juego->escenario->entidades[size]=recurso;
+	this->agregarEntidad(nombre,x,y);
 	this->totalRecursos++;
 
 }
 
+//cliente
+void Modelo::agregarEntidad(string nombre,int x, int y){
+	Entidad* entidad;
+	ObjetoMapa * objeto = this->juego->tipos[nombre];
+	if (objeto->nombre.compare("oro") == 0)
+		entidad = new Oro(objeto, x, y);
+	else if (objeto->nombre.compare("piedra") == 0)
+		entidad = new Piedra(objeto, x, y);
+	else if (objeto->nombre.compare("madera") == 0)
+		entidad = new Madera(objeto, x, y);
+	else
+		entidad = new Entidad(objeto, x, y);
+	this->mapa->posicionarEntidad(entidad);
+	int size = this->juego->escenario->entidades.size();
+	this->juego->escenario->entidades.resize(size+1);
+	this->juego->escenario->entidades[size]=entidad;
+}
+
+void Modelo::crearPersonaje(ObjetoMapa* objeto,Posicion pos){
+	Personaje* persona = new Personaje(objeto,pos.get_x_exacta(),pos.get_y_exacta());
+	this->agregarPersonaje(persona);
+}
 Modelo::~Modelo() {
  delete this->juego;
 
 }
-
