@@ -107,9 +107,9 @@ void Textura::render(int x, int y, SDL_Rect* clip, SDL_Renderer* gRenderer) {
 	SDL_RenderCopy(gRenderer, mTexture, clip, &renderQuad);
 }
 
-void Textura::renderEx(double angle, SDL_Rect* srcrect, SDL_Rect* dsrect,SDL_Renderer* renderer){
+void Textura::renderEx(double angle, SDL_Rect* srcrect, SDL_Rect* dsrect,SDL_Renderer* renderer,SDL_Point *point){
 
-	SDL_RenderCopyEx(renderer,this->mTexture,srcrect,dsrect,angle,NULL,SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer,this->mTexture,srcrect,dsrect,angle,point,SDL_FLIP_NONE);
 }
 bool Textura::loadFromRenderedText( string textureText, SDL_Color textColor, TTF_Font *gFont, SDL_Renderer* renderer)
 {

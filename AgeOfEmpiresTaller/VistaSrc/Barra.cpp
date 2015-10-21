@@ -7,9 +7,11 @@
 
 #include "Barra.h"
 #define PIXELESDIGITOS 200
+#define ANCHO_BASE  249
+#define ALTO_BASE  124
 
 Barra::Barra(Modelo * modelo,double * x, double *y) {
-	shared_ptr<Minimapa> mapa(new Minimapa(modelo,x,y));
+	shared_ptr<Minimapa> mapa(new Minimapa(modelo));
 	this->mapa= mapa;
 	shared_ptr<Textura> text(new Textura());
 	this->texto = text;
@@ -19,12 +21,14 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	this->oro=oro;
 	this->madera=madera;
 	this->piedra=piedra;
-
+	this->x_ref=x;
+	this->y_ref=y;
 	this->referencia_y = modelo->juego->pantalla->getAlto()-mapa->altoMapa();
 	this->font=NULL;
 	this->tamFont = 20;
-	//shared_ptr<CambioDeCoordendas> trans(new CambioDeCoordendas(this->mapa->anchoPorCelda(),this->mapa->altoPorCelda()));
-	//this->transformador = trans;
+	this->celda_mini = this->mapa->altoMapa()/ (modelo->mapa->getLargo()); //HARCODE
+	shared_ptr<CambioDeCoordendas> trans(new CambioDeCoordendas(celda_mini,celda_mini));
+	this->transformador = trans;
 
 }
 
@@ -56,6 +60,7 @@ void  Barra::actualizar(Personaje * jugador){
 	madera->cambiarCant(jugador->recursosJugador()->cantMadera());
 	piedra->cambiarCant(jugador->recursosJugador()->cantPiedra());
 }
+
 void Barra::renderTexto(SDL_Renderer*renderer){
 	if (!this->display.empty()){
 		SDL_Color color = this->mapa->paleta(NEGRO);
@@ -76,7 +81,7 @@ int Barra::imprimirNumeroDeRecurso(SDL_Renderer* renderer, shared_ptr<RecursoVis
 	SDL_Color color = this->mapa->paleta(BLANCO);
 	SDL_Rect rect= {x_ref,referencia_y,ancho,largo};
 	cargarTexto(x_ref, referencia_y,renderer,color,texto,to_string(recurso->cantidad()));
-	recurso->imagen()->renderEx(0,NULL,&rect,renderer);
+	recurso->imagen()->renderEx(0,NULL,&rect,renderer,NULL);
 	return x_ref+ancho+PIXELESDIGITOS;
 }
 bool Barra::cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display){
@@ -94,9 +99,24 @@ bool Barra::cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color, shar
 
 void Barra::render(SDL_Renderer*renderer){
 	SDL_Rect rect = {0,this->referencia_y,this->mapa->anchoPantalla(),this->mapa->altoMapa()};
-	this->textura->renderEx(0,NULL,&rect,renderer);
+	this->textura->renderEx(0,NULL,&rect,renderer,NULL);
 	this->renderTexto(renderer);
 	this->mapa->render(renderer);
+	this->dibujarDondeMiro(renderer);
+}
+
+void Barra::dibujarDondeMiro(SDL_Renderer * renderer){
+	int x;
+	int y;
+	this->transformador->transformar_isometrica_pantalla(*x_ref,*y_ref,x,y);
+	//SUPER HARCODE funciona en parte del mapa
+	x+=this->mapa->anchoPantalla()-this->mapa->altoMapa()/2-celda_mini/2;
+	y+=this->referencia_y+celda_mini/2;
+	int celdas_por_ancho = this->mapa->anchoPantalla()/ANCHO_BASE;
+	int celdas_por_alto = (this->mapa->altoMapa()*2)/ALTO_BASE;
+	SDL_Rect rect = {x,y,(celdas_por_ancho)*celda_mini,(celdas_por_alto+1)*celda_mini};
+	SDL_SetRenderDrawColor(renderer,0xFF,0xFF,0xFF,0xFF);
+	SDL_RenderDrawRect(renderer,&rect);
 }
 void Barra::closeFont(){
 	TTF_CloseFont(this->font);

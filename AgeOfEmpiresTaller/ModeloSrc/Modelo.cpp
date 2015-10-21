@@ -16,6 +16,11 @@
 #include "unordered_map"
 #include "CmpPosicion.h"
 #include "Recurso.h"
+#include "Oro.h"
+#include "Madera.h"
+#include "Piedra.h"
+#define MAX_RECURSOS 30
+#define RITMO 5
 using namespace std;
 
 #define CICLOS_MAX 100
@@ -26,9 +31,20 @@ Modelo::Modelo(Juego* juego) {
 	this -> juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 	this->personajes=vector<Personaje*>();
-	this->pisadas = vector<Posicion>();
+	this->pisadas = vector<vector<int>>();
 	personaje_seleccionado=NULL;
 	this->insertarEntidades();
+	this->totalRecursos=0;
+	gettimeofday(&estado,NULL);
+
+	for (int i = 0; i < this->juego->escenario->size_x; i++) {
+	    vector<int> row; // Create an empty row
+	    for (int j = 0; j < this->juego->escenario->size_y; j++) {
+	        row.push_back(0); // Add an element (column) to the row
+	    }
+	    pisadas.push_back(row); // Add the row to the main vector
+	}
+
 }
 void Modelo::insertarEntidades(){
 	for(unsigned int i =0; i < this->juego->escenario->entidades.size(); i++){
@@ -41,12 +57,24 @@ void Modelo::setMapa(int ancho,int largo){
 }
 void Modelo::actualizarMapa(){
 	mapa->actualizar(personajes);
+	if(personaje_seleccionado){
+			this->mapa->deseleccionar();
+	}
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		if(!p->estaCongelado()){
 			mover_personaje(p);
 		}
+	}
+	struct timeval actual;
+	gettimeofday(&actual,NULL);
+	double ti = estado.tv_sec+(estado.tv_usec/1000000.0);
+	double tf = actual.tv_sec+(actual.tv_usec/1000000.0);
+	double tiempo = tf - ti;
+	if (tiempo>RITMO){
+		this->generarRecursoRandom();
+		gettimeofday(&estado,NULL);
 	}
 }
 void Modelo::agregarPersonaje(Personaje* personaje){
@@ -88,13 +116,8 @@ int Modelo::oscuridad(int dim,int x,int y){
 	return 2;
 }
 
-bool Modelo::pisado(double x, double y){
-	for(size_t i = 0; i < this->pisadas.size();i++){
-			if(this->pisadas[i].getX() == x && this->pisadas[i].getY() == y){
-				return true;
-			}
-		}
-	return false;
+bool Modelo::pisado(int x, int y){
+	return(pisadas[x][y] == 1);
 }
 
 dibujo_t Modelo::dibujar(int dim,int x,int y){
@@ -107,11 +130,25 @@ dibujo_t Modelo::dibujar(int dim,int x,int y){
 bool Modelo::celdaOcupada(Posicion posicion){
 	return this->mapa->celdaOcupada(posicion.getX(),posicion.getY());
 }
-string Modelo::seleccionar(double mov_x,double mov_y){
-	Posicion posicion= Posicion(mov_x,mov_y);
-	personaje_seleccionado=this->mapa->personaje_celda(posicion.getX(),posicion.getY());
-	return this->mapa->mostrar_contenido(posicion.getX(),posicion.getY());
 
+bool Modelo::estaSeleccionada(int x,int y){
+	if(personaje_seleccionado){
+		Posicion pos_p=this->personaje_seleccionado->get_posicion();
+		if((pos_p.getX()==x)&&(pos_p.getY()==y)){
+			return true;
+		}
+	}else{
+		return (this->mapa->estaSeleccionada(x,y));
+	}
+	return false;
+}
+
+string Modelo::seleccionar(double mov_x,double mov_y){
+	this->mapa->deseleccionar();
+	Posicion seleccionada= Posicion(mov_x,mov_y);
+	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
+	personaje_seleccionado=this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY());
+	return this->mapa->mostrar_contenido(seleccionada.getX(),seleccionada.getY());
 }
 
 
@@ -190,12 +227,7 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 }
 
 void Modelo::agregarPosicion(Posicion pos){
-	for(size_t i = 0; i < this->pisadas.size();i++){
-		if(pisadas[i].getX() == pos.getX() && pisadas[i].getY() == pos.getY()){
-			return;
-		}
-	}
-	pisadas.push_back(pos);
+	pisadas[pos.getX()][pos.getY()] = 1;
 }
 
 
@@ -226,7 +258,6 @@ void Modelo::eliminarEntidad(Entidad * entidad){
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
 	for (unsigned int i=0; i < lista->size(); i++){
 		if (entidad->id == (*lista)[i]->id){
-			printf("%d %d \n",entidad->id,(*lista)[i]->id);
 			if (i+1!=lista->size())
 				std::swap((*lista)[i], lista->back());
 			lista->pop_back();
@@ -257,8 +288,39 @@ int Modelo::get_alto_mapa(){
 int Modelo::get_ancho_mapa(){
 	return mapa->getAncho();
 }
+void Modelo::generarRecursoRandom(){
+	Posicion pos;
+	Recurso* recurso;
+	ObjetoMapa * objeto;
+	GeneradorNumeros num;
+	if (this->totalRecursos+1>MAX_RECURSOS){
+		return;
+	}
+	pos = this->mapa->posicionVacia();
+	int x = pos.getX();
+	int y = pos.getY();
+	switch (num.numeroRandom(0,3)){
+		case 0:
+			objeto = this->juego->tipos["oro"];
+			recurso = new Oro(objeto,x,y);
+			break;
+		case 1:
+			objeto = this->juego->tipos["madera"];
+			recurso = new Madera(objeto,x,y);
+			break;
+		default:
+			objeto = this->juego->tipos["piedra"];
+			recurso = new Piedra(objeto,x,y);
+			break;
+	}
 
+	this->mapa->posicionarEntidad(recurso);
+	int size = this->juego->escenario->entidades.size();
+	this->juego->escenario->entidades.resize(size+1);
+	this->juego->escenario->entidades[size]=recurso;
+	this->totalRecursos++;
 
+}
 
 Modelo::~Modelo() {
  delete this->juego;

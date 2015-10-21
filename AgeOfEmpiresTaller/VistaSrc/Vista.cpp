@@ -145,7 +145,7 @@ bool Vista::loadMedia() {
 	     dibujo_t dibujo_id=this->factory->ultimo_dibujo();
 	     hashDibujos[tipo->nombre] = dibujo_id;
 	}
-
+	this->factory->setHashDibujos(hashDibujos);
 	/**Dibujo el mapa**/
 	int largo=this->modelo->get_alto_mapa();
 	int ancho=this->modelo->get_ancho_mapa();
@@ -160,7 +160,7 @@ bool Vista::loadMedia() {
 			Entidad* entidad = this->modelo->juego->escenario->entidades[i];
 			escenario[entidad->posicion->getX()][entidad->posicion->getY()]=hashDibujos[entidad->objetoMapa->nombre];
 	}
-	modelo->setDibujoMapa(escenario,tiles);
+	modelo->setDibujoMapa(escenario,tiles);//MEZCLA VISTA CON MODELO
 	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
 
 	vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
@@ -308,7 +308,6 @@ int Vista::run() {
 		detectar_mouse_borde();
 		SDL_RenderPresent(gRenderer);
 
-
 		usleep((40 - (tiempo_actual-tiempo_viejo))*1000);
 		tiempo_actual= SDL_GetTicks();
 		tiempo_viejo=tiempo_actual;
@@ -413,8 +412,15 @@ void Vista::dibujar_mapa() {
 				int coord_y = j;
 				if ((adentro_del_mapa(coord_x, coord_y)) && (coord_x < x_max)
 						&& (coord_y < y_max)) {
-					size_t n_imagen = this->modelo->dibujar(dim, coord_x,
-							coord_y);
+					//Cambio para dibujar agregados
+					size_t n_imagen;
+					if (dim==TILES){
+						 n_imagen = this->modelo->dibujar(dim, coord_x,
+													coord_y);//MEZCLA MODELO CON VISTA para dsps
+					}else {
+						n_imagen = this->factory->get_idDibujo(this->modelo->mapa->mostrar_entidad(coord_x,coord_y));
+					}
+					//fin cambio villero
 					int oscuro = modelo->oscuridad(dim,coord_x,coord_y);
 					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(
 							n_imagen);
@@ -423,7 +429,9 @@ void Vista::dibujar_mapa() {
 						dibujar_personaje(
 								this->modelo->devolverPersonaje(coord_x,
 										coord_y));
-						if(dim==TILES){
+					}
+					if(dim==TILES){
+						if(this->modelo->estaSeleccionada(coord_x,coord_y)){
 							dibujo->iluminar();
 						}
 					}
@@ -434,6 +442,7 @@ void Vista::dibujar_mapa() {
 								coord_y - referencia_mapa_y, x_imagen,
 								y_imagen);
 						dibujo->set_posicion_default(x_imagen, y_imagen);
+
 						if(oscuro == 1)
 							dibujo->oscurecer();
 							dibujo->setAnimar(false);
@@ -443,6 +452,8 @@ void Vista::dibujar_mapa() {
 						if(oscuro < 2){
 							dibujo->render(gRenderer);
 						}
+
+
 						dibujo->resetear();
 						dibujo->reiniciar(); //pone el color original
 					}
@@ -453,7 +464,7 @@ void Vista::dibujar_mapa() {
 }
 
 void Vista::dibujar_barra(){
-	//HARCODE
+	//HARCODE deberia ser el personaje/jugador
 	this->barra->actualizar(this->modelo->devolverTodosLosPersonajes()[0]);
 	this->barra->render(gRenderer);
 }

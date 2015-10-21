@@ -11,6 +11,7 @@
 #include <vector>
 #include "../ModeloSrc/Juego.h"
 #include "Personaje.h"
+#include <sys/time.h>
 using namespace std;
 
 #ifndef MODELO_H_
@@ -18,10 +19,10 @@ using namespace std;
 
 class Modelo {
 	Personaje* personaje_seleccionado;
-	shared_ptr<Mapa> mapa;
 	vector<Personaje*> personajes;
-	vector<Posicion> pisadas;
+	vector<vector<int>> pisadas;
 public:
+	shared_ptr<Mapa> mapa;
 	Modelo(Juego* juego);
 	Juego* juego;
 	void setMapa(int largo,int ancho);
@@ -36,10 +37,13 @@ public:
 	void descongelarPersonaje(Personaje* personaje);
 	void actualizarMapa();
 	void cambiar_destino_personaje(double mov_x,double mov_y);
+	void generarRecursoRandom();
 	Personaje* devolverPersonaje(int x,int y);
 	void eliminarEntidad(Entidad *entidad);
-	int get_ancho_mapa();
+	bool estaSeleccionada(int x,int y);
 	int get_alto_mapa();
+	int get_ancho_mapa();
+
 	~Modelo();
 private:
 	Posicion mover_personaje(Personaje* personaje);
@@ -49,8 +53,9 @@ private:
 	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);
 	double distancia(Posicion a,Posicion b);
 	void agregarPosicion(Posicion pos);
-	bool pisado(double x,double y);
-
+	bool pisado(int x,int y);
+	int totalRecursos;
+	struct timeval estado;
 };
 
 #endif /* MODELO_H_ */

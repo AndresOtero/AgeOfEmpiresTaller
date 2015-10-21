@@ -7,7 +7,7 @@
 
 #include "Entidad.h"
 #include "RecursosJugador.h"
-
+#include "GeneradorNumeros.h"
 #ifndef RECURSO_H_
 #define RECURSO_H_
 

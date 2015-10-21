@@ -22,7 +22,7 @@
 
 class Minimapa: public Dibujo {
 public:
-	Minimapa(Modelo* modelo, double *x_ref, double *y_ref);
+	Minimapa(Modelo* modelo);
 	virtual ~Minimapa();
 	void render( SDL_Renderer* gRenderer);
 	bool inicializar(SDL_Renderer * render);
@@ -32,15 +32,17 @@ public:
 	int altoPorCelda();
 	int anchoPorCelda();
 private:
+	bool invertir;
 	int x;
 	int y;
-	double *x_ref;
-	double *y_ref;
 	int diagonal;
 	int lado;
 	int ancho_por_celda;
 	int alto_por_celda;
 	Modelo * modelo;
+	SDL_Color fondo;
+	void dibujarElemento(int x,int y,SDL_Renderer * renderer,int * count);
+	int sombra(int color);
 	void cambiar_coordenadas(int x, int y, int&pant_x, int &pant_y);
 	void dibujarPuntoMapa(int pant_x,int pant_y, SDL_Color color,SDL_Renderer*renderer);
 };

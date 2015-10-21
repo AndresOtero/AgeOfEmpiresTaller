@@ -26,7 +26,20 @@ Mapa::Mapa(int ancho, int largo) {
 	}
 	this->celdas=celdas;
 }
-
+void Mapa::seleccionar(int x,int y){
+	return this->celdas[x][y]->seleccionarEntidad();
+}
+bool Mapa::estaSeleccionada(int x,int y){
+	return (this->celdas[x][y]->estaSeleccionada());
+}
+void Mapa::deseleccionar(){
+	int i,j;
+	for(int i=0;i<ancho;i++){
+			for (int j = 0;  j < largo;  j++) {
+				this->getCelda(i,j)->deseleccionarEntidad();
+			}
+		}
+}
 Celda* Mapa::getCelda(int x,int y){
 	return this->celdas[x][y];
 }
@@ -38,6 +51,9 @@ void Mapa::setEscenario(dibujo_t dibujo,int x,int y){
 }
 string Mapa::mostrar_contenido(int x,int y){
 	return this->getCelda(x,y)->mostrar_contenido();
+}
+string Mapa::mostrar_entidad(int x, int y){
+	return this->getCelda(x,y)->mostrar_entidad();
 }
 Entidad* Mapa::entidad_celda(int x, int y){
 	return this->getCelda(x,y)->devolver_entidad();
@@ -78,7 +94,6 @@ void Mapa::actualizar(vector<Personaje*> personajes) {
 		Personaje* p=(*it);
 		Posicion pos=p->get_posicion();
 		this->getCelda(pos.getX(),pos.getY())->ocuparCeldaPersonaje(p);
-
 	}
 }
 
@@ -172,6 +187,20 @@ void Mapa::sacarEntidad(Entidad * entidad){
 				this->getCelda(i,j)->liberarCelda();
 			}
 		}
+}
+
+Posicion Mapa::posicionVacia(){
+	GeneradorNumeros num;
+	int x;
+	int y;
+	Celda * celda;
+	do{
+	x = num.numeroRandom(0,this->ancho);
+	y = num.numeroRandom(0,this->largo);
+	celda = this->getCelda(x,y);
+	}while (celda->estaOcupada()||celda->tieneRecurso());
+	Posicion pos={x,y};
+	return pos;
 }
 bool Mapa::hayRecursosEn(Posicion posicion){
 	return this->getCelda(posicion.getX(),posicion.getY())->tieneRecurso();

@@ -27,6 +27,7 @@ public:
 	void closeFont();
 	virtual ~Barra();
 private:
+	void dibujarDondeMiro(SDL_Renderer* renderer);
 	int imprimirNumeroDeRecurso(SDL_Renderer* renderer,shared_ptr<RecursoVista> recurso, int x_ref);
 	void dimensionRectanguloDeMiniMapa(int ancho, int alto);
 	void renderFondo(SDL_Renderer*renderer);
@@ -39,6 +40,10 @@ private:
 	shared_ptr<RecursoVista> piedra;
 	TTF_Font* font;
 	string display;
+	shared_ptr<CambioDeCoordendas> transformador;
+	double *x_ref;
+	double*y_ref;
+	int celda_mini;
 	int referencia_y;
 	int tamFont;
 };

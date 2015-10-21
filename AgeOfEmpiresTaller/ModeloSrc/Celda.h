@@ -33,8 +33,12 @@ public:
 	dibujo_t dibujarEscenario();
 	dibujo_t dibujarTiles();
 	string mostrar_contenido();
+	string mostrar_entidad();
 	void ocuparCelda(Entidad*entidad);
 	void liberarCelda();
+	void seleccionarEntidad();
+	void deseleccionarEntidad();
+	bool estaSeleccionada();
 	virtual ~Celda();
 };
 
