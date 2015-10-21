@@ -21,11 +21,13 @@ public:
 	 void cambiar_destino_personaje(int id, double mov_x,double mov_y);
 	 void generarRecursoRandom();
 	 void eliminarEntidad(int id);
-	 virtual void reconectar(int id);
-	 virtual void desconectar(int Id);
-	 virtual void actualizar();
 
-	 virtual ~GameController();
+
+	  void reconectar(int id);
+	 	  void desconectar(int Id);
+	 	  void actualizar();
+	 int get_id(int id);
+	 ~GameController();
 
 
 

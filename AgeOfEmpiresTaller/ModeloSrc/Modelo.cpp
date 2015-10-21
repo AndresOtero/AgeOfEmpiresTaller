@@ -100,7 +100,6 @@ void Modelo::actualizarMapa(){
 	}
 }
 
-
 Personaje* Modelo::devolverPersonajeSeleccionado(){
 	return personaje_seleccionado;
 }
@@ -423,11 +422,13 @@ void Modelo::agregarEntidad(string nombre,int x, int y){
 	this->juego->escenario->entidades[size]=entidad;
 }
 //	Personaje* persona = new Personaje(objeto,pos.get_x_exacta(),pos.get_y_exacta());
-
 void Modelo::crearPersonajeCliente(Personaje* personaje){
 	this->personaje_seleccionado=personaje;
 	personajes.push_back(personaje);
 }
+
+
+
 void Modelo::setearPersonajeCliente(int id,Posicion pos){
 	this->setIdCliente(id);
 	this->personaje_seleccionado->setId(id);
