@@ -44,6 +44,9 @@ Modelo::Modelo(Juego* juego) {
 	    }
 	    pisadas.push_back(row); // Add the row to the main vector
 	}
+	//cambia lo cargado por YAML
+	Posicion pos = this->mapa->posicionVacia();
+	this->juego->escenario->protagonista->set_posicion(pos);
 
 }
 void Modelo::insertarEntidades(){

@@ -33,6 +33,7 @@ public:
 	void  mover();
 	void set_destino(Posicion destino);
 	void set_camino(Posicion camino);
+	void set_posicion(Posicion pos);
 	Posicion get_destino();
 	Posicion get_posicion();
 	Posicion get_camino();
