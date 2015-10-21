@@ -15,8 +15,10 @@
 #define YAML_H_
 
 class Yaml {
+	string config_filepath;
 public:
 	Yaml();
+	Yaml(string path);
 	Juego* read();
 	virtual ~Yaml();
 };

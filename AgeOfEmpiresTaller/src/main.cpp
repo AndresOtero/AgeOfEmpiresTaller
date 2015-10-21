@@ -4,6 +4,7 @@
 #include "../VistaSrc/Vista.h"
 #include "../ModeloSrc/Configuracion.h"
 #include "../VistaSrc/CambioDeCoordendas.h"
+#include "../GameControllerSrc/GameControllerCliente.h"
 using namespace std;
 #include <iostream>
 #include "yaml-cpp/yaml.h"
@@ -17,7 +18,6 @@ using namespace std;
 
 int main() {
 	bool reiniciar = true;
-
 
 	while (reiniciar){
 		Yaml* reader=new Yaml();
