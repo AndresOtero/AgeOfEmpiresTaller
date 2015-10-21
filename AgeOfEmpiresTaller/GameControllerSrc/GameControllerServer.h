@@ -12,7 +12,7 @@
 class GameControllerServer:public GameController{
 public:
 	GameControllerServer();
-	virtual ~GameControllerServer();
+	 ~GameControllerServer();
 	void insertarModelo(Modelo* modelo);
 	void setMapa(int ancho, int largo);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,

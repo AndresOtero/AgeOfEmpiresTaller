@@ -13,7 +13,7 @@ class GameControllerCliente:public GameController  {
 
 public:
 	GameControllerCliente();
-	 virtual ~GameControllerCliente();
+	  ~GameControllerCliente();
 	 void insertarModelo(Modelo* modelo);
 		 void setMapa(int ancho,int largo);
 		 void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
@@ -22,6 +22,9 @@ public:
 		 void generarRecursoRandom();
 		 void eliminarEntidad(int id);
 
+		 void actualizarJuego(string evento);
+		 string obtenerSiguienteEvento();
+		 bool hayNuevosEventos();
 		 //Cliente
 		 void cambiar_destino_personaje(double mov_x,double mov_y);
 		 void conectarCliente(Personaje* personaje);
