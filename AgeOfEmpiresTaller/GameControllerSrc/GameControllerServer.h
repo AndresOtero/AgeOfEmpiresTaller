@@ -16,8 +16,6 @@ public:
 	 void agregarPersonaje(Personaje*);
 	 void insertarModelo(Modelo* modelo);
 	 void setMapa(int ancho,int largo);
-	 void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
-	 dibujo_t dibujar(int dim,int x,int y);
 	 void congelarPersonaje(Personaje* personaje);
 	 void descongelarPersonaje(Personaje* personaje);
 	 void cambiar_destino_personaje(double mov_x,double mov_y);

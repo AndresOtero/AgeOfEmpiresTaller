@@ -22,14 +22,12 @@ void GameController::setMapa(int ancho,int largo){
 void GameController::agregarPersonaje(Personaje* personaje){
 	this->modelo->agregarPersonaje(personaje);
 }
- void GameController::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles){
-	 this->modelo->setDibujoMapa(escenario,tiles);
- }
-void GameController::congelarPersonaje(Personaje* personaje){
-	this->modelo->congelarPersonaje(personaje);
+
+void GameController::conectar(int id){
+	//descongelar
 }
- void GameController::descongelarPersonaje(Personaje* personaje){
-	this->modelo->descongelarPersonaje(personaje);
+ void GameController::desconectar(int id){
+	 //congelar
 }
  void GameController::cambiar_destino_personaje(double mov_x,double mov_y){
 		this->modelo->cambiar_destino_personaje( mov_x, mov_y);

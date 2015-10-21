@@ -18,9 +18,8 @@ public:
 	 void agregarPersonaje(Personaje*);
 	 void insertarModelo(Modelo* modelo);
 	 void setMapa(int ancho,int largo);
-	 void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
-	 void congelarPersonaje(Personaje* personaje);
-	 void descongelarPersonaje(Personaje* personaje);
+	 void conectar(int Id);
+	 void desconectar(int Id);
 	 void cambiar_destino_personaje(double mov_x,double mov_y);
 	 void generarRecursoRandom();
 	 void eliminarEntidad(Entidad *entidad);
