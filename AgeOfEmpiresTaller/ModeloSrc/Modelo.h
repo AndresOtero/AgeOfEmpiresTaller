@@ -18,6 +18,7 @@ using namespace std;
 #define MODELO_H_
 
 class Modelo {
+	int id;
 	Personaje* personaje_seleccionado;
 	vector<Personaje*> personajes;
 	vector<vector<int>> pisadas;
@@ -26,10 +27,11 @@ public:
 	Modelo(Juego* juego);
 	Juego* juego;
 	void setMapa(int largo,int ancho);
+	void set_id(int i);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
 	dibujo_t dibujar(int dim,int x,int y);
 	int oscuridad(int dim,int x,int y);
-	void agregarPersonaje(Personaje*);
+	int agregarPersonaje(Personaje*);
 	string seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();
 	Personaje* devolverPersonajeSeleccionado();

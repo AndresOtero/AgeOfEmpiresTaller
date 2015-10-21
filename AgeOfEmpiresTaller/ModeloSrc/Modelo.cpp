@@ -93,9 +93,12 @@ void Modelo::actualizarMapa(){
 	}
 }
 
-void Modelo::agregarPersonaje(Personaje* personaje){
+int Modelo::agregarPersonaje(Personaje* personaje){
+	int id = this->personajes.size();
 	personajes.push_back(personaje);
+	return id;
 }
+
 Personaje* Modelo::devolverPersonajeSeleccionado(){
 	return personaje_seleccionado;
 }
@@ -381,9 +384,13 @@ void Modelo::agregarEntidad(string nombre,int x, int y){
 	this->juego->escenario->entidades[size]=entidad;
 }
 
+void Modelo::set_id(int i){
+	id=i;
+}
 void Modelo::crearPersonaje(ObjetoMapa* objeto,Posicion pos){
 	Personaje* persona = new Personaje(objeto,pos.get_x_exacta(),pos.get_y_exacta());
-	this->agregarPersonaje(persona);
+	int id = this->agregarPersonaje(persona);
+	this->set_id(id);
 }
 Modelo::~Modelo() {
  delete this->juego;
