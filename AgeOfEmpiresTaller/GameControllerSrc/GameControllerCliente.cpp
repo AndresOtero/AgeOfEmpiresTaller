@@ -7,9 +7,8 @@ dibu * GameControllerCliente.cpp
 
 #include "GameControllerCliente.h"
 
-GameControllerCliente::GameControllerCliente(Modelo* modelo) {
+GameControllerCliente::GameControllerCliente() {
 	// TODO Auto-generated constructor stub
-	this->modelo=modelo;
 }
 
 GameControllerCliente::~GameControllerCliente() {

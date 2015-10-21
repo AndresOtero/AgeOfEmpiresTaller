@@ -7,9 +7,8 @@
 
 #include "GameControllerServer.h"
 
-GameControllerServer::GameControllerServer(Modelo* modelo) {
+GameControllerServer::GameControllerServer() {
 	// TODO Auto-generated constructor stub
-	this->modelo=modelo;
 }
 
 GameControllerServer::~GameControllerServer() {
