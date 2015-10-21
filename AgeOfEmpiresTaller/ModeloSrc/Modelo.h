@@ -34,6 +34,7 @@ public:
 	vector<Personaje*> devolverTodosLosPersonajes();
 	Personaje* devolverPersonajeSeleccionado();
 	void cambiar_destino_personaje(double mov_x,double mov_y);
+	void  cambiar_destino_personaje(int id ,double mov_x,double mov_y);
 	Personaje* devolverPersonaje(int x,int y);
 	int get_ancho_mapa();
 	int get_alto_mapa();

@@ -321,7 +321,16 @@ void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 		personaje->set_destino(Posicion(mov_x,mov_y));
 	}
 }
+void  Modelo::cambiar_destino_personaje(int id ,double mov_x,double mov_y){
+	vector<Personaje*>::iterator it = personajes.begin();
+		for (; it != personajes.end(); ++it) {
+			Personaje* p = (*it);
+			if(p->getId()==id){
+				p->set_destino(Posicion(mov_x,mov_y));
+			}
+		}
 
+}
 Personaje* Modelo::devolverPersonaje(int x,int y){
 	return mapa->personaje_celda(x,y);
 }

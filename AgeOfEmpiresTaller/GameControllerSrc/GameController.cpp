@@ -20,17 +20,18 @@ void GameController::setMapa(int ancho,int largo){
 }
 
 void GameController::agregarPersonaje(Personaje* personaje){
+
 	this->modelo->agregarPersonaje(personaje);
 }
-
-void GameController::conectar(int id){
-	//descongelar
+void GameController::reconectar(int id){
+}
+void GameController::conectar(){
 }
  void GameController::desconectar(int id){
-	 //congelar
 }
 
- void GameController::cambiar_destino_personaje(double mov_x,double mov_y){
+ void GameController::cambiar_destino_personaje(int id ,double mov_x,double mov_y){
+
 		this->modelo->cambiar_destino_personaje( mov_x, mov_y);
  }
  void GameController::generarRecursoRandom(){

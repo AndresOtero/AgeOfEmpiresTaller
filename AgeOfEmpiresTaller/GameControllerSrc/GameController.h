@@ -18,11 +18,11 @@ public:
 	 void agregarPersonaje(Personaje*);
 	 void insertarModelo(Modelo* modelo);
 	 void setMapa(int ancho,int largo);
-	 void conectar(int Id);
+	 void reconectar(int id);
+	 void conectar();
 	 void desconectar(int Id);
-	 void cambiar_destino_personaje(double mov_x,double mov_y);
+	 void cambiar_destino_personaje(int id, double mov_x,double mov_y);
 	 void generarRecursoRandom();
-	 get_id(int id)
 	 void eliminarEntidad(Entidad *entidad);
 	 ~GameController();
 
