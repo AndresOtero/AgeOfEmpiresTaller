@@ -72,14 +72,6 @@ public:
 	void setId(int id) {
 		this->id = id;
 	}
-
-	const string& getUsuario() const {
-		return usuario;
-	}
-
-	void setUsuario(const string& usuario) {
-		this->usuario = usuario;
-	}
 };
 
 #endif /* PERSONAJE_H_ */

@@ -40,8 +40,7 @@ enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 Vista::Vista(Modelo* modelo) {
 	this -> modelo = modelo;
 	this->pantalla= modelo->juego->pantalla;
-	this->referencia_mapa_x=this->modelo->juego->escenario->protagonista->getReferenciaMapaX();// desde el punto del mapa donde se dibuja
-	this->referencia_mapa_y=this->modelo->juego->escenario->protagonista->getReferenciaMapaY();
+
 	this->velocidad_de_scroll=0.25;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
@@ -184,8 +183,11 @@ bool Vista::loadMedia() {
 	protagonista->setDibujo(pers);
 	protagonista->setVelocidad(configuracion->get_vel_personaje()/10.0);
 
-	modelo->agregarPersonaje(protagonista);
-
+	int id=modelo->crearPersonajeServer(protagonista);
+	modelo->crearPersonajeCliente(protagonista);
+	modelo->setearPersonajeCliente(id,protagonista->get_posicion());
+	this->referencia_mapa_x=protagonista->getReferenciaMapaX();// desde el punto del mapa donde se dibuja
+	this->referencia_mapa_y=protagonista->getReferenciaMapaY();
 
 	this->barra->load(gRenderer,"font.ttf",this->ancho_por_celda(),this->altura_por_celda());
 
@@ -287,13 +289,13 @@ int Vista::run() {
 				case SDLK_c:
 					if (modelo->devolverPersonajeSeleccionado()) {
 						modelo->congelarPersonaje(
-								modelo->devolverPersonajeSeleccionado());
+														modelo->getIdCliente());
 					}
 					break;
 				case SDLK_d:
 					if (modelo->devolverPersonajeSeleccionado()) {
 						modelo->descongelarPersonaje(
-								modelo->devolverPersonajeSeleccionado());
+														modelo->getIdCliente());
 					}
 					break;
 				}

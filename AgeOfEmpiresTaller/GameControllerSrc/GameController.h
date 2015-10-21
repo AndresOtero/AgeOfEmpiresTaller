@@ -15,16 +15,17 @@ protected:
 	Modelo* modelo;
 public:
 	GameController();
-	 void agregarPersonaje(Personaje*);
 	 void insertarModelo(Modelo* modelo);
 	 void setMapa(int ancho,int largo);
-	 void reconectar(int id);
-	 void conectar();
-	 void desconectar(int Id);
+	 void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
 	 void cambiar_destino_personaje(int id, double mov_x,double mov_y);
 	 void generarRecursoRandom();
-	 void eliminarEntidad(Entidad *entidad);
-	 ~GameController();
+	 void eliminarEntidad(int id);
+	 virtual void reconectar(int id);
+	 virtual void desconectar(int Id);
+	 virtual void actualizar();
+
+	 virtual ~GameController();
 
 
 

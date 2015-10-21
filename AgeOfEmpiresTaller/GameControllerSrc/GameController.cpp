@@ -10,6 +10,9 @@
 GameController::GameController() {
 	// TODO Auto-generated constructor stub
 }
+GameController::~GameController() {
+	// TODO Auto-generated constructor stub
+}
 
 void GameController::insertarModelo(Modelo* modelo) {
 	// TODO Auto-generated constructor stub
@@ -19,25 +22,22 @@ void GameController::setMapa(int ancho,int largo){
 	this->modelo->setMapa(ancho,largo);
 }
 
-void GameController::agregarPersonaje(Personaje* personaje){
+void GameController::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles){
+	this->modelo->setDibujoMapa(escenario,tiles);
+}
 
-	this->modelo->agregarPersonaje(personaje);
-}
-void GameController::reconectar(int id){
-}
-void GameController::conectar(){
-}
- void GameController::desconectar(int id){
-}
 
  void GameController::cambiar_destino_personaje(int id ,double mov_x,double mov_y){
-
-		this->modelo->cambiar_destino_personaje( mov_x, mov_y);
+		this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);
  }
  void GameController::generarRecursoRandom(){
 	this->modelo->generarRecursoRandom();
 }
-void GameController::eliminarEntidad(Entidad *entidad){
-	this->modelo->eliminarEntidad(entidad);
+void GameController::eliminarEntidad(int id){
+	this->modelo->eliminarEntidadPorID(id);
+
 }
-GameController::~GameController(){}
+
+ void GameController::reconectar(int id){}
+	  void GameController::desconectar(int Id){}
+	  void GameController::actualizar(){}

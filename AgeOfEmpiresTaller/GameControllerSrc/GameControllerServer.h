@@ -13,16 +13,21 @@ class GameControllerServer:public GameController{
 public:
 	GameControllerServer();
 	virtual ~GameControllerServer();
-	 void agregarPersonaje(Personaje*);
-	 void insertarModelo(Modelo* modelo);
-	 void setMapa(int ancho,int largo);
-	 void congelarPersonaje(Personaje* personaje);
-	 void descongelarPersonaje(Personaje* personaje);
-	 void cambiar_destino_personaje(double mov_x,double mov_y);
-	 void generarRecursoRandom();
-	 void eliminarEntidad(Entidad *entidad);
-		int get_alto_mapa();
-		int get_ancho_mapa();
+	void insertarModelo(Modelo* modelo);
+	void setMapa(int ancho, int largo);
+	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
+			vector<vector<dibujo_t>> tiles);
+	void conectar();
+	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
+	void generarRecursoRandom();
+	void eliminarEntidad(int id);
+
+	//server
+	void reconectar(int id);
+	void agregarCliente(Personaje* personaje);
+	void desconectar(int id);
+	void actualizar();
+
 };
 
 #endif /* GAMECONTROLLERSRC_GAMECONTROLLERSERVER_H_ */

@@ -21,6 +21,8 @@ class Modelo {
 	Personaje* personaje_seleccionado;
 	vector<Personaje*> personajes;
 	vector<vector<int>> pisadas;
+	int idServer;
+	int idCliente;
 public:
 	shared_ptr<Mapa> mapa;
 	Modelo(Juego* juego);
@@ -29,7 +31,6 @@ public:
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
 	dibujo_t dibujar(int dim,int x,int y);
 	int oscuridad(int dim,int x,int y);
-	void agregarPersonaje(Personaje*);
 	string seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();
 	Personaje* devolverPersonajeSeleccionado();
@@ -38,25 +39,39 @@ public:
 	Personaje* devolverPersonaje(int x,int y);
 	int get_ancho_mapa();
 	int get_alto_mapa();
+
 	//server
-	void congelarPersonaje(Personaje* personaje);
-	void descongelarPersonaje(Personaje* personaje);
+	void actualizarRecursosServer(int id ,int oro,int madera,int piedra);
+	void congelarPersonaje(int id);
+	void descongelarPersonaje(int id);
 	void actualizarMapa();
 	void generarRecursoRandom();
-	Posicion mover_personaje(Personaje* personaje);
-	void recolectar(Personaje*personaje);
-	void set_posicionRandomPersonaje(Personaje* personaje);
-	void eliminarEntidad(Entidad *entidad);
 	bool estaSeleccionada(int x,int y);
 	//cliente
-	void crearPersonaje(ObjetoMapa* objeto,Posicion pos);
-	void ubicarPersonaje(Personaje* personaje,Posicion pos);
+	void ubicarPersonaje(int idPersonaje,Posicion pos);
+
 	void actualizarRecursos(int oro,int madera,int piedra);
 	void agregarEntidad(string nombre,int x, int y);
-	void eliminarEntidadPorID(int id);
 
 	~Modelo();
+	void crearPersonajeCliente(Personaje* personaje);
+	void setearPersonajeCliente(int id,Posicion pos);
+
+	int crearPersonajeServer(Personaje* personaje);
+	void eliminarEntidadPorID(int id);
+
+	int getIdCliente();
+
+	void setIdCliente(int idCliente) ;
+
+	int cantidad_de_jugadores();
+
 private:
+	void eliminarEntidad(Entidad *entidad);
+
+	void set_posicionRandomPersonaje(Personaje* personaje);
+	void recolectar(Personaje*personaje);
+	Posicion mover_personaje(Personaje* personaje);
 	Posicion calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy);
 	void insertarEntidades();
 	bool celdaOcupada(Posicion);

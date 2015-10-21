@@ -36,7 +36,7 @@ Modelo::Modelo(Juego* juego) {
 	this->insertarEntidades();
 	this->totalRecursos=0;
 	gettimeofday(&estado,NULL);
-
+	idServer=0;
 	for (int i = 0; i < this->juego->escenario->size_x; i++) {
 	    vector<int> row; // Create an empty row
 	    for (int j = 0; j < this->juego->escenario->size_y; j++) {
@@ -58,9 +58,16 @@ void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 }
 
 //cliente respuesta a moverse o para ubicarlo en lugar
-void Modelo::ubicarPersonaje(Personaje * personaje,Posicion pos){
+void Modelo::ubicarPersonaje(int idPersonaje,Posicion pos){
 	//lo estanca si no vuele a calcular el proximo lugar
-	personaje->set_posicion(pos);
+	vector<Personaje*>::iterator it = personajes.begin();
+		for (; it != personajes.end(); ++it) {
+			Personaje* p = (*it);
+			if(p->getId()==idPersonaje){
+				p->set_posicion(pos);
+			}
+		}
+
 }
 
 
@@ -93,9 +100,7 @@ void Modelo::actualizarMapa(){
 	}
 }
 
-void Modelo::agregarPersonaje(Personaje* personaje){
-	personajes.push_back(personaje);
-}
+
 Personaje* Modelo::devolverPersonajeSeleccionado(){
 	return personaje_seleccionado;
 }
@@ -267,9 +272,22 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 
 //cliente con la cantidad q recolecto
 void Modelo::actualizarRecursos(int oro,int madera,int piedra){
+
 	this->personaje_seleccionado->recursosJugador()->colectarMadera(madera);
 	this->personaje_seleccionado->recursosJugador()->colectarOro(oro);
 	this->personaje_seleccionado->recursosJugador()->colectarPiedra(piedra);
+}
+void Modelo::actualizarRecursosServer(int id ,int oro,int madera,int piedra){
+	vector<Personaje*>::iterator it = personajes.begin();
+			for (; it != personajes.end(); ++it) {
+				Personaje* p = (*it);
+				if(p->getId()==id){
+					p->recursosJugador()->colectarMadera(madera);
+					p->recursosJugador()->colectarOro(oro);
+					p->recursosJugador()->colectarPiedra(piedra);
+				}
+			}
+
 }
 
 //server
@@ -291,11 +309,25 @@ void Modelo::eliminarEntidad(Entidad * entidad){
 	//falta sacarla de memoria
 }
 
-void Modelo::congelarPersonaje(Personaje* personaje){
-	personaje->congelar();
+void Modelo::congelarPersonaje(int id){
+	vector<Personaje*>::iterator it = personajes.begin();
+		for (; it != personajes.end(); ++it) {
+			Personaje* p = (*it);
+			if(p->getId()==id){
+				p->congelar();			}
+		}
+
+
 }
-void Modelo::descongelarPersonaje(Personaje* personaje){
-	personaje->descongelar();
+void Modelo::descongelarPersonaje(int id){
+	vector<Personaje*>::iterator it = personajes.begin();
+		for (; it != personajes.end(); ++it) {
+			Personaje* p = (*it);
+			if(p->getId()==id){
+				p->descongelar();			}
+		}
+
+
 }
 //cliente
 //elimino una entidad con un solo parametro
@@ -316,11 +348,12 @@ void Modelo::eliminarEntidadPorID(int id){
 //cliente
 void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 	Personaje* personaje= 	this->devolverPersonajeSeleccionado();
-	if(personaje!=NULL){
+	if((personaje!=NULL)&&(personaje->getId()==this->getIdCliente())){
 		//cambia su destino, deberia mandarlo hasta q llegue o camine a otro lado
 		personaje->set_destino(Posicion(mov_x,mov_y));
 	}
 }
+
 void  Modelo::cambiar_destino_personaje(int id ,double mov_x,double mov_y){
 	vector<Personaje*>::iterator it = personajes.begin();
 		for (; it != personajes.end(); ++it) {
@@ -389,11 +422,37 @@ void Modelo::agregarEntidad(string nombre,int x, int y){
 	this->juego->escenario->entidades.resize(size+1);
 	this->juego->escenario->entidades[size]=entidad;
 }
+//	Personaje* persona = new Personaje(objeto,pos.get_x_exacta(),pos.get_y_exacta());
 
-void Modelo::crearPersonaje(ObjetoMapa* objeto,Posicion pos){
-	Personaje* persona = new Personaje(objeto,pos.get_x_exacta(),pos.get_y_exacta());
-	this->agregarPersonaje(persona);
+void Modelo::crearPersonajeCliente(Personaje* personaje){
+	this->personaje_seleccionado=personaje;
+	personajes.push_back(personaje);
 }
+void Modelo::setearPersonajeCliente(int id,Posicion pos){
+	this->setIdCliente(id);
+	this->personaje_seleccionado->setId(id);
+	this->ubicarPersonaje(id,pos);
+}
+int Modelo::crearPersonajeServer(Personaje* personaje){
+	this->set_posicionRandomPersonaje(personaje);
+	personajes.push_back(personaje);
+	personaje->setId(idServer);
+	idServer++;
+	return (idServer-1);
+}
+
+int Modelo::getIdCliente()  {
+	return idCliente;
+}
+
+void Modelo::setIdCliente(int idCliente) {
+	this->idCliente = idCliente;
+}
+
+int Modelo::cantidad_de_jugadores()  {
+	return idServer;
+}
+
 Modelo::~Modelo() {
  delete this->juego;
 
