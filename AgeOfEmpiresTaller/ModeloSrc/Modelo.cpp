@@ -130,6 +130,9 @@ bool Modelo::celdaOcupada(Posicion posicion){
 }
 string Modelo::seleccionar(double mov_x,double mov_y){
 	Posicion posicion= Posicion(mov_x,mov_y);
+	if (this->oscuridad(0,floor(mov_x),floor(mov_y))==2){
+		return "";
+	}
 	personaje_seleccionado=this->mapa->personaje_celda(posicion.getX(),posicion.getY());
 	return this->mapa->mostrar_contenido(posicion.getX(),posicion.getY());
 
