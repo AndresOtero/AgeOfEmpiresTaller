@@ -20,7 +20,7 @@ using namespace std;
 class Modelo {
 	Personaje* personaje_seleccionado;
 	vector<Personaje*> personajes;
-	vector<Posicion> pisadas;
+	vector<vector<int>> pisadas;
 public:
 	shared_ptr<Mapa> mapa;
 	Modelo(Juego* juego);
@@ -49,7 +49,7 @@ private:
 	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);
 	double distancia(Posicion a,Posicion b);
 	void agregarPosicion(Posicion pos);
-	bool pisado(double x,double y);
+	bool pisado(int x,int y);
 	int totalRecursos;
 	struct timeval estado;
 };
