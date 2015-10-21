@@ -26,7 +26,20 @@ Mapa::Mapa(int ancho, int largo) {
 	}
 	this->celdas=celdas;
 }
-
+void Mapa::seleccionar(int x,int y){
+	return this->celdas[x][y]->seleccionarEntidad();
+}
+bool Mapa::estaSeleccionada(int x,int y){
+	return (this->celdas[x][y]->estaSeleccionada());
+}
+void Mapa::deseleccionar(){
+	int i,j;
+	for(int i=0;i<ancho;i++){
+			for (int j = 0;  j < largo;  j++) {
+				this->getCelda(i,j)->deseleccionarEntidad();
+			}
+		}
+}
 Celda* Mapa::getCelda(int x,int y){
 	return this->celdas[x][y];
 }

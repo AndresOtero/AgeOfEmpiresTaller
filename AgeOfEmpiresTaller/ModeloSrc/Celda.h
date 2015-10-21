@@ -36,6 +36,9 @@ public:
 	string mostrar_entidad();
 	void ocuparCelda(Entidad*entidad);
 	void liberarCelda();
+	void seleccionarEntidad();
+	void deseleccionarEntidad();
+	bool estaSeleccionada();
 	virtual ~Celda();
 };
 

@@ -19,6 +19,8 @@ DibujoAnimado::DibujoAnimado() {
 	gettimeofday(&estado,NULL);
 }
 
+
+
 void DibujoAnimado::set_cantidad_de_imagenes(int cant_de_imagenes) {
 	if (cant_de_imagenes == 0) {
 		return;

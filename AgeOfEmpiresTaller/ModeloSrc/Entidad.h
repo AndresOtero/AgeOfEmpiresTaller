@@ -16,6 +16,7 @@
  */
 
 class Entidad {
+	bool seleccionado=false;
 public:
 	Entidad(ObjetoMapa* objetoMapa);
 	Entidad(ObjetoMapa* objetoMapa, int x, int y);
@@ -23,6 +24,16 @@ public:
 	ObjetoMapa* objetoMapa;
 	Posicion* posicion;
 	bool esUnRecurso();
+	void seleccionar(){
+		this->seleccionado=true;
+	}
+	void deselccionar(){
+		this->seleccionado=false;
+	}
+	bool estaSeleccionado(){
+		return seleccionado;
+	}
+
 	virtual ~Entidad();
 	int id;
 

@@ -38,18 +38,22 @@ public:
 	int get_ancho_mapa();
 	int get_alto_mapa();
 	//server
+	void congelarPersonaje(Personaje* personaje);
+	void descongelarPersonaje(Personaje* personaje);
 	void actualizarMapa();
 	void generarRecursoRandom();
 	Posicion mover_personaje(Personaje* personaje);
 	void recolectar(Personaje*personaje);
 	void set_posicionRandomPersonaje(Personaje* personaje);
 	void eliminarEntidad(Entidad *entidad);
+	bool estaSeleccionada(int x,int y);
 	//cliente
 	void crearPersonaje(ObjetoMapa* objeto,Posicion pos);
 	void ubicarPersonaje(Personaje* personaje,Posicion pos);
 	void actualizarRecursos(int oro,int madera,int piedra);
 	void agregarEntidad(string nombre,int x, int y);
 	void eliminarEntidadPorID(int id);
+
 	~Modelo();
 private:
 	Posicion calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy);

@@ -93,10 +93,6 @@ void Modelo::actualizarMapa(){
 	}
 }
 
-//cliente
-void crearPersonaje(ObjetoMapa){
-
-}
 void Modelo::agregarPersonaje(Personaje* personaje){
 	personajes.push_back(personaje);
 }
@@ -153,14 +149,29 @@ bool Modelo::celdaOcupada(Posicion posicion){
 }
 
 //cliente
-string Modelo::seleccionar(double mov_x,double mov_y){
-	Posicion posicion= Posicion(mov_x,mov_y);
-	if (this->oscuridad(0,floor(mov_x),floor(mov_y))==2){
-		return "";
-	}
-	personaje_seleccionado=this->mapa->personaje_celda(posicion.getX(),posicion.getY());
-	return this->mapa->mostrar_contenido(posicion.getX(),posicion.getY());
 
+
+bool Modelo::estaSeleccionada(int x,int y){
+	if(personaje_seleccionado){
+		Posicion pos_p=this->personaje_seleccionado->get_posicion();
+		if((pos_p.getX()==x)&&(pos_p.getY()==y)){
+			return true;
+		}
+	}else{
+		return (this->mapa->estaSeleccionada(x,y));
+	}
+	return false;
+}
+
+string Modelo::seleccionar(double mov_x,double mov_y){
+	this->mapa->deseleccionar();
+	Posicion seleccionada= Posicion(mov_x,mov_y);
+	if (this->oscuridad(0,seleccionada.getX(),seleccionada.getY())==2){
+			return "";
+	}
+	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
+	personaje_seleccionado=this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY());
+	return this->mapa->mostrar_contenido(seleccionada.getX(),seleccionada.getY());
 }
 
 
@@ -280,6 +291,12 @@ void Modelo::eliminarEntidad(Entidad * entidad){
 	//falta sacarla de memoria
 }
 
+void Modelo::congelarPersonaje(Personaje* personaje){
+	personaje->congelar();
+}
+void Modelo::descongelarPersonaje(Personaje* personaje){
+	personaje->descongelar();
+}
 //cliente
 //elimino una entidad con un solo parametro
 void Modelo::eliminarEntidadPorID(int id){

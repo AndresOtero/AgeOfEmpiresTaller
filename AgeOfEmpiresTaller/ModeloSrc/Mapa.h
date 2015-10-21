@@ -22,6 +22,9 @@ public:
 	Mapa(int ancho, int largo);
 	int getAncho();
 	int getLargo();
+	void seleccionar(int x,int y);
+	bool estaSeleccionada(int x,int y);
+	void deseleccionar();
 	dibujo_t dibujarTiles(int x, int y);
 	dibujo_t dibujarEscenario(int x, int y);
 	void setTiles(dibujo_t dibujo,int x,int y);

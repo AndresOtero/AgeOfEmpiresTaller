@@ -61,9 +61,19 @@ void Textura::oscurecer(){
 }
 
 void Textura::reiniciar(){
+
 	SDL_SetTextureColorMod(this->mTexture,r,g,b);
 }
+void Textura::congelar(){
+	unsigned char a =r+g+b/3;
+	SDL_SetTextureColorMod(this->mTexture,a,a,a);
 
+}
+void Textura::descongelar(){
+	SDL_SetTextureColorMod(this->mTexture,r,g,b);
+
+}
+;
 void Textura::free() {
 	if (mTexture != NULL) {
 		SDL_DestroyTexture(mTexture);

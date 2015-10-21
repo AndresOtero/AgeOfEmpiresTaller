@@ -75,11 +75,27 @@ string Celda::mostrar_contenido(){
 		nombre = this->mostrar_entidad();
 	return nombre;
 }
-
+void Celda::seleccionarEntidad(){
+	if (this->entidad!=NULL){
+		this->entidad->seleccionar();
+	}
+}
+void Celda::deseleccionarEntidad(){
+	if (this->entidad!=NULL){
+		this->entidad->deselccionar();
+	}
+}
+bool Celda::estaSeleccionada(){
+	if (this->entidad!=NULL){
+		return this->entidad->estaSeleccionado();
+	}
+	return false;
+}
 string Celda::mostrar_entidad(){
 	string nombre;
 	if (this->entidad!=NULL){
 			nombre = this->entidad->mostrar_contenido();
+
 		}
 	else {
 		nombre = "";
