@@ -22,6 +22,7 @@ public:
 	 void desconectar(int Id);
 	 void cambiar_destino_personaje(double mov_x,double mov_y);
 	 void generarRecursoRandom();
+	 get_id(int id)
 	 void eliminarEntidad(Entidad *entidad);
 	 ~GameController();
 

@@ -29,6 +29,7 @@ void GameController::conectar(int id){
  void GameController::desconectar(int id){
 	 //congelar
 }
+
  void GameController::cambiar_destino_personaje(double mov_x,double mov_y){
 		this->modelo->cambiar_destino_personaje( mov_x, mov_y);
  }

@@ -20,6 +20,8 @@ class Personaje {
 	Posicion destino;
 	Posicion camino;
 	bool congelado;
+	int id;
+	string usuario;
 
 public:
 	Personaje();
@@ -61,6 +63,22 @@ public:
 		}
 	bool estaCongelado() {
 			return this->congelado;
+	}
+
+	int getId() const {
+		return id;
+	}
+
+	void setId(int id) {
+		this->id = id;
+	}
+
+	const string& getUsuario() const {
+		return usuario;
+	}
+
+	void setUsuario(const string& usuario) {
+		this->usuario = usuario;
 	}
 };
 
