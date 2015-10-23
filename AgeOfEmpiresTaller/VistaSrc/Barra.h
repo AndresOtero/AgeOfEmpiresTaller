@@ -38,6 +38,7 @@ private:
 	shared_ptr<RecursoVista> oro;
 	shared_ptr<RecursoVista> madera;
 	shared_ptr<RecursoVista> piedra;
+	double desfasaje;
 	TTF_Font* font;
 	string display;
 	shared_ptr<CambioDeCoordendas> transformador;

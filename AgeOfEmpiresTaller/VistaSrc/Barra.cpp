@@ -27,6 +27,8 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	this->font=NULL;
 	this->tamFont = 20;
 	this->celda_mini = this->mapa->altoMapa()/ (modelo->mapa->getLargo()); //HARCODE
+	int sobrante = this->mapa->altoMapa() % (modelo->mapa->getLargo());
+	this->desfasaje = (double)sobrante/(double)(modelo->mapa->getLargo());
 	shared_ptr<CambioDeCoordendas> trans(new CambioDeCoordendas(celda_mini,celda_mini));
 	this->transformador = trans;
 
@@ -108,15 +110,21 @@ void Barra::render(SDL_Renderer*renderer){
 void Barra::dibujarDondeMiro(SDL_Renderer * renderer){
 	int x;
 	int y;
-	this->transformador->transformar_isometrica_pantalla(*x_ref,*y_ref,x,y);
+	this->transformador->transformar_isometrica_pantalla(*x_ref, *y_ref, x, y);
 	//SUPER HARCODE funciona en parte del mapa
-	x+=this->mapa->anchoPantalla()-this->mapa->altoMapa()/2-celda_mini/2;
-	y+=this->referencia_y+celda_mini/2;
-	int celdas_por_ancho = this->mapa->anchoPantalla()/ANCHO_BASE;
-	int celdas_por_alto = (this->mapa->altoMapa()*2)/ALTO_BASE;
-	SDL_Rect rect = {x,y,(celdas_por_ancho)*celda_mini,(celdas_por_alto+1)*celda_mini};
-	SDL_SetRenderDrawColor(renderer,0xFF,0xFF,0xFF,0xFF);
-	SDL_RenderDrawRect(renderer,&rect);
+	double x_corregido, y_corregido;
+	x_corregido = (double) x + (double) x / celda_mini * this->desfasaje;
+	y_corregido = (double) y + (double) y / celda_mini * this->desfasaje;
+	x_corregido += this->mapa->anchoPantalla() - this->mapa->altoMapa() / 2;
+	y_corregido += this->referencia_y;
+	double celdas_por_ancho = (double) this->mapa->anchoPantalla() / ANCHO_BASE;
+	double celdas_por_alto = (double) (this->mapa->altoMapa() * 2) / ALTO_BASE;
+	double celdas_alto_corregido = celdas_por_alto * (1 + desfasaje);
+	double celdas_ancho_corregido = celdas_por_ancho * (1 + desfasaje);
+	SDL_Rect rect = { x_corregido, y_corregido, (celdas_ancho_corregido)
+			* celda_mini, (celdas_alto_corregido) * celda_mini };
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderDrawRect(renderer, &rect);
 }
 void Barra::closeFont(){
 	TTF_CloseFont(this->font);
