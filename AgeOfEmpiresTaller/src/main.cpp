@@ -7,17 +7,17 @@
 #include "../GameControllerSrc/GameControllerCliente.h"
 using namespace std;
 #include <iostream>
-#include "yaml-cpp/yaml.h"
+//#include "yaml-cpp/yaml.h"
 #include <fstream>
 #include <string>
 #include <vector>
-#include "Yaml.h"
+//#include "Yaml.h"
 #include <memory>
 using namespace std;
 
 
 int main() {
-	bool reiniciar = true;
+	/**bool reiniciar = true;
 
 	while (reiniciar){
 		Yaml* reader=new Yaml();
@@ -31,6 +31,6 @@ int main() {
 		delete modelo;
 		delete vista;
 
-	}
+	}**/
 
 }
