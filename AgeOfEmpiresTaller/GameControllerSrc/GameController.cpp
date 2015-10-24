@@ -12,20 +12,31 @@ GameController::GameController() {
 }
 GameController::~GameController() {
 	// TODO Auto-generated constructor stub
+	delete modelo;
+	delete juego;
 }
 
-void GameController::insertarModelo(Modelo* modelo) {
+void GameController::insertarJuego(Juego* juego) {
 	// TODO Auto-generated constructor stub
-	this->modelo=modelo;
-}
-void GameController::setMapa(int ancho,int largo){
-	this->modelo->setMapa(ancho,largo);
+	this->juego=juego;
 }
 
-void GameController::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles){
-	this->modelo->setDibujoMapa(escenario,tiles);
+void GameController::setEscenario(string nombre,int ancho,int largo){
+	this->juego->setEscenario(nombre,ancho,largo);
 }
 
+void GameController::setConfiguracion(int margenScroll,int velocidad_personaje){
+	this->juego->setConfiguracion(margenScroll,velocidad_personaje);
+
+}
+void GameController::agregarEntidad(string nombre,int x, int y){
+	this->modelo->agregarEntidad(nombre,x,y);
+}
+
+void GameController::crearModelo(){
+	//luego de setearlo
+	this->modelo=new Modelo(juego);
+}
 
  void GameController::cambiar_destino_personaje(int id ,double mov_x,double mov_y){
 		this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);

@@ -13,16 +13,22 @@
 class GameController {
 protected:
 	Modelo* modelo;
+	Juego* juego;
 public:
 	GameController();
-	 void insertarModelo(Modelo* modelo);
-	 void setMapa(int ancho,int largo);
-	 void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
-	 void cambiar_destino_personaje(int id, double mov_x,double mov_y);
-	 void generarRecursoRandom();
-	 void eliminarEntidad(int id);
+	 //Setear el juego
+	 void insertarJuego(Juego* juego);
+	 void setEscenario(string nombre,int ancho,int largo);
+	 void setConfiguracion(int margenScroll,int velocidad_personaje);
+	 void crearModelo();
 
+	 //Controlar
+	 void agregarEntidad(string nombre,int x, int y);
+	 	 void cambiar_destino_personaje(int id, double mov_x,double mov_y);
+	 	 void generarRecursoRandom();
+	 	 void eliminarEntidad(int id);
 
+	 //Red
 	  void reconectar(int id);
 	 	  void desconectar(int Id);
 	 	  void actualizar();
