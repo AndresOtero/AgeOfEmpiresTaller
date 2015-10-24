@@ -24,6 +24,14 @@ public:
 	int get_vel_personaje() const {
 		return vel_personaje;
 	}
+
+	void setMargenScroll(int margenScroll) {
+		margen_scroll = margenScroll;
+	}
+
+	void setVelPersonaje(int velPersonaje) {
+		vel_personaje = velPersonaje;
+	}
 };
 
 #endif /* CONFIGURACION_H_ */

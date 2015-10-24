@@ -51,24 +51,21 @@ public:
 	bool estaSeleccionada(int x,int y);
 	//cliente
 	void ubicarPersonaje(int idPersonaje,Posicion pos);
-
 	void actualizarRecursos(int oro,int madera,int piedra);
 	void agregarEntidad(string nombre,int x, int y);
 
 	~Modelo();
+	void agregarPersonajeCliente(Personaje* personaje);
 	void crearPersonajeCliente(Personaje* personaje);
 	void setearPersonajeCliente(int id,Posicion pos);
-
 	int crearPersonajeServer(Personaje* personaje);
 	void eliminarEntidadPorID(int id);
-
 	int getIdCliente();
-
-	void setIdCliente(int idCliente) ;
-
 	int cantidad_de_jugadores();
 
 private:
+	void setIdCliente(int idCliente) ;
+
 	void eliminarEntidad(Entidad *entidad);
 
 	void set_posicionRandomPersonaje(Personaje* personaje);

@@ -57,8 +57,13 @@ void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 	//manda en que posicion ubicarlo
 }
 
+void Modelo::agregarPersonajeCliente(Personaje* personaje){
+	this->personajes.push_back(personaje);
+}
+
+
 //cliente respuesta a moverse o para ubicarlo en lugar
-void Modelo::ubicarPersonaje(int idPersonaje,Posicion pos){
+/**void Modelo::ubicarPersonaje(int idPersonaje,Posicion pos){
 	//lo estanca si no vuele a calcular el proximo lugar
 	vector<Personaje*>::iterator it = personajes.begin();
 		for (; it != personajes.end(); ++it) {
@@ -68,7 +73,7 @@ void Modelo::ubicarPersonaje(int idPersonaje,Posicion pos){
 			}
 		}
 
-}
+}***/
 
 
 void Modelo::insertarEntidades(){
@@ -432,7 +437,7 @@ void Modelo::crearPersonajeCliente(Personaje* personaje){
 void Modelo::setearPersonajeCliente(int id,Posicion pos){
 	this->setIdCliente(id);
 	this->personaje_seleccionado->setId(id);
-	this->ubicarPersonaje(id,pos);
+	this->personaje_seleccionado->set_posicion(pos);
 }
 int Modelo::crearPersonajeServer(Personaje* personaje){
 	this->set_posicionRandomPersonaje(personaje);
