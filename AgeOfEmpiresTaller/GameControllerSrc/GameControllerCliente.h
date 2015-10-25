@@ -13,25 +13,26 @@ class GameControllerCliente:public GameController  {
 
 public:
 	GameControllerCliente();
-	  ~GameControllerCliente();
-	 void insertarModelo(Modelo* modelo);
-		 void setMapa(int ancho,int largo);
-		 void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
+	~GameControllerCliente();
+	void insertarModelo(Modelo* modelo);
+	void setMapa(int ancho, int largo);
+	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
+			vector<vector<dibujo_t>> tiles);
 
-		 void cambiar_destino_personaje(int id, double mov_x,double mov_y);
-		 void generarRecursoRandom();
-		 void eliminarEntidad(int id);
+	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
+	void generarRecursoRandom();
+	void eliminarEntidad(int id);
 
-		 void actualizarJuego(string evento);
-		 string obtenerSiguienteEvento();
-		 bool hayNuevosEventos();
-		 //Cliente
-		 void cambiar_destino_personaje(double mov_x,double mov_y);
-		 void conectarCliente(Personaje* personaje);
-		 Personaje* conectarme(Personaje* personaje);//Acordarse inmediatamente despues setear
-		 void setearModelo(int id,Posicion pos);
-		void desconectar(int Id);
-			void reconectar(int Id);
+	void actualizarJuego(string evento);
+	string obtenerSiguienteEvento();
+	bool hayNuevosEventos();
+	//Cliente
+	void cambiar_destino_personaje(double mov_x, double mov_y);
+	void conectarCliente(Personaje* personaje);
+	Personaje* conectarme(Personaje* personaje); //Acordarse inmediatamente despues setear
+	void setearModelo(int id, Posicion pos);
+	void desconectar(int Id);
+	void reconectar(int Id);
 
 };
 

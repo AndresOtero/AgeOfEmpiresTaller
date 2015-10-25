@@ -37,7 +37,7 @@ void GameControllerCliente::desconectar(int Id){
 	this->modelo->congelarPersonaje(Id);
 }
 void GameControllerCliente::reconectar(int Id){
-					this->modelo->congelarPersonaje(Id);
+					this->modelo->descongelarPersonaje(Id);
 			 }
 void GameControllerCliente::actualizarJuego(string evento){
 	printf("Actualizando modelo en cliente: %s",evento.c_str());

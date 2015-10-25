@@ -49,6 +49,6 @@ void GameController::eliminarEntidad(int id){
 
 }
 
- void GameController::reconectar(int id){}
-	  void GameController::desconectar(int Id){}
-	  void GameController::actualizar(){}
+void GameController::reconectar(int id){}
+void GameController::desconectar(int Id){}
+void GameController::actualizar(){}

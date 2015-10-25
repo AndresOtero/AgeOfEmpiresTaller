@@ -37,15 +37,15 @@ enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define ANCHO_PERSONAJE 64
 #define ALTO_PERSONAJE 64
 
-Vista::Vista(Modelo* modelo) {
+Vista::Vista(Modelo* modelo,GameControllerCliente* gameController) {
 	this -> modelo = modelo;
 	this->pantalla= modelo->juego->pantalla;
-
 	this->velocidad_de_scroll=0.25;
 	this->margen_scroll=modelo->juego->conf->get_margen_scroll();
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
 	shared_ptr<Barra> barra(new Barra(modelo,&referencia_mapa_x,&referencia_mapa_y));
 	this->barra=barra;
+	this->gameController = gameController;
 }
 
 int Vista::altura_por_celda(){
@@ -245,75 +245,79 @@ void Vista::detectar_mouse_borde() {
 	}
 }
 
-int Vista::run() {
+int Vista::run(bool &realizoAccion) {
 	bool quit = false;
 	SDL_Event e;
 	int mov_x=0, mov_y=0;
 	//this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
 	double personaje_x,personaje_y;
-	while (!quit) {
-		double tiempo_actual,tiempo_viejo=0;
-		tiempo_viejo=SDL_GetTicks();
-		while (SDL_PollEvent(&e) != 0) {
-			if (e.type == SDL_QUIT) {
-				quit = true;
+	//del tiempo se ocua el cliente
+	//double tiempo_actual, tiempo_viejo = 0;
+	//tiempo_viejo = SDL_GetTicks();
+	while (SDL_PollEvent(&e) != 0) {
+		if (e.type == SDL_QUIT) {
+			quit = true;
+		}
+		if (e.type == SDL_MOUSEBUTTONDOWN) {
+			if (e.button.button == SDL_BUTTON_RIGHT) {
+				SDL_GetMouseState(&mov_x, &mov_y);
+				this->transformador->transformar_pantalla_isometrica(mov_x,
+						mov_y, personaje_x, personaje_y);
+				this->corregir_referencia_coordenadas_pantalla_mapa(personaje_x,
+						personaje_y);
+				//le envia al server que cambie el destino
+				this->gameController->cambiar_destino_personaje(personaje_x,
+						personaje_y);
+				realizoAccion = true;
+				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);
+				//printf("Personaje : x: %g, y: %g \n",personaje_x,personaje_y);
+				//printf("Adonde estoy: x: %g, y: %g \n",personaje_x,personaje_y);
 			}
-			if (e.type == SDL_MOUSEBUTTONDOWN) {
-				if(e.button.button==SDL_BUTTON_RIGHT){
-					SDL_GetMouseState(&mov_x, &mov_y);
-					this->transformador->transformar_pantalla_isometrica(mov_x,mov_y,personaje_x,personaje_y);
-					this->corregir_referencia_coordenadas_pantalla_mapa(personaje_x,personaje_y);
-					modelo->cambiar_destino_personaje(personaje_x,personaje_y);
-					//printf("Personaje : x: %g, y: %g \n",personaje_x,personaje_y);
-					//printf("Adonde estoy: x: %g, y: %g \n",personaje_x,personaje_y);
-				}
-				if(e.button.button==SDL_BUTTON_LEFT){
-					double a,b;
-					SDL_GetMouseState(&mov_x, &mov_y);
-					this->transformador->transformar_pantalla_isometrica(mov_x,mov_y,a,b);
-					this->corregir_referencia_coordenadas_pantalla_mapa(a,b);
-					//printf("Donde toco : x: %g, y: %g \n",a,b);
-					this->barra->setDisplay(modelo->seleccionar(a,b));
-					//printf("Selecciono\n");
-				}
-			}
-			if (e.type == SDL_KEYDOWN) {
-				SDL_Keycode keyPressed = e.key.keysym.sym;
-
-				switch (keyPressed) {
-				case SDLK_ESCAPE:
-					quit = true;
-					break;
-				case SDLK_r:
-					return true;
-				case SDLK_c:
-					if (modelo->devolverPersonajeSeleccionado()) {
-						modelo->congelarPersonaje(
-														modelo->getIdCliente());
-					}
-					break;
-				case SDLK_d:
-					if (modelo->devolverPersonajeSeleccionado()) {
-						modelo->descongelarPersonaje(
-														modelo->getIdCliente());
-					}
-					break;
-				}
+			if (e.button.button == SDL_BUTTON_LEFT) {
+				double a, b;
+				SDL_GetMouseState(&mov_x, &mov_y);
+				this->transformador->transformar_pantalla_isometrica(mov_x,
+						mov_y, a, b);
+				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
+				//printf("Donde toco : x: %g, y: %g \n",a,b);
+				this->barra->setDisplay(modelo->seleccionar(a, b));
+				//printf("Selecciono\n");
 			}
 		}
-		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
-		SDL_RenderClear(gRenderer);
+		if (e.type == SDL_KEYDOWN) {
+			SDL_Keycode keyPressed = e.key.keysym.sym;
 
-		modelo->actualizarMapa();
-		dibujar_mapa();
-		dibujar_barra();
-		detectar_mouse_borde();
-		SDL_RenderPresent(gRenderer);
-
-		usleep((40 - (tiempo_actual-tiempo_viejo))*1000);
-		tiempo_actual= SDL_GetTicks();
-		tiempo_viejo=tiempo_actual;
+			switch (keyPressed) {
+			case SDLK_ESCAPE:
+				quit = true;
+				break;
+			case SDLK_r:
+				return true;
+			case SDLK_c:
+				if (modelo->devolverPersonajeSeleccionado()) {
+					modelo->congelarPersonaje(modelo->getIdCliente());
+				}
+				break;
+			case SDLK_d:
+				if (modelo->devolverPersonajeSeleccionado()) {
+					modelo->descongelarPersonaje(modelo->getIdCliente());
+				}
+				break;
+			}
+		}
 	}
+	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
+	SDL_RenderClear(gRenderer);
+
+	modelo->actualizarMapa();
+	dibujar_mapa();
+	dibujar_barra();
+	detectar_mouse_borde();
+	SDL_RenderPresent(gRenderer);
+
+	/*usleep((40 - (tiempo_actual - tiempo_viejo)) * 1000);
+	tiempo_actual = SDL_GetTicks();
+	tiempo_viejo = tiempo_actual;*/ //esto lo hace el cliente
 
 	return false;
 }

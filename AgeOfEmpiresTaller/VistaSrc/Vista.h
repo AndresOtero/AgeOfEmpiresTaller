@@ -9,6 +9,7 @@
 #include <memory>
 #include "FactoryDibujo.h"
 #include "CambioDeCoordendas.h"
+#include "../GameControllerSrc/GameControllerCliente.h"
 #include "../ModeloSrc/Pantalla.h"
 #include "../ModeloSrc/Configuracion.h"
 #include "../ModeloSrc/Personaje.h"
@@ -31,6 +32,7 @@ class Vista {
 	shared_ptr<FactoryDibujo> factory;
 	shared_ptr<CambioDeCoordendas> transformador;
 	Pantalla* pantalla;
+	GameControllerCliente * gameController;
 	int margen_scroll;
 	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;
@@ -50,10 +52,10 @@ private:
 
 
 public:
-	Vista(Modelo* modelo);
+	Vista(Modelo* modelo,GameControllerCliente* gameControler);
 	bool init();
 	bool loadMedia();
-	int run();
+	int run(bool &realizoAccion);
 	virtual ~Vista();
 
 
