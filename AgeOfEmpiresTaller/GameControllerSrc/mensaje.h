@@ -13,6 +13,7 @@ enum MensajeType {
 	KEEPALIVE,
 	QUIT,
 	OK,
+	RECONNECT,
 	LOGIN, /* Cliente => Servidor: params(nombre) */
 	ERROR_NOMBRE_TOMADO, /* Servidor => Cliente: El usuario existe y esta conectado, params() */
 	MOVER_PERSONAJE,/* params(id_entidad, x , y) */
@@ -21,10 +22,11 @@ enum MensajeType {
 typedef struct {
 	MensajeType type;
 	char paramNombre[PARAM_STRING_LEN];
-	unsigned int param1;
-	unsigned int param2;
-
+	unsigned int paramInt1;
+	double paramDouble1;
+	double paramDouble2;
 } msg_t;
+
 class mensaje {
 public:
 	mensaje();
