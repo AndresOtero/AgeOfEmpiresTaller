@@ -245,15 +245,13 @@ void Vista::detectar_mouse_borde() {
 	}
 }
 
-int Vista::run(bool &realizoAccion) {
+bool Vista::run(bool &realizoAccion) {
 	bool quit = false;
 	SDL_Event e;
 	int mov_x=0, mov_y=0;
 	//this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
 	double personaje_x,personaje_y;
-	//del tiempo se ocua el cliente
-	//double tiempo_actual, tiempo_viejo = 0;
-	//tiempo_viejo = SDL_GetTicks();
+
 	while (SDL_PollEvent(&e) != 0) {
 		if (e.type == SDL_QUIT) {
 			quit = true;
@@ -265,13 +263,12 @@ int Vista::run(bool &realizoAccion) {
 						mov_y, personaje_x, personaje_y);
 				this->corregir_referencia_coordenadas_pantalla_mapa(personaje_x,
 						personaje_y);
+
 				//le envia al server que cambie el destino
 				this->gameController->cambiar_destino_personaje(personaje_x,
 						personaje_y);
 				realizoAccion = true;
 				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);
-				//printf("Personaje : x: %g, y: %g \n",personaje_x,personaje_y);
-				//printf("Adonde estoy: x: %g, y: %g \n",personaje_x,personaje_y);
 			}
 			if (e.button.button == SDL_BUTTON_LEFT) {
 				double a, b;
@@ -309,18 +306,15 @@ int Vista::run(bool &realizoAccion) {
 	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 	SDL_RenderClear(gRenderer);
 
-	modelo->actualizarMapa();
+	modelo->actualizarMapa(); //lo tiene que hacer el server
 	dibujar_mapa();
 	dibujar_barra();
 	detectar_mouse_borde();
 	SDL_RenderPresent(gRenderer);
 
-	/*usleep((40 - (tiempo_actual - tiempo_viejo)) * 1000);
-	tiempo_actual = SDL_GetTicks();
-	tiempo_viejo = tiempo_actual;*/ //esto lo hace el cliente
-
-	return false;
+	return quit;
 }
+
 vector<int> Vista::calcular_bordes(){
 	/**
 	Fuente:

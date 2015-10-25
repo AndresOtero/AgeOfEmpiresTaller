@@ -21,24 +21,31 @@ void GameControllerCliente::cambiar_destino_personaje( double mov_x,double mov_y
 	this->modelo->getIdCliente();
 	//interprete
 }
-Personaje* GameControllerCliente::conectarme(Personaje* personaje){
+Personaje* GameControllerCliente::conectarme(string str, int x,int y){
+	ObjetoMapa* obj= this->juego->tipos[str];
+	Personaje* personaje =new Personaje(obj,x,y);
 	this->modelo->crearPersonajeCliente(personaje);
 	return personaje;
 }
 
-void GameControllerCliente::conectarCliente(Personaje* personaje){
-	this->modelo->crearPersonajeCliente(personaje);
+void GameControllerCliente::conectarCliente(string str, int x,int y){
+	ObjetoMapa* obj= this->juego->tipos[str];
+	Personaje* personaje =new Personaje(obj,x,y);
+	this->modelo->agregarPersonajeCliente(personaje);
 }
 
-void GameControllerCliente::setearModelo(int id,Posicion pos){
+void GameControllerCliente::setearModelo(int id,double pos_x,double pos_y){
+	Posicion pos=Posicion(pos_x,pos_y);
 	this->modelo->setearPersonajeCliente(id,pos);
 }
 void GameControllerCliente::desconectar(int Id){
 	this->modelo->congelarPersonaje(Id);
 }
+
 void GameControllerCliente::reconectar(int Id){
-					this->modelo->descongelarPersonaje(Id);
-			 }
+	this->modelo->descongelarPersonaje(Id);
+}
+
 void GameControllerCliente::actualizarJuego(string evento){
 	printf("Actualizando modelo en cliente: %s",evento.c_str());
 }

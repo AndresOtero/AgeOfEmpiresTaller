@@ -55,7 +55,7 @@ public:
 	Vista(Modelo* modelo,GameControllerCliente* gameControler);
 	bool init();
 	bool loadMedia();
-	int run(bool &realizoAccion);
+	bool run(bool &realizoAccion);
 	virtual ~Vista();
 
 
