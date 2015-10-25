@@ -37,6 +37,9 @@ void GameController::crearModelo(){
 	//luego de setearlo
 	this->modelo=new Modelo(juego);
 }
+Modelo* GameController::devolverModelo(){
+	return this->modelo;
+}
 
  void GameController::cambiar_destino_personaje(int id ,double mov_x,double mov_y){
 		this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);

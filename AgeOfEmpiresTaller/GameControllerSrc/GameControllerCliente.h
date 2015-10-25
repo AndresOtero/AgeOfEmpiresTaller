@@ -27,9 +27,9 @@ public:
 		 bool hayNuevosEventos();
 		 //Cliente
 		 void cambiar_destino_personaje(double mov_x,double mov_y);
-		 void conectarCliente(Personaje* personaje);
-		 Personaje* conectarme(Personaje* personaje);//Acordarse inmediatamente despues setear
-		 void setearModelo(int id,Posicion pos);
+		 void conectarCliente(string tipo, int x,int y);
+		 Personaje* conectarme(string tipo, int x,int y);//Acordarse inmediatamente despues setear
+		 void setearModelo(int id,double pos_x,double pos_y);
 		void desconectar(int Id);
 			void reconectar(int Id);
 

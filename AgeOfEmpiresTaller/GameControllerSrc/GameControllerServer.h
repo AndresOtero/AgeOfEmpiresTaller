@@ -24,7 +24,7 @@ public:
 
 	//server
 	void reconectar(int id);
-	void agregarCliente(Personaje* personaje);
+	void agregarCliente(string tipo);
 	void desconectar(int id);
 	void actualizar();
 

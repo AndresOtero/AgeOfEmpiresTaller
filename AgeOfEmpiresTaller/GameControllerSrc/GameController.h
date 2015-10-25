@@ -21,6 +21,7 @@ public:
 	 void setEscenario(string nombre,int ancho,int largo);
 	 void setConfiguracion(int margenScroll,int velocidad_personaje);
 	 void crearModelo();
+	 Modelo* devolverModelo();
 
 	 //Controlar
 	 void agregarEntidad(string nombre,int x, int y);
