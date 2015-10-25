@@ -14,6 +14,7 @@
 #include "../ModeloSrc/Configuracion.h"
 #include "../ModeloSrc/Personaje.h"
 #include "Barra.h"
+#include "../ModeloSrc/Mapa.h"
 using namespace std;
 
 class Dibujo;
@@ -55,7 +56,7 @@ public:
 	Vista(Modelo* modelo,GameControllerCliente* gameControler);
 	bool init();
 	bool loadMedia();
-	bool run(bool &realizoAccion);
+	bool run();
 	virtual ~Vista();
 
 

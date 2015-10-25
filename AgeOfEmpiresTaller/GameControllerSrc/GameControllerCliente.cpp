@@ -19,8 +19,13 @@ GameControllerCliente::~GameControllerCliente() {
 void GameControllerCliente::cambiar_destino_personaje( double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(mov_x,mov_y);
 	this->modelo->getIdCliente();
+	msg_t mensaje;
+	mensaje.type = MOVER_PERSONAJE;
+	//bla bla
+	this->agregarMensaje(mensaje);
 	//interprete
 }
+
 Personaje* GameControllerCliente::conectarme(string str, int x,int y){
 	ObjetoMapa* obj= this->juego->tipos[str];
 	Personaje* personaje =new Personaje(obj,x,y);
@@ -49,16 +54,3 @@ void GameControllerCliente::reconectar(int Id){
 void GameControllerCliente::actualizarJuego(string evento){
 	printf("Actualizando modelo en cliente: %s",evento.c_str());
 }
-
-string GameControllerCliente::obtenerSiguienteEvento(){
-	//TODO GameController podria tener una cola de eventos donde se van agregando, y se saca el ultimo de ahi.
-	string siguienteEvento = "Mover id:1 pos:(5,3)";
-
-	return siguienteEvento;
-}
-
-bool GameControllerCliente::hayNuevosEventos(){
-	//TODO GameController podria tener una cola de eventos y checkear si hay nuevos eventos para mandar.
-	return true;
-}
-

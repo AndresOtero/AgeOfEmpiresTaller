@@ -4,7 +4,6 @@
  *  Created on: 21 de oct. de 2015
  *      Author: andres
  */
-#include "../GameControllerSrc/GameController.h"
 #ifndef GAMECONTROLLERSRC_GAMECONTROLLERCLIENTE_H_
 #define GAMECONTROLLERSRC_GAMECONTROLLERCLIENTE_H_
 #include "GameController.h"
@@ -24,8 +23,6 @@ public:
 	void eliminarEntidad(int id);
 
 	void actualizarJuego(string evento);
-	string obtenerSiguienteEvento();
-	bool hayNuevosEventos();
 	//Cliente
 	void cambiar_destino_personaje(double mov_x, double mov_y);
 	void conectarCliente(string tipo, int x, int y);

@@ -245,7 +245,7 @@ void Vista::detectar_mouse_borde() {
 	}
 }
 
-bool Vista::run(bool &realizoAccion) {
+bool Vista::run() {
 	bool quit = false;
 	SDL_Event e;
 	int mov_x=0, mov_y=0;
@@ -267,7 +267,6 @@ bool Vista::run(bool &realizoAccion) {
 				//le envia al server que cambie el destino
 				this->gameController->cambiar_destino_personaje(personaje_x,
 						personaje_y);
-				realizoAccion = true;
 				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);
 			}
 			if (e.button.button == SDL_BUTTON_LEFT) {

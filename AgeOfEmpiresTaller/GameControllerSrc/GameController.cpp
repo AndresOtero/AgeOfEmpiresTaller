@@ -51,6 +51,19 @@ void GameController::eliminarEntidad(int id){
 	this->modelo->eliminarEntidadPorID(id);
 
 }
+bool GameController::hayEventos(){
+	return !this->cola.empty();
+}
+
+msg_t GameController::sacarMensaje(){
+	msg_t mensaje = this->cola.front();
+	this->cola.pop();
+	return mensaje;
+}
+
+void GameController::agregarMensaje(msg_t mensaje){
+	this->cola.push(mensaje);
+}
 
 void GameController::reconectar(int id){}
 void GameController::desconectar(int Id){}

@@ -5,15 +5,21 @@
  *      Author: andres
  */
 #include <vector>
+#include "mensaje.h"
 #include "../ModeloSrc/Modelo.h"
+#include <queue>
 
 #ifndef GAMECONTROLLERSRC_GAMECONTROLLER_H_
 #define GAMECONTROLLERSRC_GAMECONTROLLER_H_
+
+
 
 class GameController {
 protected:
 	Modelo* modelo;
 	Juego* juego;
+	queue <msg_t> cola;
+
 public:
 	GameController();
 	 //Setear el juego
@@ -22,24 +28,21 @@ public:
 	 void setConfiguracion(int margenScroll,int velocidad_personaje);
 	 void crearModelo();
 	 Modelo* devolverModelo();
-
+	 bool hayEventos();
+	 msg_t sacarMensaje();
+	 void agregarMensaje(msg_t mensaje);
 	 //Controlar
-	 void agregarEntidad(string nombre,int x, int y);
-	 	 void cambiar_destino_personaje(int id, double mov_x,double mov_y);
-	 	 void generarRecursoRandom();
-	 	 void eliminarEntidad(int id);
+	void agregarEntidad(string nombre, int x, int y);
+	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
+	void generarRecursoRandom();
+	void eliminarEntidad(int id);
 
-	 //Red
-	  void reconectar(int id);
-	 	  void desconectar(int Id);
-	 	  void actualizar();
-	 int get_id(int id);
-	 ~GameController();
-
-
-
-
-
+	//Red
+	void reconectar(int id);
+	void desconectar(int Id);
+	void actualizar();
+	int get_id(int id);
+	~GameController();
 
 };
 
