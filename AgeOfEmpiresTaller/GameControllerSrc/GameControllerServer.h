@@ -23,9 +23,11 @@ public:
 	void eliminarEntidad(int id);
 
 	//server
-	void reconectar(int id);
+	void reconectar(std::string id);
+	void desconectar(std::string id);
+	//void reconectar(int id);
 	void agregarCliente(string tipo);
-	void desconectar(int id);
+	//void desconectar(int id);
 	void actualizar();
 
 };

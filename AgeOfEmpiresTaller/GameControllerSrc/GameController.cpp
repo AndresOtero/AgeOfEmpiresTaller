@@ -65,6 +65,6 @@ void GameController::agregarMensaje(msg_t mensaje){
 	this->cola.push(mensaje);
 }
 
-void GameController::reconectar(int id){}
-void GameController::desconectar(int Id){}
+void GameController::reconectar(string id){}
+void GameController::desconectar(string Id){}
 void GameController::actualizar(){}

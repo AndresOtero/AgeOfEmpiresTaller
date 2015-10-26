@@ -24,12 +24,12 @@ void GameControllerServer::agregarCliente(string tipo){
 	//this->modelo->setearPersonajeCliente(id,personaje->get_posicion())
 }
 
-void GameControllerServer::desconectar(int Id){
-	this->modelo->congelarPersonaje(Id);
+void GameControllerServer::desconectar(string Id){
+	//this->modelo->congelarPersonaje(Id);
 	//Congelar en todos
 }
-void GameControllerServer::reconectar(int Id){
-					this->modelo->descongelarPersonaje(Id);
+void GameControllerServer::reconectar(string Id){
+					//this->modelo->descongelarPersonaje(Id);
 					//Descongelar en todos
 			 }
 
