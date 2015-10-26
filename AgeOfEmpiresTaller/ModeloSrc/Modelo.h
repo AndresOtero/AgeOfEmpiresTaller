@@ -47,7 +47,7 @@ public:
 	void congelarPersonaje(int id);
 	void descongelarPersonaje(int id);
 	void actualizarMapa();
-	void generarRecursoRandom();
+	int generarRecursoRandom(Posicion pos);
 	bool estaSeleccionada(int x,int y);
 	//cliente
 	void ubicarPersonaje(int idPersonaje,Posicion pos);

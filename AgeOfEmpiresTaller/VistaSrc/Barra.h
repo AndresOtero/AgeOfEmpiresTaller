@@ -14,6 +14,7 @@
 #include "Minimapa.h"
 #include "CambioDeCoordendas.h"
 #include "RecursoVista.h"
+#include <memory>
 
 
 

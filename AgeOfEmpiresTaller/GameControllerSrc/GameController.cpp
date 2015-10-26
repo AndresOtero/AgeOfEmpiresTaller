@@ -43,10 +43,14 @@ Modelo* GameController::devolverModelo(){
 
  void GameController::cambiar_destino_personaje(int id ,double mov_x,double mov_y){
 		this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);
- }
- void GameController::generarRecursoRandom(){
-	this->modelo->generarRecursoRandom();
 }
+
+ void GameController::generarRecursoRandom(){
+	Posicion pos = this->modelo->mapa->posicionVacia();
+	int tipo = this->modelo->generarRecursoRandom(pos);
+
+}
+
 void GameController::eliminarEntidad(int id){
 	this->modelo->eliminarEntidadPorID(id);
 

@@ -18,6 +18,8 @@ enum MensajeType {
 	ERROR_NOMBRE_TOMADO, /* Servidor => Cliente: El usuario existe y esta conectado, params() */
 	MOVER_PERSONAJE,/* params(id_entidad, x , y) */
 	ACTUALIZACION_RECURSOS, /* params (oro,plata,madera) */
+	NUEVO_PERSONAJE,/*params name, id, pos_x,pos_y*/
+	CREAR_ENTIDAD, /*name tipo, pos_x, pos_y*/
 };
 typedef struct {
 	MensajeType type;

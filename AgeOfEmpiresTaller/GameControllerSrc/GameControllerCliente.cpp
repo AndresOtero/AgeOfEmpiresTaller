@@ -21,7 +21,9 @@ void GameControllerCliente::cambiar_destino_personaje( double mov_x,double mov_y
 	this->modelo->getIdCliente();
 	msg_t mensaje;
 	mensaje.type = MOVER_PERSONAJE;
-	//bla bla
+	//mensaje.paramInt1 = id;
+	mensaje.paramDouble1 = mov_x;
+	mensaje.paramDouble2 = mov_y;
 	this->agregarMensaje(mensaje);
 	//interprete
 }

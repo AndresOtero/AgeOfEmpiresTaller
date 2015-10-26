@@ -94,15 +94,9 @@ void Modelo::actualizarMapa(){
 		Personaje* p = (*it);
 		mover_personaje(p);
 	}
-	struct timeval actual;
-	gettimeofday(&actual,NULL);
-	double ti = estado.tv_sec+(estado.tv_usec/1000000.0);
-	double tf = actual.tv_sec+(actual.tv_usec/1000000.0);
-	double tiempo = tf - ti;
-	if (tiempo>RITMO){
-		this->generarRecursoRandom();
-		gettimeofday(&estado,NULL);
-	}
+	Posicion pos =this->mapa->posicionVacia();
+	this->generarRecursoRandom(pos);
+
 }
 
 Personaje* Modelo::devolverPersonajeSeleccionado(){
@@ -382,17 +376,22 @@ int Modelo::get_ancho_mapa(){
 }
 
 //server
-void Modelo::generarRecursoRandom(){
-	Posicion pos;
+int Modelo::generarRecursoRandom(Posicion pos){
+	//el tiempo de creacion lo tendria que hacer el server
+	struct timeval actual;
+	gettimeofday(&actual, NULL);
+	double ti = estado.tv_sec + (estado.tv_usec / 1000000.0);
+	double tf = actual.tv_sec + (actual.tv_usec / 1000000.0);
+	double tiempo = tf - ti;
 	GeneradorNumeros num;
-	if (this->totalRecursos+1>MAX_RECURSOS){
-		return;
+	if ((this->totalRecursos+1>MAX_RECURSOS) || (tiempo < RITMO)){
+		return -1;
 	}
-	pos = this->mapa->posicionVacia();
 	int x = pos.getX();
 	int y = pos.getY();
 	string nombre;
-	switch (num.numeroRandom(0,3)){
+	int numero = num.numeroRandom(0,3);
+	switch (numero){
 		case 0:
 			nombre="oro";
 			break;
@@ -406,6 +405,8 @@ void Modelo::generarRecursoRandom(){
 
 	this->agregarEntidad(nombre,x,y);
 	this->totalRecursos++;
+	gettimeofday(&estado,NULL);
+	return numero;
 
 }
 
