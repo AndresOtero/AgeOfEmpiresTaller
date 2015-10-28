@@ -21,7 +21,7 @@ class Personaje {
 	Posicion camino;
 	bool congelado;
 	int id;
-	string usuario;
+	string nombreJugador;
 
 public:
 	Personaje();
@@ -71,6 +71,14 @@ public:
 
 	void setId(int id) {
 		this->id = id;
+	}
+
+	const string& getNombreJugador() const {
+		return nombreJugador;
+	}
+
+	void setNombreJugador(const string& nombreJugador) {
+		this->nombreJugador = nombreJugador;
 	}
 };
 

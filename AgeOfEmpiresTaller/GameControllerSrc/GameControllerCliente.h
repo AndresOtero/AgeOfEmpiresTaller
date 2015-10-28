@@ -28,8 +28,12 @@ public:
 	void conectarCliente(string tipo, int x, int y);
 	Personaje* conectarme(string tipo, int x, int y); //Acordarse inmediatamente despues setear
 	void setearModelo(int id, double pos_x, double pos_y);
-	void desconectar(int Id);
-	void reconectar(int Id);
+	//void desconectar(int Id);
+	//void reconectar(int Id);
+	void reconectar(string id);
+	void desconectar(string Id);
+
+
 
 };
 

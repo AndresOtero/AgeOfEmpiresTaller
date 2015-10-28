@@ -19,13 +19,14 @@ public:
 			vector<vector<dibujo_t>> tiles);
 	void conectar();
 	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
-	void generarRecursoRandom();
 	void eliminarEntidad(int id);
 
 	//server
-	void reconectar(int id);
+	void reconectar(std::string id);
+	void desconectar(std::string id);
+	//void reconectar(int id);
 	void agregarCliente(string tipo);
-	void desconectar(int id);
+	//void desconectar(int id);
 	void actualizar();
 
 };

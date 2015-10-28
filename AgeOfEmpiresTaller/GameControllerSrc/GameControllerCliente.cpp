@@ -45,13 +45,14 @@ void GameControllerCliente::setearModelo(int id,double pos_x,double pos_y){
 	Posicion pos=Posicion(pos_x,pos_y);
 	this->modelo->setearPersonajeCliente(id,pos);
 }
+/**
 void GameControllerCliente::desconectar(int Id){
 	this->modelo->congelarPersonaje(Id);
 }
 
 void GameControllerCliente::reconectar(int Id){
 	this->modelo->descongelarPersonaje(Id);
-}
+}**/
 
 void GameControllerCliente::actualizarJuego(string evento){
 	printf("Actualizando modelo en cliente: %s",evento.c_str());

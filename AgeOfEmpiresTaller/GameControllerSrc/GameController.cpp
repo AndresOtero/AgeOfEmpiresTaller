@@ -29,8 +29,8 @@ void GameController::setConfiguracion(int margenScroll,int velocidad_personaje){
 	this->juego->setConfiguracion(margenScroll,velocidad_personaje);
 
 }
-void GameController::agregarEntidad(string nombre,int x, int y){
-	this->modelo->agregarEntidad(nombre,x,y);
+void GameController::agregarEntidad(string nombre,int x, int y,int cantidad){
+	this->modelo->agregarEntidad(nombre,x,y,cantidad);
 }
 
 void GameController::crearModelo(){
@@ -47,8 +47,18 @@ Modelo* GameController::devolverModelo(){
 
  void GameController::generarRecursoRandom(){
 	Posicion pos = this->modelo->mapa->posicionVacia();
-	int tipo = this->modelo->generarRecursoRandom(pos);
-
+	recurso_t tipo = this->modelo->generarRecursoRandom(pos);
+	//creacion mensaje si creo recurso
+	if (tipo.cantidad > 0) {
+		msg_t mensaje;
+		mensaje.type = CREAR_ENTIDAD;
+		//strcpy funciona???
+		strcpy(mensaje.paramNombre, tipo.nombre.c_str());
+		mensaje.paramInt1 = tipo.cantidad;
+		mensaje.paramDouble1 = pos.getX();
+		mensaje.paramDouble2 = pos.getY();
+		this->agregarMensaje(mensaje);
+	}
 }
 
 void GameController::eliminarEntidad(int id){
@@ -69,6 +79,6 @@ void GameController::agregarMensaje(msg_t mensaje){
 	this->cola.push(mensaje);
 }
 
-void GameController::reconectar(int id){}
-void GameController::desconectar(int Id){}
+void GameController::reconectar(string id){}
+void GameController::desconectar(string Id){}
 void GameController::actualizar(){}

@@ -31,22 +31,14 @@ void GameControllerServer::agregarCliente(string tipo){
 	//dsps deberian sacarlo y mandarlo a todos
 }
 
-void GameControllerServer::desconectar(int Id){
-	this->modelo->congelarPersonaje(Id);
-	msg_t mensaje;
-	mensaje.type = QUIT;
-	mensaje.paramInt1 = Id;
-	this->agregarMensaje(mensaje);
+void GameControllerServer::desconectar(string Id){
+	//this->modelo->congelarPersonaje(Id);
 	//Congelar en todos
 }
-void GameControllerServer::reconectar(int Id) {
-	this->modelo->descongelarPersonaje(Id);
-	msg_t mensaje;
-	mensaje.type = RECONNECT;
-	mensaje.paramInt1 = Id;
-	this->agregarMensaje(mensaje);
-	//Descongelar en todos
-}
+void GameControllerServer::reconectar(string Id){
+					//this->modelo->descongelarPersonaje(Id);
+					//Descongelar en todos
+			 }
 
 void GameControllerServer::actualizar(){
 	this->modelo->actualizarMapa();//mueven los tipitos

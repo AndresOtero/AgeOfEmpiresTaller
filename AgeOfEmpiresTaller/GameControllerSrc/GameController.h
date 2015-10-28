@@ -32,14 +32,16 @@ public:
 	 msg_t sacarMensaje();
 	 void agregarMensaje(msg_t mensaje);
 	 //Controlar
-	void agregarEntidad(string nombre, int x, int y);
+	void agregarEntidad(string nombre, int x, int y,int cantidad);
 	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
 	void generarRecursoRandom();
 	void eliminarEntidad(int id);
 
 	//Red
-	void reconectar(int id);
-	void desconectar(int Id);
+	//void reconectar(int id);
+	void reconectar(string id);
+	void desconectar(string Id);
+	//void desconectar(int Id);
 	void actualizar();
 	int get_id(int id);
 	~GameController();
