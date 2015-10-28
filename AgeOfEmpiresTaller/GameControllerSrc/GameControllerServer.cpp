@@ -14,9 +14,10 @@ GameControllerServer::~GameControllerServer() {
 	// TODO Auto-generated constructor stub
 }
 
-void GameControllerServer::agregarCliente(string tipo){
+void GameControllerServer::agregarCliente(string name,string tipo){
 	ObjetoMapa* obj=this->juego->tipos[tipo];
 	Personaje* personaje =new Personaje(obj);
+	personaje->setNombreJugador(name);
 	int id =this->modelo->crearPersonajeServer(personaje);
 
 	//seteo mensaje
@@ -39,7 +40,7 @@ void GameControllerServer::reconectar(string Id){
 					//this->modelo->descongelarPersonaje(Id);
 					//Descongelar en todos
 			 }
-void GameControllerServer::cambiar_destino_personaje(int id, double mov_x,double mov_y){
+void GameControllerServer::cambiar_destino_personaje(string id, double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 

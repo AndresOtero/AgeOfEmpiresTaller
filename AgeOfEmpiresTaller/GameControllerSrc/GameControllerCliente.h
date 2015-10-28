@@ -20,16 +20,16 @@ public:
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
 			vector<vector<dibujo_t>> tiles);
 
-	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
+	void cambiar_destino_personaje(string id, double mov_x,double mov_y);
 	void generarRecursoRandom();
 	void eliminarEntidad(int id);
-	void mover_personaje(int id, double mov_x,double mov_y);
+	void mover_personaje(string id, double mov_x,double mov_y);
 	void actualizarJuego(string evento);
 	//Cliente
 	void agregarEntidad(string nombre,int x,int y,int cant);
 	void cambiar_destino_personaje(double mov_x, double mov_y);
-	void conectarCliente(string tipo, int x, int y);
-	Personaje* conectarme(string tipo, int x, int y); //Acordarse inmediatamente despues setear
+	void conectarCliente(string name,string str, int x,int y);
+	Personaje* conectarme(string name,string str, int x,int y);
 	void setearModelo(int id, double pos_x, double pos_y);
 	void desconectar(int Id);
 	void reconectar(int Id);

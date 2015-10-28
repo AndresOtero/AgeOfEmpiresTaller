@@ -18,14 +18,14 @@ public:
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
 			vector<vector<dibujo_t>> tiles);
 	void conectar();
-	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
+	void cambiar_destino_personaje(string id, double mov_x, double mov_y);
 	void eliminarEntidad(int id);
 	void agregarEntidad(string nombre,int x, int y, int cant);
 	//server
 	void reconectar(std::string id);
 	void desconectar(std::string id);
 	//void reconectar(int id);
-	void agregarCliente(string tipo);
+	void agregarCliente(string name,string tipo);
 	//void desconectar(int id);
 	void actualizar();
 
