@@ -149,7 +149,5 @@ void GameControllerServer::actualizar(){
 				this->agregarMensaje(mensaje);
 				//Para todos los clientes
 
-
-
 			}
 }
