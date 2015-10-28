@@ -39,7 +39,9 @@ void GameControllerServer::reconectar(string Id){
 					//this->modelo->descongelarPersonaje(Id);
 					//Descongelar en todos
 			 }
-
+void GameControllerServer::cambiar_destino_personaje(int id, double mov_x,double mov_y){
+	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
+}
 void GameControllerServer::actualizar(){
 	this->modelo->actualizarMapa();//mueven los tipitos
 	vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();
@@ -59,7 +61,7 @@ void GameControllerServer::actualizar(){
 				this->agregarMensaje(mensaje);
 				//Para todos los clientes
 
-					 //void cambiar_destino_personaje(int p->getId(), double mov_x,double mov_y);
+
 
 			}
 }

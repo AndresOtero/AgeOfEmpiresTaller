@@ -94,8 +94,6 @@ void Modelo::actualizarMapa(){
 		Personaje* p = (*it);
 		mover_personaje(p);
 	}
-	Posicion pos =this->mapa->posicionVacia();
-	this->generarRecursoRandom(pos);
 
 }
 

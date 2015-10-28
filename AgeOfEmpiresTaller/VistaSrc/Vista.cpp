@@ -266,8 +266,7 @@ bool Vista::run() {
 
 				//le envia al server que cambie el destino
 				//PASAR ID PERSONAJEEE!!!!!!!!!!!
-				this->gameController->cambiar_destino_personaje(personaje_x,
-						personaje_y);
+				//this->gameController->cambiar_destino_personaje(personaje_x,personaje_y);
 				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);
 			}
 			if (e.button.button == SDL_BUTTON_LEFT) {
