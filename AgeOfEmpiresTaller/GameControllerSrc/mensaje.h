@@ -20,6 +20,7 @@ enum MensajeType {
 	ACTUALIZACION_RECURSOS, /* params (oro,plata,madera) */
 	NUEVO_PERSONAJE,/*params name, id, pos_x,pos_y*/
 	CREAR_ENTIDAD, /*name tipo, pos_x, pos_y*/
+	CREAR_RECURSO,/*name tipo,int cantidad,pos_x,pos_y*/
 };
 typedef struct {
 	MensajeType type;

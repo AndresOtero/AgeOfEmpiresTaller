@@ -51,7 +51,7 @@ Modelo* GameController::devolverModelo(){
 	//creacion mensaje si creo recurso
 	if (tipo.cantidad > 0) {
 		msg_t mensaje;
-		mensaje.type = CREAR_ENTIDAD;
+		mensaje.type = CREAR_RECURSO;
 		//strcpy funciona???
 		strcpy(mensaje.paramNombre, tipo.nombre.c_str());
 		mensaje.paramInt1 = tipo.cantidad;
