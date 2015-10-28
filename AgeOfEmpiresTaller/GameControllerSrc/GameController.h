@@ -34,7 +34,6 @@ public:
 	 //Controlar
 	virtual void agregarEntidad(string nombre, int x, int y,int cantidad);
 	virtual void cambiar_destino_personaje(string id, double mov_x, double mov_y);
-	void generarRecursoRandom();
 	void eliminarEntidad(int id);
 
 	//Red
