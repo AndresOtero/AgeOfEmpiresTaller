@@ -33,6 +33,7 @@ public:
 	void setearModelo(int id, double pos_x, double pos_y);
 	void reconectar(string id);
 	void desconectar(string Id);
+	char* string_to_char_array(string str);
 
 
 

@@ -7,6 +7,15 @@ dibu * GameControllerCliente.cpp
 
 #include "GameControllerCliente.h"
 
+char* GameControllerCliente::string_to_char_array(string str){
+	int str_size = str.size();
+	char charArray[PARAM_STRING_LEN];
+	for (int a = 0; a <= str_size; a++) {
+		charArray[a] = str[a];
+	}
+	return charArray;
+}
+
 GameControllerCliente::GameControllerCliente() {
 	// TODO Auto-generated constructor stub
 }
@@ -29,7 +38,7 @@ void GameControllerCliente::cambiar_destino_personaje(string id, double mov_x,do
 
 	msg_t mensaje;
 	mensaje.type = MOVER_PERSONAJE;
-	//mensaje.paramNombre=id;
+	strcpy(mensaje.paramNombre,string_to_char_array(id));
 	mensaje.paramDouble1 = mov_x;
 	mensaje.paramDouble2 = mov_y;
 	this->agregarMensaje(mensaje);
