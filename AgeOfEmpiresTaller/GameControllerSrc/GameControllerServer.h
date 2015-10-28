@@ -31,7 +31,12 @@ public:
 	//void desconectar(int id);
 	void actualizar();
 	char* string_to_char_array(string str);
+	bool hayEventosInicializacion();
+	msg_t nextEventoInicializacion();
+	void agregarEventoInicializacion(msg_t mensaje);
 
+private:
+	queue <msg_t> colaInicializacion;
 };
 
 #endif /* GAMECONTROLLERSRC_GAMECONTROLLERSERVER_H_ */
