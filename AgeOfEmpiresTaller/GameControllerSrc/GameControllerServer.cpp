@@ -14,9 +14,10 @@ GameControllerServer::~GameControllerServer() {
 	// TODO Auto-generated constructor stub
 }
 
-void GameControllerServer::agregarCliente(string tipo){
+void GameControllerServer::agregarCliente(string name,string tipo){
 	ObjetoMapa* obj=this->juego->tipos[tipo];
 	Personaje* personaje =new Personaje(obj);
+	personaje->setNombreJugador(name);
 	int id =this->modelo->crearPersonajeServer(personaje);
 
 	//seteo mensaje

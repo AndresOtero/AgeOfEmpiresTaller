@@ -25,7 +25,7 @@ public:
 	void reconectar(std::string id);
 	void desconectar(std::string id);
 	//void reconectar(int id);
-	void agregarCliente(string tipo);
+	void agregarCliente(string name,string tipo){
 	//void desconectar(int id);
 	void actualizar();
 

@@ -362,11 +362,11 @@ void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 	}
 }
 
-void  Modelo::cambiar_destino_personaje(int id ,double mov_x,double mov_y){
+void  Modelo::cambiar_destino_personaje(string id ,double mov_x,double mov_y){
 	vector<Personaje*>::iterator it = personajes.begin();
 		for (; it != personajes.end(); ++it) {
 			Personaje* p = (*it);
-			if(p->getId()==id){
+			if(p->getNombreJugador()==id){
 				p->set_destino(Posicion(mov_x,mov_y));
 			}
 		}
