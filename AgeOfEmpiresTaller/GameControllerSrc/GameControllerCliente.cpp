@@ -64,7 +64,7 @@ void GameControllerCliente::conectarCliente(string name,string str, int x,int y)
 	this->modelo->agregarPersonajeCliente(personaje);
 }
 
-void GameControllerCliente::setearModelo(int id,double pos_x,double pos_y){
+void GameControllerCliente::setearPosicionPersonaje(int id,double pos_x,double pos_y){
 	Posicion pos=Posicion(pos_x,pos_y);
 	this->modelo->setearPersonajeCliente(id,pos);
 }
@@ -73,20 +73,13 @@ void GameControllerCliente::agregarEntidad(string nombre,int x, int y, int cant)
 }
 
 void GameControllerCliente::desconectar(string id){
-
+	this->modelo->congelarPersonaje(id);
 }
 
 void GameControllerCliente::reconectar(string id){
-
-}
-/**
-void GameControllerCliente::desconectar(int Id){
-	this->modelo->congelarPersonaje(Id);
+	this->modelo->descongelarPersonaje(id);
 }
 
-void GameControllerCliente::reconectar(int Id){
-	this->modelo->descongelarPersonaje(Id);
-}**/
 
 void GameControllerCliente::actualizarJuego(string evento){
 	printf("Actualizando modelo en cliente: %s",evento.c_str());
