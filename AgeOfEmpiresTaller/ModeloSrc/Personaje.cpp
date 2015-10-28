@@ -48,7 +48,7 @@ dibujo_t Personaje::dibujar(){
 	return dibujo;
 }
 string Personaje::mostrar_contenido(){
-	return objetoMapa->nombre;
+	return this->objetoMapa->nombre+string(",")+this->nombreJugador;
 }
 
 void Personaje::set_posicion(Posicion pos){

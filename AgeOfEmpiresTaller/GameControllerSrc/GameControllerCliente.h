@@ -13,6 +13,8 @@ class GameControllerCliente:public GameController  {
 public:
 	GameControllerCliente();
 	~GameControllerCliente();
+	string nombreJugador() ;
+	string ipJugador() ;
 	void insertarModelo(Modelo* modelo);
 	void setMapa(int ancho, int largo);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,

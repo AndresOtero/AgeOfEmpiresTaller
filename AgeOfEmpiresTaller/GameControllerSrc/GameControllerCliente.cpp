@@ -15,7 +15,14 @@ GameControllerCliente::GameControllerCliente() {
 GameControllerCliente::~GameControllerCliente() {
 	// TODO Auto-generated constructor stub
 }
-
+string GameControllerCliente::nombreJugador() {
+	return this->modelo->nombreJugador();
+	// TODO Auto-generated constructor stub
+}
+string GameControllerCliente::ipJugador() {
+	return this->modelo->ipJugador();
+	// TODO Auto-generated constructor stub
+}
 void GameControllerCliente::cambiar_destino_personaje( double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(mov_x,mov_y);
 	this->modelo->getIdCliente();
