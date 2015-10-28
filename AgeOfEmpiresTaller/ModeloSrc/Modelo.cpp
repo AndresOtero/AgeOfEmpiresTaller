@@ -431,6 +431,8 @@ recurso_t Modelo::generarRecursoRandom(Posicion pos){
 int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 	Entidad* entidad;
 	ObjetoMapa * objeto = this->juego->tipos[nombre];
+	if (!objeto)
+		printf("ERROR\n");
 	if (objeto->nombre.compare("oro") == 0)
 		entidad = new Oro(objeto, x, y);
 	else if (objeto->nombre.compare("piedra") == 0)
@@ -439,12 +441,11 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 		entidad = new Madera(objeto, x, y);
 	else
 		entidad = new Entidad(objeto, x, y);
+	printf("creo entidad\n");
 	//para poder agregar con el dato exacto
 	this->mapa->posicionarEntidad(entidad);
-	int size = this->juego->escenario->entidades.size();
-	this->juego->escenario->entidades.resize(size+1);
-	this->juego->escenario->entidades[size]=entidad;
-	if (cantidad!=0){
+	this->juego->escenario->entidades.push_back(entidad);
+	if (entidad->esUnRecurso()){
 			((Recurso *)entidad)->setRecurso(cantidad);
 			return ((Recurso *)entidad)->obtenerRecurso();
 	}

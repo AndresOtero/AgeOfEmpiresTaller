@@ -32,7 +32,7 @@ void GameControllerServer::agregarCliente(string name,string tipo){
 	//seteo mensaje
 	msg_t mensaje;
 	mensaje.type = NUEVO_PERSONAJE;
-	strcpy(mensaje.paramNombre,string_to_char_array(tipo));
+	memcpy(mensaje.paramNombre,string_to_char_array(tipo),sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
 	mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
@@ -84,7 +84,7 @@ void GameControllerServer::inicializacion(){
 	for (; it != entidades.end(); ++it) {
 		msg_t entidad;
 		Entidad* ent = (*it);
-		strcpy(entidad.paramNombre,string_to_char_array(ent->objetoMapa->nombre));
+		memcpy(entidad.paramNombre,string_to_char_array(ent->objetoMapa->nombre),sizeof(entidad.paramNombre));
 		entidad.paramDouble1 = ent->posicion->getX();
 		entidad.paramDouble2 = ent->posicion->getY();
 		if (ent->esUnRecurso()){
@@ -109,7 +109,7 @@ void GameControllerServer::generarRecursoRandom(){
 		mensaje.type = CREAR_RECURSO;
 		//
 		//strcpy funciona???
-		strcpy(mensaje.paramNombre, string_to_char_array(tipo.nombre));
+		memcpy(mensaje.paramNombre,string_to_char_array(tipo.nombre),sizeof(mensaje.paramNombre));
 		mensaje.paramInt1 = tipo.cantidad;
 		mensaje.paramDouble1 = pos.getX();
 		mensaje.paramDouble2 = pos.getY();
@@ -122,7 +122,7 @@ void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant){
 	this->agregarEntidad(nombre,x,y,cant);
 	msg_t mensaje;
 	mensaje.type=CREAR_ENTIDAD;
-	strcpy(mensaje.paramNombre,string_to_char_array(nombre));
+	memcpy(mensaje.paramNombre,string_to_char_array(nombre),sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = cant;
 	mensaje.paramDouble1 = x;
 	mensaje.paramDouble2 = y;
@@ -141,7 +141,7 @@ void GameControllerServer::actualizar(){
 				//creo mensaje y guardo
 				msg_t mensaje;
 				mensaje.type = MOVER_PERSONAJE;
-				strcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()));
+				memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),sizeof(mensaje.paramNombre));
 				mensaje.paramDouble1 = mov_x;
 				mensaje.paramDouble2 = mov_y;
 
