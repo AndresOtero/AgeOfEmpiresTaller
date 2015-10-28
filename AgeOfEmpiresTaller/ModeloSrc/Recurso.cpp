@@ -21,6 +21,9 @@ Recurso::Recurso(ObjetoMapa* objetoMapa,int x , int y): Entidad( objetoMapa,x,y)
 int Recurso::obtenerRecurso(){
 	return this->cantidad;
 }
+void Recurso::setRecurso(int cantidad){
+	this->cantidad=cantidad;
+}
 
 Recurso::~Recurso() {
 	// TODO Auto-generated destructor stub

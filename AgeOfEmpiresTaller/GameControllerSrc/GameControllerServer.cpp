@@ -18,10 +18,17 @@ void GameControllerServer::agregarCliente(string tipo){
 	ObjetoMapa* obj=this->juego->tipos[tipo];
 	Personaje* personaje =new Personaje(obj);
 	int id =this->modelo->crearPersonajeServer(personaje);
-	//mandarle el id y el personaje a todos los clientes
-	//this->modelo->crearPersonajeCliente(personaje);
-	//Setear Ḿodelo del que lo mando
-	//this->modelo->setearPersonajeCliente(id,personaje->get_posicion())
+
+	//seteo mensaje
+	msg_t mensaje;
+	mensaje.type = NUEVO_PERSONAJE;
+	strcpy(mensaje.paramNombre,tipo.c_str());
+	mensaje.paramInt1 = id;
+	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
+	mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
+
+	this->agregarMensaje(mensaje);
+	//dsps deberian sacarlo y mandarlo a todos
 }
 
 void GameControllerServer::desconectar(string Id){
@@ -40,8 +47,17 @@ void GameControllerServer::actualizar(){
 			for (; it != personajes.end(); ++it) {
 				Personaje* p = (*it);
 				double mov_x=p->get_posicion().get_x_exacta();
-				double mov_y=p->get_posicion().get_x_exacta();
-					//Para todos los clientes
+				double mov_y=p->get_posicion().get_y_exacta();
+
+				//creo mensaje y guardo
+				msg_t mensaje;
+				mensaje.type = MOVER_PERSONAJE;
+				mensaje.paramDouble1 = mov_x;
+				mensaje.paramDouble2 = mov_y;
+				mensaje.paramInt1 = p->getId();
+
+				this->agregarMensaje(mensaje);
+				//Para todos los clientes
 
 					 //void cambiar_destino_personaje(int p->getId(), double mov_x,double mov_y);
 

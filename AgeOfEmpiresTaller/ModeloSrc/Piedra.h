@@ -13,7 +13,9 @@
 class Piedra: public Recurso {
 public:
 	Piedra(ObjetoMapa* objetomapa):Recurso(objetomapa) {};
-	Piedra(ObjetoMapa* objetomapa,int x, int y):Recurso(objetomapa, x, y){};
+	Piedra(ObjetoMapa* objetomapa, int x, int y) :
+			Recurso(objetomapa, x, y) {
+	};
 	void recolectar(RecursosJugador* recusos);
 	virtual ~Piedra();
 };

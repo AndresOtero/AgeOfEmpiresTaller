@@ -266,7 +266,8 @@ bool Vista::run() {
 				Posicion p=Posicion(personaje_x,personaje_y);
 				//le envia al server que cambie el destino
 				if(this->modelo->devolverPersonajeSeleccionado()->getNombreJugador()==this->modelo->nombreJugador())
-				{this->gameController->cambiar_destino_personaje(personaje_x,
+				{
+				this->gameController->cambiar_destino_personaje(personaje_x,
 						personaje_y);
 				}
 				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);

@@ -100,15 +100,9 @@ void Modelo::actualizarMapa(){
 		Personaje* p = (*it);
 		mover_personaje(p);
 	}
-	struct timeval actual;
-	gettimeofday(&actual,NULL);
-	double ti = estado.tv_sec+(estado.tv_usec/1000000.0);
-	double tf = actual.tv_sec+(actual.tv_usec/1000000.0);
-	double tiempo = tf - ti;
-	if (tiempo>RITMO){
-		this->generarRecursoRandom();
-		gettimeofday(&estado,NULL);
-	}
+	Posicion pos =this->mapa->posicionVacia();
+	this->generarRecursoRandom(pos);
+
 }
 
 Personaje* Modelo::devolverPersonajeSeleccionado(){
@@ -391,18 +385,27 @@ int Modelo::get_ancho_mapa(){
 	return mapa->getAncho();
 }
 
+
 //server
-void Modelo::generarRecursoRandom(){
-	Posicion pos;
+recurso_t Modelo::generarRecursoRandom(Posicion pos){
+	//el tiempo de creacion lo tendria que hacer el server
+	//struct timeval actual;
+	//gettimeofday(&actual, NULL);
+	//double ti = estado.tv_sec + (estado.tv_usec / 1000000.0);
+	//double tf = actual.tv_sec + (actual.tv_usec / 1000000.0);
+	//double tiempo = tf - ti;
 	GeneradorNumeros num;
-	if (this->totalRecursos+1>MAX_RECURSOS){
-		return;
+	recurso_t recurso;
+	if ((this->totalRecursos+1>MAX_RECURSOS))/* || (tiempo < RITMO))*/{
+		recurso.nombre="";
+		recurso.cantidad=0;
+		return recurso;
 	}
-	pos = this->mapa->posicionVacia();
 	int x = pos.getX();
 	int y = pos.getY();
 	string nombre;
-	switch (num.numeroRandom(0,3)){
+	int numero = num.numeroRandom(0,3);
+	switch (numero){
 		case 0:
 			nombre="oro";
 			break;
@@ -414,13 +417,17 @@ void Modelo::generarRecursoRandom(){
 			break;
 	}
 
-	this->agregarEntidad(nombre,x,y);
+	int cantidad = this->agregarEntidad(nombre,x,y,0);
+	recurso.cantidad = cantidad;
+	recurso.nombre = nombre;
 	this->totalRecursos++;
+	//gettimeofday(&estado,NULL);
+	return recurso;
 
 }
 
 //cliente
-void Modelo::agregarEntidad(string nombre,int x, int y){
+int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 	Entidad* entidad;
 	ObjetoMapa * objeto = this->juego->tipos[nombre];
 	if (objeto->nombre.compare("oro") == 0)
@@ -431,10 +438,16 @@ void Modelo::agregarEntidad(string nombre,int x, int y){
 		entidad = new Madera(objeto, x, y);
 	else
 		entidad = new Entidad(objeto, x, y);
+	//para poder agregar con el dato exacto
 	this->mapa->posicionarEntidad(entidad);
 	int size = this->juego->escenario->entidades.size();
 	this->juego->escenario->entidades.resize(size+1);
 	this->juego->escenario->entidades[size]=entidad;
+	if (cantidad!=0){
+			((Recurso *)entidad)->setRecurso(cantidad);
+			return ((Recurso *)entidad)->obtenerRecurso();
+	}
+	return 0;
 }
 //	Personaje* persona = new Personaje(objeto,pos.get_x_exacta(),pos.get_y_exacta());
 void Modelo::crearPersonajeCliente(Personaje* personaje){

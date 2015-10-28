@@ -23,14 +23,21 @@ string GameControllerCliente::ipJugador() {
 	return this->modelo->ipJugador();
 	// TODO Auto-generated constructor stub
 }
-void GameControllerCliente::cambiar_destino_personaje( double mov_x,double mov_y){
-	this->modelo->cambiar_destino_personaje(mov_x,mov_y);
-	this->modelo->getIdCliente();
+
+
+void GameControllerCliente::cambiar_destino_personaje(int id, double mov_x,double mov_y){
+
 	msg_t mensaje;
 	mensaje.type = MOVER_PERSONAJE;
-	//bla bla
+	mensaje.paramInt1 = id;
+	mensaje.paramDouble1 = mov_x;
+	mensaje.paramDouble2 = mov_y;
 	this->agregarMensaje(mensaje);
-	//interprete
+
+}
+
+void GameControllerCliente::mover_personaje(int id,double mov_x,double mov_y){
+	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 
 Personaje* GameControllerCliente::conectarme(string str, int x,int y){

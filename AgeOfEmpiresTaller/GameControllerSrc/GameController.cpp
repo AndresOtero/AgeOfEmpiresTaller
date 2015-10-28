@@ -29,8 +29,8 @@ void GameController::setConfiguracion(int margenScroll,int velocidad_personaje){
 	this->juego->setConfiguracion(margenScroll,velocidad_personaje);
 
 }
-void GameController::agregarEntidad(string nombre,int x, int y){
-	this->modelo->agregarEntidad(nombre,x,y);
+void GameController::agregarEntidad(string nombre,int x, int y,int cantidad){
+	this->modelo->agregarEntidad(nombre,x,y,cantidad);
 }
 
 void GameController::crearModelo(){
@@ -43,14 +43,30 @@ Modelo* GameController::devolverModelo(){
 
  void GameController::cambiar_destino_personaje(int id ,double mov_x,double mov_y){
 		this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);
- }
- void GameController::generarRecursoRandom(){
-	this->modelo->generarRecursoRandom();
 }
+
+ void GameController::generarRecursoRandom(){
+	Posicion pos = this->modelo->mapa->posicionVacia();
+	recurso_t tipo = this->modelo->generarRecursoRandom(pos);
+	//creacion mensaje si creo recurso
+	if (tipo.cantidad > 0) {
+		msg_t mensaje;
+		mensaje.type = CREAR_RECURSO;
+		//
+		//strcpy funciona???
+		strcpy(mensaje.paramNombre, tipo.nombre.c_str());
+		mensaje.paramInt1 = tipo.cantidad;
+		mensaje.paramDouble1 = pos.getX();
+		mensaje.paramDouble2 = pos.getY();
+		this->agregarMensaje(mensaje);
+	}
+}
+
 void GameController::eliminarEntidad(int id){
 	this->modelo->eliminarEntidadPorID(id);
 
 }
+
 bool GameController::hayEventos(){
 	return !this->cola.empty();
 }
@@ -65,6 +81,13 @@ void GameController::agregarMensaje(msg_t mensaje){
 	this->cola.push(mensaje);
 }
 
-void GameController::reconectar(string id){}
-void GameController::desconectar(string Id){}
+void GameController::reconectar(int id){
+	//necesito int id ??
+	this->modelo->descongelarPersonaje(id);
+}
+
+void GameController::desconectar(int id){
+	this->modelo->congelarPersonaje(id);
+}
+
 void GameController::actualizar(){}

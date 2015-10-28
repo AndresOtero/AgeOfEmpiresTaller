@@ -19,7 +19,6 @@ public:
 			vector<vector<dibujo_t>> tiles);
 	void conectar();
 	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
-	void generarRecursoRandom();
 	void eliminarEntidad(int id);
 
 	//server

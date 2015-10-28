@@ -17,6 +17,12 @@ using namespace std;
 #ifndef MODELO_H_
 #define MODELO_H_
 
+typedef struct{
+	string nombre;
+	int cantidad;
+}recurso_t;
+
+
 class Modelo {
 	int id;
 	Personaje* personaje_seleccionado;
@@ -51,12 +57,12 @@ public:
 	void congelarPersonaje(int id);
 	void descongelarPersonaje(int id);
 	void actualizarMapa();
-	void generarRecursoRandom();
+	recurso_t generarRecursoRandom(Posicion pos);
 	bool estaSeleccionada(int x,int y);
 	//cliente
 	void ubicarPersonaje(int idPersonaje,Posicion pos);
 	void actualizarRecursos(int oro,int madera,int piedra);
-	void agregarEntidad(string nombre,int x, int y);
+	int agregarEntidad(string nombre,int x, int y,int cantidad);
 
 	~Modelo();
 	void agregarPersonajeCliente(Personaje* personaje);
