@@ -59,6 +59,7 @@ public:
 	void actualizarMapa();
 	recurso_t generarRecursoRandom(Posicion pos);
 	bool estaSeleccionada(int x,int y);
+	vector<Entidad*> obtenerEntidadesDeInicializacion();
 	//cliente
 	void ubicarPersonaje(int idPersonaje,Posicion pos);
 	void actualizarRecursos(int oro,int madera,int piedra);

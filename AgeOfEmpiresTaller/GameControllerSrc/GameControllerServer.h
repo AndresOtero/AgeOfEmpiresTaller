@@ -21,6 +21,7 @@ public:
 	void cambiar_destino_personaje(string id, double mov_x, double mov_y);
 	void eliminarEntidad(int id);
 	void agregarEntidad(string nombre,int x, int y, int cant);
+	void inicializacion();
 	//server
 	void reconectar(std::string id);
 	void desconectar(std::string id);

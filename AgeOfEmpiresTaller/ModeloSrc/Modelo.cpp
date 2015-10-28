@@ -322,9 +322,8 @@ void Modelo::congelarPersonaje(string id){
 			if(p->getNombreJugador()==id){
 				p->congelar();			}
 		}
-
-
 }
+
 void Modelo::descongelarPersonaje(string id){
 	vector<Personaje*>::iterator it = personajes.begin();
 		for (; it != personajes.end(); ++it) {
@@ -332,9 +331,13 @@ void Modelo::descongelarPersonaje(string id){
 			if(p->getNombreJugador()==id){
 				p->descongelar();			}
 		}
-
-
 }
+
+vector<Entidad*> Modelo::obtenerEntidadesDeInicializacion(){
+	return 	this->juego->escenario->entidades;
+}
+
+
 //cliente
 //elimino una entidad con un solo parametro
 void Modelo::eliminarEntidadPorID(int id){
