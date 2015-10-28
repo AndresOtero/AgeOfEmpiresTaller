@@ -24,18 +24,16 @@ public:
 	void generarRecursoRandom();
 	void eliminarEntidad(int id);
 	void mover_personaje(string id, double mov_x,double mov_y);
-	void actualizarJuego(string evento);
+
 	//Cliente
 	void agregarEntidad(string nombre,int x,int y,int cant);
 	void cambiar_destino_personaje(double mov_x, double mov_y);
 	void conectarCliente(string name,string str, int x,int y);
 	Personaje* conectarme(string name,string str, int x,int y);
-	void setearModelo(int id, double pos_x, double pos_y);
+	//void setearPosicionPersonaje(int id,double pos_x,double pos_y);
 	void reconectar(string id);
 	void desconectar(string Id);
 	char* string_to_char_array(string str);
-
-
 
 };
 
