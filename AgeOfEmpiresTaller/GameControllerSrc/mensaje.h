@@ -21,7 +21,12 @@ enum MensajeType {
 	NUEVO_PERSONAJE,/*params name, id, pos_x,pos_y*/
 	CREAR_ENTIDAD, /*name tipo, pos_x, pos_y*/
 	CREAR_RECURSO,/*name tipo,int cantidad,pos_x,pos_y*/
+	FIN_INICIALIZACION,
+	PARAM_MAPA,
+	CONFIGURACION,
+	DISCONNECT,
 };
+
 typedef struct {
 	MensajeType type;
 	char paramNombre[PARAM_STRING_LEN];

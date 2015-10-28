@@ -52,21 +52,54 @@ void GameControllerServer::reconectar(string Id){
 void GameControllerServer::cambiar_destino_personaje(string id, double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
-
+bool GameControllerServer::hayEventosInicializacion(){
+	return !this->colaInicializacion.empty();
+}
+void GameControllerServer::agregarEventoInicializacion(msg_t mensaje){
+	this->colaInicializacion.push(mensaje);
+}
+msg_t GameControllerServer::nextEventoInicializacion(){
+	msg_t mensaje = this->colaInicializacion.front();
+	this->colaInicializacion.pop();
+	return mensaje;
+}
 void GameControllerServer::inicializacion(){
-	this->modelo->get_alto_mapa();
-	this->modelo->get_ancho_mapa();
+
+	printf("gameCS inici\n");
+	msg_t mapa;
+	mapa.type = PARAM_MAPA;
+	mapa.paramDouble1 = this->modelo->get_ancho_mapa();
+	mapa.paramDouble2 = this->modelo->get_alto_mapa();
+	printf("agregamapa\n");
+	agregarEventoInicializacion(mapa);
+
+	msg_t conf;
+	conf.type = CONFIGURACION;
+	conf.paramDouble1 = this->modelo->juego->conf->get_margen_scroll();
+	conf.paramDouble2 =  this->modelo->juego->conf->get_vel_personaje();
+	agregarEventoInicializacion(conf);
+
 	vector<Entidad*> entidades= this->modelo->obtenerEntidadesDeInicializacion();
 	vector<Entidad*>::iterator it = entidades.begin();
 	for (; it != entidades.end(); ++it) {
+		msg_t entidad;
 		Entidad* ent = (*it);
-		string nombre = ent->objetoMapa->nombre;
-		int x =ent->posicion->getX();
-		int y =ent->posicion->getY();
-
+		strcpy(entidad.paramNombre,string_to_char_array(ent->objetoMapa->nombre));
+		entidad.paramDouble1 = ent->posicion->getX();
+		entidad.paramDouble2 = ent->posicion->getY();
+		if (ent->esUnRecurso()){
+			int cant = ((Recurso*)ent)->obtenerRecurso();
+			entidad.paramInt1 = cant;
+			entidad.type = CREAR_RECURSO;
+		}else{
+			entidad.type = CREAR_ENTIDAD;
+		}
+		agregarEventoInicializacion(entidad);
+		printf("agrega entidad\n");
 	}
-
+	printf("sale\n");
 }
+
 void GameControllerServer::generarRecursoRandom(){
 	Posicion pos = this->modelo->mapa->posicionVacia();
 	recurso_t tipo = this->modelo->generarRecursoRandom(pos);
