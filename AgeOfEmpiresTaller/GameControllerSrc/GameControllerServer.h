@@ -31,7 +31,6 @@ public:
 	//void desconectar(int id);
 	void actualizar();
 	char* string_to_char_array(string str);
-
 };
 
 #endif /* GAMECONTROLLERSRC_GAMECONTROLLERSERVER_H_ */
