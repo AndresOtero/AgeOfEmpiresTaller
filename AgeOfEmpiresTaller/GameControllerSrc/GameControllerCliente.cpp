@@ -16,11 +16,11 @@ GameControllerCliente::~GameControllerCliente() {
 	// TODO Auto-generated constructor stub
 }
 
-void GameControllerCliente::cambiar_destino_personaje( double mov_x,double mov_y){
+void GameControllerCliente::cambiar_destino_personaje(int id, double mov_x,double mov_y){
 
 	msg_t mensaje;
 	mensaje.type = MOVER_PERSONAJE;
-	//mensaje.paramInt1 = id;
+	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = mov_x;
 	mensaje.paramDouble2 = mov_y;
 	this->agregarMensaje(mensaje);
@@ -28,7 +28,7 @@ void GameControllerCliente::cambiar_destino_personaje( double mov_x,double mov_y
 }
 
 void GameControllerCliente::mover_personaje(int id,double mov_x,double mov_y){
-	this->cambiar_destino_personaje(id,mov_x,mov_y);
+	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 
 Personaje* GameControllerCliente::conectarme(string str, int x,int y){

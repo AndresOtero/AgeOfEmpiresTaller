@@ -265,6 +265,7 @@ bool Vista::run() {
 						personaje_y);
 
 				//le envia al server que cambie el destino
+				//PASAR ID PERSONAJEEE!!!!!!!!!!!
 				this->gameController->cambiar_destino_personaje(personaje_x,
 						personaje_y);
 				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);

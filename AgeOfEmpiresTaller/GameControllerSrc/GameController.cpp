@@ -52,6 +52,7 @@ Modelo* GameController::devolverModelo(){
 	if (tipo.cantidad > 0) {
 		msg_t mensaje;
 		mensaje.type = CREAR_RECURSO;
+		//
 		//strcpy funciona???
 		strcpy(mensaje.paramNombre, tipo.nombre.c_str());
 		mensaje.paramInt1 = tipo.cantidad;
@@ -65,6 +66,7 @@ void GameController::eliminarEntidad(int id){
 	this->modelo->eliminarEntidadPorID(id);
 
 }
+
 bool GameController::hayEventos(){
 	return !this->cola.empty();
 }
@@ -79,6 +81,13 @@ void GameController::agregarMensaje(msg_t mensaje){
 	this->cola.push(mensaje);
 }
 
-void GameController::reconectar(string id){}
-void GameController::desconectar(string Id){}
+void GameController::reconectar(int id){
+	//necesito int id ??
+	this->modelo->descongelarPersonaje(id);
+}
+
+void GameController::desconectar(int id){
+	this->modelo->congelarPersonaje(id);
+}
+
 void GameController::actualizar(){}
