@@ -7,6 +7,15 @@
 
 #include "GameControllerServer.h"
 
+char* GameControllerServer::string_to_char_array(string str){
+	int str_size = str.size();
+	char charArray[PARAM_STRING_LEN];
+	for (int a = 0; a <= str_size; a++) {
+		charArray[a] = str[a];
+	}
+	return charArray;
+}
+
 GameControllerServer::GameControllerServer() {
 	// TODO Auto-generated constructor stub
 }
@@ -23,7 +32,7 @@ void GameControllerServer::agregarCliente(string name,string tipo){
 	//seteo mensaje
 	msg_t mensaje;
 	mensaje.type = NUEVO_PERSONAJE;
-	strcpy(mensaje.paramNombre,tipo.c_str());
+	strcpy(mensaje.paramNombre,string_to_char_array(tipo));
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
 	mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
@@ -48,7 +57,7 @@ void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant){
 	this->agregarEntidad(nombre,x,y,cant);
 	msg_t mensaje;
 	mensaje.type=CREAR_ENTIDAD;
-	//strcpy TODO
+	strcpy(mensaje.paramNombre,string_to_char_array(nombre));
 	mensaje.paramInt1 = cant;
 	mensaje.paramDouble1 = x;
 	mensaje.paramDouble2 = y;
@@ -67,9 +76,10 @@ void GameControllerServer::actualizar(){
 				//creo mensaje y guardo
 				msg_t mensaje;
 				mensaje.type = MOVER_PERSONAJE;
+				strcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()));
 				mensaje.paramDouble1 = mov_x;
 				mensaje.paramDouble2 = mov_y;
-				mensaje.paramInt1 = p->getId();
+
 
 				this->agregarMensaje(mensaje);
 				//Para todos los clientes

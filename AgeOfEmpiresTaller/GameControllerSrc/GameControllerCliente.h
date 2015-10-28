@@ -35,6 +35,7 @@ public:
 	void reconectar(int Id);
 	void reconectar(string id);
 	void desconectar(string Id);
+	char* string_to_char_array(string str);
 
 
 
