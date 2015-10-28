@@ -8,16 +8,12 @@
 #include "GameController.h"
 
 GameController::GameController() {
-	// TODO Auto-generated constructor stub
 }
 GameController::~GameController() {
-	// TODO Auto-generated constructor stub
 	delete modelo;
 	delete juego;
 }
-
 void GameController::insertarJuego(Juego* juego) {
-	// TODO Auto-generated constructor stub
 	this->juego=juego;
 }
 
@@ -34,7 +30,6 @@ void GameController::agregarEntidad(string nombre,int x, int y,int cantidad){
 }
 
 void GameController::crearModelo(){
-	//luego de setearlo
 	this->modelo=new Modelo(juego);
 }
 Modelo* GameController::devolverModelo(){
@@ -45,34 +40,26 @@ Modelo* GameController::devolverModelo(){
 		this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);
 }
 
-
-
 void GameController::eliminarEntidad(int id){
 	this->modelo->eliminarEntidadPorID(id);
-
 }
-
 bool GameController::hayEventos(){
 	return !this->cola.empty();
 }
-
 msg_t GameController::sacarMensaje(){
 	msg_t mensaje = this->cola.front();
 	this->cola.pop();
 	return mensaje;
 }
-
 void GameController::agregarMensaje(msg_t mensaje){
 	this->cola.push(mensaje);
 }
-
 void GameController::reconectar(string id){
-	//necesito int id ??
 	this->modelo->descongelarPersonaje(id);
 }
-
 void GameController::desconectar(string id){
 	this->modelo->congelarPersonaje(id);
 }
-
-void GameController::actualizar(){}
+void GameController::actualizar(){
+	//virtual
+}
