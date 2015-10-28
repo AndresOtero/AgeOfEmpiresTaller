@@ -54,8 +54,8 @@ public:
 
 	//server
 	void actualizarRecursosServer(int id ,int oro,int madera,int piedra);
-	void congelarPersonaje(int id);
-	void descongelarPersonaje(int id);
+	void congelarPersonaje(string id);
+	void descongelarPersonaje(string id);
 	void actualizarMapa();
 	recurso_t generarRecursoRandom(Posicion pos);
 	bool estaSeleccionada(int x,int y);

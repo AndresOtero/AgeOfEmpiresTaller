@@ -81,12 +81,12 @@ void GameController::agregarMensaje(msg_t mensaje){
 	this->cola.push(mensaje);
 }
 
-void GameController::reconectar(int id){
+void GameController::reconectar(string id){
 	//necesito int id ??
 	this->modelo->descongelarPersonaje(id);
 }
 
-void GameController::desconectar(int id){
+void GameController::desconectar(string id){
 	this->modelo->congelarPersonaje(id);
 }
 

@@ -294,12 +294,12 @@ bool Vista::run() {
 				return true;
 			case SDLK_c:
 				if (modelo->devolverPersonajeSeleccionado()) {
-					modelo->congelarPersonaje(modelo->getIdCliente());
+					modelo->congelarPersonaje(modelo->nombreJugador());
 				}
 				break;
 			case SDLK_d:
 				if (modelo->devolverPersonajeSeleccionado()) {
-					modelo->descongelarPersonaje(modelo->getIdCliente());
+					modelo->descongelarPersonaje(modelo->nombreJugador());
 				}
 				break;
 			}

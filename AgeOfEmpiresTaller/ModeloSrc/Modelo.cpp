@@ -315,21 +315,21 @@ void Modelo::eliminarEntidad(Entidad * entidad){
 	//falta sacarla de memoria
 }
 
-void Modelo::congelarPersonaje(int id){
+void Modelo::congelarPersonaje(string id){
 	vector<Personaje*>::iterator it = personajes.begin();
 		for (; it != personajes.end(); ++it) {
 			Personaje* p = (*it);
-			if(p->getId()==id){
+			if(p->getNombreJugador()==id){
 				p->congelar();			}
 		}
 
 
 }
-void Modelo::descongelarPersonaje(int id){
+void Modelo::descongelarPersonaje(string id){
 	vector<Personaje*>::iterator it = personajes.begin();
 		for (; it != personajes.end(); ++it) {
 			Personaje* p = (*it);
-			if(p->getId()==id){
+			if(p->getNombreJugador()==id){
 				p->descongelar();			}
 		}
 

@@ -31,8 +31,6 @@ public:
 	void conectarCliente(string name,string str, int x,int y);
 	Personaje* conectarme(string name,string str, int x,int y);
 	void setearModelo(int id, double pos_x, double pos_y);
-	void desconectar(int Id);
-	void reconectar(int Id);
 	void reconectar(string id);
 	void desconectar(string Id);
 

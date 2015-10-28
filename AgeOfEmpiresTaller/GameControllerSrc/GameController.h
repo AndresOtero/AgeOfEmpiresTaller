@@ -38,10 +38,8 @@ public:
 	void eliminarEntidad(int id);
 
 	//Red
-	void reconectar(int id);
 	void reconectar(string id);
 	void desconectar(string Id);
-	void desconectar(int Id);
 	void actualizar();
 	int get_id(int id);
 	~GameController();
