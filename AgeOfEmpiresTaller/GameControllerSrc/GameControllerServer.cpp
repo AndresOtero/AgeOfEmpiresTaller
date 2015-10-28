@@ -53,6 +53,20 @@ void GameControllerServer::cambiar_destino_personaje(string id, double mov_x,dou
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 
+void GameControllerServer::inicializacion(){
+	this->modelo->get_alto_mapa();
+	this->modelo->get_ancho_mapa();
+	vector<Entidad*> entidades= this->modelo->obtenerEntidadesDeInicializacion();
+	vector<Entidad*>::iterator it = entidades.begin();
+	for (; it != entidades.end(); ++it) {
+		Entidad* ent = (*it);
+		string nombre = ent->objetoMapa->nombre;
+		int x =ent->posicion->getX();
+		int y =ent->posicion->getY();
+
+	}
+
+}
 void GameControllerServer::generarRecursoRandom(){
 	Posicion pos = this->modelo->mapa->posicionVacia();
 	recurso_t tipo = this->modelo->generarRecursoRandom(pos);
