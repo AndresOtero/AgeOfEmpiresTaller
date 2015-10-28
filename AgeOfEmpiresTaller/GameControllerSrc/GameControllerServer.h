@@ -26,6 +26,7 @@ public:
 	void desconectar(std::string id);
 	//void reconectar(int id);
 	void agregarCliente(string name,string tipo);
+	void generarRecursoRandom();
 	//void desconectar(int id);
 	void actualizar();
 	char* string_to_char_array(string str);

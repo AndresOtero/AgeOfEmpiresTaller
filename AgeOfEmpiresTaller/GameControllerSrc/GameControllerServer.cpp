@@ -53,6 +53,24 @@ void GameControllerServer::cambiar_destino_personaje(string id, double mov_x,dou
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 
+void GameControllerServer::generarRecursoRandom(){
+	Posicion pos = this->modelo->mapa->posicionVacia();
+	recurso_t tipo = this->modelo->generarRecursoRandom(pos);
+	//creacion mensaje si creo recurso
+	if (tipo.cantidad > 0) {
+		msg_t mensaje;
+		mensaje.type = CREAR_RECURSO;
+		//
+		//strcpy funciona???
+		strcpy(mensaje.paramNombre, string_to_char_array(tipo.nombre));
+		mensaje.paramInt1 = tipo.cantidad;
+		mensaje.paramDouble1 = pos.getX();
+		mensaje.paramDouble2 = pos.getY();
+		this->agregarMensaje(mensaje);
+	}
+}
+
+
 void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant){
 	this->agregarEntidad(nombre,x,y,cant);
 	msg_t mensaje;
