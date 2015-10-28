@@ -17,10 +17,11 @@
 class GameController {
 protected:
 	Modelo* modelo;
-	Juego* juego;
+
 	queue <msg_t> cola;
 
 public:
+	Juego* juego;
 	GameController();
 	 //Setear el juego
 	 void insertarJuego(Juego* juego);

@@ -23,10 +23,10 @@ GameControllerCliente::GameControllerCliente() {
 GameControllerCliente::~GameControllerCliente() {
 }
 string GameControllerCliente::nombreJugador() {
-	return this->modelo->nombreJugador();
+	return this->juego->escenario->jugador->getNombre();
 }
 string GameControllerCliente::ipJugador() {
-	return this->modelo->ipJugador();
+	return this->juego->escenario->jugador->getIp();
 }
 
 
@@ -56,6 +56,10 @@ Personaje* GameControllerCliente::conectarme(string name,string str, int x,int y
 	this->modelo->crearPersonajeCliente(personaje);
 
 	return personaje;
+}
+
+void GameControllerCliente::setMapa(int ancho, int largo){
+	this->modelo->setMapa(largo,ancho);
 }
 
 void GameControllerCliente::conectarCliente(string name,string str, int x,int y){
