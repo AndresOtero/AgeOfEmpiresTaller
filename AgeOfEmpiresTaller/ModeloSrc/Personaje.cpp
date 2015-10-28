@@ -80,6 +80,7 @@ void Personaje::mover() {
 	double delta_y = (double) (y - referencia_mapa_y);
 	double distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
 	if (distancia != 0) {
+		se_movio=true;
 		if (distancia < velocidad) {
 			distancia = velocidad;
 		}
@@ -97,6 +98,8 @@ void Personaje::mover() {
 
 		this->referencia_mapa_x += des_x;
 		this->referencia_mapa_y += des_y;
+	}else{
+		se_movio=false;
 	}
 
 }

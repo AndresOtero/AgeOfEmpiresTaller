@@ -20,6 +20,7 @@ class Personaje {
 	Posicion destino;
 	Posicion camino;
 	bool congelado;
+	bool se_movio;
 	int id;
 	string nombreJugador;
 
@@ -41,6 +42,9 @@ public:
 	Posicion get_camino();
 	void setVelocidad(double velocidad) {
 		this->velocidad = velocidad;
+	}
+	bool seMovio(){
+		return se_movio;
 	}
 
 	void setDibujo(dibujo_t dibujo) {

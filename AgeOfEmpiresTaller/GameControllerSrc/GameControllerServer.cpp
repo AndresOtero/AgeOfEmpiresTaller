@@ -65,12 +65,10 @@ msg_t GameControllerServer::nextEventoInicializacion(){
 }
 void GameControllerServer::inicializacion(){
 
-	printf("gameCS inici\n");
 	msg_t mapa;
 	mapa.type = PARAM_MAPA;
 	mapa.paramDouble1 = this->modelo->get_ancho_mapa();
 	mapa.paramDouble2 = this->modelo->get_alto_mapa();
-	printf("agregamapa\n");
 	agregarEventoInicializacion(mapa);
 
 	msg_t conf;
@@ -95,9 +93,7 @@ void GameControllerServer::inicializacion(){
 			entidad.type = CREAR_ENTIDAD;
 		}
 		agregarEventoInicializacion(entidad);
-		printf("agrega entidad\n");
 	}
-	printf("sale\n");
 }
 
 void GameControllerServer::generarRecursoRandom(){
@@ -135,19 +131,24 @@ void GameControllerServer::actualizar(){
 	vector<Personaje*>::iterator it = personajes.begin();
 			for (; it != personajes.end(); ++it) {
 				Personaje* p = (*it);
-				double mov_x=p->get_posicion().get_x_exacta();
-				double mov_y=p->get_posicion().get_y_exacta();
+				printf("\n se movio ");
+				printf(p->seMovio() ? "true" : "false");
 
-				//creo mensaje y guardo
-				msg_t mensaje;
-				mensaje.type = MOVER_PERSONAJE;
-				memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),sizeof(mensaje.paramNombre));
-				mensaje.paramDouble1 = mov_x;
-				mensaje.paramDouble2 = mov_y;
+				if(p->seMovio()){
+					double mov_x=p->get_posicion().get_x_exacta();
+					double mov_y=p->get_posicion().get_y_exacta();
+
+					//creo mensaje y guardo
+					msg_t mensaje;
+					mensaje.type = MOVER_PERSONAJE;
+					memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),sizeof(mensaje.paramNombre));
+					mensaje.paramDouble1 = mov_x;
+					mensaje.paramDouble2 = mov_y;
 
 
 				this->agregarMensaje(mensaje);
+				printf("Encola: mover %d \n", mensaje.type);
 				//Para todos los clientes
-
+				}
 			}
 }

@@ -20,14 +20,14 @@ public:
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
 			vector<vector<dibujo_t>> tiles);
 
-	void cambiar_destino_personaje(string id, double mov_x,double mov_y);
+
 	void generarRecursoRandom();
 	void eliminarEntidad(int id);
 	void mover_personaje(string id, double mov_x,double mov_y);
 
 	//Cliente
 	void agregarEntidad(string nombre,int x,int y,int cant);
-	void cambiar_destino_personaje(double mov_x, double mov_y);
+	void cambiar_destino_personaje(string id, double mov_x, double mov_y);
 	void conectarCliente(string name,string str, int x,int y);
 	Personaje* conectarme(string name,string str, int x,int y);
 	//void setearPosicionPersonaje(int id,double pos_x,double pos_y);

@@ -268,7 +268,7 @@ bool Vista::run() {
 				if(this->modelo->devolverPersonajeSeleccionado()->getNombreJugador()==this->modelo->nombreJugador())
 				{
 
-				//	this->gameController->cambiar_destino_personaje(personaje_x, personaje_y);
+					this->gameController->cambiar_destino_personaje(this->gameController->nombreJugador() ,personaje_x, personaje_y);
 				}
 				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);
 			}
