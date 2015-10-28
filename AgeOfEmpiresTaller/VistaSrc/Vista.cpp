@@ -263,10 +263,13 @@ bool Vista::run() {
 						mov_y, personaje_x, personaje_y);
 				this->corregir_referencia_coordenadas_pantalla_mapa(personaje_x,
 						personaje_y);
-
+				Posicion p=Posicion(personaje_x,personaje_y);
 				//le envia al server que cambie el destino
-				//PASAR ID PERSONAJEEE!!!!!!!!!!!
-				//this->gameController->cambiar_destino_personaje(personaje_x,personaje_y);
+				if(this->modelo->devolverPersonajeSeleccionado()->getNombreJugador()==this->modelo->nombreJugador())
+				{
+
+				//	this->gameController->cambiar_destino_personaje(personaje_x, personaje_y);
+				}
 				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);
 			}
 			if (e.button.button == SDL_BUTTON_LEFT) {

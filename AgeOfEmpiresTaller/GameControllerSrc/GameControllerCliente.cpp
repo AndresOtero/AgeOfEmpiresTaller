@@ -15,6 +15,15 @@ GameControllerCliente::GameControllerCliente() {
 GameControllerCliente::~GameControllerCliente() {
 	// TODO Auto-generated constructor stub
 }
+string GameControllerCliente::nombreJugador() {
+	return this->modelo->nombreJugador();
+	// TODO Auto-generated constructor stub
+}
+string GameControllerCliente::ipJugador() {
+	return this->modelo->ipJugador();
+	// TODO Auto-generated constructor stub
+}
+
 
 void GameControllerCliente::cambiar_destino_personaje(int id, double mov_x,double mov_y){
 
@@ -47,6 +56,17 @@ void GameControllerCliente::conectarCliente(string str, int x,int y){
 void GameControllerCliente::setearModelo(int id,double pos_x,double pos_y){
 	Posicion pos=Posicion(pos_x,pos_y);
 	this->modelo->setearPersonajeCliente(id,pos);
+}
+void GameControllerCliente::agregarEntidad(string nombre,int x, int y, int cant){
+	this->modelo->agregarEntidad(nombre,x,y,cant);
+}
+
+void GameControllerCliente::desconectar(string id){
+
+}
+
+void GameControllerCliente::reconectar(string id){
+
 }
 /**
 void GameControllerCliente::desconectar(int Id){

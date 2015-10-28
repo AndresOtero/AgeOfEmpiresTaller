@@ -26,6 +26,8 @@ typedef struct{
 class Modelo {
 	int id;
 	Personaje* personaje_seleccionado;
+	Jugador* jugador;
+
 	vector<Personaje*> personajes;
 	vector<vector<int>> pisadas;
 	int idServer;
@@ -35,6 +37,8 @@ public:
 	Modelo(Juego* juego);
 	Juego* juego;
 	void setMapa(int largo,int ancho);
+	string nombreJugador();
+	string ipJugador();
 	void set_id(int i);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
 	dibujo_t dibujar(int dim,int x,int y);

@@ -11,6 +11,7 @@
 #include <map>
 #include "Entidad.h"
 #include "Personaje.h"
+#include "Jugador.h"
 
 using namespace std;
 class Escenario {
@@ -18,6 +19,7 @@ public:
 	Escenario();
 	Escenario(string nombre, int size_x, int size_y);
 	string nombre;
+	Jugador* jugador;
 	int size_x;
 	int size_y;
 	vector<Entidad*> entidades;

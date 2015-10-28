@@ -20,7 +20,7 @@ public:
 	void conectar();
 	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
 	void eliminarEntidad(int id);
-
+	void agregarEntidad(string nombre,int x, int y, int cant);
 	//server
 	void reconectar(std::string id);
 	void desconectar(std::string id);

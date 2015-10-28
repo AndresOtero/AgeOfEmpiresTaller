@@ -32,7 +32,7 @@ public:
 	 msg_t sacarMensaje();
 	 void agregarMensaje(msg_t mensaje);
 	 //Controlar
-	void agregarEntidad(string nombre, int x, int y,int cantidad);
+	virtual void agregarEntidad(string nombre, int x, int y,int cantidad);
 	virtual void cambiar_destino_personaje(int id, double mov_x, double mov_y);
 	void generarRecursoRandom();
 	void eliminarEntidad(int id);

@@ -42,6 +42,18 @@ void GameControllerServer::reconectar(string Id){
 void GameControllerServer::cambiar_destino_personaje(int id, double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
+
+void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant){
+	this->agregarEntidad(nombre,x,y,cant);
+	msg_t mensaje;
+	mensaje.type=CREAR_ENTIDAD;
+	//strcpy TODO
+	mensaje.paramInt1 = cant;
+	mensaje.paramDouble1 = x;
+	mensaje.paramDouble2 = y;
+	this->agregarMensaje(mensaje);
+
+}
 void GameControllerServer::actualizar(){
 	this->modelo->actualizarMapa();//mueven los tipitos
 	vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();

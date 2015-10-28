@@ -13,6 +13,8 @@ class GameControllerCliente:public GameController  {
 public:
 	GameControllerCliente();
 	~GameControllerCliente();
+	string nombreJugador() ;
+	string ipJugador() ;
 	void insertarModelo(Modelo* modelo);
 	void setMapa(int ancho, int largo);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
@@ -24,12 +26,13 @@ public:
 	void mover_personaje(int id, double mov_x,double mov_y);
 	void actualizarJuego(string evento);
 	//Cliente
+	void agregarEntidad(string nombre,int x,int y,int cant);
 	void cambiar_destino_personaje(double mov_x, double mov_y);
 	void conectarCliente(string tipo, int x, int y);
 	Personaje* conectarme(string tipo, int x, int y); //Acordarse inmediatamente despues setear
 	void setearModelo(int id, double pos_x, double pos_y);
-	//void desconectar(int Id);
-	//void reconectar(int Id);
+	void desconectar(int Id);
+	void reconectar(int Id);
 	void reconectar(string id);
 	void desconectar(string Id);
 

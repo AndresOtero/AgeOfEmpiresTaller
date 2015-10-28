@@ -32,6 +32,7 @@ Modelo::Modelo(Juego* juego) {
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 	this->personajes=vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
+	this->jugador=juego->escenario->jugador;
 	personaje_seleccionado=NULL;
 	this->insertarEntidades();
 	this->totalRecursos=0;
@@ -49,7 +50,12 @@ Modelo::Modelo(Juego* juego) {
 	//this->juego->escenario->protagonista->set_posicion(pos);
 
 }
-
+string Modelo::nombreJugador(){
+	return jugador->getNombre();
+}
+string Modelo::ipJugador(){
+	return jugador->getIp();
+}
 //llama server al agregar personaje
 void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 	Posicion pos = this->mapa->posicionVacia();
@@ -256,8 +262,12 @@ void Modelo::agregarPosicion(Posicion pos){
 
 //server
 Posicion Modelo::mover_personaje(Personaje* personaje){
+
 	Posicion destino= personaje->get_destino();
 	Posicion adonde_estoy= personaje->get_posicion();
+	if(personaje->estaCongelado()){
+		return adonde_estoy;
+	}
 	Posicion adonde_voy=calcular_camino(adonde_estoy,destino);
 	personaje->set_camino(adonde_voy);
 	personaje->mover();
@@ -344,7 +354,7 @@ void Modelo::eliminarEntidadPorID(int id){
 //cliente
 void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 	Personaje* personaje= 	this->devolverPersonajeSeleccionado();
-	if((personaje!=NULL)&&(personaje->getId()==this->getIdCliente())){
+	if((personaje!=NULL)){
 		//cambia su destino, deberia mandarlo hasta q llegue o camine a otro lado
 		personaje->set_destino(Posicion(mov_x,mov_y));
 	}
