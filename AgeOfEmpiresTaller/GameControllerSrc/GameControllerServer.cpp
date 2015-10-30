@@ -87,10 +87,6 @@ void GameControllerServer::inicializacion(){
 		memcpy(entidad.paramNombre,string_to_char_array(ent->objetoMapa->nombre),sizeof(entidad.paramNombre));
 		entidad.paramDouble1 = ent->posicion->getX();
 		entidad.paramDouble2 = ent->posicion->getY();
-		printf("Creo Entidad Server\n");
-		printf("Nombre: %s\n",entidad.paramNombre);
-		printf("x: %g\n",entidad.paramDouble1);
-		printf("y: %g\n",entidad.paramDouble2);
 
 		if (ent->esUnRecurso()){
 			int cant = ((Recurso*)ent)->obtenerRecurso();

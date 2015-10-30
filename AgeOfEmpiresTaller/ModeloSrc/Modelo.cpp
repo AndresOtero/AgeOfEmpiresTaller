@@ -417,7 +417,7 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 	Entidad* entidad;
 	ObjetoMapa * objeto = this->juego->tipos[nombre];
 	if (!objeto)
-		printf("ERROR\n");
+		return 0;
 	if (objeto->nombre.compare("oro") == 0)
 		entidad = new Oro(objeto, x, y);
 	else if (objeto->nombre.compare("piedra") == 0)
@@ -426,10 +426,6 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 		entidad = new Madera(objeto, x, y);
 	else
 		entidad = new Entidad(objeto, x, y);
-	printf("creo entidad\n");
-	printf("Nombre: %s\n",nombre.c_str());
-	printf("x: %d\n",x);
-	printf("y: %d\n",y);
 
 	this->mapa->posicionarEntidad(entidad);
 	this->juego->escenario->entidades.push_back(entidad);

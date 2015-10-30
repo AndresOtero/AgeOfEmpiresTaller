@@ -152,7 +152,7 @@ bool Textura::createBlank( int width, int height, SDL_TextureAccess access,SDL_R
     mTexture = SDL_CreateTexture( renderer, SDL_PIXELFORMAT_RGBA8888, access, width, height );
     if( mTexture == NULL )
     {
-        printf( "Unable to create blank texture! SDL Error: %s\n", SDL_GetError() );
+    	 LOG_WARNING << "Unable to create blank texture! SDL Error: %s\n", SDL_GetError() ;
     }
     else
     {

@@ -68,8 +68,6 @@ void GameControllerCliente::setMapa(int ancho, int largo){
 
 void GameControllerCliente::conectarCliente(string name,string str, int x,int y){
 	ObjetoMapa* obj= this->juego->tipos[str];
-	printf("Nombre Objeto: %s\n",obj->nombre.c_str());
-	printf("Imagen: %s\n",obj->imagen.c_str());
 
 	Personaje* personaje =new Personaje(obj,x,y);
 	personaje->setNombreJugador(name);
