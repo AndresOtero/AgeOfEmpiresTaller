@@ -85,7 +85,7 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 		colaInicializacion.push(entidad);
 
 	}
-	/**vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator iter = personajes.begin();
 		for (; iter != personajes.end(); iter++) {
 			msg_t msg_crear_personaje;
@@ -95,8 +95,8 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 			memcpy(msg_crear_personaje.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(msg_crear_personaje.paramNombre));
 			msg_crear_personaje.paramDouble1=pos.get_x_exacta();
 			msg_crear_personaje.paramDouble2=pos.get_y_exacta();
-			agregarEventoInicializacion(msg_crear_personaje);
-		}**/
+			colaInicializacion.push(msg_crear_personaje);
+		}
 	return colaInicializacion;
 
 }
