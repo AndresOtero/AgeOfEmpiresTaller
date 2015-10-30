@@ -20,7 +20,7 @@ public:
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
 			vector<vector<dibujo_t>> tiles);
 
-
+	void crearPersonaje(string nombre,double x, double y, int id);
 	void generarRecursoRandom();
 	void eliminarEntidad(int id);
 	void mover_personaje(string id, double mov_x,double mov_y);

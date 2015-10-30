@@ -127,19 +127,38 @@ bool Vista::loadMedia() {
 	std::map<std::string, ObjetoMapa*> ::iterator it;
 	std::map<std::string, dibujo_t> hashDibujos;
 
-	//***********DIBUJOS (TIPOS EN YAML)*****************
+	//***********DIBUJOS DINAMICOS *****************
 	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(ANIMACIONES);
 	for(int i=0;i<ANIMACIONES;i++){
 		v2d[i]={i*ANCHO_ANIMACION,0};
 	}
+	//***********DIBUJOS PERSONAJES *****************
+		vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
+		vector<vector<vector<dibujo_t>>> v3d=vector<vector<vector<dibujo_t>>>(8);
+		for (int i = 0; i < CANTIDAD_DE_MOVIMIENTOS; i++) {
+			v3d[i] = vector<vector<dibujo_t>>(CANTIDAD_DE_MOVIMIENTOS);
+			for (int j = 0; j < CANTIDAD_DE_IMAGENES; j++) {
+				vector<dibujo_t> v ={ j * ANCHO_PERSONAJE, i * ALTO_PERSONAJE, ANCHO_PERSONAJE, ALTO_PERSONAJE };
+				v3d[i][j]=v;
+			}
+		}
+		vector<int> imagenes= vector<int>(CANTIDAD_DE_MOVIMIENTOS,CANTIDAD_DE_IMAGENES);
+	//**************************************************
+		Personaje* protagonista = this->modelo->juego->escenario->protagonista;
+		Configuracion* configuracion = this->modelo->juego->conf;
 	for ( it = modelo->juego->tipos.begin(); it !=modelo->juego->tipos.end(); it++ )
 	{
 	     ObjetoMapa* tipo = it->second;
 	     vector<int> v1d ={tipo->pixelsReferencia->x,tipo->pixelsReferencia->y};
 	     if(tipo->fps == 0){
 	    	 this->factory->crear_dibujo_estatico(tipo->imagen,v1d);
-	     }else{
+	     }else if(tipo->delay!=0){
 	    	 this->factory->crear_dibujo_animado(tipo->imagen,v1d,v2d,tipo->fps, tipo->delay);
+	     }else{
+	    	this->factory->crear_dibujo_personaje("img/protagonista/spartan_small.png",CANTIDAD_DE_MOVIMIENTOS,imagenes,v3d,tipo->fps,1);//el ultimo parametro es velocidad
+	    	dibujo_t pers=this->factory->ultimo_dibujo();
+	    	protagonista->setDibujo(pers);//OJO
+	    	protagonista->setVelocidad(configuracion->get_vel_personaje()/10.0);
 	     }
 	     dibujo_t dibujo_id=this->factory->ultimo_dibujo();
 	     hashDibujos[tipo->nombre] = dibujo_id;
@@ -160,34 +179,8 @@ bool Vista::loadMedia() {
 			escenario[entidad->posicion->getX()][entidad->posicion->getY()]=hashDibujos[entidad->objetoMapa->nombre];
 	}
 	modelo->setDibujoMapa(escenario,tiles);//MEZCLA VISTA CON MODELO
-	shared_ptr<Dibujo> pasto=this->factory->get_dibujo(pasto_id);
-
-	vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
-	vector<vector<vector<dibujo_t>>> v3d=vector<vector<vector<dibujo_t>>>(8);
-	for (int i = 0; i < CANTIDAD_DE_MOVIMIENTOS; i++) {
-		v3d[i] = vector<vector<dibujo_t>>(CANTIDAD_DE_MOVIMIENTOS);
-		for (int j = 0; j < CANTIDAD_DE_IMAGENES; j++) {
-			vector<dibujo_t> v ={ j * ANCHO_PERSONAJE, i * ALTO_PERSONAJE, ANCHO_PERSONAJE, ALTO_PERSONAJE };
-			v3d[i][j]=v;
-		}
-	}
-	vector<int> imagenes= vector<int>(CANTIDAD_DE_MOVIMIENTOS,CANTIDAD_DE_IMAGENES);
 
 
-	//TOMA ENTIDAD ANIMADA SOLO COMO LOS DATOS QUE SACAS DEL YAMLS SINO
-	Personaje* protagonista = this->modelo->juego->escenario->protagonista;
-	Configuracion* configuracion = this->modelo->juego->conf;
-
-	this->factory->crear_dibujo_personaje(protagonista->objetoMapa->imagen,CANTIDAD_DE_MOVIMIENTOS,imagenes,v3d,protagonista->objetoMapa->fps,configuracion->get_vel_personaje());
-	dibujo_t pers=this->factory->ultimo_dibujo();
-	protagonista->setDibujo(pers);
-	protagonista->setVelocidad(configuracion->get_vel_personaje()/10.0);
-
-	int id=modelo->crearPersonajeServer(protagonista);
-	modelo->crearPersonajeCliente(protagonista);
-	modelo->setearPersonajeCliente(id,protagonista->get_posicion());
-	this->referencia_mapa_x=protagonista->getReferenciaMapaX();// desde el punto del mapa donde se dibuja
-	this->referencia_mapa_y=protagonista->getReferenciaMapaY();
 
 	this->barra->load(gRenderer,"font.ttf",this->ancho_por_celda(),this->altura_por_celda());
 
@@ -370,7 +363,9 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	this->transformador->transformar_isometrica_pantalla(personaje_x,
 			personaje_y, img_personaje_x, img_personaje_y);
 	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
-			DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
+			DibujoPersonaje>(this->factory->get_dibujo( this->factory->get_idDibujo(personaje->getNombreTipo())));
+
+
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
 	Posicion destino = personaje->get_camino();
 	double mover_x = destino.get_x_exacta();

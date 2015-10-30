@@ -45,10 +45,6 @@ Modelo::Modelo(Juego* juego) {
 	    }
 	    pisadas.push_back(row); // Add the row to the main vector
 	}
-	//cambia lo cargado por YAML
-	//Posicion pos = this->mapa->posicionVacia();
-	//this->juego->escenario->protagonista->set_posicion(pos);
-
 }
 string Modelo::nombreJugador(){
 	return jugador->getNombre();
@@ -65,21 +61,9 @@ void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 
 void Modelo::agregarPersonajeCliente(Personaje* personaje){
 	this->personajes.push_back(personaje);
+
 }
 
-
-//cliente respuesta a moverse o para ubicarlo en lugar
-/**void Modelo::ubicarPersonaje(int idPersonaje,Posicion pos){
-	//lo estanca si no vuele a calcular el proximo lugar
-	vector<Personaje*>::iterator it = personajes.begin();
-		for (; it != personajes.end(); ++it) {
-			Personaje* p = (*it);
-			if(p->getId()==idPersonaje){
-				p->set_posicion(pos);
-			}
-		}
-
-}***/
 
 
 void Modelo::insertarEntidades(){
@@ -443,7 +427,10 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 	else
 		entidad = new Entidad(objeto, x, y);
 	printf("creo entidad\n");
-	//para poder agregar con el dato exacto
+	printf("Nombre: %s\n",nombre.c_str());
+	printf("x: %d\n",x);
+	printf("y: %d\n",y);
+
 	this->mapa->posicionarEntidad(entidad);
 	this->juego->escenario->entidades.push_back(entidad);
 	if (entidad->esUnRecurso()){

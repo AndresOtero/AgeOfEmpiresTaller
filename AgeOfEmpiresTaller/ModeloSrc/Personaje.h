@@ -80,7 +80,9 @@ public:
 	const string& getNombreJugador() const {
 		return nombreJugador;
 	}
-
+	string getNombreTipo() const {
+			return objetoMapa->nombre;//nombre del tipo
+		}
 	void setNombreJugador(const string& nombreJugador) {
 		this->nombreJugador = nombreJugador;
 	}

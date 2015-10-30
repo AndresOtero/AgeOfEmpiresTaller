@@ -31,8 +31,8 @@ void GameControllerServer::agregarCliente(string name,string tipo){
 
 	//seteo mensaje
 	msg_t mensaje;
-	mensaje.type = NUEVO_PERSONAJE;
-	memcpy(mensaje.paramNombre,string_to_char_array(tipo),sizeof(mensaje.paramNombre));
+	mensaje.type = LOGIN;
+	memcpy(mensaje.paramNombre,string_to_char_array(name),sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
 	mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
@@ -42,14 +42,16 @@ void GameControllerServer::agregarCliente(string name,string tipo){
 }
 
 void GameControllerServer::desconectar(string Id){
-	//this->modelo->congelarPersonaje(Id);
+	this->modelo->congelarPersonaje(Id);
 	//Congelar en todos
 }
 void GameControllerServer::reconectar(string Id){
-					//this->modelo->descongelarPersonaje(Id);
+					this->modelo->descongelarPersonaje(Id);
 					//Descongelar en todos
 			 }
 void GameControllerServer::cambiar_destino_personaje(string id, double mov_x,double mov_y){
+	printf("Mensaje recibido por el server: \n");
+	printf("Mover a %g,%g \n",mov_x,mov_y);
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 bool GameControllerServer::hayEventosInicializacion(){
@@ -79,12 +81,17 @@ void GameControllerServer::inicializacion(){
 
 	vector<Entidad*> entidades= this->modelo->obtenerEntidadesDeInicializacion();
 	vector<Entidad*>::iterator it = entidades.begin();
-	for (; it != entidades.end(); ++it) {
+	for (; it != entidades.end(); it++) {
 		msg_t entidad;
 		Entidad* ent = (*it);
 		memcpy(entidad.paramNombre,string_to_char_array(ent->objetoMapa->nombre),sizeof(entidad.paramNombre));
 		entidad.paramDouble1 = ent->posicion->getX();
 		entidad.paramDouble2 = ent->posicion->getY();
+		printf("Creo Entidad Server\n");
+		printf("Nombre: %s\n",entidad.paramNombre);
+		printf("x: %g\n",entidad.paramDouble1);
+		printf("y: %g\n",entidad.paramDouble2);
+
 		if (ent->esUnRecurso()){
 			int cant = ((Recurso*)ent)->obtenerRecurso();
 			entidad.paramInt1 = cant;
@@ -131,10 +138,8 @@ void GameControllerServer::actualizar(){
 	vector<Personaje*>::iterator it = personajes.begin();
 			for (; it != personajes.end(); ++it) {
 				Personaje* p = (*it);
-				printf("\n se movio ");
-				printf(p->seMovio() ? "true" : "false");
-
 				if(p->seMovio()){
+					printf("Se movio\n");
 					double mov_x=p->get_posicion().get_x_exacta();
 					double mov_y=p->get_posicion().get_y_exacta();
 
