@@ -198,7 +198,10 @@ void Vista::mover_referencia(double vel_x,double vel_y) {
 			referencia_mapa_x=ref_x;
 			referencia_mapa_y=ref_y;
 		}
-
+}
+void Vista::setear_referencia(double ref_x,double ref_y) {
+		referencia_mapa_x=ref_x;
+		referencia_mapa_y=ref_y;
 }
 
 void Vista::detectar_mouse_borde() {

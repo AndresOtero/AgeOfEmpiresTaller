@@ -49,6 +49,7 @@ private:
 	void dibujar_personaje(Personaje* personaje);
 	void corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, double& coord_y);
 	void corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y);
+
 	void dibujar_barra();
 
 
@@ -56,6 +57,8 @@ public:
 	Vista(Modelo* modelo,GameControllerCliente* gameControler);
 	bool init();
 	bool loadMedia();
+	void setear_referencia(double ref_x,double ref_y) ;
+
 	bool run();
 	virtual ~Vista();
 

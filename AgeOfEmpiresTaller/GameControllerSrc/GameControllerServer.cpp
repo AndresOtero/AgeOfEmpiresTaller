@@ -38,7 +38,6 @@ void GameControllerServer::agregarCliente(string name,string tipo){
 	mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
 
 	this->agregarMensaje(mensaje);
-	//dsps deberian sacarlo y mandarlo a todos
 }
 
 void GameControllerServer::desconectar(string Id){
@@ -50,8 +49,6 @@ void GameControllerServer::reconectar(string Id){
 					//Descongelar en todos
 			 }
 void GameControllerServer::cambiar_destino_personaje(string id, double mov_x,double mov_y){
-	printf("Mensaje recibido por el server: \n");
-	printf("Mover a %g,%g \n",mov_x,mov_y);
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 bool GameControllerServer::hayEventosInicializacion(){
@@ -97,6 +94,19 @@ void GameControllerServer::inicializacion(){
 		}
 		agregarEventoInicializacion(entidad);
 	}
+	/**vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*>::iterator iter = personajes.begin();
+		for (; iter != personajes.end(); iter++) {
+			msg_t msg_crear_personaje;
+			Personaje* personaje = (*iter);
+			msg_crear_personaje.type=NUEVO_PERSONAJE;
+			Posicion pos=personaje->get_posicion();
+			memcpy(msg_crear_personaje.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(msg_crear_personaje.paramNombre));
+			msg_crear_personaje.paramDouble1=pos.get_x_exacta();
+			msg_crear_personaje.paramDouble2=pos.get_y_exacta();
+			agregarEventoInicializacion(msg_crear_personaje);
+		}**/
+
 }
 
 void GameControllerServer::generarRecursoRandom(){
@@ -135,7 +145,6 @@ void GameControllerServer::actualizar(){
 			for (; it != personajes.end(); ++it) {
 				Personaje* p = (*it);
 				if(p->seMovio()){
-					printf("Se movio\n");
 					double mov_x=p->get_posicion().get_x_exacta();
 					double mov_y=p->get_posicion().get_y_exacta();
 
@@ -148,8 +157,7 @@ void GameControllerServer::actualizar(){
 
 
 				this->agregarMensaje(mensaje);
-				printf("Encola: mover %d \n", mensaje.type);
-				//Para todos los clientes
+				printf("Encola: mover %d %g %g \n", mensaje.type,  mensaje.paramDouble1, mensaje.paramDouble2);
 				}
 			}
 }
