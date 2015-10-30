@@ -21,7 +21,6 @@ public:
 	void cambiar_destino_personaje(string id, double mov_x, double mov_y);
 	void eliminarEntidad(int id);
 	void agregarEntidad(string nombre,int x, int y, int cant);
-	void inicializacion();
 	//server
 	void reconectar(std::string id);
 	void desconectar(std::string id);
@@ -31,13 +30,11 @@ public:
 	//void desconectar(int id);
 	void actualizar();
 	char* string_to_char_array(string str);
+	queue <msg_t>  inicializacion();
 
-	bool hayEventosInicializacion();
-	msg_t nextEventoInicializacion();
-	void agregarEventoInicializacion(msg_t mensaje);
 
 private:
-	queue <msg_t> colaInicializacion;
+
 };
 
 #endif /* GAMECONTROLLERSRC_GAMECONTROLLERSERVER_H_ */
