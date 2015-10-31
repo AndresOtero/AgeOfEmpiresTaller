@@ -57,6 +57,7 @@ public:
 	Vista(Modelo* modelo,GameControllerCliente* gameControler);
 	bool init();
 	bool loadMedia();
+	dibujo_t crearPersonaje(string tipo);
 	void setear_referencia(double ref_x,double ref_y) ;
 
 	bool run();

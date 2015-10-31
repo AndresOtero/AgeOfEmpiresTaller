@@ -16,7 +16,7 @@ Personaje::Personaje(){
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->objetoMapa->fps = 20; //FPS DEFAULT
-	this->velocidad=1;
+	this->velocidad=0.1;
 	this->objetoMapa->delay = 0; //delay default
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
@@ -27,7 +27,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->referencia_mapa_y=1;
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
-	this->velocidad=1;
+	this->velocidad=0.1;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
@@ -38,7 +38,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_y=y;
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
-	this->velocidad=1;
+	this->velocidad=0.1;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();

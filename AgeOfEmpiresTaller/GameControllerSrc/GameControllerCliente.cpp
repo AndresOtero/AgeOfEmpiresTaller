@@ -52,15 +52,7 @@ void GameControllerCliente::mover_personaje(string name,double mov_x,double mov_
 	printf("Mover a %g,%g \n",mov_x,mov_y);
 	this->modelo->cambiar_destino_personaje(name,mov_x,mov_y);
 }
-/**
-Personaje* GameControllerCliente::conectarme(string name,string str, int x,int y){
-	ObjetoMapa* obj= this->juego->tipos[str];
-	Personaje* personaje =new Personaje(obj,x,y);
-	personaje->setNombreJugador(name);
-	this->modelo->crearPersonajeCliente(personaje);
 
-	return personaje;
-}**/
 
 void GameControllerCliente::setMapa(int ancho, int largo){
 	this->modelo->setMapa(largo,ancho);
@@ -75,11 +67,6 @@ void GameControllerCliente::conectarCliente(string name,string str, int x,int y)
 	this->modelo->agregarPersonajeCliente(personaje);
 
 }
-//solo para iniciar
-/*void GameControllerCliente::setearPosicionPersonaje(int id,double pos_x,double pos_y){
-	Posicion pos=Posicion(pos_x,pos_y);
-	this->modelo->setearPersonajeCliente(id,pos);
-}*/
 
 void GameControllerCliente::agregarEntidad(string nombre,int x, int y, int cant){
 	this->modelo->agregarEntidad(nombre,x,y,cant);

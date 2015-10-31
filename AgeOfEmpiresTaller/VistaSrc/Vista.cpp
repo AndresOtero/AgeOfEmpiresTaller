@@ -36,6 +36,8 @@ enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define ANCHO_ANIMACION 128
 #define ANCHO_PERSONAJE 64
 #define ALTO_PERSONAJE 64
+#define OFFSET 1
+
 
 Vista::Vista(Modelo* modelo,GameControllerCliente* gameController) {
 	this -> modelo = modelo;
@@ -155,10 +157,9 @@ bool Vista::loadMedia() {
 	     }else if(tipo->delay!=0){
 	    	 this->factory->crear_dibujo_animado(tipo->imagen,v1d,v2d,tipo->fps, tipo->delay);
 	     }else{
-	    	this->factory->crear_dibujo_personaje("img/protagonista/spartan_small.png",CANTIDAD_DE_MOVIMIENTOS,imagenes,v3d,tipo->fps,1);//el ultimo parametro es velocidad
+	    	this->factory->crear_dibujo_personaje(tipo->imagen,CANTIDAD_DE_MOVIMIENTOS,imagenes,v3d,tipo->fps,1);//el ultimo parametro es velocidad
 	    	dibujo_t pers=this->factory->ultimo_dibujo();
 	    	protagonista->setDibujo(pers);//OJO
-	    	protagonista->setVelocidad(configuracion->get_vel_personaje()/10.0);
 	     }
 	     dibujo_t dibujo_id=this->factory->ultimo_dibujo();
 	     hashDibujos[tipo->nombre] = dibujo_id;
@@ -187,6 +188,31 @@ bool Vista::loadMedia() {
 
 	return true;
 }
+
+dibujo_t Vista::crearPersonaje(string tipo) {
+	//***********DIBUJOS PERSONAJES *****************
+	vector<int> movimientos = { IZQUIERDA, DIAGONAL_IZQUIERDA_ARRIBA, ARRIBA,
+			DIAGONAL_DERECHA_ARRIBA, DERECHA, DIAGONAL_DERECHA_ABAJO, ABAJO,
+			DIAGONAL_IZQUIERDA_ABAJO };
+	vector<vector<vector<dibujo_t>>> v3d=vector<vector<vector<dibujo_t>>>(8);
+	for (int i = 0; i < CANTIDAD_DE_MOVIMIENTOS; i++) {
+		v3d[i] = vector<vector<dibujo_t>>(CANTIDAD_DE_MOVIMIENTOS);
+		for (int j = 0; j < CANTIDAD_DE_IMAGENES; j++) {
+			vector<dibujo_t> v = { j * ANCHO_PERSONAJE, i * ALTO_PERSONAJE,
+					ANCHO_PERSONAJE, ALTO_PERSONAJE };
+			v3d[i][j] = v;
+		}
+	}
+	vector<int> imagenes = vector<int>(CANTIDAD_DE_MOVIMIENTOS,
+			CANTIDAD_DE_IMAGENES);
+	/*********************************************************/
+	ObjetoMapa* obj=this->modelo->juego->tipos[tipo];
+	this->factory->crear_dibujo_personaje(obj->imagen,
+			CANTIDAD_DE_MOVIMIENTOS, imagenes, v3d, obj->fps, 1); //el ultimo parametro es velocidad
+	dibujo_t pers = this->factory->ultimo_dibujo();
+	return pers;
+}
+
 void Vista::mover_referencia(double vel_x,double vel_y) {
 		double ref_x, ref_y;
 
@@ -200,8 +226,8 @@ void Vista::mover_referencia(double vel_x,double vel_y) {
 		}
 }
 void Vista::setear_referencia(double ref_x,double ref_y) {
-		referencia_mapa_x=ref_x;
-		referencia_mapa_y=ref_y;
+		referencia_mapa_x=ref_x-OFFSET;
+		referencia_mapa_y=ref_y-OFFSET;
 }
 
 void Vista::detectar_mouse_borde() {
