@@ -7,6 +7,8 @@
 #include <vector>
 #include "mensaje.h"
 #include "../ModeloSrc/Modelo.h"
+#include <plog/Log.h>
+
 #include <queue>
 
 #ifndef GAMECONTROLLERSRC_GAMECONTROLLER_H_
