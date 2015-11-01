@@ -58,11 +58,12 @@ void GameControllerCliente::setMapa(int ancho, int largo){
 	this->modelo->setMapa(largo,ancho);
 }
 
-void GameControllerCliente::conectarCliente(string name,string str, int x,int y){
+void GameControllerCliente::conectarCliente(string name,string str, int x,int y,dibujo_t dibujo){
 	ObjetoMapa* obj= this->juego->tipos[str];
 
 	Personaje* personaje =new Personaje(obj,x,y);
 	personaje->setNombreJugador(name);
+	//personaje->setDibujo(dibujo);
 
 	this->modelo->agregarPersonajeCliente(personaje);
 

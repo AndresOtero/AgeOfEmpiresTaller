@@ -444,7 +444,7 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 
 	if (entidad->esUnRecurso()){
 			((Recurso *)entidad)->setRecurso(cantidad);
-			printf("Cantidad de recurso en entidad creada %d\n",((Recurso *)entidad)->obtenerRecurso());
+			//printf("Cantidad de recurso en entidad creada %d\n",((Recurso *)entidad)->obtenerRecurso());
 			return ((Recurso *)entidad)->obtenerRecurso();
 	}
 	return 0;
