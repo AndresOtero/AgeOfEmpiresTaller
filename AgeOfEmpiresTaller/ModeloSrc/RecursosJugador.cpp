@@ -26,6 +26,12 @@ RecursosJugador::RecursosJugador(int oro, int madera, int piedra) {
 	this->madera = validarRecurso(madera);
 	this->piedra = validarRecurso(piedra);
 }
+
+void RecursosJugador::reset(){
+	this->oro= 0;
+	this->madera= 0;
+	this->piedra = 0;
+}
 void RecursosJugador::colectarOro(int cant){
 	this->oro+=cant;
 }

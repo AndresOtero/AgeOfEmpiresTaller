@@ -27,7 +27,7 @@ class Modelo {
 	int id;
 	Personaje* personaje_seleccionado;
 	Jugador* jugador;
-
+	vector<Jugador*> jugadores; //asi puedo ver todos los jugadores
 	vector<Personaje*> personajes;
 	vector<vector<int>> pisadas;
 	int idServer;
@@ -51,7 +51,8 @@ public:
 	Personaje* devolverPersonaje(int x,int y);
 	int get_ancho_mapa();
 	int get_alto_mapa();
-
+	Jugador * getJugador(){return this->jugador;};
+	void insertarEntidad(Entidad * entidad);
 	//server
 	void actualizarRecursosServer(int id ,int oro,int madera,int piedra);
 	void congelarPersonaje(string id);

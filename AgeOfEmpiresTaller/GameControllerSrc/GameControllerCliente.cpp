@@ -84,7 +84,9 @@ void GameControllerCliente::conectarCliente(string name,string str, int x,int y)
 void GameControllerCliente::agregarEntidad(string nombre,int x, int y, int cant){
 	this->modelo->agregarEntidad(nombre,x,y,cant);
 }
-
+void GameControllerCliente::acutalizarRecursos(int oro, int madera, int piedra){
+	this->modelo->actualizarRecursos(oro,madera,piedra);
+}
 void GameControllerCliente::desconectar(string id){
 	this->modelo->congelarPersonaje(id);
 }

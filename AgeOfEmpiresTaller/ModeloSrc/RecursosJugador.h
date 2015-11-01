@@ -20,6 +20,7 @@ public:
 	int cantOro();
 	int cantPiedra();
 	int cantMadera();
+	void reset();
 	virtual ~RecursosJugador();
 };
 

@@ -13,9 +13,16 @@ Jugador::Jugador(string nombre,string ip,Personaje* personaje) {
 	this->personaje->setNombreJugador(nombre);
 	this->nombre=nombre;
 	this->ip=ip;
+	this->recursos = new RecursosJugador();
+}
+
+void Jugador::actualizarRecursos(int oro, int madera, int piedra){
+	this->recursos->colectarOro(oro);
+	this->recursos->colectarMadera(madera);
+	this->recursos->colectarPiedra(piedra);
 }
 
 Jugador::~Jugador() {
-	// TODO Auto-generated destructor stub
+	delete this->recursos;
 }
 

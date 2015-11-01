@@ -16,6 +16,7 @@ Recurso::Recurso(ObjetoMapa* objetoMapa): Entidad(objetoMapa) {
 Recurso::Recurso(ObjetoMapa* objetoMapa,int x , int y): Entidad( objetoMapa,x,y) {
 	GeneradorNumeros generador;
 	cantidad = generador.numeroRandom(100,250);//random entre 100 y 250
+	printf("%d\n",cantidad);
 }
 
 int Recurso::obtenerRecurso(){

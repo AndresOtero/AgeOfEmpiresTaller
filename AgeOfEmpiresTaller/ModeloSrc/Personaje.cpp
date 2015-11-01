@@ -44,6 +44,8 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
 }
+
+
 dibujo_t Personaje::dibujar(){
 	return dibujo;
 }
