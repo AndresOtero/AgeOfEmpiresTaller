@@ -27,6 +27,7 @@ using namespace std;
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
 
+
 Modelo::Modelo(Juego* juego) {
 	this -> juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
@@ -339,13 +340,13 @@ void Modelo::eliminarEntidadPorID(int id){
 
 }
 //cliente
-void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
+/**void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 	Personaje* personaje= 	this->devolverPersonajeSeleccionado();
 	if((personaje!=NULL)){
 		//cambia su destino, deberia mandarlo hasta q llegue o camine a otro lado
 		personaje->set_destino(Posicion(mov_x,mov_y));
 	}
-}
+}**/
 
 void  Modelo::cambiar_destino_personaje(string id ,double mov_x,double mov_y){
 	vector<Personaje*>::iterator it = personajes.begin();
@@ -435,19 +436,11 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 	}
 	return 0;
 }
-//	Personaje* persona = new Personaje(objeto,pos.get_x_exacta(),pos.get_y_exacta());
-void Modelo::crearPersonajeCliente(Personaje* personaje){
-	this->personaje_seleccionado=personaje;
-	personajes.push_back(personaje);
-}
 
 
 
-void Modelo::setearPersonajeCliente(int id,Posicion pos){
-	this->setIdCliente(id);
-	this->personaje_seleccionado->setId(id);
-	this->personaje_seleccionado->set_posicion(pos);
-}
+
+
 int Modelo::crearPersonajeServer(Personaje* personaje){
 	this->set_posicionRandomPersonaje(personaje);
 	personajes.push_back(personaje);
@@ -456,13 +449,7 @@ int Modelo::crearPersonajeServer(Personaje* personaje){
 	return (idServer-1);
 }
 
-int Modelo::getIdCliente()  {
-	return idCliente;
-}
 
-void Modelo::setIdCliente(int idCliente) {
-	this->idCliente = idCliente;
-}
 
 int Modelo::cantidad_de_jugadores()  {
 	return idServer;

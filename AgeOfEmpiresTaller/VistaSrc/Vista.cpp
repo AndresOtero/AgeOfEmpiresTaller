@@ -146,8 +146,7 @@ bool Vista::loadMedia() {
 		}
 		vector<int> imagenes= vector<int>(CANTIDAD_DE_MOVIMIENTOS,CANTIDAD_DE_IMAGENES);
 	//**************************************************
-		Personaje* protagonista = this->modelo->juego->escenario->protagonista;
-		Configuracion* configuracion = this->modelo->juego->conf;
+	Configuracion* configuracion = this->modelo->juego->conf;
 	for ( it = modelo->juego->tipos.begin(); it !=modelo->juego->tipos.end(); it++ )
 	{
 	     ObjetoMapa* tipo = it->second;
@@ -158,8 +157,6 @@ bool Vista::loadMedia() {
 	    	 this->factory->crear_dibujo_animado(tipo->imagen,v1d,v2d,tipo->fps, tipo->delay);
 	     }else{
 	    	this->factory->crear_dibujo_personaje(tipo->imagen,CANTIDAD_DE_MOVIMIENTOS,imagenes,v3d,tipo->fps);//el ultimo parametro es velocidad
-	    	dibujo_t pers=this->factory->ultimo_dibujo();
-	    	protagonista->setDibujo(pers);//OJO
 	     }
 	     dibujo_t dibujo_id=this->factory->ultimo_dibujo();
 	     hashDibujos[tipo->nombre] = dibujo_id;
