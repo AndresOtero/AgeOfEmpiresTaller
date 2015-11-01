@@ -73,9 +73,11 @@ void GameControllerCliente::agregarEntidad(string nombre,int x, int y, int cant)
 }
 
 void GameControllerCliente::desconectar(string id){
+	printf("congelar\n");
 	this->modelo->congelarPersonaje(id);
 }
 
 void GameControllerCliente::reconectar(string id){
+	printf("descongelar\n");
 	this->modelo->descongelarPersonaje(id);
 }

@@ -406,6 +406,7 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	if (personaje->estaCongelado()){
 		dibujo_pers->congelar();
 	}else{
+
 		dibujo_pers->descongelar();
 	}
 	int adonde_va_x, adonde_va_y;
