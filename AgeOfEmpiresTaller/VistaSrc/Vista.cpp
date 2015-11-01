@@ -157,7 +157,7 @@ bool Vista::loadMedia() {
 	     }else if(tipo->delay!=0){
 	    	 this->factory->crear_dibujo_animado(tipo->imagen,v1d,v2d,tipo->fps, tipo->delay);
 	     }else{
-	    	this->factory->crear_dibujo_personaje(tipo->imagen,CANTIDAD_DE_MOVIMIENTOS,imagenes,v3d,tipo->fps,1);//el ultimo parametro es velocidad
+	    	this->factory->crear_dibujo_personaje(tipo->imagen,CANTIDAD_DE_MOVIMIENTOS,imagenes,v3d,tipo->fps);//el ultimo parametro es velocidad
 	    	dibujo_t pers=this->factory->ultimo_dibujo();
 	    	protagonista->setDibujo(pers);//OJO
 	     }
@@ -208,7 +208,7 @@ dibujo_t Vista::crearPersonaje(string tipo) {
 	/*********************************************************/
 	ObjetoMapa* obj=this->modelo->juego->tipos[tipo];
 	this->factory->crear_dibujo_personaje(obj->imagen,
-			CANTIDAD_DE_MOVIMIENTOS, imagenes, v3d, obj->fps, 1); //el ultimo parametro es velocidad
+			CANTIDAD_DE_MOVIMIENTOS, imagenes, v3d, obj->fps); //el ultimo parametro es velocidad
 	dibujo_t pers = this->factory->ultimo_dibujo();
 	return pers;
 }

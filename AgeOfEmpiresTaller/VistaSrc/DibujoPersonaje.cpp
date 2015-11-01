@@ -9,7 +9,6 @@
 #include  "Textura.h"
 DibujoPersonaje::DibujoPersonaje() {
 	// TODO Auto-generated constructor stub
-	this -> velocidad = 0;
 	this->imagen_actual = 0;
 	this->movimiento_actual=0;
 	this->acumulador=0;
@@ -50,9 +49,7 @@ void DibujoPersonaje::set_imagen(int n_mov,int n_imagen, int x, int y, int ancho
 	this->spriteClips[n_mov][n_imagen].w = ancho;
 	this->spriteClips[n_mov][n_imagen].h = alto;
 }
-void DibujoPersonaje::set_velocidad(int velocidad){
-	this->velocidad=velocidad;
-}
+
 void DibujoPersonaje::elegir_frame(int des_x,int des_y) {
 	double angulo = (std::atan2(des_y,des_x)/M_PI)*180.0;
 

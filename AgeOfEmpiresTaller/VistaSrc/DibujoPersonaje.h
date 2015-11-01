@@ -19,7 +19,6 @@ enum movimientos {IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_AR
 
 using namespace std;
 class DibujoPersonaje: public Dibujo {
-	int velocidad;
 	vector<SDL_Rect*> spriteClips;
 	vector<int> cantidad_de_imagenes;
 	int cant_mov;
@@ -33,7 +32,6 @@ public:
 	void set_cantidad_de_movimientos(int cant_de_mov);
 	void set_cantidad_de_imagenes(int n_mov,int cant_de_imagenes);
 	void set_imagen(int n_mov,int n_imagen, int x, int y, int ancho, int alto);
-	void set_velocidad(int velocidad);
 	DibujoPersonaje();
 	int get_alto(int n_mov,int n_imagen);
 	int get_ancho(int n_mov, int n_imagen);
