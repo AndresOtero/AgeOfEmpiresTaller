@@ -284,10 +284,12 @@ bool Vista::run() {
 						personaje_y);
 				Posicion p=Posicion(personaje_x,personaje_y);
 				//le envia al server que cambie el destino
+				if (this->modelo->devolverPersonajeSeleccionado()){
 				if(this->modelo->devolverPersonajeSeleccionado()->getNombreJugador()==this->modelo->nombreJugador())
 				{
 
 					this->gameController->cambiar_destino_personaje(this->gameController->nombreJugador() ,personaje_x, personaje_y);
+				}
 				}
 				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);
 			}
@@ -489,7 +491,7 @@ void Vista::dibujar_mapa() {
 
 void Vista::dibujar_barra(){
 	//HARCODE deberia ser el personaje/jugador
-	this->barra->actualizar(this->modelo->devolverTodosLosPersonajes()[0]);
+	this->barra->actualizar(this->modelo->getJugador());
 	this->barra->render(gRenderer);
 }
 

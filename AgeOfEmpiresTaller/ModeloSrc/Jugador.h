@@ -12,6 +12,7 @@
 class Jugador {
 	string nombre;
 	Personaje* personaje;
+	RecursosJugador * recursos;
 	string ip;
 public:
 	Jugador(string nombre,string ip,Personaje* personaje);
@@ -26,6 +27,10 @@ public:
 	Personaje* getPersonaje()  {
 		return personaje;
 	}
+	RecursosJugador * recursosJugador(){
+		return this->recursos;
+	}
+	void actualizarRecursos(int oro, int madera, int piedra);
 };
 
 #endif /* JUGADOR_H_ */

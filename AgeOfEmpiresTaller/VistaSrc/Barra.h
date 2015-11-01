@@ -14,6 +14,7 @@
 #include "Minimapa.h"
 #include "CambioDeCoordendas.h"
 #include "RecursoVista.h"
+#include "../ModeloSrc/Jugador.h"
 #include <memory>
 
 
@@ -24,7 +25,7 @@ public:
 	void render(SDL_Renderer * renderer);
 	void load(SDL_Renderer * renderer,string path, int ancho_por_celda, int alto_por_celda);
 	void setDisplay(string display);
-	void actualizar(Personaje * protagonista);
+	void actualizar(Jugador * jugador);
 	void closeFont();
 	virtual ~Barra();
 private:

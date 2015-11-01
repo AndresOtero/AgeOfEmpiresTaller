@@ -108,8 +108,6 @@ void GameControllerServer::generarRecursoRandom(){
 	if (tipo.cantidad > 0) {
 		msg_t mensaje;
 		mensaje.type = CREAR_RECURSO;
-		//
-		//strcpy funciona???
 		memcpy(mensaje.paramNombre,string_to_char_array(tipo.nombre),sizeof(mensaje.paramNombre));
 		mensaje.paramInt1 = tipo.cantidad;
 		mensaje.paramDouble1 = pos.getX();
@@ -130,26 +128,36 @@ void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant){
 	this->agregarMensaje(mensaje);
 
 }
-void GameControllerServer::actualizar(){
-	this->modelo->actualizarMapa();//mueven los tipitos
-	vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();
+void GameControllerServer::actualizar() {
+	this->modelo->actualizarMapa();		//mueven los tipitos
+	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator it = personajes.begin();
-			for (; it != personajes.end(); ++it) {
-				Personaje* p = (*it);
-				if(p->seMovio()){
-					double mov_x=p->get_posicion().get_x_exacta();
-					double mov_y=p->get_posicion().get_y_exacta();
+	for (; it != personajes.end(); ++it) {
+		Personaje* p = (*it);
+		if (p->seMovio()) {
+			double mov_x = p->get_posicion().get_x_exacta();
+			double mov_y = p->get_posicion().get_y_exacta();
 
-					//creo mensaje y guardo
-					msg_t mensaje;
-					mensaje.type = MOVER_PERSONAJE;
-					memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),sizeof(mensaje.paramNombre));
-					mensaje.paramDouble1 = mov_x;
-					mensaje.paramDouble2 = mov_y;
+			//creo mensaje y guardo
+			msg_t mensaje;
+			mensaje.type = MOVER_PERSONAJE;
+			memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),	sizeof(mensaje.paramNombre));
+			mensaje.paramDouble1 = mov_x;
+			mensaje.paramDouble2 = mov_y;
 
+			this->agregarMensaje(mensaje);
+			printf("Encola: mover %d %g %g \n", mensaje.type,mensaje.paramDouble1, mensaje.paramDouble2);
 
-				this->agregarMensaje(mensaje);
-				printf("Encola: mover %d %g %g \n", mensaje.type,  mensaje.paramDouble1, mensaje.paramDouble2);
-				}
-			}
+			//solucion fea pero con poca implementacion
+			//de la recoleccion de recursos
+			//tiene el mismo nombre de jugador que p
+			mensaje.type= ACTUALIZACION_RECURSOS;
+			mensaje.paramInt1 = p->recursosJugador()->cantOro();
+			mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
+			mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
+			this->agregarMensaje(mensaje);
+			p->recursosJugador()->reset();//reset, el q acumula es el jugador
+
+		}
+	}
 }

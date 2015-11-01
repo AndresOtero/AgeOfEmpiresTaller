@@ -263,12 +263,10 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 
 //cliente con la cantidad q recolecto
 void Modelo::actualizarRecursos(int oro,int madera,int piedra){
-
-	this->personaje_seleccionado->recursosJugador()->colectarMadera(madera);
-	this->personaje_seleccionado->recursosJugador()->colectarOro(oro);
-	this->personaje_seleccionado->recursosJugador()->colectarPiedra(piedra);
+	this->jugador->actualizarRecursos(oro,madera,piedra);
 }
-void Modelo::actualizarRecursosServer(int id ,int oro,int madera,int piedra){
+
+/*void Modelo::actualizarRecursosServer(int id ,int oro,int madera,int piedra){
 	vector<Personaje*>::iterator it = personajes.begin();
 			for (; it != personajes.end(); ++it) {
 				Personaje* p = (*it);
@@ -279,7 +277,7 @@ void Modelo::actualizarRecursosServer(int id ,int oro,int madera,int piedra){
 				}
 			}
 
-}
+}*/
 
 //server
 void Modelo::recolectar(Personaje * personaje){
@@ -289,6 +287,7 @@ void Modelo::recolectar(Personaje * personaje){
 				personaje->get_posicion().getY());
 		Recurso * recurso = (Recurso*) entidad;
 		recurso->recolectar(personaje->recursosJugador());
+		RecursosJugador * recursos =personaje->recursosJugador();
 		//mandar actualizarcion recursos (cuanto aumento)
 		this->eliminarEntidad(entidad);
 		//mandar eliminar entidad
@@ -390,27 +389,40 @@ recurso_t Modelo::generarRecursoRandom(Posicion pos){
 	}
 	int x = pos.getX();
 	int y = pos.getY();
+	Entidad * entidad;
+	ObjetoMapa * objeto;
 	string nombre;
 	int numero = num.numeroRandom(0,3);
 	switch (numero){
 		case 0:
 			nombre="oro";
+			objeto =this->juego->tipos["oro"];
+			entidad = new Oro(objeto,x,y);
 			break;
 		case 1:
 			nombre="madera";
+			objeto =this->juego->tipos["madera"];
+			entidad = new Madera(objeto,x,y);
 			break;
 		default:
+			objeto =this->juego->tipos["piedra"];
 			nombre="piedra";
+			entidad = new Piedra(objeto,x,y);
 			break;
 	}
-
-	int cantidad = this->agregarEntidad(nombre,x,y,0);
+	this->insertarEntidad(entidad);
+	int cantidad = ((Recurso *)entidad)->obtenerRecurso();
 	recurso.cantidad = cantidad;
 	recurso.nombre = nombre;
 	this->totalRecursos++;
 	//gettimeofday(&estado,NULL);
 	return recurso;
 
+}
+
+void Modelo::insertarEntidad(Entidad *entidad){
+	this->mapa->posicionarEntidad(entidad);
+	this->juego->escenario->entidades.push_back(entidad);
 }
 
 //cliente
@@ -428,10 +440,11 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 	else
 		entidad = new Entidad(objeto, x, y);
 
-	this->mapa->posicionarEntidad(entidad);
-	this->juego->escenario->entidades.push_back(entidad);
+	this->insertarEntidad(entidad);
+
 	if (entidad->esUnRecurso()){
 			((Recurso *)entidad)->setRecurso(cantidad);
+			printf("Cantidad de recurso en entidad creada %d\n",((Recurso *)entidad)->obtenerRecurso());
 			return ((Recurso *)entidad)->obtenerRecurso();
 	}
 	return 0;

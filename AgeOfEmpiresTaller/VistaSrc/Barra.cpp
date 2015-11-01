@@ -57,11 +57,12 @@ void Barra::load(SDL_Renderer * renderer, string path, int ancho_por_celda,int a
 void Barra::setDisplay(string display){
 	this->display= display;
 }
-void  Barra::actualizar(Personaje * jugador){
+void  Barra::actualizar(Jugador * jugador){
 	oro->cambiarCant(jugador->recursosJugador()->cantOro());
 	madera->cambiarCant(jugador->recursosJugador()->cantMadera());
 	piedra->cambiarCant(jugador->recursosJugador()->cantPiedra());
 }
+//tengo q hacer actualizar de jugador no de personaje
 
 void Barra::renderTexto(SDL_Renderer*renderer){
 	if (!this->display.empty()){
