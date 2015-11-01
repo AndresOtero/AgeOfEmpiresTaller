@@ -25,6 +25,9 @@ GameControllerCliente::~GameControllerCliente() {
 string GameControllerCliente::nombreJugador() {
 	return this->juego->escenario->jugador->getNombre();
 }
+bool GameControllerCliente::esNombre(char* nombre) {
+	return (!this->juego->escenario->jugador->getNombre().compare(nombre));
+}
 string GameControllerCliente::ipJugador() {
 	return this->juego->escenario->jugador->getIp();
 }

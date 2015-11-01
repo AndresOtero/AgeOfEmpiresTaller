@@ -44,7 +44,9 @@ void GameController::eliminarEntidad(int id){
 	this->modelo->eliminarEntidadPorID(id);
 }
 bool GameController::hayEventos(){
-	return !this->cola.empty();
+	printf("Entro aca \n \n");
+	printf((this->cola.empty())? "Es NUll \n" : "No es Null\n");
+	return (!this->cola.empty());
 }
 msg_t GameController::sacarMensaje(){
 	msg_t mensaje = this->cola.front();
