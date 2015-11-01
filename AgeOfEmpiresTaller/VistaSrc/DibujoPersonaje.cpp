@@ -9,7 +9,6 @@
 #include  "Textura.h"
 DibujoPersonaje::DibujoPersonaje() {
 	// TODO Auto-generated constructor stub
-	this -> velocidad = 0;
 	this->imagen_actual = 0;
 	this->movimiento_actual=0;
 	this->acumulador=0;
@@ -50,9 +49,7 @@ void DibujoPersonaje::set_imagen(int n_mov,int n_imagen, int x, int y, int ancho
 	this->spriteClips[n_mov][n_imagen].w = ancho;
 	this->spriteClips[n_mov][n_imagen].h = alto;
 }
-void DibujoPersonaje::set_velocidad(int velocidad){
-	this->velocidad=velocidad;
-}
+
 void DibujoPersonaje::elegir_frame(int des_x,int des_y) {
 	double angulo = (std::atan2(des_y,des_x)/M_PI)*180.0;
 
@@ -121,30 +118,6 @@ void DibujoPersonaje::render( SDL_Renderer* renderer) {
 	this->textura->render(this->x_imagen - this->get_ancho(n_mov,n_imagen)/2, this->y_imagen-this->get_alto(n_mov,n_imagen)/2 , &(this->spriteClips[n_mov][n_imagen]),renderer);
 }
 
-/**void DibujoPersonaje::mover(int x, int y) {
-	double delta_x = (double) (x - x_imagen);
-	double delta_y = (double) (y - y_imagen);
-	double distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
-	if (distancia != 0) {
-		if (distancia < velocidad) {
-			distancia = velocidad;
-		}
-		double des_x = (velocidad * delta_x) / distancia;
-		double des_y = (velocidad * delta_y) / distancia;
-		if ((sqrt(des_x * des_x) > distancia)
-				&& (sqrt(des_y * des_y) < distancia)) {
-			x_imagen = x;
-		}
-		if ((sqrt(des_y * des_y) > distancia)
-				&& ((sqrt(des_x * des_x) < distancia))) {
-			y_imagen = y;
-		}
-		x_imagen += des_x;
-		y_imagen += des_y;
-		this->elegir_frame(des_x,des_y);
-
-	}
-}**/
 void DibujoPersonaje::cambiar_frame(){
 	acumulador++;
 	if((fps)<=acumulador){

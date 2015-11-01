@@ -17,7 +17,7 @@ FactoryDibujo::FactoryDibujo(SDL_Renderer* gRenderer) {
 	this->cantidad_de_dibujos=this->dibujos.size();
 	this->dibujo_actual=1;
 }
-bool FactoryDibujo::crear_dibujo_personaje(string path,int cantidad_de_movimientos,vector<int> cantidad_de_imagenes,vector<vector<vector<int> >>parametros_de_imagen,int fps,int velocidad){
+bool FactoryDibujo::crear_dibujo_personaje(string path,int cantidad_de_movimientos,vector<int> cantidad_de_imagenes,vector<vector<vector<int> >>parametros_de_imagen,int fps){
 	shared_ptr<DibujoPersonaje> dibujo_nuevo = shared_ptr<DibujoPersonaje>(new DibujoPersonaje());
 	if (dibujo_nuevo->cargar_archivo(path,gRenderer)) {
 		dibujo_nuevo->set_cantidad_de_movimientos(cantidad_de_movimientos);
@@ -27,8 +27,6 @@ bool FactoryDibujo::crear_dibujo_personaje(string path,int cantidad_de_movimient
 						dibujo_nuevo->set_imagen(i,j, parametros_de_imagen[i][j][X], parametros_de_imagen[i][j][Y],parametros_de_imagen[i][j][ANCHO], parametros_de_imagen[i][j][ALTO]);
 			}
 		}
-
-		dibujo_nuevo->set_velocidad(velocidad);
 		this->set_dibujo(dibujo_nuevo);
 		return true;
 	}
