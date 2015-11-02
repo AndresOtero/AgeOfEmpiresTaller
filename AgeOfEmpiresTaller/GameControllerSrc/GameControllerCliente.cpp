@@ -90,8 +90,8 @@ void GameControllerCliente::reconectar(string id){
 
 
 bool GameControllerCliente::hayEventos(){
-	printf("Entro aca \n \n");
-	printf((this->cola.empty()) ? "Es NUll \n" : "No es Null\n");
+	//printf("Entro aca \n \n");
+	//printf((this->cola.empty()) ? "Es NUll \n" : "No es Null\n");
 	return (!this->cola.empty());
 }
 msg_t GameControllerCliente::sacarMensaje(){

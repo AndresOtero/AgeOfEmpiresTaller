@@ -163,11 +163,11 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 }
 
 bool GameControllerServer::hayEventos(SDL_mutex *mutex){
-	printf("Entro aca \n \n");
+	//printf("Entro aca \n \n");
 
 	if (SDL_LockMutex(mutex) == 0) {
 
-		printf((this->cola.empty())? "Es NUll \n" : "No es Null\n");
+		//printf((this->cola.empty())? "Es NUll \n" : "No es Null\n");
 
 		SDL_UnlockMutex(mutex);
 
