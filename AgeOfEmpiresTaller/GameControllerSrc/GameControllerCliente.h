@@ -13,6 +13,9 @@ class GameControllerCliente:public GameController  {
 public:
 	GameControllerCliente();
 	~GameControllerCliente();
+	 bool hayEventos();
+	 msg_t sacarMensaje();
+	 void agregarMensaje(msg_t mensaje);
 	string nombreJugador() ;
 	string ipJugador() ;
 	void insertarModelo(Modelo* modelo);

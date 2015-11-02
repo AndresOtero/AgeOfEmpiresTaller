@@ -8,6 +8,7 @@
 #include "mensaje.h"
 #include "../ModeloSrc/Modelo.h"
 #include <queue>
+#include <SDL2/SDL.h>
 
 #ifndef GAMECONTROLLERSRC_GAMECONTROLLER_H_
 #define GAMECONTROLLERSRC_GAMECONTROLLER_H_
@@ -29,9 +30,7 @@ public:
 	 void setConfiguracion(int margenScroll,int velocidad_personaje);
 	 void crearModelo();
 	 Modelo* devolverModelo();
-	 bool hayEventos();
-	 msg_t sacarMensaje();
-	 void agregarMensaje(msg_t mensaje);
+
 	 //Controlar
 	virtual void agregarEntidad(string nombre, int x, int y,int cantidad);
 	virtual void cambiar_destino_personaje(string id, double mov_x, double mov_y);

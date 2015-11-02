@@ -87,3 +87,18 @@ void GameControllerCliente::reconectar(string id){
 	printf("descongelar\n");
 	this->modelo->descongelarPersonaje(id);
 }
+
+
+bool GameControllerCliente::hayEventos(){
+	printf("Entro aca \n \n");
+	printf((this->cola.empty()) ? "Es NUll \n" : "No es Null\n");
+	return (!this->cola.empty());
+}
+msg_t GameControllerCliente::sacarMensaje(){
+	msg_t mensaje = this->cola.front();
+	this->cola.pop();
+	return mensaje;
+}
+void GameControllerCliente::agregarMensaje(msg_t mensaje){
+	this->cola.push(mensaje);
+}

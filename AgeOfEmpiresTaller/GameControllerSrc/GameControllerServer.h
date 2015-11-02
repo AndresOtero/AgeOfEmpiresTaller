@@ -13,6 +13,11 @@ class GameControllerServer:public GameController{
 public:
 	GameControllerServer();
 	 ~GameControllerServer();
+
+	 bool hayEventos(SDL_mutex *mutex);
+	 msg_t sacarMensaje(SDL_mutex *mutex);
+	 void agregarMensaje(msg_t mensaje, SDL_mutex *mutex);
+
 	void insertarModelo(Modelo* modelo);
 	void setMapa(int ancho, int largo);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
@@ -20,15 +25,15 @@ public:
 	void conectar();
 	void cambiar_destino_personaje(string id, double mov_x, double mov_y);
 	void eliminarEntidad(int id);
-	void agregarEntidad(string nombre,int x, int y, int cant);
+	void agregarEntidad(string nombre,int x, int y, int cant, SDL_mutex *mutex);
 	//server
 	void reconectar(std::string id);
 	void desconectar(std::string id);
 	//void reconectar(int id);
-	void agregarCliente(string name,string tipo);
-	void generarRecursoRandom();
+	void agregarCliente(string name,string tipo, SDL_mutex *mutex);
+	void generarRecursoRandom(SDL_mutex *mutex);
 	//void desconectar(int id);
-	void actualizar();
+	void actualizar(SDL_mutex *mutex);
 	char* string_to_char_array(string str);
 	queue <msg_t>  inicializacion();
 
