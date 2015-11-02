@@ -7,6 +7,8 @@
 #include <vector>
 #include "mensaje.h"
 #include "../ModeloSrc/Modelo.h"
+#include <plog/Log.h>
+
 #include <queue>
 #include <SDL2/SDL.h>
 

@@ -115,7 +115,10 @@ void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer,int * count)
 		int color;
 		if (this->modelo->mapa->celdaOcupada(x, y)) {
 			if (this->modelo->mapa->hay_personaje(x, y)) {
-				color = ROJO;
+				if (this->modelo->nombreJugador() != this->modelo->mapa->personaje_celda(x,y)->getNombreJugador()){
+					color = BLANCO;
+				}else
+					color = ROJO;
 			} else {
 				color = AZUL;
 			}
@@ -129,6 +132,10 @@ void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer,int * count)
 			//si inverti los colores el verde oscuro no lo tengo q dibujar
 			if((invertir) && (color==VERDE)){
 				return;
+			}
+			if (this->modelo->mapa->hay_personaje(x, y)){
+				color = VERDE;
+
 			}
 			color = this->sombra(color);
 		}

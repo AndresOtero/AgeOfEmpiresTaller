@@ -109,6 +109,7 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibu
 
 int Modelo::oscuridad(int dim,int x,int y){
 	for(size_t i = 0; i < this->personajes.size(); i++){
+		if(personajes[i]->getNombreJugador() == this->nombreJugador()){
 		Posicion pos = personajes[i]->get_posicion();
 		//agregarPosicion(x,y);
 		float d = (pos.getX() - x)*(pos.getX() - x) + (pos.getY() - y)*(pos.getY() - y);
@@ -117,6 +118,7 @@ int Modelo::oscuridad(int dim,int x,int y){
 			agregarPosicion(x,y);
 			return 0;
 		}
+	}
 	}
 	if(pisado(x,y)){
 		return 1;
