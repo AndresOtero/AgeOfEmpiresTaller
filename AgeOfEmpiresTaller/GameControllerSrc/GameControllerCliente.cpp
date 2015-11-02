@@ -66,7 +66,7 @@ void GameControllerCliente::conectarCliente(string name,string str, int x,int y,
 
 	Personaje* personaje =new Personaje(obj,x,y);
 	personaje->setNombreJugador(name);
-	//personaje->setDibujo(dibujo);
+	personaje->setDibujo(dibujo);
 
 	this->modelo->agregarPersonajeCliente(personaje);
 
