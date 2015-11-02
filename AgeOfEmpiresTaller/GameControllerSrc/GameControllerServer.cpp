@@ -152,6 +152,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			//de la recoleccion de recursos
 			//tiene el mismo nombre de jugador que p
 			mensaje.type= ACTUALIZACION_RECURSOS;
+			printf("Recolecto %d,%d,%d \n",p->recursosJugador()->cantOro(),p->recursosJugador()->cantMadera(),p->recursosJugador()->cantPiedra());
 			mensaje.paramInt1 = p->recursosJugador()->cantOro();
 			mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
 			mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();

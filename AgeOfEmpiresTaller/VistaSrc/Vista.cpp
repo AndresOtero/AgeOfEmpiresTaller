@@ -464,9 +464,10 @@ void Vista::dibujar_mapa() {
 							n_imagen);
 
 					if (this->modelo->devolverPersonaje(coord_x, coord_y)) {
-						dibujar_personaje(
-								this->modelo->devolverPersonaje(coord_x,
+						if (oscuro==0){
+						dibujar_personaje(this->modelo->devolverPersonaje(coord_x,
 										coord_y));
+						}
 					}
 					if(dim==TILES){
 						if(this->modelo->estaSeleccionada(coord_x,coord_y)){

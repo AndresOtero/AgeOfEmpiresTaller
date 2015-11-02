@@ -288,6 +288,7 @@ void Modelo::recolectar(Personaje * personaje){
 				personaje->get_posicion().getX(),
 				personaje->get_posicion().getY());
 		Recurso * recurso = (Recurso*) entidad;
+		printf("Recolecto %d \n",recurso->obtenerRecurso());
 		recurso->recolectar(personaje->recursosJugador());
 		RecursosJugador * recursos =personaje->recursosJugador();
 		//mandar actualizarcion recursos (cuanto aumento)
