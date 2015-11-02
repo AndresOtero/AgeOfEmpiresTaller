@@ -83,7 +83,7 @@ private:
 	bool celdaOcupada(Posicion);
 	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);
 	double distancia(Posicion a,Posicion b);
-	void agregarPosicion(Posicion pos);
+	void agregarPosicion(int x, int y);
 	bool pisado(int x,int y);
 	int totalRecursos;
 	struct timeval estado;
