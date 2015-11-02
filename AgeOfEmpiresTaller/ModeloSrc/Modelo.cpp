@@ -109,15 +109,16 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibu
 
 int Modelo::oscuridad(int dim,int x,int y){
 	for(size_t i = 0; i < this->personajes.size(); i++){
+		if(personajes[i]->getNombreJugador() == this->nombreJugador()){
 		Posicion pos = personajes[i]->get_posicion();
-		agregarPosicion(pos);
+		//agregarPosicion(x,y);
 		float d = (pos.getX() - x)*(pos.getX() - x) + (pos.getY() - y)*(pos.getY() - y);
 		d = sqrt(d);
 		if (d < 5){
-			Posicion *pos2 = new Posicion(x,y);
-			agregarPosicion(*pos2);
+			agregarPosicion(x,y);
 			return 0;
 		}
+	}
 	}
 	if(pisado(x,y))
 		return 1;
@@ -241,8 +242,8 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	return adonde_voy;
 }
 
-void Modelo::agregarPosicion(Posicion pos){
-	pisadas[pos.getX()][pos.getY()] = 1;
+void Modelo::agregarPosicion(int x, int y){
+	pisadas[x][y] = 1;
 }
 
 //server
