@@ -23,7 +23,7 @@ GameControllerServer::~GameControllerServer() {
 	// TODO Auto-generated constructor stub
 }
 
-void GameControllerServer::agregarCliente(string name,string tipo){
+void GameControllerServer::agregarCliente(string name,string tipo, SDL_mutex *mutex){
 	ObjetoMapa* obj=this->juego->tipos[tipo];
 	Personaje* personaje =new Personaje(obj);
 	personaje->setNombreJugador(name);
@@ -37,7 +37,7 @@ void GameControllerServer::agregarCliente(string name,string tipo){
 	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
 	mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
 
-	this->agregarMensaje(mensaje);
+	this->agregarMensaje(mensaje, mutex);
 }
 
 void GameControllerServer::desconectar(string Id){
@@ -101,7 +101,7 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 
 }
 
-void GameControllerServer::generarRecursoRandom(){
+void GameControllerServer::generarRecursoRandom(SDL_mutex *mutex){
 	Posicion pos = this->modelo->mapa->posicionVacia();
 	recurso_t tipo = this->modelo->generarRecursoRandom(pos);
 	//creacion mensaje si creo recurso
@@ -112,23 +112,23 @@ void GameControllerServer::generarRecursoRandom(){
 		mensaje.paramInt1 = tipo.cantidad;
 		mensaje.paramDouble1 = pos.getX();
 		mensaje.paramDouble2 = pos.getY();
-		this->agregarMensaje(mensaje);
+		this->agregarMensaje(mensaje, mutex);
 	}
 }
 
 
-void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant){
-	this->agregarEntidad(nombre,x,y,cant);
+void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant, SDL_mutex *mutex){
+	this->agregarEntidad(nombre,x,y,cant, mutex);
 	msg_t mensaje;
 	mensaje.type=CREAR_ENTIDAD;
 	memcpy(mensaje.paramNombre,string_to_char_array(nombre),sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = cant;
 	mensaje.paramDouble1 = x;
 	mensaje.paramDouble2 = y;
-	this->agregarMensaje(mensaje);
+	this->agregarMensaje(mensaje, mutex);
 
 }
-void GameControllerServer::actualizar() {
+void GameControllerServer::actualizar(SDL_mutex *mutex) {
 	this->modelo->actualizarMapa();		//mueven los tipitos
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator it = personajes.begin();
@@ -145,7 +145,7 @@ void GameControllerServer::actualizar() {
 			mensaje.paramDouble1 = mov_x;
 			mensaje.paramDouble2 = mov_y;
 
-			this->agregarMensaje(mensaje);
+			this->agregarMensaje(mensaje, mutex);
 			printf("Encola: mover %d %g %g \n", mensaje.type,mensaje.paramDouble1, mensaje.paramDouble2);
 
 			//solucion fea pero con poca implementacion
@@ -155,9 +155,51 @@ void GameControllerServer::actualizar() {
 			mensaje.paramInt1 = p->recursosJugador()->cantOro();
 			mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
 			mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
-			this->agregarMensaje(mensaje);
+			this->agregarMensaje(mensaje, mutex);
 			p->recursosJugador()->reset();//reset, el q acumula es el jugador
 
 		}
 	}
+}
+
+bool GameControllerServer::hayEventos(SDL_mutex *mutex){
+	//printf("Entro aca \n \n");
+
+	if (SDL_LockMutex(mutex) == 0) {
+
+		//printf((this->cola.empty())? "Es NUll \n" : "No es Null\n");
+
+		SDL_UnlockMutex(mutex);
+
+		return (!this->cola.empty());
+	} else {
+	  fprintf(stderr, "Couldn't lock mutex\n");
+	  return false;
+	}
+
+}
+
+msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
+	msg_t mensaje;
+	if (SDL_LockMutex(mutex) == 0) {
+
+		mensaje = this->cola.front();
+		this->cola.pop();
+		SDL_UnlockMutex(mutex);
+		return mensaje;
+	} else {
+	  fprintf(stderr, "Couldn't lock mutex\n");
+	  return mensaje;
+	}
+
+}
+
+void GameControllerServer::agregarMensaje(msg_t mensaje,SDL_mutex *mutex){
+	if (SDL_LockMutex(mutex) == 0) {
+		this->cola.push(mensaje);
+		SDL_UnlockMutex(mutex);
+	} else {
+	  fprintf(stderr, "Couldn't lock mutex\n");
+	}
+
 }

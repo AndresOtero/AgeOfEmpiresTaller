@@ -9,6 +9,7 @@
 
 GameController::GameController() {
 }
+
 GameController::~GameController() {
 	delete modelo;
 	delete juego;
@@ -43,17 +44,7 @@ Modelo* GameController::devolverModelo(){
 void GameController::eliminarEntidad(int id){
 	this->modelo->eliminarEntidadPorID(id);
 }
-bool GameController::hayEventos(){
-	return !this->cola.empty();
-}
-msg_t GameController::sacarMensaje(){
-	msg_t mensaje = this->cola.front();
-	this->cola.pop();
-	return mensaje;
-}
-void GameController::agregarMensaje(msg_t mensaje){
-	this->cola.push(mensaje);
-}
+
 void GameController::reconectar(string id){
 	this->modelo->descongelarPersonaje(id);
 }
@@ -63,3 +54,5 @@ void GameController::desconectar(string id){
 void GameController::actualizar(){
 	//virtual
 }
+
+

@@ -13,6 +13,9 @@ class GameControllerCliente:public GameController  {
 public:
 	GameControllerCliente();
 	~GameControllerCliente();
+	 bool hayEventos();
+	 msg_t sacarMensaje();
+	 void agregarMensaje(msg_t mensaje);
 	string nombreJugador() ;
 	string ipJugador() ;
 	void insertarModelo(Modelo* modelo);
@@ -30,6 +33,7 @@ public:
 	void agregarEntidad(string nombre,int x,int y,int cant);
 	void cambiar_destino_personaje(string id, double mov_x, double mov_y);
 	void conectarCliente(string name,string str, int x,int y,dibujo_t dibujo);
+	bool esNombre(char* nombre);
 	//Personaje* conectarme(string name,string str, int x,int y);
 	//void setearPosicionPersonaje(int id,double pos_x,double pos_y);
 	void reconectar(string id);
