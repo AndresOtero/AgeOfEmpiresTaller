@@ -37,9 +37,11 @@ private:
 	bool cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color,shared_ptr<Textura> textura, string display);
 	shared_ptr<Minimapa> mapa;
 	shared_ptr<Textura> texto;
+	shared_ptr<Textura> nombreJugador;
 	shared_ptr<RecursoVista> oro;
 	shared_ptr<RecursoVista> madera;
 	shared_ptr<RecursoVista> piedra;
+	string nombre;
 	double desfasaje;
 	TTF_Font* font;
 	string display;

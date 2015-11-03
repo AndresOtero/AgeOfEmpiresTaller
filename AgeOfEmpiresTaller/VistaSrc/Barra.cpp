@@ -31,7 +31,9 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	this->desfasaje = (double)sobrante/(double)(modelo->mapa->getLargo());
 	shared_ptr<CambioDeCoordendas> trans(new CambioDeCoordendas(celda_mini,celda_mini));
 	this->transformador = trans;
-
+	shared_ptr<Textura> text2(new Textura());
+	this->nombreJugador = text2;
+	this->nombre = modelo->nombreJugador();
 }
 
 
@@ -76,6 +78,9 @@ void Barra::renderTexto(SDL_Renderer*renderer){
 	x_piedra =imprimirNumeroDeRecurso(renderer,this->oro,x_oro);
 	x_madera =imprimirNumeroDeRecurso(renderer,this->piedra,x_piedra);
 	imprimirNumeroDeRecurso(renderer,this->madera,x_madera);
+
+	SDL_Color color = this->mapa->paleta(BLANCO);
+	cargarTexto(this->nombreJugador->getWidth(),0,renderer,color,this->nombreJugador,this->nombre);
 }
 
 int Barra::imprimirNumeroDeRecurso(SDL_Renderer* renderer, shared_ptr<RecursoVista> recurso, int x_ref){
@@ -106,6 +111,7 @@ void Barra::render(SDL_Renderer*renderer){
 	this->renderTexto(renderer);
 	this->mapa->render(renderer);
 	this->dibujarDondeMiro(renderer);
+
 }
 
 void Barra::dibujarDondeMiro(SDL_Renderer * renderer){
