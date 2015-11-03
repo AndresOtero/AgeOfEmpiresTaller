@@ -41,8 +41,7 @@ void GameControllerCliente::cambiar_destino_personaje(string id, double mov_x,do
 
 	memcpy(mensaje.paramNombre,string_to_char_array(id),sizeof(mensaje.paramNombre));
 
-	printf("Mensaje del cliente encolado:\n");
-	printf("Mover a %g,%g \n",mov_x,mov_y);
+
 	mensaje.paramDouble1 = mov_x;
 	mensaje.paramDouble2 = mov_y;
 
@@ -51,8 +50,7 @@ void GameControllerCliente::cambiar_destino_personaje(string id, double mov_x,do
 }
 
 void GameControllerCliente::mover_personaje(string name,double mov_x,double mov_y){
-	printf("Mensaje Recibido: \n");
-	printf("Mover a %g,%g \n",mov_x,mov_y);
+
 	this->modelo->cambiar_destino_personaje(name,mov_x,mov_y);
 }
 
@@ -82,12 +80,10 @@ void GameControllerCliente::eliminarEntidad(int x,int y){
 	//this->modelo->eeliminarEntidad(x,y);
 }
 void GameControllerCliente::desconectar(string id){
-	printf("congelar\n");
 	this->modelo->congelarPersonaje(id);
 }
 
 void GameControllerCliente::reconectar(string id){
-	printf("descongelar\n");
 	this->modelo->descongelarPersonaje(id);
 }
 

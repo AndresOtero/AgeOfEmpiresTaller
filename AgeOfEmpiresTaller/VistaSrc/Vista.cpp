@@ -203,22 +203,11 @@ dibujo_t Vista::crearPersonaje(string tipo) {
 	vector<int> imagenes = vector<int>(CANTIDAD_DE_MOVIMIENTOS,
 			CANTIDAD_DE_IMAGENES);
 	/*********************************************************/
-	printf("Voy a crear el dibujo\n");
-	printf("Tipo: %s \n",tipo.c_str());
-	Modelo* modelo =this->modelo;
-	printf(((this->modelo)!=NULL)? "existe el modelo\n" : "no existe el modelo\n");
-	printf(((modelo->juego)!=NULL)? "existe el juego\n" : "no existe el juego\n");
-	Juego* juego= modelo->juego;
-	printf(((this->modelo->juego)!=NULL)? "existe el juego\n" : "no existe el juego\n");
-	printf((this->modelo->juego->tipos.count(tipo)>0) ? "Existe en el diccionario\n" : "No Existe en el diccionario\n");
-	ObjetoMapa* obj=this->modelo->juego->tipos[tipo];
-	printf("Busque el objeto\n");
+		ObjetoMapa* obj=this->modelo->juego->tipos[tipo];
 
 	this->factory->crear_dibujo_personaje(obj->imagen,
 			CANTIDAD_DE_MOVIMIENTOS, imagenes, v3d, obj->fps);
-	printf("cree el dibujo en la factory\n");
 	dibujo_t pers = this->factory->ultimo_dibujo();
-	printf("consigo el dibujo\n");
 	return pers;
 }
 

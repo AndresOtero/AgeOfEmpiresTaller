@@ -56,7 +56,7 @@ void DibujoAnimado::set_fps(int fps) {
 	this->fps = fps;
 }
 void DibujoAnimado::set_delay(double delay){
-	this->delay = delay;
+	this->delay = delay/100.0;
 }
 
 void DibujoAnimado::cambiar_frame(){
