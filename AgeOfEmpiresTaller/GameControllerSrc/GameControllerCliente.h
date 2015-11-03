@@ -26,6 +26,7 @@ public:
 	void crearPersonaje(string nombre,double x, double y, int id);
 	void generarRecursoRandom();
 	void eliminarEntidad(int id);
+	void eliminarEntidad(int x,int y);
 	void mover_personaje(string id, double mov_x,double mov_y);
 
 	//Cliente

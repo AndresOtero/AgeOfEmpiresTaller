@@ -151,14 +151,19 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			//solucion fea pero con poca implementacion
 			//de la recoleccion de recursos
 			//tiene el mismo nombre de jugador que p
-			mensaje.type= ACTUALIZACION_RECURSOS;
-			printf("Recolecto %d,%d,%d \n",p->recursosJugador()->cantOro(),p->recursosJugador()->cantMadera(),p->recursosJugador()->cantPiedra());
-			mensaje.paramInt1 = p->recursosJugador()->cantOro();
-			mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
-			mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
-			this->agregarMensaje(mensaje, mutex);
-			p->recursosJugador()->reset();//reset, el q acumula es el jugador
+			int oro = p->recursosJugador()->cantOro();
+			int piedra = p->recursosJugador()->cantMadera();
+			int madera = p->recursosJugador()->cantPiedra();
+			if ((oro!=0)||(madera!=0)||(piedra!=0)){
 
+			//printf("Recolecto %d,%d,%d \n",p->recursosJugador()->cantOro(),p->recursosJugador()->cantMadera(),p->recursosJugador()->cantPiedra());
+				mensaje.type = ACTUALIZACION_RECURSOS;
+				mensaje.paramInt1 = p->recursosJugador()->cantOro();
+				mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
+				mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
+				this->agregarMensaje(mensaje, mutex);
+				p->recursosJugador()->reset();//reset, el q acumula es el jugador
+			}
 		}
 	}
 }

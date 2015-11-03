@@ -78,6 +78,9 @@ void GameControllerCliente::agregarEntidad(string nombre,int x, int y, int cant)
 void GameControllerCliente::acutalizarRecursos(int oro, int madera, int piedra){
 	this->modelo->actualizarRecursos(oro,madera,piedra);
 }
+void GameControllerCliente::eliminarEntidad(int x,int y){
+	//this->modelo->eeliminarEntidad(x,y);
+}
 void GameControllerCliente::desconectar(string id){
 	printf("congelar\n");
 	this->modelo->congelarPersonaje(id);
