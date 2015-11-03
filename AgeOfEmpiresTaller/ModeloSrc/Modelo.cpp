@@ -23,7 +23,7 @@
 #define RITMO 5
 using namespace std;
 
-#define CICLOS_MAX 100
+#define CICLOS_MAX 500
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
 
