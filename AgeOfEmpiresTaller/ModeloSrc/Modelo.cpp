@@ -219,7 +219,7 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 		}
 	}
 	if((cont==CICLOS_MAX)||(donde_vengo.count(adonde_voy)==0)){
-		return adonde_estoy;
+	 		return adonde_estoy;
 	}
 
 	stack<Posicion> camino;
@@ -238,8 +238,6 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 		camino.pop();
 	}
 
-	//printf("Adonde estoy: X:%g, Y:%g\n",adonde_estoy.get_x_exacta(),adonde_estoy.get_y_exacta());
-	//printf("Adonde  voy: X:%g, Y:%g\n",adonde_voy.get_x_exacta(),adonde_voy.get_y_exacta());
 	return adonde_voy;
 }
 
@@ -288,7 +286,6 @@ void Modelo::recolectar(Personaje * personaje){
 				personaje->get_posicion().getX(),
 				personaje->get_posicion().getY());
 		Recurso * recurso = (Recurso*) entidad;
-		printf("Recolecto %d \n",recurso->obtenerRecurso());
 		recurso->recolectar(personaje->recursosJugador());
 		RecursosJugador * recursos =personaje->recursosJugador();
 		//mandar actualizarcion recursos (cuanto aumento)
@@ -447,7 +444,6 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 
 	if (entidad->esUnRecurso()){
 			((Recurso *)entidad)->setRecurso(cantidad);
-			//printf("Cantidad de recurso en entidad creada %d\n",((Recurso *)entidad)->obtenerRecurso());
 			return ((Recurso *)entidad)->obtenerRecurso();
 	}
 	return 0;

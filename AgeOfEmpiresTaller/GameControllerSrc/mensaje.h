@@ -25,7 +25,6 @@ enum MensajeType {
 	PARAM_MAPA,
 	CONFIGURACION,
 	DISCONNECT,
-	ELIMINAR_ENTIDAD,
 };
 
 typedef struct {

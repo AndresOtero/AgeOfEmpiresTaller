@@ -97,10 +97,10 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 			msg_crear_personaje.paramDouble2=pos.get_y_exacta();
 			colaInicializacion.push(msg_crear_personaje);
 			if(personaje->estaCongelado()){
-				msg_t mensajeDesconexion;
-				mensajeDesconexion.type = QUIT;
-				memcpy(mensajeDesconexion.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(mensajeDesconexion.paramNombre));
-				colaInicializacion.push(mensajeDesconexion);
+							msg_t mensajeDesconexion;
+							mensajeDesconexion.type = QUIT;
+							memcpy(mensajeDesconexion.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(mensajeDesconexion.paramNombre));
+							colaInicializacion.push(mensajeDesconexion);
 			}
 		}
 	return colaInicializacion;
@@ -152,47 +152,37 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			mensaje.paramDouble2 = mov_y;
 
 			this->agregarMensaje(mensaje, mutex);
-			//printf("Encola: mover %d %g %g \n", mensaje.type,mensaje.paramDouble1, mensaje.paramDouble2);
 
 			//solucion fea pero con poca implementacion
 			//de la recoleccion de recursos
 			//tiene el mismo nombre de jugador que p
-			int oro = p->recursosJugador()->cantOro();
-			int piedra = p->recursosJugador()->cantMadera();
-			int madera = p->recursosJugador()->cantPiedra();
-			if ((oro!=0)||(madera!=0)||(piedra!=0)){
+			mensaje.type= ACTUALIZACION_RECURSOS;
+			mensaje.paramInt1 = p->recursosJugador()->cantOro();
+			mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
+			mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
+			this->agregarMensaje(mensaje, mutex);
+			p->recursosJugador()->reset();//reset, el q acumula es el jugador
 
-			//printf("Recolecto %d,%d,%d \n",p->recursosJugador()->cantOro(),p->recursosJugador()->cantMadera(),p->recursosJugador()->cantPiedra());
-				mensaje.type = ACTUALIZACION_RECURSOS;
-				mensaje.paramInt1 = p->recursosJugador()->cantOro();
-				mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
-				mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
-				this->agregarMensaje(mensaje, mutex);
-				p->recursosJugador()->reset();//reset, el q acumula es el jugador
-			}
 		}
 	}
 }
 
 bool GameControllerServer::hayEventos(SDL_mutex *mutex){
-	//printf("Entro aca \n \n");
-	plog::init(plog::warning, "Log.txt");
+
 	if (SDL_LockMutex(mutex) == 0) {
 
-		//printf((this->cola.empty())? "Es NUll \n" : "No es Null\n");
 
 		SDL_UnlockMutex(mutex);
 
 		return (!this->cola.empty());
 	} else {
-	  LOG_WARNING<< "Couldn't lock mutex\n";
+	  fprintf(stderr, "Couldn't lock mutex\n");
 	  return false;
 	}
 
 }
 
 msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
-	plog::init(plog::error, "Log.txt");
 	msg_t mensaje;
 	if (SDL_LockMutex(mutex) == 0) {
 
@@ -201,19 +191,18 @@ msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
 		SDL_UnlockMutex(mutex);
 		return mensaje;
 	} else {
-		LOG_ERROR << "Couldn't lock mutex\n";
+	  fprintf(stderr, "Couldn't lock mutex\n");
 	  return mensaje;
 	}
 
 }
 
 void GameControllerServer::agregarMensaje(msg_t mensaje,SDL_mutex *mutex){
-	plog::init(plog::error, "Log.txt");
 	if (SDL_LockMutex(mutex) == 0) {
 		this->cola.push(mensaje);
 		SDL_UnlockMutex(mutex);
 	} else {
-		LOG_ERROR << "Couldn't lock mutex\n";
+	  fprintf(stderr, "Couldn't lock mutex\n");
 	}
 
 }

@@ -300,9 +300,7 @@ bool Vista::run() {
 				this->transformador->transformar_pantalla_isometrica(mov_x,
 						mov_y, a, b);
 				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
-				//printf("Donde toco : x: %g, y: %g \n",a,b);
 				this->barra->setDisplay(modelo->seleccionar(a, b));
-				//printf("Selecciono\n");
 			}
 		}
 		if (e.type == SDL_KEYDOWN) {
