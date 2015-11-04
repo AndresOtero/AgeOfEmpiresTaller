@@ -96,6 +96,12 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 			msg_crear_personaje.paramDouble1=pos.get_x_exacta();
 			msg_crear_personaje.paramDouble2=pos.get_y_exacta();
 			colaInicializacion.push(msg_crear_personaje);
+			if(personaje->estaCongelado()){
+				msg_t mensajeDesconexion;
+				mensajeDesconexion.type = QUIT;
+				memcpy(mensajeDesconexion.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(mensajeDesconexion.paramNombre));
+				colaInicializacion.push(mensajeDesconexion);
+			}
 		}
 	return colaInicializacion;
 
