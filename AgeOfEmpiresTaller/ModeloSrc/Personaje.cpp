@@ -6,7 +6,7 @@
  */
 
 #include "Personaje.h"
-
+#define FACTOR_VELOCIDAD 100
 
 
 Personaje::Personaje(){
@@ -27,7 +27,8 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->referencia_mapa_y=1;
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
-	this->velocidad=0.1;
+	this->velocidad=float(objetoMapa->velocidad)/FACTOR_VELOCIDAD;
+	printf("Velocidad %d",objetoMapa->velocidad);
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
@@ -38,21 +39,19 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_y=y;
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
-	this->velocidad=0.1;
+	this->velocidad=float(objetoMapa->velocidad)/FACTOR_VELOCIDAD;
+	printf("Velocidad %d",objetoMapa->velocidad);
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
 }
-
-
 dibujo_t Personaje::dibujar(){
 	return dibujo;
 }
 string Personaje::mostrar_contenido(){
 	return this->objetoMapa->nombre+string(",")+this->nombreJugador;
 }
-
 void Personaje::set_posicion(Posicion pos){
 	this->referencia_mapa_x=pos.get_x_exacta();
 	this->referencia_mapa_y=pos.get_y_exacta();
@@ -108,7 +107,6 @@ void Personaje::mover() {
 RecursosJugador* Personaje::recursosJugador(){
 	return recursos;
 }
-
 Personaje::~Personaje() {
 	delete recursos;
 }

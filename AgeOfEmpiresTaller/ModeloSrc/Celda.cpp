@@ -38,6 +38,7 @@ void Celda::ocuparCeldaPersonaje(Personaje* personaje){
 
 }
 void Celda::liberarCelda(){
+	this->ocupada=false;
 	this->entidad=NULL;
 	this->escenario=DEFAULT;
 	//nose si este ultimo es necesario pero por las dudas
@@ -60,9 +61,10 @@ bool Celda::estaOcupada(){
 	if (this->personaje!=NULL)
 		return true;
 
-	return false;
+	return this->ocupada;
 }
 void Celda::ocuparCelda(Entidad * entidad){
+	this->ocupada=true;
 	this->entidad=entidad;
 	//deberia setear el escenario con el modelo en que estamos
 }

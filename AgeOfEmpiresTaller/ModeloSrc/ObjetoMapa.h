@@ -24,6 +24,11 @@ public:
 	PixelsReferencia* pixelsReferencia;
 	int fps;
 	int delay;
+	int velocidad;
+	int fuerza;
+	int armadura;
+	int recoleccion;
+	int construccion;
 	ObjetoMapa(string nombre, string imagen);
 
 	virtual ~ObjetoMapa();

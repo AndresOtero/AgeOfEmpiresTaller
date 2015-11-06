@@ -22,7 +22,7 @@
 #define MAX_RECURSOS 30
 #define RITMO 5
 using namespace std;
-
+#define VISIBILIDAD 5
 #define CICLOS_MAX 500
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
@@ -62,7 +62,6 @@ void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 
 void Modelo::agregarPersonajeCliente(Personaje* personaje){
 	this->personajes.push_back(personaje);
-
 }
 
 
@@ -114,7 +113,7 @@ int Modelo::oscuridad(int dim,int x,int y){
 		//agregarPosicion(x,y);
 		float d = (pos.getX() - x)*(pos.getX() - x) + (pos.getY() - y)*(pos.getY() - y);
 		d = sqrt(d);
-		if (d < 5){
+		if (d < VISIBILIDAD){
 			agregarPosicion(x,y);
 			return 0;
 		}

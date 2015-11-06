@@ -17,6 +17,10 @@ class Personaje {
 	double referencia_mapa_x,referencia_mapa_y;
 	dibujo_t dibujo;
 	double velocidad;
+	int fuerza;
+	int armadura;
+	int recoleccion;
+	int construccion;
 	Posicion destino;
 	Posicion camino;
 	bool congelado;
@@ -40,9 +44,7 @@ public:
 	Posicion get_destino();
 	Posicion get_posicion();
 	Posicion get_camino();
-	void setVelocidad(double velocidad) {
-		this->velocidad = velocidad;
-	}
+
 	bool seMovio(){
 		return se_movio;
 	}

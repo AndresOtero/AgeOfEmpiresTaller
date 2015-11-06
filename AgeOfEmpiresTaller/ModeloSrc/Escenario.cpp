@@ -11,7 +11,7 @@ Escenario::Escenario() {
 	this -> nombre = "default";
 	this -> size_x = 100;
 	this -> size_y = 100;
-	this -> protagonista = new Personaje();
+	//this -> protagonista = new Personaje();
 }
 Escenario::Escenario(string nombre, int size_x, int size_y){
 	this -> nombre = nombre;
