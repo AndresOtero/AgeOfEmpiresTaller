@@ -28,7 +28,6 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->velocidad=float(objetoMapa->velocidad)/FACTOR_VELOCIDAD;
-	printf("Velocidad %d",objetoMapa->velocidad);
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
@@ -40,7 +39,6 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->velocidad=float(objetoMapa->velocidad)/FACTOR_VELOCIDAD;
-	printf("Velocidad %d",objetoMapa->velocidad);
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();

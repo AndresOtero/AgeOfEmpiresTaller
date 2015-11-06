@@ -24,6 +24,11 @@
 using namespace std;
 #define VISIBILIDAD 5
 #define CICLOS_MAX 500
+#define PISADA 1
+#define VISIBLE 0
+#define OSCURO 2
+#define ORO 0
+#define PIEDRA 1
 #define DIMENSIONES 2 //TILE Y ESCENARIO
 enum dimension{TILES,ESCENARIO};
 
@@ -39,12 +44,11 @@ Modelo::Modelo(Juego* juego) {
 	this->totalRecursos=0;
 	gettimeofday(&estado,NULL);
 	idServer=0;
-	for (int i = 0; i < this->juego->escenario->size_x; i++) {
-	    vector<int> row; // Create an empty row
-	    for (int j = 0; j < this->juego->escenario->size_y; j++) {
-	        row.push_back(0); // Add an element (column) to the row
-	    }
-	    pisadas.push_back(row); // Add the row to the main vector
+	int ancho=this->get_ancho_mapa();
+	int alto=this->get_alto_mapa();
+	vector<int> row(ancho,OSCURO);
+	for(int i=0;i<alto;i++){
+		pisadas.push_back(row);
 	}
 }
 string Modelo::nombreJugador(){
@@ -114,19 +118,19 @@ int Modelo::oscuridad(int dim,int x,int y){
 		float d = (pos.getX() - x)*(pos.getX() - x) + (pos.getY() - y)*(pos.getY() - y);
 		d = sqrt(d);
 		if (d < VISIBILIDAD){
-			agregarPosicion(x,y);
-			return 0;
+			agregarPosicionPisada(x,y);
+			return VISIBLE;
 		}
 	}
 	}
 	if(pisado(x,y)){
-		return 1;
+		return PISADA;
 	}
-	return 2;
+	return OSCURO;
 }
 
 bool Modelo::pisado(int x, int y){
-	return(pisadas[x][y] == 1);
+	return(pisadas[x][y] == PISADA);
 }
 
 dibujo_t Modelo::dibujar(int dim,int x,int y){
@@ -159,7 +163,7 @@ bool Modelo::estaSeleccionada(int x,int y){
 string Modelo::seleccionar(double mov_x,double mov_y){
 	this->mapa->deseleccionar();
 	Posicion seleccionada= Posicion(mov_x,mov_y);
-	if (this->oscuridad(0,seleccionada.getX(),seleccionada.getY())==2){
+	if (this->oscuridad(TILES,seleccionada.getX(),seleccionada.getY())==OSCURO){
 			return "";
 	}
 	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
@@ -240,8 +244,8 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 	return adonde_voy;
 }
 
-void Modelo::agregarPosicion(int x, int y){
-	pisadas[x][y] = 1;
+void Modelo::agregarPosicionPisada(int x, int y){
+	pisadas[x][y] = PISADA;
 }
 
 //server
@@ -346,12 +350,13 @@ void Modelo::eliminarEntidadPorID(int id){
 	}
 }**/
 
-void  Modelo::cambiar_destino_personaje(string id ,double mov_x,double mov_y){
+void  Modelo::cambiar_destino_personaje(Id id ,double mov_x,double mov_y){
+	printf("Modelo Id: %d\n",id);
 	vector<Personaje*>::iterator it = personajes.begin();
 		for (; it != personajes.end(); ++it) {
 
 			Personaje* p = (*it);
-			if(p->getNombreJugador()==id){
+			if(p->getId()==id){
 				p->set_destino(Posicion(mov_x,mov_y));
 			}
 		}
@@ -393,12 +398,12 @@ recurso_t Modelo::generarRecursoRandom(Posicion pos){
 	string nombre;
 	int numero = num.numeroRandom(0,3);
 	switch (numero){
-		case 0:
+		case ORO:
 			nombre="oro";
 			objeto =this->juego->tipos["oro"];
 			entidad = new Oro(objeto,x,y);
 			break;
-		case 1:
+		case PIEDRA:
 			nombre="madera";
 			objeto =this->juego->tipos["madera"];
 			entidad = new Madera(objeto,x,y);

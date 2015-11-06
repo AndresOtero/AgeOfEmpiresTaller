@@ -23,8 +23,8 @@ public:
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
 			vector<vector<dibujo_t>> tiles);
 	void conectar();
-	void cambiar_destino_personaje(string id, double mov_x, double mov_y);
 	void eliminarEntidad(int id);
+	void cambiar_destino_personaje(Id id, double mov_x,double mov_y);
 	void agregarEntidad(string nombre,int x, int y, int cant, SDL_mutex *mutex);
 	//server
 	void reconectar(std::string id);

@@ -47,7 +47,7 @@ public:
 	string seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();
 	Personaje* devolverPersonajeSeleccionado();
-	void cambiar_destino_personaje(string id ,double mov_x,double mov_y);
+	void  cambiar_destino_personaje(Id id ,double mov_x,double mov_y);
 	Personaje* devolverPersonaje(int x,int y);
 	int get_ancho_mapa();
 	int get_alto_mapa();
@@ -83,7 +83,7 @@ private:
 	bool celdaOcupada(Posicion);
 	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);
 	double distancia(Posicion a,Posicion b);
-	void agregarPosicion(int x, int y);
+	void agregarPosicionPisada(int x, int y);
 	bool pisado(int x,int y);
 	int totalRecursos;
 	struct timeval estado;

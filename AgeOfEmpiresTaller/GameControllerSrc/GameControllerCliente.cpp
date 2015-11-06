@@ -33,22 +33,21 @@ string GameControllerCliente::ipJugador() {
 }
 
 
-void GameControllerCliente::cambiar_destino_personaje(string id, double mov_x,double mov_y){
+void GameControllerCliente::cambiar_destino_personaje(Id id, double mov_x,double mov_y){
 
 	msg_t mensaje;
 
 	mensaje.type = MOVER_PERSONAJE;
 
-	memcpy(mensaje.paramNombre,string_to_char_array(id),sizeof(mensaje.paramNombre));
 	mensaje.paramDouble1 = mov_x;
 	mensaje.paramDouble2 = mov_y;
-
+	mensaje.paramInt1=id;
 	this->agregarMensaje(mensaje);
 
 }
 
-void GameControllerCliente::mover_personaje(string name,double mov_x,double mov_y){
-	this->modelo->cambiar_destino_personaje(name,mov_x,mov_y);
+void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
+	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 
 
@@ -56,13 +55,13 @@ void GameControllerCliente::setMapa(int ancho, int largo){
 	this->modelo->setMapa(largo,ancho);
 }
 
-void GameControllerCliente::conectarCliente(string name,string str, int x,int y,dibujo_t dibujo){
+void GameControllerCliente::conectarCliente(string name,string str, int x,int y,dibujo_t dibujo,int id){
 	ObjetoMapa* obj= this->juego->tipos[str];
 
 	Personaje* personaje =new Personaje(obj,x,y);
 	personaje->setNombreJugador(name);
 	personaje->setDibujo(dibujo);
-
+	personaje->setId(id);
 	this->modelo->agregarPersonajeCliente(personaje);
 
 }

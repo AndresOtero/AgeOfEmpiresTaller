@@ -288,11 +288,10 @@ bool Vista::run() {
 				if (this->modelo->devolverPersonajeSeleccionado()){
 				if(this->modelo->devolverPersonajeSeleccionado()->getNombreJugador()==this->modelo->nombreJugador())
 				{
-
-					this->gameController->cambiar_destino_personaje(this->gameController->nombreJugador() ,personaje_x, personaje_y);
+					printf("Vista Id: %d\n",this->modelo->devolverPersonajeSeleccionado()->getId());
+					this->gameController->cambiar_destino_personaje(this->modelo->devolverPersonajeSeleccionado()->getId() ,personaje_x, personaje_y);
 				}
 				}
-				//modelo->cambiar_destino_personaje(personaje_x,personaje_y);
 			}
 			if (e.button.button == SDL_BUTTON_LEFT) {
 				double a, b;

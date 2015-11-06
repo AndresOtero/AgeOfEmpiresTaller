@@ -26,13 +26,13 @@ public:
 	void crearPersonaje(string nombre,double x, double y, int id);
 	void generarRecursoRandom();
 	void eliminarEntidad(int id);
-	void mover_personaje(string id, double mov_x,double mov_y);
+	void mover_personaje(Id id,double mov_x,double mov_y);
 
 	//Cliente
 	void acutalizarRecursos(int oro, int madera, int piedra);
 	void agregarEntidad(string nombre,int x,int y,int cant);
-	void cambiar_destino_personaje(string id, double mov_x, double mov_y);
-	void conectarCliente(string name,string str, int x,int y,dibujo_t dibujo);
+	void cambiar_destino_personaje(Id id, double mov_x, double mov_y);
+	void conectarCliente(string name,string str, int x,int y,dibujo_t dibujo,int id);
 	bool esNombre(char* nombre);
 	//Personaje* conectarme(string name,string str, int x,int y);
 	//void setearPosicionPersonaje(int id,double pos_x,double pos_y);

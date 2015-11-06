@@ -48,9 +48,12 @@ void GameControllerServer::reconectar(string Id){
 					this->modelo->descongelarPersonaje(Id);
 					//Descongelar en todos
 			 }
-void GameControllerServer::cambiar_destino_personaje(string id, double mov_x,double mov_y){
+
+void GameControllerServer::cambiar_destino_personaje(Id id, double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
+
+
 
 queue <msg_t>  GameControllerServer::inicializacion(){
 	queue <msg_t> colaInicializacion;
@@ -95,6 +98,7 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 			memcpy(msg_crear_personaje.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(msg_crear_personaje.paramNombre));
 			msg_crear_personaje.paramDouble1=pos.get_x_exacta();
 			msg_crear_personaje.paramDouble2=pos.get_y_exacta();
+			msg_crear_personaje.paramInt1=personaje->getId();
 			colaInicializacion.push(msg_crear_personaje);
 			if(personaje->estaCongelado()){
 							msg_t mensajeDesconexion;
@@ -150,7 +154,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),	sizeof(mensaje.paramNombre));
 			mensaje.paramDouble1 = mov_x;
 			mensaje.paramDouble2 = mov_y;
-
+			mensaje.paramInt1 = p->getId();
 			this->agregarMensaje(mensaje, mutex);
 
 			//solucion fea pero con poca implementacion

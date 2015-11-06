@@ -37,7 +37,7 @@ Modelo* GameController::devolverModelo(){
 	return this->modelo;
 }
 
- void GameController::cambiar_destino_personaje(string id ,double mov_x,double mov_y){
+ void GameController::cambiar_destino_personaje(Id id ,double mov_x,double mov_y){
 		this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);
 }
 
