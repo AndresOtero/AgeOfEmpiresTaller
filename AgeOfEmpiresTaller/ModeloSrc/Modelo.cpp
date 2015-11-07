@@ -351,7 +351,6 @@ void Modelo::eliminarEntidadPorID(int id){
 }**/
 
 void  Modelo::cambiar_destino_personaje(Id id ,double mov_x,double mov_y){
-	printf("Modelo Id: %d\n",id);
 	vector<Personaje*>::iterator it = personajes.begin();
 		for (; it != personajes.end(); ++it) {
 

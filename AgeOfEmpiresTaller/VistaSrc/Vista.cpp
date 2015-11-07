@@ -288,7 +288,6 @@ bool Vista::run() {
 				if (this->modelo->devolverPersonajeSeleccionado()){
 				if(this->modelo->devolverPersonajeSeleccionado()->getNombreJugador()==this->modelo->nombreJugador())
 				{
-					printf("Vista Id: %d\n",this->modelo->devolverPersonajeSeleccionado()->getId());
 					this->gameController->cambiar_destino_personaje(this->modelo->devolverPersonajeSeleccionado()->getId() ,personaje_x, personaje_y);
 				}
 				}

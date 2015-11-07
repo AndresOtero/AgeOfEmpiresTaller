@@ -44,6 +44,7 @@ public:
 	void sacarEntidad(Entidad * entidad);
 	void actualizar(vector<Personaje*> personajes);
 	Posicion validar_destino(Posicion adonde_voy,Posicion adonde_estoy);
+	vector<Posicion> adyacencias(Posicion posicion);
 private:
 	Celda* getCelda(int x,int y);
 

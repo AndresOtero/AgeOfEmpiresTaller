@@ -113,29 +113,47 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	if((adonde_estoy==adonde_voy)||(!celdaOcupada(adonde_voy.getX(), adonde_voy.getY()))) {
 		return adonde_voy;
 	}
-	return adonde_estoy;
-	vector<Posicion> adyacentes = adyacenciasNoOcupadas(adonde_voy);
-	vector<Posicion>::iterator it = adyacentes.begin();
+
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
-				CompDistancias> pila;
-	for (; it != adyacentes.end(); ++it) {
-		Posicion ady = (*it);
-		pila.push(pair<Posicion, double>(ady, adonde_estoy.distancia_euclidia(ady)));
+				CompDistancias> pila_no_ocupadas;
+	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
+					CompDistancias> pila_ocupadas;
+	pila_ocupadas.push(pair<Posicion, double>(adonde_voy, adonde_voy.distancia_octal(adonde_estoy)));
+	while(pila_no_ocupadas.empty()){
+		Posicion ocupado_mas_cercano=pila_ocupadas.top().first;
+		vector<Posicion> adyacentes_no_ocupados = adyacenciasNoOcupadas(ocupado_mas_cercano);
+		vector<Posicion>::iterator it = adyacentes_no_ocupados.begin();
+		for (; it != adyacentes_no_ocupados.end(); ++it) {
+			Posicion ady = (*it);
+			pila_no_ocupadas.push(pair<Posicion, double>(ady, adonde_estoy.distancia_octal(ady)+adonde_voy.distancia_octal(ady)));
+		}
+		if(!pila_no_ocupadas.empty()){
+			return pila_no_ocupadas.top().first;
+		}else{
+			vector<Posicion> adyacentes_ocupados = adyacencias(ocupado_mas_cercano);
+			vector<Posicion>::iterator it = adyacentes_ocupados.begin();
+			for (; it != adyacentes_no_ocupados.end(); ++it) {
+				Posicion ady = (*it);
+				pila_ocupadas.push(pair<Posicion, double>(ady, adonde_estoy.distancia_octal(ady)+adonde_voy.distancia_octal(ady)));
+			}
+		}
 	}
-	return pila.top().first;
+}
+vector<Posicion> Mapa::adyacencias(Posicion posicion) {
+	vector<Posicion> adyacentes = vector<Posicion>();
+	int x = posicion.getX(), y = posicion.getY();
+	for(int i=x-1;i<x+1;i++){
+		for(int j=y-1;j<y+1;j++){
+			if((i!=x)&&(j!=y)){
+				adyacentes.push_back(Posicion(i,j));
+			}
+		}
+	}
+	return adyacentes;
 }
 vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 	vector<Posicion> adyacentes = vector<Posicion>();
 	int x = posicion.getX(), y = posicion.getY();
-	/**for (int i = x - 1; i < x + 2; i++) {
-		for (int j = y - 1; j < y + 2; j++) {
-			if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j))
-					&& ((i != x) || (j != y))) {
-				adyacentes.push_back(Posicion(i+0.5, j+0.5));
-			}
-		}
-	}**/
-
 	for (int i = x - 1; i < x + 2; i+=2) {
 		if ((!afueraDelMapa(i, y)) && (!celdaOcupada(i, y))) {
 					adyacentes.push_back(Posicion(i,y));
@@ -159,9 +177,7 @@ vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 			adyacentes.push_back(Posicion(i, j));
 		}
 	}
-
-
-		return adyacentes;
+	return adyacentes;
 }
 
 void Mapa::posicionarEntidad(Entidad* entidad){
