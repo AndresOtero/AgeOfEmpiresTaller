@@ -113,7 +113,7 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	if((adonde_estoy==adonde_voy)||(!celdaOcupada(adonde_voy.getX(), adonde_voy.getY()))) {
 		return adonde_voy;
 	}
-
+	adonde_voy=Posicion(adonde_voy.getX(),adonde_voy.getY());
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
 				CompDistancias> pila_no_ocupadas;
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
@@ -125,7 +125,7 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 		vector<Posicion>::iterator it = adyacentes_no_ocupados.begin();
 		for (; it != adyacentes_no_ocupados.end(); ++it) {
 			Posicion ady = (*it);
-			pila_no_ocupadas.push(pair<Posicion, double>(ady, adonde_estoy.distancia_octal(ady)+adonde_voy.distancia_octal(ady)));
+			pila_no_ocupadas.push(pair<Posicion, double>(ady,adonde_voy.distancia_octal(ady)+adonde_estoy.distancia_octal(ady)));
 		}
 		if(!pila_no_ocupadas.empty()){
 			return pila_no_ocupadas.top().first;
@@ -134,7 +134,7 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 			vector<Posicion>::iterator it = adyacentes_ocupados.begin();
 			for (; it != adyacentes_no_ocupados.end(); ++it) {
 				Posicion ady = (*it);
-				pila_ocupadas.push(pair<Posicion, double>(ady, adonde_estoy.distancia_octal(ady)+adonde_voy.distancia_octal(ady)));
+				pila_ocupadas.push(pair<Posicion, double>(ady,adonde_voy.distancia_octal(ady)+adonde_estoy.distancia_octal(ady)));
 			}
 		}
 	}

@@ -50,7 +50,16 @@ void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 
-
+void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
+	Personaje* otro_personaje=this->modelo->devolverPersonaje(p.getX(),p.getY());
+	if(otro_personaje!=NULL){
+		printf(" Personaje: %s\n ",personaje->getNombreJugador().c_str());
+		printf("Atacado: %s\n",otro_personaje->getNombreJugador().c_str());
+	}
+	if((otro_personaje!=NULL)&&(otro_personaje->getNombreJugador()!=personaje->getNombreJugador())){
+		printf("atacar\n");
+	}
+}
 void GameControllerCliente::setMapa(int ancho, int largo){
 	this->modelo->setMapa(largo,ancho);
 }

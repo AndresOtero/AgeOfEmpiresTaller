@@ -283,14 +283,18 @@ bool Vista::run() {
 						mov_y, personaje_x, personaje_y);
 				this->corregir_referencia_coordenadas_pantalla_mapa(personaje_x,
 						personaje_y);
-				Posicion p=Posicion(personaje_x,personaje_y);
+				Posicion p = Posicion(personaje_x, personaje_y);
 				//le envia al server que cambie el destino
-				if (this->modelo->devolverPersonajeSeleccionado()){
-				if(this->modelo->devolverPersonajeSeleccionado()->getNombreJugador()==this->modelo->nombreJugador())
-				{
-					this->gameController->cambiar_destino_personaje(this->modelo->devolverPersonajeSeleccionado()->getId() ,personaje_x, personaje_y);
+				if (this->modelo->devolverPersonajeSeleccionado()) {
+					if (this->modelo->devolverPersonajeSeleccionado()->getNombreJugador()
+							== this->modelo->nombreJugador()) {
+						this->gameController->cambiar_destino_personaje(
+								this->modelo->devolverPersonajeSeleccionado()->getId(),
+								personaje_x, personaje_y);
+						this->gameController->interactuar(this->modelo->devolverPersonajeSeleccionado(),p);
+					}
 				}
-				}
+
 			}
 			if (e.button.button == SDL_BUTTON_LEFT) {
 				double a, b;
@@ -335,48 +339,56 @@ bool Vista::run() {
 	return quit;
 }
 
-vector<int> Vista::calcular_bordes(){
+vector<int> Vista::calcular_bordes() {
 	/**
-	Fuente:
-	http://www.java-gaming.org/index.php?topic=24922.0
-	**/
-	int pantalla_refencia_x,pantalla_refencia_y;
-	this->transformador->transformar_isometrica_pantalla(referencia_mapa_x,referencia_mapa_y,pantalla_refencia_x,pantalla_refencia_y);
-	int x_start,y_start;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y,x_start,y_start);
-	x_start=x_start-2;
-	int x_max,y;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+pantalla->getAncho(),pantalla_refencia_y+pantalla->getAlto(),x_max,y);
-	x_max+=2;
-	int x,y_max;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,pantalla_refencia_y+pantalla->getAlto(),x,y_max);
-	y_max=y_max+2;
+	 Fuente:
+	 http://www.java-gaming.org/index.php?topic=24922.0
+	 **/
+	int pantalla_refencia_x, pantalla_refencia_y;
+	this->transformador->transformar_isometrica_pantalla(referencia_mapa_x,
+			referencia_mapa_y, pantalla_refencia_x, pantalla_refencia_y);
+	int x_start, y_start;
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,
+			pantalla_refencia_y, x_start, y_start);
+	x_start = x_start - 2;
+	int x_max, y;
+	this->transformador->transformar_pantalla_isometrica(
+			pantalla_refencia_x + pantalla->getAncho(),
+			pantalla_refencia_y + pantalla->getAlto(), x_max, y);
+	x_max += 2;
+	int x, y_max;
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,
+			pantalla_refencia_y + pantalla->getAlto(), x, y_max);
+	y_max = y_max + 2;
 	int y_min;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x+pantalla->getAncho(),pantalla_refencia_y,x,y_min);
-	y_min-=2;
-	vector<int> bordes={x_start,y_min,x_max,y_max};
+	this->transformador->transformar_pantalla_isometrica(
+			pantalla_refencia_x + pantalla->getAncho(), pantalla_refencia_y, x,
+			y_min);
+	y_min -= 2;
+	vector<int> bordes = { x_start, y_min, x_max, y_max };
 	return bordes;
 }
-void Vista::corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, double& coord_y){
-	coord_x+=referencia_mapa_x-0.5;
-	coord_y+=referencia_mapa_y+0.5;
+void Vista::corregir_referencia_coordenadas_pantalla_mapa(double& coord_x,
+		double& coord_y) {
+	coord_x += referencia_mapa_x - 0.5;
+	coord_y += referencia_mapa_y + 0.5;
 }
-void Vista::corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y){
-	coord_x+=(-referencia_mapa_x+0.5);
-	coord_y+=(-referencia_mapa_y-0.5);
+void Vista::corregir_referencia_coordenadas_mapa_pantalla(double& coord_x,
+		double& coord_y) {
+	coord_x += (-referencia_mapa_x + 0.5);
+	coord_y += (-referencia_mapa_y - 0.5);
 }
 
-
-bool Vista::adentro_del_mapa(double coord_x,double coord_y){
+bool Vista::adentro_del_mapa(double coord_x, double coord_y) {
 	return ((coord_x < this->modelo->get_ancho_mapa())
-			&& (coord_y < this->modelo->get_alto_mapa())
-			&& (coord_x >= 0) && (coord_y >=0));
+			&& (coord_y < this->modelo->get_alto_mapa()) && (coord_x >= 0)
+			&& (coord_y >= 0));
 }
 
-bool Vista::adentro_del_mapa(int coord_x,int coord_y){
+bool Vista::adentro_del_mapa(int coord_x, int coord_y) {
 	return ((coord_x < this->modelo->get_ancho_mapa())
-			&& (coord_y < this->modelo->get_alto_mapa())
-			&& (coord_x >= 0) && (coord_y >= 0));
+			&& (coord_y < this->modelo->get_alto_mapa()) && (coord_x >= 0)
+			&& (coord_y >= 0));
 }
 
 void Vista::dibujar_personaje(Personaje* personaje) {
@@ -387,9 +399,9 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 			personaje_y);
 	this->transformador->transformar_isometrica_pantalla(personaje_x,
 			personaje_y, img_personaje_x, img_personaje_y);
-	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
-			DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
-
+	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast
+			< DibujoPersonaje
+			> (this->factory->get_dibujo(personaje->dibujar()));
 
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
 	Posicion destino = personaje->get_camino();
@@ -399,9 +411,9 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 		mover_x = personaje->getReferenciaMapaX();
 		mover_y = personaje->getReferenciaMapaY();
 	}
-	if (personaje->estaCongelado()){
+	if (personaje->estaCongelado()) {
 		dibujo_pers->congelar();
-	}else{
+	} else {
 
 		dibujo_pers->descongelar();
 	}
@@ -437,25 +449,27 @@ void Vista::dibujar_mapa() {
 						&& (coord_y < y_max)) {
 					//Cambio para dibujar agregados
 					size_t n_imagen;
-					if (dim==TILES){
-						 n_imagen = this->modelo->dibujar(dim, coord_x,
-													coord_y);//MEZCLA MODELO CON VISTA para dsps
-					}else {
-						n_imagen = this->factory->get_idDibujo(this->modelo->mapa->mostrar_entidad(coord_x,coord_y));
+					if (dim == TILES) {
+						n_imagen = this->modelo->dibujar(dim, coord_x, coord_y); //MEZCLA MODELO CON VISTA para dsps
+					} else {
+						n_imagen = this->factory->get_idDibujo(
+								this->modelo->mapa->mostrar_entidad(coord_x,
+										coord_y));
 					}
 					//fin cambio villero
-					int oscuro = modelo->oscuridad(dim,coord_x,coord_y);
+					int oscuro = modelo->oscuridad(dim, coord_x, coord_y);
 					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(
 							n_imagen);
 
 					if (this->modelo->devolverPersonaje(coord_x, coord_y)) {
-						if (oscuro==0){
-						dibujar_personaje(this->modelo->devolverPersonaje(coord_x,
-										coord_y));
+						if (oscuro == 0) {
+							dibujar_personaje(
+									this->modelo->devolverPersonaje(coord_x,
+											coord_y));
 						}
 					}
-					if(dim==TILES){
-						if(this->modelo->estaSeleccionada(coord_x,coord_y)){
+					if (dim == TILES) {
+						if (this->modelo->estaSeleccionada(coord_x, coord_y)) {
 							dibujo->iluminar();
 						}
 					}
@@ -467,16 +481,15 @@ void Vista::dibujar_mapa() {
 								y_imagen);
 						dibujo->set_posicion_default(x_imagen, y_imagen);
 
-						if(oscuro == 1)
+						if (oscuro == 1)
 							dibujo->oscurecer();
-							dibujo->setAnimar(false);
-						if(oscuro != 1 && oscuro < 2){
+						dibujo->setAnimar(false);
+						if (oscuro != 1 && oscuro < 2) {
 							dibujo->setAnimar(true);
 						}
-						if(oscuro < 2){
+						if (oscuro < 2) {
 							dibujo->render(gRenderer);
 						}
-
 
 						dibujo->resetear();
 						dibujo->reiniciar(); //pone el color original
@@ -487,7 +500,7 @@ void Vista::dibujar_mapa() {
 	}
 }
 
-void Vista::dibujar_barra(){
+void Vista::dibujar_barra() {
 	//HARCODE deberia ser el personaje/jugador
 	this->barra->actualizar(this->modelo->getJugador());
 	this->barra->render(gRenderer);
@@ -497,7 +510,7 @@ Vista::~Vista() {
 	this->barra->closeFont();
 	TTF_Quit();
 	SDL_DestroyRenderer(gRenderer);
-	SDL_DestroyWindow( gWindow);
+	SDL_DestroyWindow(gWindow);
 
 	gWindow = NULL;
 	gRenderer = NULL;
