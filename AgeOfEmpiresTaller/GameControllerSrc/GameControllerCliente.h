@@ -28,6 +28,7 @@ public:
 	void eliminarEntidad(int id);
 	void mover_personaje(Id id,double mov_x,double mov_y);
 	void interactuar(Personaje* personaje,Posicion pos);
+	void interactuar(Entidad * entidad,Posicion pos);
 	//Cliente
 	void acutalizarRecursos(int oro, int madera, int piedra);
 	void agregarEntidad(string nombre,int x,int y,int cant);

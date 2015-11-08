@@ -8,7 +8,7 @@
 #include "Oro.h"
 
 void Oro::recolectar(RecursosJugador * recursos){
-	recursos->colectarOro(this->obtenerRecurso());
+	recursos->colectarOro(this->sacarRecurso());
 }
 
 Oro::~Oro() {

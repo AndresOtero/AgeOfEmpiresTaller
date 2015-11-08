@@ -216,13 +216,14 @@ Posicion Mapa::posicionVacia(){
 		x = num.numeroRandom(0,this->ancho);
 		y = num.numeroRandom(0,this->largo);
 		celda = this->getCelda(x,y);
-	}while (celda->estaOcupada()||celda->tieneRecurso());
+	}while (celda->estaOcupada());
 	Posicion pos={x,y};
 	return pos;
 }
 bool Mapa::hayRecursosEn(Posicion posicion){
 	return this->getCelda(posicion.getX(),posicion.getY())->tieneRecurso();
 }
+
 Mapa::~Mapa() {
 	int largo = this->largo;
 	int ancho = this->ancho;
