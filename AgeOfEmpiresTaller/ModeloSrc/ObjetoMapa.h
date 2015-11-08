@@ -25,6 +25,7 @@ public:
 	int fps;
 	int delay;
 	int velocidad;
+	int vida;
 	int fuerza;
 	int armadura;
 	int recoleccion;
