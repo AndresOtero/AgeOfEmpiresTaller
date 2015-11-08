@@ -25,6 +25,7 @@ public:
 	void conectar();
 	void eliminarEntidad(int id);
 	void cambiar_destino_personaje(Id id, double mov_x,double mov_y);
+	void atacar(Id idAtacante, Id idAtacado);
 	void agregarEntidad(string nombre,int x, int y, int cant, SDL_mutex *mutex);
 	//server
 	void reconectar(std::string id);

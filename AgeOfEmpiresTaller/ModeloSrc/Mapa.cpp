@@ -113,6 +113,10 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	if((adonde_estoy==adonde_voy)||(!celdaOcupada(adonde_voy.getX(), adonde_voy.getY()))) {
 		return adonde_voy;
 	}
+	if(adonde_estoy.distancia_octal(adonde_voy)<=14){
+		return adonde_estoy;
+	}
+	//printf("Voy hacia uno ocupado\n");
 	adonde_voy=Posicion(adonde_voy.getX(),adonde_voy.getY());
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
 				CompDistancias> pila_no_ocupadas;
@@ -121,13 +125,17 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	pila_ocupadas.push(pair<Posicion, double>(adonde_voy, adonde_voy.distancia_octal(adonde_estoy)));
 	while(pila_no_ocupadas.empty()){
 		Posicion ocupado_mas_cercano=pila_ocupadas.top().first;
+		//printf("Ocupado: %d,%d\n",ocupado_mas_cercano.getX(),ocupado_mas_cercano.getY());
 		vector<Posicion> adyacentes_no_ocupados = adyacenciasNoOcupadas(ocupado_mas_cercano);
 		vector<Posicion>::iterator it = adyacentes_no_ocupados.begin();
 		for (; it != adyacentes_no_ocupados.end(); ++it) {
 			Posicion ady = (*it);
+			//printf("No Ocupado: %d,%d\n",ady.getX(),ady.getY());
 			pila_no_ocupadas.push(pair<Posicion, double>(ady,adonde_voy.distancia_octal(ady)+adonde_estoy.distancia_octal(ady)));
 		}
 		if(!pila_no_ocupadas.empty()){
+			//printf("No Ocupado Elegido: %d,%d\n",pila_no_ocupadas.top().first.getX(),pila_no_ocupadas.top().first.getY());
+
 			return pila_no_ocupadas.top().first;
 		}else{
 			vector<Posicion> adyacentes_ocupados = adyacencias(ocupado_mas_cercano);
@@ -138,6 +146,7 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 			}
 		}
 	}
+	return pila_no_ocupadas.top().first;
 }
 vector<Posicion> Mapa::adyacencias(Posicion posicion) {
 	vector<Posicion> adyacentes = vector<Posicion>();
@@ -149,8 +158,9 @@ vector<Posicion> Mapa::adyacencias(Posicion posicion) {
 			}
 		}
 	}
-	return adyacentes;
+		return adyacentes;
 }
+
 vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 	vector<Posicion> adyacentes = vector<Posicion>();
 	int x = posicion.getX(), y = posicion.getY();

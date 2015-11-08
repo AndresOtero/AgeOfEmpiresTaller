@@ -361,6 +361,23 @@ void  Modelo::cambiar_destino_personaje(Id id ,double mov_x,double mov_y){
 		}
 
 }
+Personaje*  Modelo::get_Personaje_Por_Id(Id id){
+	vector<Personaje*>::iterator it = personajes.begin();
+			for (; it != personajes.end(); ++it) {
+
+				Personaje* p = (*it);
+				if(p->getId()==id){
+					return p;
+				}
+			}
+}
+void  Modelo::atacarServer(Id idAtacante ,Id idAtacado){
+	vector<Personaje*>::iterator it = personajes.begin();
+	Personaje* atacado =this->get_Personaje_Por_Id(idAtacado);
+	Personaje* atacante =this->get_Personaje_Por_Id(idAtacante);
+	atacante->set_ataque(atacado);
+
+}
 Personaje* Modelo::devolverPersonaje(int x,int y){
 	return mapa->personaje_celda(x,y);
 }

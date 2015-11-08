@@ -53,12 +53,11 @@ void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
 void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
 	Personaje* otro_personaje=this->modelo->devolverPersonaje(p.getX(),p.getY());
 	if(otro_personaje!=NULL){
-		printf(" Personaje: %s\n ",personaje->getNombreJugador().c_str());
-		printf("Atacado: %s\n",otro_personaje->getNombreJugador().c_str());
+		msg_t mensaje=personaje->interactuar(otro_personaje);
+		this->agregarMensaje(mensaje);
+
 	}
-	if((otro_personaje!=NULL)&&(otro_personaje->getNombreJugador()!=personaje->getNombreJugador())){
-		printf("atacar\n");
-	}
+
 }
 void GameControllerCliente::setMapa(int ancho, int largo){
 	this->modelo->setMapa(largo,ancho);
@@ -72,6 +71,7 @@ void GameControllerCliente::conectarCliente(string name,string str, int x,int y,
 	personaje->setDibujo(dibujo);
 	personaje->setId(id);
 	this->modelo->agregarPersonajeCliente(personaje);
+
 
 }
 

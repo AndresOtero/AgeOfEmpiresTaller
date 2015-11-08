@@ -70,9 +70,10 @@ public:
 	int crearPersonajeServer(Personaje* personaje);
 	void eliminarEntidadPorID(int id);
 	int cantidad_de_jugadores();
+	void atacarServer(Id idAtacante ,Id idAtacado);
 
 private:
-
+	Personaje*  get_Personaje_Por_Id(Id id);
 	void eliminarEntidad(Entidad *entidad);
 
 	void set_posicionRandomPersonaje(Personaje* personaje);

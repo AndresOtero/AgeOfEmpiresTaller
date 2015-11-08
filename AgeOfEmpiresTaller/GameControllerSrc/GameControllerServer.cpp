@@ -52,6 +52,9 @@ void GameControllerServer::reconectar(string Id){
 void GameControllerServer::cambiar_destino_personaje(Id id, double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
+void GameControllerServer::atacar(Id idAtacante, Id idAtacado){
+	this->modelo->atacarServer(idAtacante,idAtacado);
+}
 
 
 
@@ -127,6 +130,7 @@ void GameControllerServer::generarRecursoRandom(SDL_mutex *mutex){
 }
 
 
+
 void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant, SDL_mutex *mutex){
 	this->agregarEntidad(nombre,x,y,cant, mutex);
 	msg_t mensaje;
@@ -144,6 +148,10 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
+		if(p->esta_atacando()){
+			printf("Esta atacando\n");
+			p->set_destino_al_ataque();
+		}
 		if (p->seMovio()) {
 			double mov_x = p->get_posicion().get_x_exacta();
 			double mov_y = p->get_posicion().get_y_exacta();
@@ -168,6 +176,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			p->recursosJugador()->reset();//reset, el q acumula es el jugador
 
 		}
+
 	}
 }
 
