@@ -55,27 +55,17 @@ void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
 	Personaje* otro_personaje=this->modelo->devolverPersonaje(p.getX(),p.getY());
 	Entidad * otra_entidad = this->modelo->mapa->entidad_celda(p.getX(),p.getY());
 	if(otro_personaje!=NULL){
-		printf(" Personaje: %s\n ",personaje->getNombreJugador().c_str());
-		printf("Atacado: %s\n",otro_personaje->getNombreJugador().c_str());
+		msg_t mensaje=personaje->interactuar(otro_personaje);
+		this->agregarMensaje(mensaje);
+		return;
 	}
-	if((otro_personaje!=NULL)&&(otro_personaje->getNombreJugador()!=personaje->getNombreJugador())){
-		printf("atacar\n");
-	}
-	//faltaria diferenciar si el personaje es aldeano o no
-	if (otra_entidad != NULL) { //BAJO CONDICION DE QUE NO PUEDE HABER PERSONAJE Y ENTIDAD ENMISMA CELDA
-		if (otra_entidad->esUnRecurso()) {//&&personaje->esAldeano()
-			printf("Comienza a recolectar\n");
-			//set mensaje de comienzo de recoleccion
-			//recolectar
-		} else { // if personaje-esDeAtaque
-			printf("Cominza a atacar entidad\n");
-			//set mensaje de comienzo de ataque
-			//atacar
-		}
+
+	if (otra_entidad != NULL) {
+		msg_t msg = personaje->interactuar(otra_entidad);
+		this->agregarMensaje(msg);
+		return;
 	}
 }
-
-
 void GameControllerCliente::setMapa(int ancho, int largo){
 	this->modelo->setMapa(largo,ancho);
 }
@@ -88,6 +78,7 @@ void GameControllerCliente::conectarCliente(string name,string str, int x,int y,
 	personaje->setDibujo(dibujo);
 	personaje->setId(id);
 	this->modelo->agregarPersonajeCliente(personaje);
+
 
 }
 

@@ -8,6 +8,8 @@
 #include "ObjetoMapa.h"
 #include "Posicion.h"
 #include "RecursosJugador.h"
+#include "../GameControllerSrc/mensaje.h"
+#include "Entidad.h"
 #ifndef PERSONAJE_H_
 #define PERSONAJE_H_
 typedef int dibujo_t;
@@ -25,6 +27,7 @@ class Personaje {
 	Posicion camino;
 	bool congelado;
 	bool se_movio;
+	Personaje* atacado;
 	int id;
 	string nombreJugador;
 
@@ -44,13 +47,34 @@ public:
 	Posicion get_destino();
 	Posicion get_posicion();
 	Posicion get_camino();
+	void set_ataque(Personaje* otro_personaje);
+	void set_destino_al_ataque();
+
+	msg_t interactuar(Personaje* otro_personaje);
+	msg_t interactuar(Entidad * otra_entidad);
+
+	int atacar(Personaje* otro_personaje);
 
 	bool seMovio(){
 		return se_movio;
 	}
-
+	bool esta_atacando(){
+		return this->atacado!=NULL;
+	}
 	void setDibujo(dibujo_t dibujo) {
 		this->dibujo = dibujo;
+	}
+
+	bool puedeRecolectar(){
+		if (this->recoleccion>0)
+			return true;
+		return false;
+	}
+
+	bool puedeAtacar(){
+		if (this->fuerza > 0)
+			return true;
+		return false;
 	}
 
 	double getReferenciaMapaX() const {

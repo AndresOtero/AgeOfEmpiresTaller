@@ -25,7 +25,10 @@ enum MensajeType {
 	PARAM_MAPA,
 	CONFIGURACION,
 	DISCONNECT,
-	ATACAR
+	ATACAR,/* int id atacante,double1 id atacado*/
+	SASASA,
+	RECOLECCION_RECURSOS, /*int id recolector, double id recurso*/
+	ATACAR_EDIFICIO /* int id atacante,double1 id atacado*/
 };
 
 typedef struct {

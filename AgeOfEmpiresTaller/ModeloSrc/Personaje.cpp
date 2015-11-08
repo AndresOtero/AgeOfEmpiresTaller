@@ -21,6 +21,7 @@ Personaje::Personaje(){
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
+	this->atacado=NULL;
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->referencia_mapa_x=1;
@@ -32,6 +33,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
+	this->atacado=NULL;
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_x=x;
@@ -43,7 +45,10 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
+	this->atacado=NULL;
+
 }
+
 dibujo_t Personaje::dibujar(){
 	return dibujo;
 }
@@ -102,10 +107,50 @@ void Personaje::mover() {
 	}
 
 }
+msg_t Personaje::interactuar(Personaje* otro_personaje){
+	msg_t mensaje;
+	if(this->getNombreJugador()!=otro_personaje->getNombreJugador()){
+		mensaje.type = ATACAR;
+		mensaje.paramInt1 = id;
+		mensaje.paramDouble1 = otro_personaje->getId();
+		return mensaje;
+	}
+	mensaje.type=KEEPALIVE;
+	return mensaje;
+}
+msg_t Personaje::interactuar(Entidad* otra_entidad){
+	msg_t mensaje;
+
+	//estos datos los tengo que cargar igual en ambos
+	mensaje.paramInt1 = id;
+	mensaje.paramDouble1 = otra_entidad->id;
+
+	if (otra_entidad->esUnRecurso() && this->puedeRecolectar()) {
+		mensaje.type = RECOLECCION_RECURSOS;
+		return mensaje;
+	//} else if (this->puedeAtacar()) {//falta ver q sea del enemigo
+		//mensaje.type = ATACAR_EDIFICIO;
+		//return mensaje;
+	}
+	// si es de el la entidad
+	mensaje.type=KEEPALIVE;
+	return mensaje;
+}
+
+int Personaje::atacar(Personaje* otro_personaje){
+	return this->fuerza;
+}
+void Personaje::set_ataque(Personaje* otro_personaje){
+	this->atacado=otro_personaje;
+}
 RecursosJugador* Personaje::recursosJugador(){
 	return recursos;
 }
 Personaje::~Personaje() {
 	delete recursos;
 }
+void Personaje::set_destino_al_ataque(){
+	this->set_destino(this->atacado->get_posicion());
+}
+
 

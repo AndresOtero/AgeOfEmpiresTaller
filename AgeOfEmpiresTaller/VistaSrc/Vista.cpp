@@ -501,7 +501,6 @@ void Vista::dibujar_mapa() {
 }
 
 void Vista::dibujar_barra() {
-	//HARCODE deberia ser el personaje/jugador
 	this->barra->actualizar(this->modelo->getJugador());
 	this->barra->render(gRenderer);
 }

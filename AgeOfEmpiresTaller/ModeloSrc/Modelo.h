@@ -70,13 +70,15 @@ public:
 	int crearPersonajeServer(Personaje* personaje);
 	void eliminarEntidadPorID(int id);
 	int cantidad_de_jugadores();
+	void recolectar(Personaje*personaje, int id_recurso);
+	void atacarServer(Id idAtacante ,Id idAtacado);
 
 private:
-
+	Personaje*  get_Personaje_Por_Id(Id id);
 	void eliminarEntidad(Entidad *entidad);
 
 	void set_posicionRandomPersonaje(Personaje* personaje);
-	void recolectar(Personaje*personaje);
+
 	Posicion mover_personaje(Personaje* personaje);
 	Posicion calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy);
 	void insertarEntidades();

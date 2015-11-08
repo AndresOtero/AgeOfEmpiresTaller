@@ -259,8 +259,6 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 	Posicion adonde_voy=calcular_camino(adonde_estoy,destino);
 	personaje->set_camino(adonde_voy);
 	personaje->mover();
-	//Usar cuando el tipo cambia de posicion
-	recolectar(personaje);
 	return adonde_voy;//mandar adonde_voy a cliente
 }
 
@@ -283,18 +281,22 @@ void Modelo::actualizarRecursos(int oro,int madera,int piedra){
 }*/
 
 //server
-void Modelo::recolectar(Personaje * personaje){
-	if (this->mapa->hayRecursosEn(personaje->get_posicion())) {
-		Entidad* entidad = this->mapa->entidad_celda(
-				personaje->get_posicion().getX(),
-				personaje->get_posicion().getY());
-		Recurso * recurso = (Recurso*) entidad;
-		recurso->recolectar(personaje->recursosJugador());
-		RecursosJugador * recursos =personaje->recursosJugador();
-		//mandar actualizarcion recursos (cuanto aumento)
-		this->eliminarEntidad(entidad);
-		//mandar eliminar entidad
-	}
+void Modelo::recolectar(Personaje * personaje, int id_recurso){
+	//puede enlentecerse con muuuchas entidades pero
+	vector<Entidad*> *lista = &this->juego->escenario->entidades;
+		for (unsigned int i = 0; i < lista->size(); i++){
+			if ((*lista)[i]->id == id_recurso){
+				//busco el recurso
+				Recurso * recurso = (Recurso *)(*lista)[i];
+				//recoleccin a los recursos del jugador
+				recurso->recolectar(personaje->recursosJugador());
+				if (recurso->seAcabo()){
+					this->eliminarEntidadPorID(id_recurso);
+				}
+				break;
+			}
+		} //si termino el loop y no la encontro se elimino el recurso
+		//desaccionar al personaje
 }
 //server
 void Modelo::eliminarEntidad(Entidad * entidad){
@@ -326,12 +328,11 @@ vector<Entidad*> Modelo::obtenerEntidadesDeInicializacion(){
 
 
 //cliente
-//elimino una entidad con un solo parametro
 void Modelo::eliminarEntidadPorID(int id){
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
 	for (unsigned int i = 0; i < lista->size(); i++) {
 		if (id == (*lista)[i]->id) {
-			this->mapa->sacarEntidad((*lista)[i]);
+			this->mapa->sacarEntidad((*lista)[i]);//desreferencio del mapa
 			if (i + 1 != lista->size())
 				std::swap((*lista)[i], lista->back());
 			lista->pop_back();
@@ -359,6 +360,23 @@ void  Modelo::cambiar_destino_personaje(Id id ,double mov_x,double mov_y){
 				p->set_destino(Posicion(mov_x,mov_y));
 			}
 		}
+
+}
+Personaje*  Modelo::get_Personaje_Por_Id(Id id){
+	vector<Personaje*>::iterator it = personajes.begin();
+			for (; it != personajes.end(); ++it) {
+
+				Personaje* p = (*it);
+				if(p->getId()==id){
+					return p;
+				}
+			}
+}
+void  Modelo::atacarServer(Id idAtacante ,Id idAtacado){
+	vector<Personaje*>::iterator it = personajes.begin();
+	Personaje* atacado =this->get_Personaje_Por_Id(idAtacado);
+	Personaje* atacante =this->get_Personaje_Por_Id(idAtacante);
+	atacante->set_ataque(atacado);
 
 }
 Personaje* Modelo::devolverPersonaje(int x,int y){

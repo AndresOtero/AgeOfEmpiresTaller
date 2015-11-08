@@ -29,7 +29,12 @@ int Recurso::sacarRecurso(){
 	}
 	return saco;
 }
-
+bool Recurso::seAcabo(){
+	if (this->cantidad>0){
+		return false;
+	}
+	return true;
+}
 int Recurso::obtenerRecurso(){
 	return this->cantidad;
 }

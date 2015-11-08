@@ -58,7 +58,7 @@ bool Celda::estaOcupada(){
 	}
 	if (this->personaje!=NULL)
 		return true;
-	printf ("Pregunto y no habia ni entidad ni personaje\n");
+
 	return this->ocupada;
 }
 void Celda::ocuparCelda(Entidad * entidad){
