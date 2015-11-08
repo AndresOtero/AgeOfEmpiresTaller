@@ -7,8 +7,9 @@
 
 #include "Piedra.h"
 
-void Piedra::recolectar(RecursosJugador* recursos){
-	recursos->colectarPiedra(this->sacarRecurso());
+void Piedra::recolectar(RecursosJugador* recursos,int cantidad){
+	recursos->colectarPiedra(this->sacarRecurso(cantidad));
+
 }
 
 Piedra::~Piedra() {

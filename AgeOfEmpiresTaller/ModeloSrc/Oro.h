@@ -14,7 +14,7 @@ class Oro : public Recurso{
 public:
 	Oro(ObjetoMapa* objetomapa):Recurso(objetomapa) {};
 	Oro(ObjetoMapa* objetomapa,int x, int y):Recurso(objetomapa, x, y){};
-	void recolectar(RecursosJugador* recusos);
+	void recolectar(RecursosJugador* recusos,int cantidad);
 	virtual ~Oro();
 };
 

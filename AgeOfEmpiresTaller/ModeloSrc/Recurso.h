@@ -10,7 +10,6 @@
 #include "GeneradorNumeros.h"
 #ifndef RECURSO_H_
 #define RECURSO_H_
-#define RECURSO_POR_INTERVALO 25
 
 class Recurso :public Entidad {
 private:
@@ -20,9 +19,9 @@ public:
 	Recurso(ObjetoMapa* objeto,int x, int y);
 	int	obtenerRecurso();
 	void setRecurso(int cantidad);
-	int sacarRecurso();
+	int sacarRecurso(int cantidad);
 	bool seAcabo();
-	virtual void recolectar(RecursosJugador* recursos){};
+	virtual void recolectar(RecursosJugador* recursos, int cantidad){};
 	virtual ~Recurso();
 };
 

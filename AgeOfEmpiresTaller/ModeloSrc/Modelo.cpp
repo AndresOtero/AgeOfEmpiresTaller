@@ -289,7 +289,7 @@ void Modelo::recolectar(Personaje * personaje, int id_recurso){
 				//busco el recurso
 				Recurso * recurso = (Recurso *)(*lista)[i];
 				//recoleccin a los recursos del jugador
-				recurso->recolectar(personaje->recursosJugador());
+				recurso->recolectar(personaje->recursosJugador(),personaje->getRecoleccion());
 				if (recurso->seAcabo()){
 					this->eliminarEntidadPorID(id_recurso);
 				}

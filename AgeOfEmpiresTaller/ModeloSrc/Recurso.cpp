@@ -18,14 +18,14 @@ Recurso::Recurso(ObjetoMapa* objetoMapa,int x , int y): Entidad( objetoMapa,x,y)
 	cantidad = generador.numeroRandom(100,250);//random entre 100 y 250
 }
 
-int Recurso::sacarRecurso(){
+int Recurso::sacarRecurso(int cantidad){
 	int saco;
-	if (this->cantidad-RECURSO_POR_INTERVALO < 0){
+	if (this->cantidad-cantidad < 0){
 		saco = this->cantidad;
 		this->cantidad = 0;
 	}else{
-		saco = RECURSO_POR_INTERVALO;
-		this->cantidad-=RECURSO_POR_INTERVALO;
+		saco = cantidad;
+		this->cantidad-=cantidad;
 	}
 	return saco;
 }

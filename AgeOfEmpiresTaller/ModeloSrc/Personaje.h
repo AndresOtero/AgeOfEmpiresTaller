@@ -103,6 +103,9 @@ public:
 		this->id = id;
 	}
 
+	int getRecoleccion(){
+		return this->recoleccion;
+	}
 	const string& getNombreJugador() const {
 		return nombreJugador;
 	}
