@@ -16,6 +16,7 @@ ObjetoMapa::ObjetoMapa(string nombre, string imagen) {
 	this->armadura = 0;
 	this->recoleccion = 0;
 	this->construccion = 0;
+	this->vida=0;
 	this->baseLogica = new BaseLogica();
 	this->pixelsReferencia = new PixelsReferencia();
 }

@@ -18,6 +18,7 @@ class Personaje {
 	double referencia_mapa_x,referencia_mapa_y;
 	dibujo_t dibujo;
 	double velocidad;
+	int vida;
 	int fuerza;
 	int armadura;
 	int recoleccion;
