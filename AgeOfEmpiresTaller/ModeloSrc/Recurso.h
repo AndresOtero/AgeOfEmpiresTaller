@@ -19,7 +19,9 @@ public:
 	Recurso(ObjetoMapa* objeto,int x, int y);
 	int	obtenerRecurso();
 	void setRecurso(int cantidad);
-	virtual void recolectar(RecursosJugador* recursos){};
+	int sacarRecurso(int cantidad);
+	bool seAcabo();
+	virtual void recolectar(RecursosJugador* recursos, int cantidad){};
 	virtual ~Recurso();
 };
 

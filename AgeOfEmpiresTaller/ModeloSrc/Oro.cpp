@@ -7,8 +7,9 @@
 
 #include "Oro.h"
 
-void Oro::recolectar(RecursosJugador * recursos){
-	recursos->colectarOro(this->obtenerRecurso());
+void Oro::recolectar(RecursosJugador * recursos, int cantidad){
+	recursos->colectarOro(this->sacarRecurso(cantidad));
+	printf("recursos oro %d\n",recursos->cantOro());
 }
 
 Oro::~Oro() {

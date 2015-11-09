@@ -46,21 +46,39 @@ void GameControllerCliente::cambiar_destino_personaje(Id id, double mov_x,double
 
 }
 
+void GameControllerCliente::eliminarEntidad(int id){
+	this->modelo->eliminarEntidadPorID(id);
+}
 void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 
 void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
+	//si no esta en rango no puede hacer nada
 	Personaje* otro_personaje=this->modelo->devolverPersonaje(p.getX(),p.getY());
+	Entidad * otra_entidad = this->modelo->mapa->entidad_celda(p.getX(),p.getY());
 	if(otro_personaje!=NULL){
 		msg_t mensaje=personaje->interactuar(otro_personaje);
 		this->agregarMensaje(mensaje);
-
+		return;
 	}
 
+	if (otra_entidad != NULL) {
+		msg_t msg = personaje->interactuar(otra_entidad);
+		this->agregarMensaje(msg);
+		return;
+	}
 }
 void GameControllerCliente::setMapa(int ancho, int largo){
 	this->modelo->setMapa(largo,ancho);
+}
+
+void GameControllerCliente::setId(double x, double y, int id){
+	Entidad* entidad = this->modelo->mapa->entidad_celda(floor(x),floor(y));
+	if (entidad!=NULL){
+		entidad->setId(id);
+		printf("ID seteado %d\n",entidad->getId());
+	}
 }
 
 void GameControllerCliente::conectarCliente(string name,string str, int x,int y,dibujo_t dibujo,int id){

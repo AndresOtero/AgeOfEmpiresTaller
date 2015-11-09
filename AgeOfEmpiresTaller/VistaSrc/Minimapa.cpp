@@ -119,11 +119,11 @@ void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer,int * count)
 					color = BLANCO;
 				}else
 					color = ROJO;
-			} else {
+			} else if (this->modelo->mapa->hayRecursosEn(pos)) {
+				color = AMARILLO;
+			}else {
 				color = AZUL;
 			}
-		} else if (this->modelo->mapa->hayRecursosEn(pos)) {
-			color = AMARILLO;
 		}else{
 			color = VERDE;
 		}

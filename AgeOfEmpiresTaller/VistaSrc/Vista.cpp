@@ -335,7 +335,6 @@ bool Vista::run() {
 	dibujar_barra();
 	detectar_mouse_borde();
 	SDL_RenderPresent(gRenderer);
-
 	return quit;
 }
 
@@ -501,7 +500,6 @@ void Vista::dibujar_mapa() {
 }
 
 void Vista::dibujar_barra() {
-	//HARCODE deberia ser el personaje/jugador
 	this->barra->actualizar(this->modelo->getJugador());
 	this->barra->render(gRenderer);
 }

@@ -27,6 +27,10 @@ enum MensajeType {
 	DISCONNECT,
 	ATACAR,/* int id atacante,double1 id atacado*/
 	SASASA,
+	RECOLECCION_RECURSOS, /*int id recolector, double id recurso*/
+	ATACAR_EDIFICIO, /* int id atacante,double1 id atacado*/
+	ELIMINAR_ENTIDAD, /* int id*/
+	SET_ID_RECURSO /*porque no se puede setear en una instruccion parece MIPS esto*/
 };
 
 typedef struct {
