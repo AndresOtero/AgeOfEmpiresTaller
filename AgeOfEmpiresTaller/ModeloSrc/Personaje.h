@@ -70,10 +70,10 @@ public:
 		//faltaria ver el rango
 		//no se si lo estoy ensuciando a esto, interfaz??
 		bool uno =(this->atacado!=NULL),dos;
-		if (this->puedeAtacar()){
-			dos = (this->objetivo!=NULL);
-		}
-		return (uno || dos);
+		/*if (this->puedeAtacar()){
+			dos = (this->objetivo!=NULL)&&();
+		}*/
+		return uno;
 	}
 	void setDibujo(dibujo_t dibujo) {
 		this->dibujo = dibujo;
