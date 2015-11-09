@@ -298,7 +298,7 @@ void Modelo::recolectar(Personaje * personaje, Recurso * recurso){
 	//puede enlentecerse con muuuchas entidades pero
 	if (recurso != NULL) {
 		//recoleccin a los recursos del jugador personaje->getRecoleccion()
-		recurso->recolectar(personaje->recursosJugador(),1);
+		recurso->recolectar(personaje->recursosJugador(),personaje->getRecoleccion());
 	} else {
 		personaje->terminarAccion();
 	}
