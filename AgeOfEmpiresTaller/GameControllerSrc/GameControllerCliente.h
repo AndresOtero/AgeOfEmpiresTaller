@@ -26,10 +26,10 @@ public:
 
 	void crearPersonaje(string nombre,double x, double y, int id);
 	void generarRecursoRandom();
-	void eliminarEntidad(int id);
 	void mover_personaje(Id id,double mov_x,double mov_y);
 	void ataque(Id idAtacado,int danio);
 	void interactuar(Personaje* personaje,Posicion pos);
+	void interactuar(Entidad * entidad,Posicion pos);
 	//Cliente
 	void acutalizarRecursos(int oro, int madera, int piedra);
 	void agregarEntidad(string nombre,int x,int y,int cant);
@@ -38,8 +38,11 @@ public:
 	bool esNombre(char* nombre);
 	//Personaje* conectarme(string name,string str, int x,int y);
 	//void setearPosicionPersonaje(int id,double pos_x,double pos_y);
+	void setId(double x,double y,int id);
 	void reconectar(string id);
 	void desconectar(string Id);
+	void eliminarEntidad(int id);
+
 	char* string_to_char_array(string str);
 
 };

@@ -9,6 +9,7 @@
 #include "Posicion.h"
 #include "RecursosJugador.h"
 #include "../GameControllerSrc/mensaje.h"
+#include "Entidad.h"
 #ifndef PERSONAJE_H_
 #define PERSONAJE_H_
 typedef int dibujo_t;
@@ -28,6 +29,7 @@ class Personaje {
 	bool congelado;
 	bool se_movio;
 	Personaje* atacado;
+	Entidad* objetivo;
 	int id;
 	string nombreJugador;
 
@@ -47,12 +49,23 @@ public:
 	Posicion get_destino();
 	Posicion get_posicion();
 	Posicion get_camino();
+
 	void set_ataque(Personaje* otro_personaje);
 	void set_destino_al_ataque();
     friend bool operator== ( Personaje &P1,  Personaje &P2);
 
+	void setAccion(Entidad * entidad);
 	msg_t interactuar(Personaje* otro_personaje);
 	int danioInfringido();
+	msg_t interactuar(Entidad * otra_entidad);
+
+	int atacar(Personaje* otro_personaje);
+	void terminarAccion();
+
+	bool tieneRecursos(){
+		return !this->recursos->estaVacio();
+	}
+
 	bool seMovio(){
 		return se_movio;
 	}
@@ -69,6 +82,18 @@ public:
 	}
 	void setDibujo(dibujo_t dibujo) {
 		this->dibujo = dibujo;
+	}
+
+	bool puedeRecolectar(){
+		if (this->recoleccion>0)
+			return true;
+		return false;
+	}
+
+	bool puedeAtacar(){
+		if (this->fuerza > 0)
+			return true;
+		return false;
 	}
 
 	double getReferenciaMapaX() const {
@@ -97,16 +122,32 @@ public:
 		this->id = id;
 	}
 
+	int getRecoleccion(){
+		return this->recoleccion;
+	}
 	const string& getNombreJugador() const {
 		return nombreJugador;
 	}
 	string getNombreTipo() const {
 			return objetoMapa->nombre;//nombre del tipo
-		}
+	}
+
+	bool esta_recolectando(){
+		//suciedad??
+		//if (this->puedeRecolectar()){
+		return (this->objetivo!=NULL);
+		//}
+		//return false;
+	}
+
 	void setNombreJugador(const string& nombreJugador) {
 		this->nombreJugador = nombreJugador;
 	}
 	void  ejecutar_ataque();
+	Entidad * get_objetivo(){
+		return this->objetivo;
+	}
+
 };
 
 #endif /* PERSONAJE_H_ */

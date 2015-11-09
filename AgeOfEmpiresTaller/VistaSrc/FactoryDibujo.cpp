@@ -17,14 +17,18 @@ FactoryDibujo::FactoryDibujo(SDL_Renderer* gRenderer) {
 	this->cantidad_de_dibujos=this->dibujos.size();
 	this->dibujo_actual=1;
 }
-bool FactoryDibujo::crear_dibujo_personaje(string path,int cantidad_de_movimientos,vector<int> cantidad_de_imagenes,vector<vector<vector<int> >>parametros_de_imagen,int fps){
+bool FactoryDibujo::crear_dibujo_personaje(string path,int cantidad_de_movimientos,int frames,int fps){
 	shared_ptr<DibujoPersonaje> dibujo_nuevo = shared_ptr<DibujoPersonaje>(new DibujoPersonaje());
 	if (dibujo_nuevo->cargar_archivo(path,gRenderer)) {
 		dibujo_nuevo->set_cantidad_de_movimientos(cantidad_de_movimientos);
+
+		int ancho = dibujo_nuevo->getWidth() / frames;
+		int alto = dibujo_nuevo->getHeight()  / frames;
+
 		for(int i=0;i<cantidad_de_movimientos;i++){
-			dibujo_nuevo->set_cantidad_de_imagenes(i,cantidad_de_imagenes[i]);
-			for (int j = 0; j < cantidad_de_imagenes[i]; j++) {
-						dibujo_nuevo->set_imagen(i,j, parametros_de_imagen[i][j][X], parametros_de_imagen[i][j][Y],parametros_de_imagen[i][j][ANCHO], parametros_de_imagen[i][j][ALTO]);
+			dibujo_nuevo->set_cantidad_de_imagenes(i,frames);
+			for (int j = 0; j < frames; j++) {
+						dibujo_nuevo->set_imagen(i,j, j * ancho, i * alto,ancho, alto);
 			}
 		}
 		this->set_dibujo(dibujo_nuevo);

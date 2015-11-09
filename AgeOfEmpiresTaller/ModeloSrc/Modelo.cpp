@@ -95,7 +95,7 @@ void Modelo::actualizarMapa(){
 
 
 }
-void Modelo::eliminar_personaje(Personaje* eliminado){
+void Modelo::eliminar_personaje(Personaje* eliminado) {
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
@@ -104,20 +104,24 @@ void Modelo::eliminar_personaje(Personaje* eliminado){
 			p->dejar_de_atacar();
 		}
 	}
-	 it = personajes.begin();
+	it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		if (p == eliminado) {
 			personajes.erase(it);
 			break;
+			if (p->esta_recolectando()) {
+				this->recolectar(p, (Recurso *) p->get_objetivo());
+			}
 		}
-	}
 
+	}
 }
 
-Personaje* Modelo::devolverPersonajeSeleccionado(){
+Personaje* Modelo::devolverPersonajeSeleccionado() {
 	return personaje_seleccionado;
 }
+
 vector<Personaje*> Modelo::devolverTodosLosPersonajes(){
 	return personajes;
 }
@@ -283,8 +287,6 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 	Posicion adonde_voy=calcular_camino(adonde_estoy,destino);
 	personaje->set_camino(adonde_voy);
 	personaje->mover();
-	//Usar cuando el tipo cambia de posicion
-	recolectar(personaje);
 	return adonde_voy;//mandar adonde_voy a cliente
 }
 
@@ -306,19 +308,26 @@ void Modelo::actualizarRecursos(int oro,int madera,int piedra){
 
 }*/
 
-//server
-void Modelo::recolectar(Personaje * personaje){
-	if (this->mapa->hayRecursosEn(personaje->get_posicion())) {
-		Entidad* entidad = this->mapa->entidad_celda(
-				personaje->get_posicion().getX(),
-				personaje->get_posicion().getY());
-		Recurso * recurso = (Recurso*) entidad;
-		recurso->recolectar(personaje->recursosJugador());
-		RecursosJugador * recursos =personaje->recursosJugador();
-		//mandar actualizarcion recursos (cuanto aumento)
-		this->eliminarEntidad(entidad);
-		//mandar eliminar entidad
+Entidad * Modelo::buscarEntidad(int id){
+	vector<Entidad*> *lista = &this->juego->escenario->entidades;
+	for (unsigned int i = 0; i < lista->size(); i++) {
+		if ((*lista)[i]->getId() == id) {
+			return (*lista)[i];
+		}
 	}
+	return NULL; //cuando no lo encuentra
+}
+
+//server
+void Modelo::recolectar(Personaje * personaje, Recurso * recurso){
+	//puede enlentecerse con muuuchas entidades pero
+	if (recurso != NULL) {
+		//recoleccin a los recursos del jugador personaje->getRecoleccion()
+		recurso->recolectar(personaje->recursosJugador(),personaje->getRecoleccion());
+	} else {
+		personaje->terminarAccion();
+	}
+
 }
 //server
 void Modelo::eliminarEntidad(Entidad * entidad){
@@ -350,21 +359,25 @@ vector<Entidad*> Modelo::obtenerEntidadesDeInicializacion(){
 
 
 //cliente
-//elimino una entidad con un solo parametro
 void Modelo::eliminarEntidadPorID(int id){
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
+	Entidad *entidad;
 	for (unsigned int i = 0; i < lista->size(); i++) {
 		if (id == (*lista)[i]->id) {
-			this->mapa->sacarEntidad((*lista)[i]);
-			if (i + 1 != lista->size())
+			this->mapa->sacarEntidad((*lista)[i]);//desreferencio del mapa
+			if (i + 1 != lista->size()){
+				entidad = (*lista)[i];
 				std::swap((*lista)[i], lista->back());
+			}
 			lista->pop_back();
+			entidad = NULL; //no tengo idea si cambia esto  o no
 			break;
 		}
 
 	}
 
 }
+
 //cliente
 /**void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 	Personaje* personaje= 	this->devolverPersonajeSeleccionado();

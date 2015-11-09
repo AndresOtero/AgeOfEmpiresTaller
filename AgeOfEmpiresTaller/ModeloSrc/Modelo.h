@@ -53,6 +53,7 @@ public:
 	int get_alto_mapa();
 	Jugador * getJugador(){return this->jugador;};
 	void insertarEntidad(Entidad * entidad);
+	Entidad * buscarEntidad(int id_entidad);
 	//server
 	void actualizarRecursosServer(int id ,int oro,int madera,int piedra);
 	void congelarPersonaje(string id);
@@ -70,15 +71,20 @@ public:
 	int crearPersonajeServer(Personaje* personaje);
 	void eliminarEntidadPorID(int id);
 	int cantidad_de_jugadores();
+	void recolectar(Personaje*personaje, Recurso* recurso);
 	void atacarServer(Id idAtacante ,Id idAtacado);
 	Personaje*  get_Personaje_Por_Id(Id id);
 	void eliminar_personaje_por_Id(Id id);
+	void eliminarEntidad(Entidad *entidad);
+
+
 
 private:
+
 	void eliminar_personaje(Personaje* eliminado);
-	void eliminarEntidad(Entidad *entidad);
+
 	void set_posicionRandomPersonaje(Personaje* personaje);
-	void recolectar(Personaje*personaje);
+
 	Posicion mover_personaje(Personaje* personaje);
 	Posicion calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy);
 	void insertarEntidades();

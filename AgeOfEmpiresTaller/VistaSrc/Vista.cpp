@@ -34,8 +34,7 @@ enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define ANCHO_BASE  249
 #define ALTO_BASE  124
 #define ANCHO_ANIMACION 128
-#define ANCHO_PERSONAJE 64
-#define ALTO_PERSONAJE 64
+
 #define OFFSET 1
 
 
@@ -134,18 +133,7 @@ bool Vista::loadMedia() {
 	for(int i=0;i<ANIMACIONES;i++){
 		v2d[i]={i*ANCHO_ANIMACION,0};
 	}
-	//***********DIBUJOS PERSONAJES *****************
-		vector<int> movimientos={IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ARRIBA,DERECHA,DIAGONAL_DERECHA_ABAJO,ABAJO,DIAGONAL_IZQUIERDA_ABAJO};
-		vector<vector<vector<dibujo_t>>> v3d=vector<vector<vector<dibujo_t>>>(8);
-		for (int i = 0; i < CANTIDAD_DE_MOVIMIENTOS; i++) {
-			v3d[i] = vector<vector<dibujo_t>>(CANTIDAD_DE_MOVIMIENTOS);
-			for (int j = 0; j < CANTIDAD_DE_IMAGENES; j++) {
-				vector<dibujo_t> v ={ j * ANCHO_PERSONAJE, i * ALTO_PERSONAJE, ANCHO_PERSONAJE, ALTO_PERSONAJE };
-				v3d[i][j]=v;
-			}
-		}
-		vector<int> imagenes= vector<int>(CANTIDAD_DE_MOVIMIENTOS,CANTIDAD_DE_IMAGENES);
-	//**************************************************
+
 	Configuracion* configuracion = this->modelo->juego->conf;
 	for ( it = modelo->juego->tipos.begin(); it !=modelo->juego->tipos.end(); it++ )
 	{
@@ -156,7 +144,7 @@ bool Vista::loadMedia() {
 	     }else if(tipo->delay!=0){
 	    	 this->factory->crear_dibujo_animado(tipo->imagen,v1d,v2d,tipo->fps, tipo->delay);
 	     }else{
-	    	this->factory->crear_dibujo_personaje(tipo->imagen,CANTIDAD_DE_MOVIMIENTOS,imagenes,v3d,tipo->fps);//el ultimo parametro es velocidad
+	    	this->factory->crear_dibujo_personaje(tipo->imagen,MOVIMIENTOS,CANTIDAD_DE_IMAGENES,tipo->fps);//el ultimo parametro es velocidad
 	     }
 	     dibujo_t dibujo_id=this->factory->ultimo_dibujo();
 	     hashDibujos[tipo->nombre] = dibujo_id;
@@ -187,26 +175,10 @@ bool Vista::loadMedia() {
 }
 
 dibujo_t Vista::crearPersonaje(string tipo) {
-	//***********DIBUJOS PERSONAJES *****************
-	vector<int> movimientos = { IZQUIERDA, DIAGONAL_IZQUIERDA_ARRIBA, ARRIBA,
-			DIAGONAL_DERECHA_ARRIBA, DERECHA, DIAGONAL_DERECHA_ABAJO, ABAJO,
-			DIAGONAL_IZQUIERDA_ABAJO };
-	vector<vector<vector<dibujo_t>>> v3d=vector<vector<vector<dibujo_t>>>(8);
-	for (int i = 0; i < CANTIDAD_DE_MOVIMIENTOS; i++) {
-		v3d[i] = vector<vector<dibujo_t>>(CANTIDAD_DE_MOVIMIENTOS);
-		for (int j = 0; j < CANTIDAD_DE_IMAGENES; j++) {
-			vector<dibujo_t> v = { j * ANCHO_PERSONAJE, i * ALTO_PERSONAJE,
-					ANCHO_PERSONAJE, ALTO_PERSONAJE };
-			v3d[i][j] = v;
-		}
-	}
-	vector<int> imagenes = vector<int>(CANTIDAD_DE_MOVIMIENTOS,
-			CANTIDAD_DE_IMAGENES);
-	/*********************************************************/
+
 	ObjetoMapa* obj=this->modelo->juego->tipos[tipo];
 
-	this->factory->crear_dibujo_personaje(obj->imagen,
-			CANTIDAD_DE_MOVIMIENTOS, imagenes, v3d, obj->fps);
+	this->factory->crear_dibujo_personaje(obj->imagen,MOVIMIENTOS,CANTIDAD_DE_IMAGENES,obj->fps);//el ultimo parametro es velocidad
 	dibujo_t pers = this->factory->ultimo_dibujo();
 	return pers;
 }
@@ -335,7 +307,6 @@ bool Vista::run() {
 	dibujar_barra();
 	detectar_mouse_borde();
 	SDL_RenderPresent(gRenderer);
-
 	return quit;
 }
 
@@ -501,7 +472,6 @@ void Vista::dibujar_mapa() {
 }
 
 void Vista::dibujar_barra() {
-	//HARCODE deberia ser el personaje/jugador
 	this->barra->actualizar(this->modelo->getJugador());
 	this->barra->render(gRenderer);
 }

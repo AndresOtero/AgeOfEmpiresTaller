@@ -7,8 +7,9 @@
 
 #include "Madera.h"
 
-void Madera::recolectar(RecursosJugador * recursos){
-	recursos->colectarMadera(this->obtenerRecurso());
+void Madera::recolectar(RecursosJugador * recursos, int cantidad){
+	recursos->colectarMadera(this->sacarRecurso(cantidad));
+	printf("recursos madera %d\n",recursos->cantMadera());
 }
 
 Madera::~Madera() {

@@ -22,6 +22,7 @@ Personaje::Personaje(){
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
 	this->atacado=NULL;
+	this->objetivo=NULL;
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->referencia_mapa_x=1;
@@ -39,6 +40,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
 	this->atacado=NULL;
+	this->objetivo=NULL;
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_x=x;
@@ -47,15 +49,16 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->velocidad=float(objetoMapa->velocidad)/FACTOR_VELOCIDAD;
 	this->vida=objetoMapa->vida;
-		this->fuerza=objetoMapa->fuerza;
-		this->armadura=objetoMapa->armadura;
-		this->recoleccion=objetoMapa->recoleccion;
-		this->construccion=objetoMapa->construccion;
+	this->fuerza=objetoMapa->fuerza;
+	this->armadura=objetoMapa->armadura;
+	this->recoleccion=objetoMapa->recoleccion;
+	this->construccion=objetoMapa->construccion;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
 	this->atacado=NULL;
+	this->objetivo=NULL;
 
 }
 
@@ -129,6 +132,31 @@ msg_t Personaje::interactuar(Personaje* otro_personaje){
 	return mensaje;
 }
 
+msg_t Personaje::interactuar(Entidad* otra_entidad){
+	msg_t mensaje;
+
+	//estos datos los tengo que cargar igual en ambos
+	//no puedo pasar el id al crear los recursos, por lo que paso la posicion
+	mensaje.paramInt1 = id;
+	mensaje.paramDouble1 = otra_entidad->getId();
+
+	if (otra_entidad->esUnRecurso()) {//falta q sea un aldeano
+		printf("Interaccion Recurso\n");
+		mensaje.type = RECOLECCION_RECURSOS;
+		return mensaje;
+	//} else if (this->puedeAtacar()) {//falta ver q sea del enemigo
+		//mensaje.type = ATACAR_EDIFICIO;
+		//return mensaje;
+	}
+	// si es de el la entidad
+	printf("Manda keep alive\n");
+	mensaje.type=KEEPALIVE;
+	return mensaje;
+}
+
+int Personaje::atacar(Personaje* otro_personaje){
+	return this->fuerza;
+}
 void Personaje::set_ataque(Personaje* otro_personaje){
 	this->atacado=otro_personaje;
 }
@@ -151,6 +179,17 @@ bool operator== (Personaje &P1, Personaje &P2)
 {
     return (P1.getId()==P2.getId());
 }
+
+void Personaje::setAccion(Entidad * entidad){
+	if(this->atacado == NULL){
+		objetivo = entidad;
+	}
+}
+void Personaje::terminarAccion(){
+	this->atacado=NULL;
+	this->objetivo=NULL;
+}
+
 RecursosJugador* Personaje::recursosJugador(){
 	return recursos;
 }

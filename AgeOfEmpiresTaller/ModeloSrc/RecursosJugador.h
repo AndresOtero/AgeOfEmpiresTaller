@@ -4,6 +4,7 @@
  *  Created on: Sep 30, 2015
  *      Author: tobias
  */
+#include <iostream>
 
 #ifndef RECURSOSJUGADOR_H_
 #define RECURSOSJUGADOR_H_
@@ -20,6 +21,7 @@ public:
 	int cantOro();
 	int cantPiedra();
 	int cantMadera();
+	bool estaVacio();
 	void reset();
 	virtual ~RecursosJugador();
 };

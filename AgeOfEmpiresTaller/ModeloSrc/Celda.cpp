@@ -54,9 +54,7 @@ bool Celda::tieneRecurso(){
 
 bool Celda::estaOcupada(){
 	if ((this->entidad!=NULL)){
-		//si no es un recurso deberia poder moverse, no se si es el mejor lugar para poner esto
-		//capaz en el lugar a donde se mueve tendria que preguntarse si esta ocupado y no es recurso
-		return !(this->tieneRecurso());
+		return true;
 	}
 	if (this->personaje!=NULL)
 		return true;

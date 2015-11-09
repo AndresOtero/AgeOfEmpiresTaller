@@ -81,14 +81,23 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 		entidad.paramDouble1 = ent->posicion->getX();
 		entidad.paramDouble2 = ent->posicion->getY();
 
-		if (ent->esUnRecurso()){
+		//problema no puede pasar los id de los recursos
+		if (!ent->esUnRecurso()){
+			entidad.type = CREAR_ENTIDAD;
+			entidad.paramInt1 = ent->getId();
+			colaInicializacion.push(entidad);
+
+		}else{
 			int cant = ((Recurso*)ent)->obtenerRecurso();
 			entidad.paramInt1 = cant;
 			entidad.type = CREAR_RECURSO;
-		}else{
-			entidad.type = CREAR_ENTIDAD;
+			colaInicializacion.push(entidad);
+			entidad.type = SET_ID_RECURSO;
+			entidad.paramInt1 = ent->getId();
+			colaInicializacion.push(entidad);
+
 		}
-		colaInicializacion.push(entidad);
+
 
 	}
 	vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();
@@ -126,10 +135,30 @@ void GameControllerServer::generarRecursoRandom(SDL_mutex *mutex){
 		mensaje.paramDouble1 = pos.getX();
 		mensaje.paramDouble2 = pos.getY();
 		this->agregarMensaje(mensaje, mutex);
+		mensaje.type = SET_ID_RECURSO;
+		mensaje.paramInt1 = this->modelo->mapa->entidad_celda(pos.get_x_exacta(),pos.get_y_exacta())->getId();
+		this->agregarMensaje(mensaje, mutex);
+
 	}
 }
 
+void GameControllerServer::setAccionEntidad(int id_personaje,int id_recurso){
+	Personaje * personaje = this->modelo->get_Personaje_Por_Id(id_personaje);
+	Entidad * entidad = this->modelo->buscarEntidad(id_recurso);
+	if (entidad != NULL){
+		personaje->setAccion(entidad);
+	}
 
+}
+
+/*void GameControllerServer::setRecoleccion(int id_personaje,int x , int y){
+	Entidad * entidad = this->modelo->mapa->entidad_celda(x,y);
+	if (entidad==NULL)
+		return;
+	Personaje * personaje = this->modelo->get_Personaje_Por_Id(id_personaje);
+	personaje->setAccion(entidad);
+	printf("%d\n",((Recurso *) entidad)->obtenerRecurso());
+}*/
 
 void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant, SDL_mutex *mutex){
 	this->agregarEntidad(nombre,x,y,cant, mutex);
@@ -171,16 +200,29 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			mensaje.paramInt1 = p->getId();
 			this->agregarMensaje(mensaje, mutex);
 
-			//solucion fea pero con poca implementacion
-			//de la recoleccion de recursos
-			//tiene el mismo nombre de jugador que p
-			mensaje.type= ACTUALIZACION_RECURSOS;
+
+
+		}
+		if (p->tieneRecursos()){
+			//solucion que soluciona no tener que tener una lista con la info de los jugadores
+			msg_t mensaje;
+			mensaje.type = ACTUALIZACION_RECURSOS;
+			memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),sizeof(mensaje.paramNombre));
 			mensaje.paramInt1 = p->recursosJugador()->cantOro();
 			mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
 			mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
 			this->agregarMensaje(mensaje, mutex);
-			p->recursosJugador()->reset();//reset, el q acumula es el jugador
-
+			p->recursosJugador()->reset();
+			//reset, el q acumula es el jugador
+			Recurso * recurso = (Recurso *)p->get_objetivo();
+			if (recurso->seAcabo()){
+				this->modelo->eliminarEntidad(recurso);
+				p->terminarAccion();
+				mensaje.type = ELIMINAR_ENTIDAD;
+				mensaje.paramInt1 = recurso->getId();
+				this->agregarMensaje(mensaje, mutex);
+				//si el recurso se acabo lo saco y mando mensaje
+			}
 		}
 		if(!p->esta_vivo()){
 			msg_t mensaje;
@@ -193,42 +235,43 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 	}
 }
 
+
 bool GameControllerServer::hayEventos(SDL_mutex *mutex){
+	bool result;
+	bool paso = false;
 
-	if (SDL_LockMutex(mutex) == 0) {
-
-
-		SDL_UnlockMutex(mutex);
-
-		return (!this->cola.empty());
-	} else {
-	  fprintf(stderr, "Couldn't lock mutex\n");
-	  return false;
+	while (!paso){
+		if (SDL_LockMutex(mutex) == 0) {
+			result = !this->cola.empty();
+			SDL_UnlockMutex(mutex);
+			paso = true;
+		}
 	}
-
+	return result;
 }
 
 msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
 	msg_t mensaje;
-	if (SDL_LockMutex(mutex) == 0) {
-
-		mensaje = this->cola.front();
-		this->cola.pop();
-		SDL_UnlockMutex(mutex);
-		return mensaje;
-	} else {
-	  fprintf(stderr, "Couldn't lock mutex\n");
-	  return mensaje;
+	bool paso = false;
+	while (!paso){
+		if (SDL_LockMutex(mutex) == 0) {
+			mensaje = this->cola.front();
+			this->cola.pop();
+			paso = true;
+			SDL_UnlockMutex(mutex);
+		}
 	}
-
+	return mensaje;
 }
 
 void GameControllerServer::agregarMensaje(msg_t mensaje,SDL_mutex *mutex){
-	if (SDL_LockMutex(mutex) == 0) {
-		this->cola.push(mensaje);
-		SDL_UnlockMutex(mutex);
-	} else {
-	  fprintf(stderr, "Couldn't lock mutex\n");
+	bool paso = false;
+	while (!paso){
+		if (SDL_LockMutex(mutex) == 0) {
+			this->cola.push(mensaje);
+			SDL_UnlockMutex(mutex);
+			paso= true;
+		}
 	}
 
 }

@@ -30,6 +30,7 @@ public:
 	//server
 	void reconectar(std::string id);
 	void desconectar(std::string id);
+	void setAccionEntidad(int id_personaje,int id_entidad);//prra recurso o ataque edifico
 	//void reconectar(int id);
 	void agregarCliente(string name,string tipo, SDL_mutex *mutex);
 	void generarRecursoRandom(SDL_mutex *mutex);
