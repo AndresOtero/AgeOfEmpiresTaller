@@ -181,41 +181,41 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 }
 
 bool GameControllerServer::hayEventos(SDL_mutex *mutex){
+	bool result;
+	bool paso = false;
 
-	if (SDL_LockMutex(mutex) == 0) {
-
-
-		SDL_UnlockMutex(mutex);
-
-		return (!this->cola.empty());
-	} else {
-	  fprintf(stderr, "Couldn't lock mutex\n");
-	  return false;
+	while (!paso){
+		if (SDL_LockMutex(mutex) == 0) {
+			result = !this->cola.empty();
+			SDL_UnlockMutex(mutex);
+			paso = true;
+		}
 	}
-
+	return result;
 }
 
 msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
 	msg_t mensaje;
-	if (SDL_LockMutex(mutex) == 0) {
-
-		mensaje = this->cola.front();
-		this->cola.pop();
-		SDL_UnlockMutex(mutex);
-		return mensaje;
-	} else {
-	  fprintf(stderr, "Couldn't lock mutex\n");
-	  return mensaje;
+	bool paso = false;
+	while (!paso){
+		if (SDL_LockMutex(mutex) == 0) {
+			mensaje = this->cola.front();
+			this->cola.pop();
+			paso = true;
+			SDL_UnlockMutex(mutex);
+		}
 	}
-
+	return mensaje;
 }
 
 void GameControllerServer::agregarMensaje(msg_t mensaje,SDL_mutex *mutex){
-	if (SDL_LockMutex(mutex) == 0) {
-		this->cola.push(mensaje);
-		SDL_UnlockMutex(mutex);
-	} else {
-	  fprintf(stderr, "Couldn't lock mutex\n");
+	bool paso = false;
+	while (!paso){
+		if (SDL_LockMutex(mutex) == 0) {
+			this->cola.push(mensaje);
+			SDL_UnlockMutex(mutex);
+			paso= true;
+		}
 	}
 
 }
