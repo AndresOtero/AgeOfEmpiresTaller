@@ -30,11 +30,11 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->velocidad=float(objetoMapa->velocidad)/FACTOR_VELOCIDAD;
-	//this->vida=objetoMapa->vida;
+	this->vida=objetoMapa->vida;
 	this->fuerza=objetoMapa->fuerza;
 	this->armadura=objetoMapa->armadura;
 	this->recoleccion=objetoMapa->recoleccion;
-	//this->construccion=objetoMapa->construccion;
+	this->construccion=objetoMapa->construccion;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
@@ -48,11 +48,11 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->velocidad=float(objetoMapa->velocidad)/FACTOR_VELOCIDAD;
-	//this->vida=objetoMapa->vida;
+	this->vida=objetoMapa->vida;
 	this->fuerza=objetoMapa->fuerza;
 	this->armadura=objetoMapa->armadura;
 	this->recoleccion=objetoMapa->recoleccion;
-	//this->construccion=objetoMapa->construccion;
+	this->construccion=objetoMapa->construccion;
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
