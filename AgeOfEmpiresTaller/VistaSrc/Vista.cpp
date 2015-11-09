@@ -335,7 +335,6 @@ bool Vista::run() {
 	dibujar_barra();
 	detectar_mouse_borde();
 	SDL_RenderPresent(gRenderer);
-
 	return quit;
 }
 

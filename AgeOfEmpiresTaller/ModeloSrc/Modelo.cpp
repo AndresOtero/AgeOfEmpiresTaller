@@ -87,6 +87,9 @@ void Modelo::actualizarMapa(){
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		mover_personaje(p);
+		if (p->esta_recolectando()){
+			this->recolectar(p,(Recurso *)p->get_objetivo());
+		}
 	}
 
 }
@@ -280,23 +283,26 @@ void Modelo::actualizarRecursos(int oro,int madera,int piedra){
 
 }*/
 
-//server
-void Modelo::recolectar(Personaje * personaje, int id_recurso){
-	//puede enlentecerse con muuuchas entidades pero
+Entidad * Modelo::buscarEntidad(int id){
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
-		for (unsigned int i = 0; i < lista->size(); i++){
-			if ((*lista)[i]->id == id_recurso){
-				//busco el recurso
-				Recurso * recurso = (Recurso *)(*lista)[i];
-				//recoleccin a los recursos del jugador
-				recurso->recolectar(personaje->recursosJugador(),personaje->getRecoleccion());
-				if (recurso->seAcabo()){
-					this->eliminarEntidadPorID(id_recurso);
-				}
-				break;
-			}
-		} //si termino el loop y no la encontro se elimino el recurso
-		//desaccionar al personaje
+	for (unsigned int i = 0; i < lista->size(); i++) {
+		if ((*lista)[i]->getId() == id) {
+			return (*lista)[i];
+		}
+	}
+	return NULL; //cuando no lo encuentra
+}
+
+//server
+void Modelo::recolectar(Personaje * personaje, Recurso * recurso){
+	//puede enlentecerse con muuuchas entidades pero
+	if (recurso != NULL) {
+		//recoleccin a los recursos del jugador personaje->getRecoleccion()
+		recurso->recolectar(personaje->recursosJugador(),1);
+	} else {
+		personaje->terminarAccion();
+	}
+
 }
 //server
 void Modelo::eliminarEntidad(Entidad * entidad){
@@ -330,18 +336,23 @@ vector<Entidad*> Modelo::obtenerEntidadesDeInicializacion(){
 //cliente
 void Modelo::eliminarEntidadPorID(int id){
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
+	Entidad *entidad;
 	for (unsigned int i = 0; i < lista->size(); i++) {
 		if (id == (*lista)[i]->id) {
 			this->mapa->sacarEntidad((*lista)[i]);//desreferencio del mapa
-			if (i + 1 != lista->size())
+			if (i + 1 != lista->size()){
+				entidad = (*lista)[i];
 				std::swap((*lista)[i], lista->back());
+			}
 			lista->pop_back();
+			entidad = NULL; //no tengo idea si cambia esto  o no
 			break;
 		}
 
 	}
 
 }
+
 //cliente
 /**void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
 	Personaje* personaje= 	this->devolverPersonajeSeleccionado();

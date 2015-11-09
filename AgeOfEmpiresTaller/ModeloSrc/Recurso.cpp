@@ -7,6 +7,8 @@
 
 #include "Recurso.h"
 #include <random>
+#include <iostream>
+
 
 Recurso::Recurso(ObjetoMapa* objetoMapa): Entidad(objetoMapa) {
 	GeneradorNumeros generador;
@@ -27,6 +29,7 @@ int Recurso::sacarRecurso(int cantidad){
 		saco = cantidad;
 		this->cantidad-=cantidad;
 	}
+	printf("Saco %d de recurso\n",saco);
 	return saco;
 }
 bool Recurso::seAcabo(){

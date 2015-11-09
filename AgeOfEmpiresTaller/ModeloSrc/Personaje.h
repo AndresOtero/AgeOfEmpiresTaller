@@ -29,6 +29,7 @@ class Personaje {
 	bool congelado;
 	bool se_movio;
 	Personaje* atacado;
+	Entidad* objetivo;
 	int id;
 	string nombreJugador;
 
@@ -48,19 +49,31 @@ public:
 	Posicion get_destino();
 	Posicion get_posicion();
 	Posicion get_camino();
+
 	void set_ataque(Personaje* otro_personaje);
 	void set_destino_al_ataque();
-
+	void setAccion(Entidad * entidad);
 	msg_t interactuar(Personaje* otro_personaje);
 	msg_t interactuar(Entidad * otra_entidad);
 
 	int atacar(Personaje* otro_personaje);
+	void terminarAccion();
+
+	bool tieneRecursos(){
+		return !this->recursos->estaVacio();
+	}
 
 	bool seMovio(){
 		return se_movio;
 	}
 	bool esta_atacando(){
-		return this->atacado!=NULL;
+		//faltaria ver el rango
+		//no se si lo estoy ensuciando a esto, interfaz??
+		bool uno =(this->atacado!=NULL),dos;
+		if (this->puedeAtacar()){
+			dos = (this->objetivo!=NULL);
+		}
+		return (uno || dos);
 	}
 	void setDibujo(dibujo_t dibujo) {
 		this->dibujo = dibujo;
@@ -112,10 +125,23 @@ public:
 	}
 	string getNombreTipo() const {
 			return objetoMapa->nombre;//nombre del tipo
-		}
+	}
+
+	bool esta_recolectando(){
+		//suciedad??
+		//if (this->puedeRecolectar()){
+		return (this->objetivo!=NULL);
+		//}
+		//return false;
+	}
+
 	void setNombreJugador(const string& nombreJugador) {
 		this->nombreJugador = nombreJugador;
 	}
+	Entidad * get_objetivo(){
+		return this->objetivo;
+	}
+
 };
 
 #endif /* PERSONAJE_H_ */
