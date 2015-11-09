@@ -67,6 +67,9 @@ void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 void Modelo::agregarPersonajeCliente(Personaje* personaje){
 	this->personajes.push_back(personaje);
 }
+void Modelo::eliminar_personaje_por_Id(Id id){
+	this->eliminar_personaje(this->get_Personaje_Por_Id(id));
+}
 
 
 
@@ -87,6 +90,27 @@ void Modelo::actualizarMapa(){
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		mover_personaje(p);
+		p->ejecutar_ataque();
+	}
+
+
+}
+void Modelo::eliminar_personaje(Personaje* eliminado){
+	vector<Personaje*>::iterator it = personajes.begin();
+	for (; it != personajes.end(); ++it) {
+		Personaje* p = (*it);
+		if ((p->esta_atacando())
+				&& (p->get_atacado_id() == eliminado->getId())) {
+			p->dejar_de_atacar();
+		}
+	}
+	 it = personajes.begin();
+	for (; it != personajes.end(); ++it) {
+		Personaje* p = (*it);
+		if (p == eliminado) {
+			personajes.erase(it);
+			break;
+		}
 	}
 
 }

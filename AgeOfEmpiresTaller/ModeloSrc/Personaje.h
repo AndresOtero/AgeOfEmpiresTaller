@@ -49,15 +49,23 @@ public:
 	Posicion get_camino();
 	void set_ataque(Personaje* otro_personaje);
 	void set_destino_al_ataque();
+    friend bool operator== ( Personaje &P1,  Personaje &P2);
 
 	msg_t interactuar(Personaje* otro_personaje);
-	int atacar(Personaje* otro_personaje);
-
+	int danioInfringido();
 	bool seMovio(){
 		return se_movio;
 	}
+	void recibirDanio(int danio);
+	void dejar_de_atacar();
+	bool esta_vivo(){
+		return (vida>0);
+	}
 	bool esta_atacando(){
 		return this->atacado!=NULL;
+	}
+	int get_atacado_id(){
+		return this->atacado->getId();
 	}
 	void setDibujo(dibujo_t dibujo) {
 		this->dibujo = dibujo;
@@ -98,6 +106,7 @@ public:
 	void setNombreJugador(const string& nombreJugador) {
 		this->nombreJugador = nombreJugador;
 	}
+	void  ejecutar_ataque();
 };
 
 #endif /* PERSONAJE_H_ */

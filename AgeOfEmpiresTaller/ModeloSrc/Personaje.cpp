@@ -128,11 +128,28 @@ msg_t Personaje::interactuar(Personaje* otro_personaje){
 	mensaje.type=KEEPALIVE;
 	return mensaje;
 }
-int Personaje::atacar(Personaje* otro_personaje){
-	return this->fuerza;
-}
+
 void Personaje::set_ataque(Personaje* otro_personaje){
 	this->atacado=otro_personaje;
+}
+void Personaje::dejar_de_atacar(){
+	this->atacado=NULL;
+}
+int  Personaje::danioInfringido(){
+	return 5;
+}
+void  Personaje::ejecutar_ataque(){
+	if(this->atacado){
+		this->atacado->recibirDanio(this->danioInfringido());
+	}
+}
+void  Personaje::recibirDanio(int danio){
+	this->vida-=danio;
+	printf("La vida es: %d\n",vida);
+}
+bool operator== (Personaje &P1, Personaje &P2)
+{
+    return (P1.getId()==P2.getId());
 }
 RecursosJugador* Personaje::recursosJugador(){
 	return recursos;

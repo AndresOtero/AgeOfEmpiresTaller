@@ -149,8 +149,14 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		if(p->esta_atacando()){
-			printf("Esta atacando\n");
 			p->set_destino_al_ataque();
+			msg_t mensaje;
+			mensaje.type = ATACAR;
+			memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),	sizeof(mensaje.paramNombre));
+			mensaje.paramInt1 = p->getId();
+			mensaje.paramDouble1 = p->get_atacado_id();
+			mensaje.paramDouble2 = p->danioInfringido();
+			this->agregarMensaje(mensaje, mutex);
 		}
 		if (p->seMovio()) {
 			double mov_x = p->get_posicion().get_x_exacta();
@@ -175,6 +181,13 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			this->agregarMensaje(mensaje, mutex);
 			p->recursosJugador()->reset();//reset, el q acumula es el jugador
 
+		}
+		if(!p->esta_vivo()){
+			msg_t mensaje;
+			mensaje.type= ELIMINAR_PERSONAJE;
+			mensaje.paramInt1 = p->getId();
+			this->agregarMensaje(mensaje, mutex);
+			this->modelo->eliminar_personaje_por_Id(p->getId());
 		}
 
 	}

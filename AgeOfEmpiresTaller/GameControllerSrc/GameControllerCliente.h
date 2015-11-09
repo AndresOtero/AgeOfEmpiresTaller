@@ -22,11 +22,13 @@ public:
 	void setMapa(int ancho, int largo);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
 			vector<vector<dibujo_t>> tiles);
+	void eliminar_personaje(Id id);
 
 	void crearPersonaje(string nombre,double x, double y, int id);
 	void generarRecursoRandom();
 	void eliminarEntidad(int id);
 	void mover_personaje(Id id,double mov_x,double mov_y);
+	void ataque(Id idAtacado,int danio);
 	void interactuar(Personaje* personaje,Posicion pos);
 	//Cliente
 	void acutalizarRecursos(int oro, int madera, int piedra);

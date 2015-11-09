@@ -71,11 +71,12 @@ public:
 	void eliminarEntidadPorID(int id);
 	int cantidad_de_jugadores();
 	void atacarServer(Id idAtacante ,Id idAtacado);
+	Personaje*  get_Personaje_Por_Id(Id id);
+	void eliminar_personaje_por_Id(Id id);
 
 private:
-	Personaje*  get_Personaje_Por_Id(Id id);
+	void eliminar_personaje(Personaje* eliminado);
 	void eliminarEntidad(Entidad *entidad);
-
 	void set_posicionRandomPersonaje(Personaje* personaje);
 	void recolectar(Personaje*personaje);
 	Posicion mover_personaje(Personaje* personaje);

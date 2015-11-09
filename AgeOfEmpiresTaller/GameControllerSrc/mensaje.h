@@ -26,7 +26,7 @@ enum MensajeType {
 	CONFIGURACION,
 	DISCONNECT,
 	ATACAR,/* int id atacante,double1 id atacado*/
-	SASASA,
+	ELIMINAR_PERSONAJE,
 };
 
 typedef struct {

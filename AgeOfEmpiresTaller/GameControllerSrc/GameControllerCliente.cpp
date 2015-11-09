@@ -49,6 +49,10 @@ void GameControllerCliente::cambiar_destino_personaje(Id id, double mov_x,double
 void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
+void GameControllerCliente::ataque(Id idAtacado,int danio){
+	Personaje* p=this->modelo->get_Personaje_Por_Id(idAtacado);
+	p->recibirDanio(danio);
+}
 
 void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
 	Personaje* otro_personaje=this->modelo->devolverPersonaje(p.getX(),p.getY());
@@ -58,6 +62,9 @@ void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
 
 	}
 
+}
+void GameControllerCliente::eliminar_personaje(Id id){
+	this->modelo->eliminar_personaje_por_Id(id);
 }
 void GameControllerCliente::setMapa(int ancho, int largo){
 	this->modelo->setMapa(largo,ancho);
