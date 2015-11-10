@@ -9,6 +9,7 @@
 #include "Posicion.h"
 #include "RecursosJugador.h"
 #include "../GameControllerSrc/mensaje.h"
+#include "../ModeloSrc/Contador.h"
 #include "Entidad.h"
 #ifndef PERSONAJE_H_
 #define PERSONAJE_H_
@@ -26,6 +27,7 @@ class Personaje {
 	int construccion;
 	Posicion destino;
 	Posicion camino;
+	Contador contador_ataque;
 	bool congelado;
 	bool se_movio;
 	Personaje* atacado;
@@ -52,6 +54,7 @@ public:
 
 	void set_ataque(Personaje* otro_personaje);
 	void set_destino_al_ataque();
+	bool es_adyacente_al_atacado();
     friend bool operator== ( Personaje &P1,  Personaje &P2);
 
 	void setAccion(Entidad * entidad);
@@ -143,7 +146,7 @@ public:
 	void setNombreJugador(const string& nombreJugador) {
 		this->nombreJugador = nombreJugador;
 	}
-	void  ejecutar_ataque();
+	bool  ejecutar_ataque();
 	Entidad * get_objetivo(){
 		return this->objetivo;
 	}
