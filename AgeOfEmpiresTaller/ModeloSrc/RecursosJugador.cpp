@@ -31,7 +31,7 @@ bool RecursosJugador::estaVacio(){
 		printf("%d--%d--%d\n",oro,piedra,madera);
 		return false;
 	}
-	printf("esta vacio\n");
+	//printf("esta vacio\n");
 	return true;
 }
 void RecursosJugador::reset(){

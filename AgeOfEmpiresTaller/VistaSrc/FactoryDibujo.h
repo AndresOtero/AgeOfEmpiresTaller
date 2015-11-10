@@ -28,8 +28,10 @@ class FactoryDibujo {
 	int dibujo_actual;
 	SDL_Renderer* gRenderer;
 	std::map<std::string, dibujo_t> hashDibujos;
+	int ancho_tile, alto_tile;
 public:
 	FactoryDibujo(SDL_Renderer* gRenderer);
+	bool crear_dibujo_tile(string path);
 	bool crear_dibujo_estatico(string path, vector<int>parametros_de_imagen);
 	bool crear_dibujo_personaje(string path,int cantidad_de_movimientos,int frames,int fps);
 	bool crear_dibujo_animado(string path,vector<int> pixeles,std::vector<std::vector<int> >parametros_de_imagen,int fps, int delay);
@@ -38,6 +40,12 @@ public:
 	int get_idDibujo(string nombre);
 	void setHashDibujos(std::map<std::string, dibujo_t> hashDibujos);
 	virtual ~FactoryDibujo();
+	int getAnchoTile(){
+		return this->ancho_tile;
+	}
+	int getAltoTile(){
+		return this->alto_tile;
+	}
 private:
 	void set_dibujo(shared_ptr<Dibujo> dibujo);
 };

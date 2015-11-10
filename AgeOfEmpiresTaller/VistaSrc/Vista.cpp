@@ -31,8 +31,7 @@ enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define ANIMACIONES 5
 #define MOVIMIENTOS 8
 #define CANTIDAD_DE_IMAGENES 8
-#define ANCHO_BASE  249
-#define ALTO_BASE  124
+
 #define ANCHO_ANIMACION 128
 
 #define OFFSET 1
@@ -50,12 +49,12 @@ Vista::Vista(Modelo* modelo,GameControllerCliente* gameController) {
 }
 
 int Vista::altura_por_celda(){
-	return ALTO_BASE;
-	//devuelve alto de imagen
+	return 44;
+	//devuelv alto de imagen
 }
 
 int Vista::ancho_por_celda(){
-	return ANCHO_BASE;
+	return 92;
 	//devuelve ancho de imagen
 
 }
@@ -113,6 +112,7 @@ bool Vista::init() {
 	}
 
 	this -> factory=shared_ptr<FactoryDibujo> ( new FactoryDibujo(gRenderer));
+
 	return success;
 }
 
@@ -121,8 +121,8 @@ bool Vista::loadMedia() {
 
 	Entidad* entidadPasto = this->modelo->juego->escenario->getTexturaDefault();
 
-	vector<int> v1dPasto={0,0,ANCHO_BASE,ALTO_BASE};
-	this->factory->crear_dibujo_estatico(entidadPasto->objetoMapa->imagen,v1dPasto);
+	this->factory->crear_dibujo_tile(entidadPasto->objetoMapa->imagen);
+
 	dibujo_t pasto_id=this->factory->ultimo_dibujo();
 	delete entidadPasto;
 	std::map<std::string, ObjetoMapa*> ::iterator it;

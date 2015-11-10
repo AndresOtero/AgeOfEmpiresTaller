@@ -15,7 +15,7 @@ Personaje::Personaje(){
 	this->referencia_mapa_y=2;
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
-	this->objetoMapa->fps = 20; //FPS DEFAULT
+	this->objetoMapa->fps = 8; //FPS DEFAULT
 	this->velocidad=0.1;
 	this->objetoMapa->delay = 0; //delay default
 	this->dibujo = 0;

@@ -35,6 +35,7 @@ class Vista {
 	Pantalla* pantalla;
 	GameControllerCliente * gameController;
 	int margen_scroll;
+
 	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;
 private:
