@@ -7,6 +7,7 @@
 
 #include "Personaje.h"
 #define FACTOR_VELOCIDAD 100
+#define FACTOR_CONTADOR 10
 
 
 Personaje::Personaje(){
@@ -15,7 +16,7 @@ Personaje::Personaje(){
 	this->referencia_mapa_y=2;
 	this->destino=Posicion(referencia_mapa_x,referencia_mapa_y);
 	this->camino=Posicion(referencia_mapa_x,referencia_mapa_y);
-	this->objetoMapa->fps = 20; //FPS DEFAULT
+	this->objetoMapa->fps = 8; //FPS DEFAULT
 	this->velocidad=0.1;
 	this->objetoMapa->delay = 0; //delay default
 	this->dibujo = 0;
@@ -36,6 +37,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->recoleccion=objetoMapa->recoleccion;
 	this->construccion=objetoMapa->construccion;
 	this->objetoMapa = objetoMapa;
+	this->contador_ataque=Contador(objetoMapa->velocidad*FACTOR_CONTADOR);
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
@@ -53,6 +55,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->armadura=objetoMapa->armadura;
 	this->recoleccion=objetoMapa->recoleccion;
 	this->construccion=objetoMapa->construccion;
+	this->contador_ataque=Contador(objetoMapa->velocidad*FACTOR_CONTADOR);
 	this->objetoMapa = objetoMapa;
 	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
@@ -149,7 +152,7 @@ msg_t Personaje::interactuar(Entidad* otra_entidad){
 		//return mensaje;
 	}
 	// si es de el la entidad
-	printf("Manda keep alive\n");
+
 	mensaje.type=KEEPALIVE;
 	return mensaje;
 }
@@ -163,15 +166,18 @@ void Personaje::set_ataque(Personaje* otro_personaje){
 	this->atacado=otro_personaje;
 }
 void Personaje::dejar_de_atacar(){
+	this->destino=this->get_posicion();
 	this->atacado=NULL;
 }
 int  Personaje::danioInfringido(){
 	return 5;
 }
-void  Personaje::ejecutar_ataque(){
-	if(this->atacado){
+bool  Personaje::ejecutar_ataque(){
+	if(this->atacado&&contador_ataque.contar()){
 		this->atacado->recibirDanio(this->danioInfringido());
+		return true;
 	}
+	return false;
 }
 void  Personaje::recibirDanio(int danio){
 	this->vida-=danio;
@@ -201,5 +207,7 @@ Personaje::~Personaje() {
 void Personaje::set_destino_al_ataque(){
 	this->set_destino(this->atacado->get_posicion());
 }
-
-
+bool Personaje::es_adyacente_al_atacado(){
+	printf( (this->atacado->get_posicion().es_adyacente(this->get_posicion()))?"Es adyacente":"No es adyacente");
+	return this->atacado->get_posicion().es_adyacente(this->get_posicion());
+}

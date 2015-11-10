@@ -14,8 +14,8 @@ tipos:
 
  - nombre: soldado
    imagen: img/protagonista/spartan_small.png
-   fps: 10
-   delay: 5
+   fps: 8
+   delay: 0
 
  - nombre: wheel
    imagen: img/dibujo_dinamico/wheel.png
@@ -104,3 +104,7 @@ escenario:
   - tipo: soldado
     x: 10
     y: 10
+
+jugador:
+ nombre: andy
+ ip: 127.0.0.1

@@ -90,8 +90,7 @@ void Modelo::actualizarMapa(){
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		mover_personaje(p);
-		p->ejecutar_ataque();
-		if (p->esta_recolectando()) {
+		if (p->esta_recolectando()&&p->contar()) {
 			this->recolectar(p, (Recurso *) p->get_objetivo());
 		}
 	}
@@ -122,7 +121,9 @@ void Modelo::eliminar_personaje(Personaje* eliminado) {
 Personaje* Modelo::devolverPersonajeSeleccionado() {
 	return personaje_seleccionado;
 }
-
+bool Modelo::afueraDelMapa(int x,int y){
+	return this->mapa->afueraDelMapa( x, y);
+}
 vector<Personaje*> Modelo::devolverTodosLosPersonajes(){
 	return personajes;
 }

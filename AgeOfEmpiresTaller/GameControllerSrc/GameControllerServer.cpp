@@ -180,13 +180,15 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 		Personaje* p = (*it);
 		if(p->esta_atacando()){
 			p->set_destino_al_ataque();
-			msg_t mensaje;
-			mensaje.type = ATACAR;
-			memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),	sizeof(mensaje.paramNombre));
-			mensaje.paramInt1 = p->getId();
-			mensaje.paramDouble1 = p->get_atacado_id();
-			mensaje.paramDouble2 = p->danioInfringido();
-			this->agregarMensaje(mensaje, mutex);
+			if(p->es_adyacente_al_atacado()&&p->ejecutar_ataque()){
+				msg_t mensaje;
+				mensaje.type = ATACAR;
+				memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),	sizeof(mensaje.paramNombre));
+				mensaje.paramInt1 = p->getId();
+				mensaje.paramDouble1 = p->get_atacado_id();
+				mensaje.paramDouble2 = p->danioInfringido();
+				this->agregarMensaje(mensaje, mutex);
+			}
 		}
 		if (p->seMovio()) {
 			double mov_x = p->get_posicion().get_x_exacta();
@@ -217,11 +219,11 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			//reset, el q acumula es el jugador
 			Recurso * recurso = (Recurso *)p->get_objetivo();
 			if (recurso->seAcabo()){
-				this->modelo->eliminarEntidad(recurso);
 				p->terminarAccion();
 				mensaje.type = ELIMINAR_ENTIDAD;
 				mensaje.paramInt1 = recurso->getId();
 				this->agregarMensaje(mensaje, mutex);
+				this->modelo->eliminarEntidad(recurso);
 				//si el recurso se acabo lo saco y mando mensaje
 			}
 		}

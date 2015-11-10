@@ -41,7 +41,6 @@ bool Entidad::estaADistancia(int rango, Posicion pos){
 	for (x = 0; x <= (ancho); x++){
 		temp1 = {this->posicion->getX()+x,this->posicion->getY()};
 		temp2 = {this->posicion->getX()+x,posicion->getY()+alto};
-		printf("Pos %g,%g Temp1 %d,%d Temp2 %d,%d\n",pos.get_x_exacta(),pos.get_y_exacta(),temp1.getX(),temp1.getY(),temp2.getX(),temp2.getY());printf("Pos %d,%d Temp1 %d,%d Temp2 %d,%d\n",pos.getX(),pos.getY(),temp1.getX(),temp1.getY(),temp2.getX(),temp2.getY());
 		if (pos.distancia(temp1)<=rango || pos.distancia(temp2)<=rango) {
 			return true;
 		}
@@ -50,7 +49,6 @@ bool Entidad::estaADistancia(int rango, Posicion pos){
 	for (y = 1 ; y < (alto-1); y++){
 		temp1 = {posicion->getX(),posicion->getY()+y};
 		temp2 = {posicion->getX()+ancho,posicion->getY()+y};
-		printf("Pos %g,%g Temp1 %d,%d Temp2 %d,%d\n",pos.get_x_exacta(),pos.get_y_exacta(),temp1.getX(),temp1.getY(),temp2.getX(),temp2.getY());
 		if (pos.distancia(temp1)<=rango || pos.distancia(temp2)<=rango){
 			return true;
 		}

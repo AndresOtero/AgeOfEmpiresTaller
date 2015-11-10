@@ -17,7 +17,9 @@ DibujoPersonaje::DibujoPersonaje() {
 void DibujoPersonaje::congelar(){
 	this->textura->congelar();
 }
-
+void DibujoPersonaje::setFps(int fps){
+	this->fps = fps;
+}
 void DibujoPersonaje::descongelar(){
 	this->textura->descongelar();
 }

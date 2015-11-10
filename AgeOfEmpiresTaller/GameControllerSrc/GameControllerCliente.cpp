@@ -59,6 +59,9 @@ void GameControllerCliente::ataque(Id idAtacado,int danio){
 
 void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
 	//si no esta en rango no puede hacer nada
+	if(this->modelo->afueraDelMapa(p.getX(),p.getY())){
+		return;
+	}
 	Personaje* otro_personaje=this->modelo->devolverPersonaje(p.getX(),p.getY());
 	Entidad * otra_entidad = this->modelo->mapa->entidad_celda(p.getX(),p.getY());
 	if(otro_personaje!=NULL){
