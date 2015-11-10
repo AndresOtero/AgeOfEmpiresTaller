@@ -444,7 +444,7 @@ void Vista::dibujar_mapa() {
 							dibujo->iluminar();
 						}
 					}
-					if (dibujo != NULL) {
+					if (dibujo != NULL && !repito_dibujo(coord_x,coord_y,dim)) {
 						/*HARDCODE*/
 						this->transformador->transformar_isometrica_pantalla(
 								coord_x - referencia_mapa_x,
@@ -474,6 +474,23 @@ void Vista::dibujar_mapa() {
 void Vista::dibujar_barra() {
 	this->barra->actualizar(this->modelo->getJugador());
 	this->barra->render(gRenderer);
+}
+
+bool Vista::repito_dibujo(int x, int y,int dimension){
+	if (dimension != TILES) {
+		Entidad * entidad = this->modelo->mapa->entidad_celda(x, y);
+		//si no hay entidad no repito dibujo
+		if (entidad == NULL) {
+			return false;
+		}
+		Posicion pos = { x, y };
+		//si hay entidad tengo que ver si la que quiero dibujar esta en la celda que estoy viendo
+		if (entidad->posicion->distancia(pos) == 0) {
+			return false;
+		}
+		return true;
+	}
+	return false;
 }
 
 Vista::~Vista() {

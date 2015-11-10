@@ -48,6 +48,7 @@ private:
 	bool adentro_del_mapa(int coord_x, int coord_y);
 	bool adentro_del_mapa(double coord_x, double coord_y);
 	void dibujar_personaje(Personaje* personaje);
+	bool repito_dibujo(int x,int y,int dimension);
 	void corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, double& coord_y);
 	void corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y);
 
