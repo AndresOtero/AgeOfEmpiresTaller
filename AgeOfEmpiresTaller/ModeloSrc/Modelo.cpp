@@ -90,7 +90,6 @@ void Modelo::actualizarMapa(){
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		mover_personaje(p);
-		p->ejecutar_ataque();
 	}
 
 

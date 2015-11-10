@@ -34,9 +34,7 @@ public:
 	double distancia_euclidia(Posicion posicion);
 	double distancia_octal(Posicion posicion);
 	double distancia_manhattan(Posicion posicion);
-	bool es_adyacente(Posicion posicion){
-		return (this->distancia_octal(posicion)<=14);
-	}
+	bool es_adyacente(Posicion posicion);
 
     friend bool operator== ( Posicion &P1,  Posicion &P2);
     friend bool operator== ( Posicion const &P1, const  Posicion &P2);
