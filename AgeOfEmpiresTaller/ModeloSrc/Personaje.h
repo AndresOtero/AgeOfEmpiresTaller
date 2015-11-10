@@ -61,6 +61,7 @@ public:
 
 	int atacar(Personaje* otro_personaje);
 	void terminarAccion();
+	bool estaEnRango(int rango,Entidad * entidad);
 
 	bool tieneRecursos(){
 		return !this->recursos->estaVacio();

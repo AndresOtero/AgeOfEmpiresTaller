@@ -28,10 +28,8 @@ RecursosJugador::RecursosJugador(int oro, int madera, int piedra) {
 }
 bool RecursosJugador::estaVacio(){
 	if ((this->oro > 0) || (this->madera > 0) || (this->piedra >0) ){
-		printf("%d--%d--%d\n",oro,piedra,madera);
 		return false;
 	}
-	printf("esta vacio\n");
 	return true;
 }
 void RecursosJugador::reset(){

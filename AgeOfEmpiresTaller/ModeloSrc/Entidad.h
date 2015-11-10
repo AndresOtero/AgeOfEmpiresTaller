@@ -24,6 +24,7 @@ public:
 	ObjetoMapa* objetoMapa;
 	Posicion* posicion;
 	bool esUnRecurso();
+	bool estaADistancia(int rango,Posicion pos);
 	void seleccionar(){
 		this->seleccionado=true;
 	}

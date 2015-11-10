@@ -146,6 +146,7 @@ void GameControllerServer::setAccionEntidad(int id_personaje,int id_recurso){
 	Personaje * personaje = this->modelo->get_Personaje_Por_Id(id_personaje);
 	Entidad * entidad = this->modelo->buscarEntidad(id_recurso);
 	if (entidad != NULL){
+		printf("Encontro entidad\n");
 		personaje->setAccion(entidad);
 	}
 

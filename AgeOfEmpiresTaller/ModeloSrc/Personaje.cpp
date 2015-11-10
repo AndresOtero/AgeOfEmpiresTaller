@@ -140,7 +140,7 @@ msg_t Personaje::interactuar(Entidad* otra_entidad){
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = otra_entidad->getId();
 
-	if (otra_entidad->esUnRecurso()) {//falta q sea un aldeano
+	if (otra_entidad->esUnRecurso()&& this->puedeRecolectar()) {
 		printf("Interaccion Recurso\n");
 		mensaje.type = RECOLECCION_RECURSOS;
 		return mensaje;
@@ -153,7 +153,9 @@ msg_t Personaje::interactuar(Entidad* otra_entidad){
 	mensaje.type=KEEPALIVE;
 	return mensaje;
 }
-
+bool Personaje::estaEnRango(int rango,Entidad* entidad){
+	return entidad->estaADistancia(rango,this->get_posicion());
+}
 int Personaje::atacar(Personaje* otro_personaje){
 	return this->fuerza;
 }

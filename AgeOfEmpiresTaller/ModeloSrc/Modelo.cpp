@@ -91,6 +91,9 @@ void Modelo::actualizarMapa(){
 		Personaje* p = (*it);
 		mover_personaje(p);
 		p->ejecutar_ataque();
+		if (p->esta_recolectando()) {
+			this->recolectar(p, (Recurso *) p->get_objetivo());
+		}
 	}
 
 
@@ -110,9 +113,7 @@ void Modelo::eliminar_personaje(Personaje* eliminado) {
 		if (p == eliminado) {
 			personajes.erase(it);
 			break;
-			if (p->esta_recolectando()) {
-				this->recolectar(p, (Recurso *) p->get_objetivo());
-			}
+
 		}
 
 	}
@@ -322,8 +323,11 @@ Entidad * Modelo::buscarEntidad(int id){
 void Modelo::recolectar(Personaje * personaje, Recurso * recurso){
 	//puede enlentecerse con muuuchas entidades pero
 	if (recurso != NULL) {
-		//recoleccin a los recursos del jugador personaje->getRecoleccion()
-		recurso->recolectar(personaje->recursosJugador(),personaje->getRecoleccion());
+		if (personaje->estaEnRango(1,recurso)){
+			//recoleccin a los recursos del jugador personaje->getRecoleccion()
+			recurso->recolectar(personaje->recursosJugador(),personaje->getRecoleccion());
+		}
+
 	} else {
 		personaje->terminarAccion();
 	}
