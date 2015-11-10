@@ -53,6 +53,8 @@ void Barra::load(SDL_Renderer * renderer, string path, int ancho_por_celda,int a
 		if( font == NULL ){
 			LOG_WARNING << "Failed to load font!%s\n" , TTF_GetError();
 		}
+	this->ancho_por_celda = ancho_por_celda;
+	this->alto_por_celda = alto_por_celda;
 
 }
 
@@ -124,8 +126,8 @@ void Barra::dibujarDondeMiro(SDL_Renderer * renderer){
 	y_corregido = (double) y + (double) y / celda_mini * this->desfasaje;
 	x_corregido += this->mapa->anchoPantalla() - this->mapa->altoMapa() / 2;
 	y_corregido += this->referencia_y;
-	double celdas_por_ancho = (double) this->mapa->anchoPantalla() / ANCHO_BASE;
-	double celdas_por_alto = (double) (this->mapa->altoMapa() * 2) / ALTO_BASE;
+	double celdas_por_ancho = (double) this->mapa->anchoPantalla() / ancho_por_celda;
+	double celdas_por_alto = (double) (this->mapa->altoMapa() * 2) / alto_por_celda;
 	double celdas_alto_corregido = celdas_por_alto * (1 + desfasaje);
 	double celdas_ancho_corregido = celdas_por_ancho * (1 + desfasaje);
 	SDL_Rect rect = { x_corregido, y_corregido, (celdas_ancho_corregido)

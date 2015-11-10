@@ -51,6 +51,8 @@ private:
 	int celda_mini;
 	int referencia_y;
 	int tamFont;
+	int ancho_por_celda;
+	int alto_por_celda;
 };
 
 #endif /* BARRA_H_ */
