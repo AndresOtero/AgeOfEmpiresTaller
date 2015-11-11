@@ -198,7 +198,7 @@ void Mapa::posicionarEntidad(Entidad* entidad){
 	y = entidad->posicion->getY();
 	for (i = x; i < alto+x; i++ ){
 		for (j = y; j< ancho+y;j++){
-			this->getCelda(i,j)->ocuparCelda(NULL);//guardar referencias en celdas
+			this->getCelda(i,j)->ocuparCelda(entidad);//guardar referencias en celdas
 		}
 	}
 	this->getCelda(x,y)->ocuparCelda(entidad);//guardar referencias en celdas
