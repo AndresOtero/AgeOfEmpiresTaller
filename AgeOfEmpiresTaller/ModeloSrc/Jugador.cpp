@@ -13,6 +13,7 @@ Jugador::Jugador(string nombre,string ip,string raza) {
 	this->nombre=nombre;
 	this->ip=ip;
 	this->recursos = new RecursosJugador();
+	this->factory= FactoryEdificio();
 }
 
 void Jugador::actualizarRecursos(int oro, int madera, int piedra){

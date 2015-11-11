@@ -5,6 +5,7 @@
  *      Author: andres
  */
 #include "Personaje.h"
+#include "FactoryEdificio.h"
 #ifndef JUGADOR_H_
 #define JUGADOR_H_
  using namespace std;
@@ -15,6 +16,7 @@ class Jugador {
 	RecursosJugador * recursos;
 	string ip;
 	string raza;
+	FactoryEdificio factory;
 public:
 	Jugador(string nombre,string ip,string raza);
 	virtual ~Jugador();

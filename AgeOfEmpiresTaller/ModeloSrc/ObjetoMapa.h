@@ -30,6 +30,8 @@ public:
 	int armadura;
 	int recoleccion;
 	int construccion;
+	string raza;
+	int velocidad_construcccion;
 	ObjetoMapa(string nombre, string imagen);
 
 	virtual ~ObjetoMapa();
