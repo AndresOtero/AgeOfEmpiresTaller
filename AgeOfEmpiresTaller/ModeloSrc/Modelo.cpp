@@ -69,7 +69,11 @@ void Modelo::agregarPersonajeCliente(Personaje* personaje){
 	this->personajes.push_back(personaje);
 }
 void Modelo::eliminar_personaje_por_Id(Id id){
-	this->eliminar_personaje(this->get_Personaje_Por_Id(id));
+	Personaje * pers = this->get_Personaje_Por_Id(id);
+	if (pers){
+		this->eliminar_personaje(pers);
+	}
+
 }
 
 
@@ -102,9 +106,10 @@ void Modelo::eliminar_personaje(Personaje* eliminado) {
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
-		if ((p->esta_atacando())
-				&& (p->get_atacado_id() == eliminado->getId())) {
-			p->dejar_de_atacar();
+		if (p->esta_atacando()){
+			if(p->get_atacado_id() == eliminado->getId()) {
+				p->dejar_de_atacar();
+			}
 		}
 	}
 	it = personajes.begin();
@@ -118,7 +123,11 @@ void Modelo::eliminar_personaje(Personaje* eliminado) {
 
 	}
 }
-
+void Modelo::eliminar(int id){
+	//faltaria poner que si elimino personaje no se meta en eliminar entidad
+	this->eliminar_personaje_por_Id(id);
+	this->eliminarEntidadPorID(id);
+}
 Personaje* Modelo::devolverPersonajeSeleccionado() {
 	return personaje_seleccionado;
 }
@@ -325,7 +334,7 @@ Entidad * Modelo::buscarEntidad(int id){
 void Modelo::recolectar(Personaje * personaje, Recurso * recurso){
 	//puede enlentecerse con muuuchas entidades pero
 	if (recurso != NULL) {
-		if (personaje->estaEnRango(1,recurso)){
+		if (personaje->esAdyacente(recurso)){
 			//recoleccin a los recursos del jugador personaje->getRecoleccion()
 			recurso->recolectar(personaje->recursosJugador(),personaje->getRecoleccion());
 		}
@@ -366,6 +375,21 @@ vector<Entidad*> Modelo::obtenerEntidadesDeInicializacion(){
 
 //cliente
 void Modelo::eliminarEntidadPorID(int id){
+	vector<Personaje*>::iterator it = personajes.begin();
+		for (; it != personajes.end(); ++it) {
+			Personaje* p = (*it);
+			if (p->esta_recolectando()){
+				if(p->get_objetivo()->getId() == id) {
+					p->terminarAccion();
+			}
+
+			}if (p->esta_atacando()){
+				if (p->get_atacado()->getId() == id) {
+					p->dejar_de_atacar();
+				}
+
+			}
+		}
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
 	Entidad *entidad;
 	for (unsigned int i = 0; i < lista->size(); i++) {
@@ -376,13 +400,14 @@ void Modelo::eliminarEntidadPorID(int id){
 				std::swap((*lista)[i], lista->back());
 			}
 			lista->pop_back();
-			entidad = NULL; //no tengo idea si cambia esto  o no
+			entidad = NULL;
 			break;
 		}
 
 	}
 
 }
+
 
 //cliente
 /**void  Modelo::cambiar_destino_personaje(double mov_x,double mov_y){
@@ -413,12 +438,22 @@ Personaje*  Modelo::get_Personaje_Por_Id(Id id){
 					return p;
 				}
 			}
+			return NULL;
 }
 void  Modelo::atacarServer(Id idAtacante ,Id idAtacado){
-	vector<Personaje*>::iterator it = personajes.begin();
 	Personaje* atacado =this->get_Personaje_Por_Id(idAtacado);
 	Personaje* atacante =this->get_Personaje_Por_Id(idAtacante);
-	atacante->set_ataque(atacado);
+	if (atacado){
+		printf("Ataca personaje\n");
+		atacante->set_ataque(atacado);
+	}else {
+		Entidad* entidad = this->buscarEntidad(idAtacado);
+		if (entidad){
+			printf("Ataca Entidad\n");
+			atacante->set_ataque(entidad);
+		}
+	}
+
 
 }
 Personaje* Modelo::devolverPersonaje(int x,int y){
@@ -519,16 +554,14 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 int Modelo::crearPersonajeServer(Personaje* personaje){
 	this->set_posicionRandomPersonaje(personaje);
 	personajes.push_back(personaje);
-	personaje->setId(idServer);
-	idServer++;
-	return (idServer-1);
+	GeneradorNumeros generar;
+	int id = generar.otroID();
+	personaje->setId(id);
+	return (id);
 }
 
 
 
-int Modelo::cantidad_de_jugadores()  {
-	return idServer;
-}
 
 Modelo::~Modelo() {
  delete this->juego;

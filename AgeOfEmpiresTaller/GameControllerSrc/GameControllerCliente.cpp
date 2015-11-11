@@ -49,12 +49,23 @@ void GameControllerCliente::cambiar_destino_personaje(Id id, double mov_x,double
 void GameControllerCliente::eliminarEntidad(int id){
 	this->modelo->eliminarEntidadPorID(id);
 }
+void GameControllerCliente::eliminar(int id){
+	this->modelo->eliminar(id);
+}
 void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 void GameControllerCliente::ataque(Id idAtacado,int danio){
+	//aca crasheaba mal
 	Personaje* p=this->modelo->get_Personaje_Por_Id(idAtacado);
-	p->recibirDanio(danio);
+	if (p){
+		p->recibirDanio(danio);
+	}else{
+		Entidad * entidad = this->modelo->buscarEntidad(idAtacado);
+		//no chequeo q sea null porque deberia existir
+		entidad->recibirDanio(danio);
+	}
+
 }
 
 void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){

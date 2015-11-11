@@ -146,7 +146,6 @@ void GameControllerServer::setAccionEntidad(int id_personaje,int id_recurso){
 	Personaje * personaje = this->modelo->get_Personaje_Por_Id(id_personaje);
 	Entidad * entidad = this->modelo->buscarEntidad(id_recurso);
 	if (entidad != NULL){
-		printf("Encontro entidad\n");
 		personaje->setAccion(entidad);
 	}
 
@@ -179,8 +178,11 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		if(p->esta_atacando()){
+			//printf("Esta atacando\n");
 			p->set_destino_al_ataque();
-			if(p->es_adyacente_al_atacado()&&p->ejecutar_ataque()){
+			if(p->es_adyacente_al_atacado()&&p->contar()){
+				p->ejecutar_ataque();
+				//printf("Ataco\n");
 				msg_t mensaje;
 				mensaje.type = ATACAR;
 				memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),	sizeof(mensaje.paramNombre));
@@ -207,6 +209,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 
 		}
 		if (p->tieneRecursos()){
+			//printf("Recolecto recursos\n");
 			//solucion que soluciona no tener que tener una lista con la info de los jugadores
 			msg_t mensaje;
 			mensaje.type = ACTUALIZACION_RECURSOS;
@@ -217,22 +220,29 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			this->agregarMensaje(mensaje, mutex);
 			p->recursosJugador()->reset();
 			//reset, el q acumula es el jugador
+			//puede explotar con muchos recolectando
 			Recurso * recurso = (Recurso *)p->get_objetivo();
-			if (recurso->seAcabo()){
-				p->terminarAccion();
-				mensaje.type = ELIMINAR_ENTIDAD;
-				mensaje.paramInt1 = recurso->getId();
-				this->agregarMensaje(mensaje, mutex);
-				this->modelo->eliminarEntidad(recurso);
-				//si el recurso se acabo lo saco y mando mensaje
+			if (recurso){
+				if (recurso->seAcabo()){
+					p->terminarAccion();
+					mensaje.type = ELIMINAR_ENTIDAD;
+					mensaje.paramInt1 = recurso->getId();
+					this->agregarMensaje(mensaje, mutex);
+					this->modelo->eliminarEntidad(recurso);
+					//si el recurso se acabo lo saco y mando mensaje
+				}
 			}
+
 		}
-		if(!p->esta_vivo()){
-			msg_t mensaje;
-			mensaje.type= ELIMINAR_PERSONAJE;
-			mensaje.paramInt1 = p->getId();
-			this->agregarMensaje(mensaje, mutex);
-			this->modelo->eliminar_personaje_por_Id(p->getId());
+		if (p->esta_atacando()){
+			if (!p->get_atacado()->esta_vivo()) {
+				//printf("Eliminar algo con id %d\n",p->get_atacado()->getId());
+				msg_t mensaje;
+				mensaje.type = ELIMINAR;
+				mensaje.paramInt1 = p->get_atacado()->getId();
+				this->agregarMensaje(mensaje, mutex);
+				this->modelo->eliminar(p->get_atacado()->getId());
+			}
 		}
 
 	}

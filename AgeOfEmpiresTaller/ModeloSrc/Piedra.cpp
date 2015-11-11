@@ -9,7 +9,6 @@
 
 void Piedra::recolectar(RecursosJugador* recursos,int cantidad){
 	recursos->colectarPiedra(this->sacarRecurso(cantidad));
-	printf("recursos piedra %d\n",recursos->cantPiedra());
 }
 
 Piedra::~Piedra() {

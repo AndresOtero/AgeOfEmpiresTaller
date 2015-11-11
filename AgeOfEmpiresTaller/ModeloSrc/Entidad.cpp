@@ -15,12 +15,14 @@ Entidad::Entidad(ObjetoMapa* objetoMapa) {
 	this -> posicion = new Posicion();
 	GeneradorNumeros generar;
 	this->id = generar.otroID();
+	this->vida = 50; //TODO
 }
 Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	this -> objetoMapa = objetoMapa;
 	this -> posicion = new Posicion(x, y);
 	GeneradorNumeros generar;
 	this->id = generar.otroID();
+	this->vida = 50;//TODO
 }
 bool Entidad::esUnRecurso(){
 	if (Recurso* rec = dynamic_cast<Recurso*>(this)){
@@ -32,7 +34,7 @@ string Entidad::mostrar_contenido() {
 	return objetoMapa->nombre;
 
 }
-bool Entidad::estaADistancia(int rango, Posicion pos){
+bool Entidad::esAdyacente(Posicion pos){
 	int alto,ancho,x,y;
 	alto = this->objetoMapa->baseLogica->alto;
 	ancho = this->objetoMapa->baseLogica->ancho;
@@ -41,7 +43,7 @@ bool Entidad::estaADistancia(int rango, Posicion pos){
 	for (x = 0; x <= (ancho); x++){
 		temp1 = {this->posicion->getX()+x,this->posicion->getY()};
 		temp2 = {this->posicion->getX()+x,posicion->getY()+alto};
-		if (pos.distancia(temp1)<=rango || pos.distancia(temp2)<=rango) {
+		if (pos.es_adyacente(temp1)|| pos.es_adyacente(temp2)) {
 			return true;
 		}
 	}
@@ -49,7 +51,7 @@ bool Entidad::estaADistancia(int rango, Posicion pos){
 	for (y = 1 ; y < (alto-1); y++){
 		temp1 = {posicion->getX(),posicion->getY()+y};
 		temp2 = {posicion->getX()+ancho,posicion->getY()+y};
-		if (pos.distancia(temp1)<=rango || pos.distancia(temp2)<=rango){
+		if (pos.es_adyacente(temp1)|| pos.es_adyacente(temp2)) {
 			return true;
 		}
 	}

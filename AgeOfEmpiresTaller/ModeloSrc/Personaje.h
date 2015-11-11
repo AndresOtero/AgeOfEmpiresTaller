@@ -11,11 +11,12 @@
 #include "../GameControllerSrc/mensaje.h"
 #include "../ModeloSrc/Contador.h"
 #include "Entidad.h"
+#include "Atacable.h"
 #ifndef PERSONAJE_H_
 #define PERSONAJE_H_
 typedef int dibujo_t;
 
-class Personaje {
+class Personaje:public Atacable {
 	RecursosJugador * recursos;
 	double referencia_mapa_x,referencia_mapa_y;
 	dibujo_t dibujo;
@@ -30,7 +31,7 @@ class Personaje {
 	Contador contador_ataque;
 	bool congelado;
 	bool se_movio;
-	Personaje* atacado;
+	Atacable* atacado;
 	Entidad* objetivo;
 	int id;
 	string nombreJugador;
@@ -52,7 +53,7 @@ public:
 	Posicion get_posicion();
 	Posicion get_camino();
 
-	void set_ataque(Personaje* otro_personaje);
+	void set_ataque(Atacable* otro_personaje);
 	void set_destino_al_ataque();
 	bool es_adyacente_al_atacado();
     friend bool operator== ( Personaje &P1,  Personaje &P2);
@@ -64,7 +65,7 @@ public:
 
 	int atacar(Personaje* otro_personaje);
 	void terminarAccion();
-	bool estaEnRango(int rango,Entidad * entidad);
+	bool esAdyacente(Entidad* entidad);
 
 	bool tieneRecursos(){
 		return !this->recursos->estaVacio();
@@ -80,6 +81,9 @@ public:
 	}
 	bool esta_atacando(){
 		return this->atacado!=NULL;
+	}
+	Atacable * get_atacado(){
+		return atacado;
 	}
 	int get_atacado_id(){
 		return this->atacado->getId();
@@ -119,7 +123,7 @@ public:
 			return this->congelado;
 	}
 
-	int getId() const {
+	int getId() {
 		return id;
 	}
 
@@ -154,6 +158,9 @@ public:
 	}
 	bool contar(){
 		return this->contador_ataque.contar();
+	}
+	int getArmadura(){
+		return this->armadura;
 	}
 
 };

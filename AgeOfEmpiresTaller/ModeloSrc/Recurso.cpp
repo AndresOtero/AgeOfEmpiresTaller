@@ -29,7 +29,7 @@ int Recurso::sacarRecurso(int cantidad){
 		saco = cantidad;
 		this->cantidad-=cantidad;
 	}
-	printf("Saco %d de recurso\n",saco);
+	//printf("Saco %d de recurso\n",saco);
 	return saco;
 }
 bool Recurso::seAcabo(){
