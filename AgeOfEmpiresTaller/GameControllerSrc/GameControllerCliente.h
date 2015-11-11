@@ -42,7 +42,7 @@ public:
 	void reconectar(string id);
 	void desconectar(string Id);
 	void eliminarEntidad(int id);
-
+	void eliminar(int id);
 	char* string_to_char_array(string str);
 
 };

@@ -76,7 +76,7 @@ public:
 	Personaje*  get_Personaje_Por_Id(Id id);
 	void eliminar_personaje_por_Id(Id id);
 	void eliminarEntidad(Entidad *entidad);
-
+	void eliminar(int id);
 
 
 private:

@@ -147,33 +147,36 @@ msg_t Personaje::interactuar(Entidad* otra_entidad){
 		printf("Interaccion Recurso\n");
 		mensaje.type = RECOLECCION_RECURSOS;
 		return mensaje;
-	//} else if (this->puedeAtacar()) {//falta ver q sea del enemigo
-		//mensaje.type = ATACAR_EDIFICIO;
-		//return mensaje;
+	} else if (this->puedeAtacar()&&(!otra_entidad->esUnRecurso())) {//falta ver q sea del enemigo
+
+		printf("Interaccion atacar\n");
+		mensaje.type = ATACAR;
+		return mensaje;
 	}
 	// si es de el la entidad
 
 	mensaje.type=KEEPALIVE;
 	return mensaje;
 }
-bool Personaje::estaEnRango(int rango,Entidad* entidad){
-	return entidad->estaADistancia(rango,this->get_posicion());
+bool Personaje::esAdyacente(Entidad* entidad){
+	return entidad->esAdyacente(this->get_posicion());
 }
 int Personaje::atacar(Personaje* otro_personaje){
 	return this->fuerza;
 }
-void Personaje::set_ataque(Personaje* otro_personaje){
+void Personaje::set_ataque(Atacable* otro_personaje){
 	this->atacado=otro_personaje;
 }
 void Personaje::dejar_de_atacar(){
 	this->destino=this->get_posicion();
 	this->atacado=NULL;
+	this->objetivo=NULL;
 }
 int  Personaje::danioInfringido(){
 	return 5;
 }
 bool  Personaje::ejecutar_ataque(){
-	if(this->atacado&&contador_ataque.contar()){
+	if(this->atacado){
 		this->atacado->recibirDanio(this->danioInfringido());
 		return true;
 	}
@@ -194,6 +197,7 @@ void Personaje::setAccion(Entidad * entidad){
 	}
 }
 void Personaje::terminarAccion(){
+	this->set_destino(this->get_posicion());
 	this->atacado=NULL;
 	this->objetivo=NULL;
 }
