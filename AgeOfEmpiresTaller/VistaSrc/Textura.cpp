@@ -37,8 +37,7 @@ bool Textura::loadFromFile(std::string path, SDL_Renderer* gRenderer) {
 		LOG_WARNING << "No se pudo cargar: %s. SDL_image Error: %s\n", path.c_str(),
 				IMG_GetError();
 	} else {
-		SDL_SetColorKey(loadedSurface, SDL_TRUE,
-						SDL_MapRGB(loadedSurface->format, 0xFF, 0xFF, 0xFF));
+		//SDL_SetColorKey(loadedSurface, SDL_TRUE,						SDL_MapRGB(loadedSurface->format, 0xFF, 0xFF, 0xFF));
 
 		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 		if (newTexture == NULL) {
