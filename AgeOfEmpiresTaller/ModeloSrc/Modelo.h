@@ -77,6 +77,7 @@ public:
 	void eliminar_personaje_por_Id(Id id);
 	void eliminarEntidad(Entidad *entidad);
 	void eliminar(int id);
+	void finalizarAccion(int id);
 
 
 private:

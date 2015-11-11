@@ -76,6 +76,10 @@ public:
 	}
 	void recibirDanio(int danio);
 	void dejar_de_atacar();
+	void noInteractua(){
+		this->atacado=NULL;
+		this->objetivo=NULL;
+	}
 	bool esta_vivo(){
 		return (vida>0);
 	}

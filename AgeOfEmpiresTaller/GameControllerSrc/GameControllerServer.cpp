@@ -50,6 +50,7 @@ void GameControllerServer::reconectar(string Id){
 			 }
 
 void GameControllerServer::cambiar_destino_personaje(Id id, double mov_x,double mov_y){
+	this->modelo->finalizarAccion(id);
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 void GameControllerServer::atacar(Id idAtacante, Id idAtacado){

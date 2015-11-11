@@ -60,7 +60,7 @@ string Modelo::ipJugador(){
 //llama server al agregar personaje
 void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 	//Posicion pos = this->mapa->posicionVacia();
-	Posicion pos(95,92);
+	Posicion pos(9,9);
 	personaje->set_posicion(pos);
 	//manda en que posicion ubicarlo
 }
@@ -101,6 +101,9 @@ void Modelo::actualizarMapa(){
 	}
 
 
+}
+void Modelo::finalizarAccion(int id){
+	this->get_Personaje_Por_Id(id)->noInteractua();
 }
 void Modelo::eliminar_personaje(Personaje* eliminado) {
 	vector<Personaje*>::iterator it = personajes.begin();

@@ -12,7 +12,7 @@ Juego::Juego() {
 	this -> pantalla = new Pantalla();
 	this -> conf = new Configuracion();
 	this -> escenario = new Escenario();
-	cargarTiposDefault();
+	//cargarTiposDefault();
 }
 void Juego::cargarTiposDefault(){
 	tipos["oro"]=new ObjetoMapa("oro","img/oro.png");
@@ -26,7 +26,7 @@ Juego::Juego(Pantalla* pantalla, Configuracion* conf, Escenario* escenario, std:
 	this -> conf = conf;
 	this -> escenario = escenario;
 	this->tipos = tipos;
-	cargarTiposDefault();
+	//cargarTiposDefault();
 
 }
 void Juego::setEscenario(string nombre,int ancho,int largo){

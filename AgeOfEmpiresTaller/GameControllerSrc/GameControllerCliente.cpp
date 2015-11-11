@@ -86,6 +86,7 @@ void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
 		this->agregarMensaje(msg);
 		return;
 	}
+
 }
 void GameControllerCliente::eliminar_personaje(Id id){
 	this->modelo->eliminar_personaje_por_Id(id);
