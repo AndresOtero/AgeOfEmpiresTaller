@@ -11,11 +11,12 @@
 
 class Jugador {
 	string nombre;
-	Personaje* personaje;
+	//Personaje* personaje;
 	RecursosJugador * recursos;
 	string ip;
+	string raza;
 public:
-	Jugador(string nombre,string ip,Personaje* personaje);
+	Jugador(string nombre,string ip,string raza);
 	virtual ~Jugador();
 
 	string getNombre() {
@@ -24,9 +25,9 @@ public:
 	string getIp() {
 			return ip;
 	}
-	Personaje* getPersonaje()  {
+	/**Personaje* getPersonaje()  {
 		return personaje;
-	}
+	}**/
 	RecursosJugador * recursosJugador(){
 		return this->recursos;
 	}

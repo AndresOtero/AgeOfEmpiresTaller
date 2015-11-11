@@ -7,10 +7,9 @@
 
 #include "Jugador.h"
 
-Jugador::Jugador(string nombre,string ip,Personaje* personaje) {
+Jugador::Jugador(string nombre,string ip,string raza) {
 	// TODO Auto-generated constructor stub
-	this->personaje=personaje;
-	this->personaje->setNombreJugador(nombre);
+	this->raza=raza;
 	this->nombre=nombre;
 	this->ip=ip;
 	this->recursos = new RecursosJugador();
