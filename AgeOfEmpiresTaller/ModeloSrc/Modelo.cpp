@@ -444,6 +444,7 @@ Personaje*  Modelo::get_Personaje_Por_Id(Id id){
 			return NULL;
 }
 void  Modelo::atacarServer(Id idAtacante ,Id idAtacado){
+	printf("Ataco\n");
 	Personaje* atacado =this->get_Personaje_Por_Id(idAtacado);
 	Personaje* atacante =this->get_Personaje_Por_Id(idAtacante);
 	if (atacado){

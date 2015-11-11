@@ -20,6 +20,8 @@ class ObjetoMapa{
 public:
 	string nombre;
 	string imagen;
+	string imagen_quieto;
+	string imagen_atacando;
 	BaseLogica* baseLogica;
 	PixelsReferencia* pixelsReferencia;
 	int fps;

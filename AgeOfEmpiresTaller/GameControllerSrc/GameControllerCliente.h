@@ -27,14 +27,14 @@ public:
 	void crearPersonaje(string nombre,double x, double y, int id);
 	void generarRecursoRandom();
 	void mover_personaje(Id id,double mov_x,double mov_y);
-	void ataque(Id idAtacado,int danio);
+	void ataque(Id idAtacante,Id idAtacado,int danio);
 	void interactuar(Personaje* personaje,Posicion pos);
 	void interactuar(Entidad * entidad,Posicion pos);
 	//Cliente
 	void acutalizarRecursos(int oro, int madera, int piedra);
 	void agregarEntidad(string nombre,int x,int y,int cant);
 	void cambiar_destino_personaje(Id id, double mov_x, double mov_y);
-	void conectarCliente(string name,string str, int x,int y,dibujo_t dibujo,int id);
+	Personaje* conectarCliente(string name,string tipo, int x,int y,dibujo_t dibujo,int id);
 	bool esNombre(char* nombre);
 	//Personaje* conectarme(string name,string str, int x,int y);
 	//void setearPosicionPersonaje(int id,double pos_x,double pos_y);

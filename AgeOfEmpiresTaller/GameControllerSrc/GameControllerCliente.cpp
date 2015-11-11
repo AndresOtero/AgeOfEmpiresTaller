@@ -55,15 +55,23 @@ void GameControllerCliente::eliminar(int id){
 void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
-void GameControllerCliente::ataque(Id idAtacado,int danio){
+void GameControllerCliente::ataque(Id idAtacante,Id idAtacado,int danio){
 	//aca crasheaba mal
+	Personaje* pAtacando=this->modelo->get_Personaje_Por_Id(idAtacante);
 	Personaje* p=this->modelo->get_Personaje_Por_Id(idAtacado);
+	pAtacando->atacandoCliente(true);
 	if (p){
 		p->recibirDanio(danio);
+		if (!p->esta_vivo()){
+			pAtacando->atacandoCliente(false);
+		}
 	}else{
 		Entidad * entidad = this->modelo->buscarEntidad(idAtacado);
 		//no chequeo q sea null porque deberia existir
 		entidad->recibirDanio(danio);
+		if (!entidad->esta_vivo()){
+			pAtacando->atacandoCliente(false);
+		}
 	}
 
 }
@@ -102,15 +110,16 @@ void GameControllerCliente::setId(double x, double y, int id){
 	}
 }
 
-void GameControllerCliente::conectarCliente(string name,string str, int x,int y,dibujo_t dibujo,int id){
-	ObjetoMapa* obj= this->juego->tipos[str];
+Personaje* GameControllerCliente::conectarCliente(string name,string tipo, int x,int y,dibujo_t dibujo,int id){
+	ObjetoMapa* obj= this->juego->tipos[tipo];
 
 	Personaje* personaje =new Personaje(obj,x,y);
 	personaje->setNombreJugador(name);
-	personaje->setDibujo(dibujo);
 	personaje->setId(id);
-	this->modelo->agregarPersonajeCliente(personaje);
 
+
+	this->modelo->agregarPersonajeCliente(personaje);
+	return personaje;
 
 }
 

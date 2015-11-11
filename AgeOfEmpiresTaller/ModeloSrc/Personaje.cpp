@@ -11,6 +11,7 @@
 
 
 Personaje::Personaje(){
+	this->atacando_cliente  =false;
 	this->objetoMapa = new ObjetoMapa("protagonistaDefault", "img/protagonista/spartan_small.png");
 	this->referencia_mapa_x=5;
 	this->referencia_mapa_y=2;
@@ -19,7 +20,6 @@ Personaje::Personaje(){
 	this->objetoMapa->fps = 8; //FPS DEFAULT
 	this->velocidad=0.1;
 	this->objetoMapa->delay = 0; //delay default
-	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
 	this->atacado=NULL;
@@ -38,9 +38,9 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->construccion=objetoMapa->construccion;
 	this->objetoMapa = objetoMapa;
 	this->contador_ataque=Contador(objetoMapa->velocidad*FACTOR_CONTADOR);
-	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
+	this->atacando_cliente  =false;
 	this->atacado=NULL;
 	this->objetivo=NULL;
 }
@@ -57,16 +57,17 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->construccion=objetoMapa->construccion;
 	this->contador_ataque=Contador(objetoMapa->velocidad*FACTOR_CONTADOR);
 	this->objetoMapa = objetoMapa;
-	this->dibujo = 0;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
+
+	this->atacando_cliente  =false;
 	this->atacado=NULL;
 	this->objetivo=NULL;
 
 }
 
 dibujo_t Personaje::dibujar(){
-	return dibujo;
+	return dibujo_actual;
 }
 string Personaje::mostrar_contenido(){
 	return this->objetoMapa->nombre+string(",")+this->nombreJugador;
@@ -101,6 +102,8 @@ void Personaje::mover() {
 	double distancia = sqrt(delta_x * delta_x + delta_y * delta_y);
 	if (distancia != 0) {
 		se_movio=true;
+		this->atacando_cliente  =false;
+
 		if (distancia < velocidad) {
 			distancia = velocidad;
 		}
@@ -118,8 +121,14 @@ void Personaje::mover() {
 
 		this->referencia_mapa_x += des_x;
 		this->referencia_mapa_y += des_y;
+		dibujo_actual=dibujo_esta_moviendo;
 	}else{
 		se_movio=false;
+		if(!this->atacando_cliente){
+			dibujo_actual=dibujo_esta_quieto;
+		}else{
+			dibujo_actual=dibujo_atacando;
+		}
 	}
 
 }
@@ -169,6 +178,7 @@ void Personaje::set_ataque(Atacable* otro_personaje){
 }
 void Personaje::dejar_de_atacar(){
 	this->destino=this->get_posicion();
+
 	this->atacado=NULL;
 	this->objetivo=NULL;
 }
