@@ -7,8 +7,7 @@
 
 #include "Personaje.h"
 #define FACTOR_VELOCIDAD 100
-#define FACTOR_CONTADOR 10
-
+#define FACTOR_CONTADOR 5
 
 Personaje::Personaje(){
 	this->atacando_cliente  =false;
@@ -24,6 +23,7 @@ Personaje::Personaje(){
 	this->congelado=false;
 	this->atacado=NULL;
 	this->objetivo=NULL;
+	this->raza="";
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->referencia_mapa_x=1;
@@ -43,6 +43,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->atacando_cliente  =false;
 	this->atacado=NULL;
 	this->objetivo=NULL;
+	this->raza=objetoMapa->raza;
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_x=x;
@@ -63,7 +64,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->atacando_cliente  =false;
 	this->atacado=NULL;
 	this->objetivo=NULL;
-
+	this->raza=objetoMapa->raza;
 }
 
 dibujo_t Personaje::dibujar(){
@@ -148,22 +149,25 @@ msg_t Personaje::interactuar(Entidad* otra_entidad){
 	msg_t mensaje;
 
 	//estos datos los tengo que cargar igual en ambos
-	//no puedo pasar el id al crear los recursos, por lo que paso la posicion
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = otra_entidad->getId();
+	if (this->get_raza()==otra_entidad->get_raza()){
+		if (this->puedeCrear() && (!otra_entidad->estaConstruida())) { //falta ver que sea suya
+			mensaje.type = CONSTRUIR;
+			return mensaje;
+		}
+	}else{
+		if (otra_entidad->esUnRecurso() && this->puedeRecolectar()) {
+			printf("Interaccion Recurso\n");
+			mensaje.type = RECOLECCION_RECURSOS;
+			return mensaje;
+		} else if (this->puedeAtacar() && (!otra_entidad->esUnRecurso())) { //falta ver q sea del enemigo
 
-	if (otra_entidad->esUnRecurso()&& this->puedeRecolectar()) {
-		printf("Interaccion Recurso\n");
-		mensaje.type = RECOLECCION_RECURSOS;
-		return mensaje;
-	} else if (this->puedeAtacar()&&(!otra_entidad->esUnRecurso())) {//falta ver q sea del enemigo
-
-		printf("Interaccion atacar\n");
-		mensaje.type = ATACAR;
-		return mensaje;
+			printf("Interaccion atacar\n");
+			mensaje.type = ATACAR;
+			return mensaje;
+		}
 	}
-	// si es de el la entidad
-
 	mensaje.type=KEEPALIVE;
 	return mensaje;
 }
@@ -208,6 +212,7 @@ void Personaje::setAccion(Entidad * entidad){
 }
 void Personaje::terminarAccion(){
 	this->set_destino(this->get_posicion());
+	this->atacando_cliente=false;
 	this->atacado=NULL;
 	this->objetivo=NULL;
 }

@@ -478,6 +478,7 @@ int Modelo::get_ancho_mapa(){
 
 //server
 recurso_t Modelo::generarRecursoRandom(Posicion pos){
+	printf("Entra lvl 3\n");
 	//el tiempo de creacion lo tendria que hacer el server
 	//struct timeval actual;
 	//gettimeofday(&actual, NULL);

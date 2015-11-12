@@ -16,6 +16,7 @@ public:
 	void transformar_pantalla_isometrica(int pant_x,int pant_y,double& iso_x,double& iso_y);
 	void transformar_isometrica_pantalla(int iso_x,int iso_y,int& pant_x,int& pant_y);
 	void transformar_isometrica_pantalla(double iso_x,double iso_y,int& pant_x,int& pant_y);
+	void transformar_isometrica_pantalla(double iso_x,double iso_y,double& pant_x,double& pant_y);
 	virtual ~CambioDeCoordendas();
 private:
 	int ancho_por_celda();

@@ -295,13 +295,20 @@ bool Vista::run() {
 					this->transformador->transformar_pantalla_isometrica(mov_x,
 							mov_y, a, b);
 					this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
+					if (this->entidadACrear) {
+						//si puede crear es porque tiene un tipito seleccionado
+						this->gameController->crearEdificio(
+								this->entidadACrear->mostrar_contenido(),
+								this->modelo->devolverPersonajeSeleccionado()->getId(),
+								floor(a), floor(b));
+						//podria moverse a cuando recibe que se creo asi se deja de dibjar
+						//en ese momento
+						this->dejarDeDibujarEdificio();
+					}
 					if (this->modelo->oscuridad(0,a,b)==VISIBLE){
 						this->barra->setDisplay(modelo->seleccionar(a, b));
 					}
-					if (this->entidadACrear){
-						this->gameController->crearEdificio(this->entidadACrear->mostrar_contenido(),floor(a),floor(b));
-						this->dejarDeDibujarEdificio();
-					}
+
 					//mandar mensaje para crear si queria crear
 				}
 				else{
@@ -358,7 +365,10 @@ void Vista::dibujar_edificio(int mov_x,int mov_y){
 		if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)){
 			this->edificioACrear->ponerRojo();
 		}
-		this->edificioACrear->set_posicion_default(mov_x-this->ancho_por_celda()/2,mov_y);
+		double pant_x,pant_y;
+		this->transformador->transformar_isometrica_pantalla(floor(a)-this->referencia_mapa_x,floor(b)-this->referencia_mapa_y,pant_x,pant_y);
+		this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
+		this->edificioACrear->set_posicion_default(pant_x,pant_y);
 		this->edificioACrear->render(gRenderer);
 		this->edificioACrear->resetear();
 		this->edificioACrear->reiniciar(); //pone el color original

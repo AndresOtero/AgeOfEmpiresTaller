@@ -21,7 +21,7 @@ void FactoryEdificio::cargarEdificios(map<string,ObjetoMapa*> tipos){
 	for (it = tipos.begin(); it != tipos.end(); it++)
 	{
 		//first es key, second es value
-	    if (it->second->raza == this->raza){
+	    if (it->second->raza == this->raza && (it->second->velocidad_construcccion!=0)){
 	    	printf("igualo razas\n");
 	    	this->edificios_raza[it->first]=tipos[it->first];
 	    }
