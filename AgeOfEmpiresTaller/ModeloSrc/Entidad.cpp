@@ -16,6 +16,7 @@ Entidad::Entidad(ObjetoMapa* objetoMapa) {
 	GeneradorNumeros generar;
 	this->id = generar.otroID();
 	this->vida = 50; //TODO
+	this->raza = objetoMapa->raza;
 }
 Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	this -> objetoMapa = objetoMapa;
@@ -23,6 +24,7 @@ Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	GeneradorNumeros generar;
 	this->id = generar.otroID();
 	this->vida = 50;//TODO
+	this->raza = objetoMapa->raza;
 }
 bool Entidad::esUnRecurso(){
 	if (Recurso* rec = dynamic_cast<Recurso*>(this)){

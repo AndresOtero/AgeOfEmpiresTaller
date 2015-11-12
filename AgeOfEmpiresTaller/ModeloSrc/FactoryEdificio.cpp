@@ -8,9 +8,43 @@
 #include "FactoryEdificio.h"
 
 FactoryEdificio::FactoryEdificio() {
-	// TODO Auto-generated constructor stub
+}
+
+FactoryEdificio::FactoryEdificio(string raza) {
+	this->raza = raza;
+}
+void FactoryEdificio::setRaza(string raza){
+	this->raza =raza;
+}
+void FactoryEdificio::cargarEdificios(map<string,ObjetoMapa*> tipos){
+	map<string, ObjetoMapa*>::iterator it;
+	for (it = tipos.begin(); it != tipos.end(); it++)
+	{
+		//first es key, second es value
+	    if (it->second->raza == this->raza){
+	    	printf("igualo razas\n");
+	    	this->edificios_raza[it->first]=tipos[it->first];
+	    }
+
+	}
+
 
 }
+
+map<string,ObjetoMapa*> FactoryEdificio::devolverTipos(){
+	return this->edificios_raza;
+}
+
+vector<string> FactoryEdificio::devolverEdificiosCreables(){
+	vector<string> nombres;
+	map<string, ObjetoMapa*>::iterator it;
+		for (it = edificios_raza.begin(); it != edificios_raza.end(); it++)
+		{
+			nombres.push_back(it->first);
+		}
+	return nombres;
+}
+
 
 FactoryEdificio::~FactoryEdificio() {
 	// TODO Auto-generated destructor stub

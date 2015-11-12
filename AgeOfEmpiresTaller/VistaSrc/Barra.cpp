@@ -61,18 +61,33 @@ void Barra::load(SDL_Renderer * renderer, string path, int ancho_por_celda,int a
 void Barra::setDisplay(string display){
 	this->display= display;
 }
-void  Barra::actualizar(Jugador * jugador){
+void  Barra::actualizar(Jugador * jugador,Personaje * personaje){
 	oro->cambiarCant(jugador->recursosJugador()->cantOro());
 	madera->cambiarCant(jugador->recursosJugador()->cantMadera());
 	piedra->cambiarCant(jugador->recursosJugador()->cantPiedra());
+	if (personaje){
+		if (personaje->puedeCrear()){
+			this->setListaCreables(jugador->devolverEdificiosCreables());
+		}
+	}else{
+		//no existe
+		this->seleccionable= false;
+	}
 }
 //tengo q hacer actualizar de jugador no de personaje
+void Barra::setListaCreables(map<string,ObjetoMapa*> tipos){
+	this->seleccionable= true;
+	this->listaCreables = tipos;
+}
 
 void Barra::renderTexto(SDL_Renderer*renderer){
 	if (!this->display.empty()){
 		SDL_Color color = this->mapa->paleta(NEGRO);
-		cargarTexto(this->mapa->anchoPantalla()/4,referencia_y+this->mapa->altoMapa()/2,
-				renderer,color,this->texto, this->display);
+		if (cargarTexto(renderer,color,this->texto, this->display)){
+			imprimirTexto(this->mapa->anchoPantalla()/4,referencia_y+this->mapa->altoMapa()/2,
+							renderer,this->texto);
+		}
+
 	}
 
 	int x_oro,x_piedra,x_madera;
@@ -82,31 +97,73 @@ void Barra::renderTexto(SDL_Renderer*renderer){
 	imprimirNumeroDeRecurso(renderer,this->madera,x_madera);
 
 	SDL_Color color = this->mapa->paleta(BLANCO);
-	cargarTexto(this->nombreJugador->getWidth(),0,renderer,color,this->nombreJugador,this->nombre);
+	if (cargarTexto(renderer,color,this->nombreJugador,this->nombre)){
+		imprimirTexto(0,0,renderer,this->nombreJugador);
+	}
+
+	//TODO
+	this->imprimirLista(renderer);
+}
+void Barra::imprimirLista(SDL_Renderer* renderer){
+	std::map<string,ObjetoMapa*>::iterator it;
+	//int x = 0;
+	if (seleccionable){
+		int y = this->referencia_y + TTF_FontHeight(font);
+		for (it = this->listaCreables.begin(); it != this->listaCreables.end();
+				++it) {
+			//ver si imprime esto
+			shared_ptr<Textura> creable(new Textura());
+			if (cargarTexto(renderer, this->mapa->paleta(NEGRO), creable,
+					it->first)){
+				imprimirTexto(0,y,renderer,creable);
+			}
+		}
+	}
 }
 
+string Barra::seleccionar(int pixel_x, int pixel_y){
+	if (pixel_x < PIXELESDIGITOS){
+		int seleccion = (pixel_y-this->referencia_y)/TTF_FontHeight(font) - 1;
+		//si es un indice positivo y dentro del rango
+		if (seleccion>=0 && ((this->listaCreables.size())>(seleccion))){
+			std::map<string,ObjetoMapa*>::iterator it;
+			int x = 0;
+			for (it =listaCreables.begin(); it != this->listaCreables.end();++it){
+				if (x==(seleccion)){
+					return it->first;
+				}
+				x++;
+			}
+		}
+	}
+	return "";
+}
+int Barra::obtenerYDondeSeDibuja(){
+	return this->referencia_y;
+}
 int Barra::imprimirNumeroDeRecurso(SDL_Renderer* renderer, shared_ptr<RecursoVista> recurso, int x_ref){
 	int largo = TTF_FontHeight(font);
 	int ancho=largo;//cuadrado
 	SDL_Color color = this->mapa->paleta(BLANCO);
 	SDL_Rect rect= {x_ref,referencia_y,ancho,largo};
-	cargarTexto(x_ref, referencia_y,renderer,color,texto,to_string(recurso->cantidad()));
+	if (cargarTexto(renderer,color,texto,to_string(recurso->cantidad()))){
+		imprimirTexto(x_ref-texto->getWidth(),referencia_y,renderer,texto);
+	}
 	recurso->imagen()->renderEx(0,NULL,&rect,renderer,NULL);
 	return x_ref+ancho+PIXELESDIGITOS;
 }
-bool Barra::cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display){
+bool Barra::cargarTexto(SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display){
 	plog::init(plog::warning, "Log.txt" );
 	bool success = true;
 	if( !textura->loadFromRenderedText( display.c_str(), color,this->font,renderer ) ){
 			LOG_WARNING << "Atencion no pudo escribir texto\n";
 			success = false;
 		}
-	else{
-		textura->render(x-textura->getWidth(),y,NULL,renderer);
-	}
 	return success;
 }
-
+void Barra::imprimirTexto(int x, int y,SDL_Renderer* renderer,shared_ptr<Textura> textura){
+	textura->render(x,y,NULL,renderer);
+}
 void Barra::render(SDL_Renderer*renderer){
 	SDL_Rect rect = {0,this->referencia_y,this->mapa->anchoPantalla(),this->mapa->altoMapa()};
 	this->textura->renderEx(0,NULL,&rect,renderer,NULL);

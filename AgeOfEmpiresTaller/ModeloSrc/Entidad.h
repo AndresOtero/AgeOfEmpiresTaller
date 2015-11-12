@@ -19,6 +19,7 @@
 class Entidad :public Atacable{
 	bool seleccionado=false;
 	int vida;
+	string raza;
 public:
 	Entidad(ObjetoMapa* objetoMapa);
 	Entidad(ObjetoMapa* objetoMapa, int x, int y);
@@ -27,6 +28,9 @@ public:
 	Posicion* posicion;
 	bool esUnRecurso();
 	bool esAdyacente(Posicion pos);
+	void set_posicion(int x, int y){
+		this->posicion->set(x,y);
+	}
 	void seleccionar(){
 		this->seleccionado=true;
 	}

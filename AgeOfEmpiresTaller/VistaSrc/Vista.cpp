@@ -45,6 +45,9 @@ Vista::Vista(Modelo* modelo,GameControllerCliente* gameController) {
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
 	shared_ptr<Barra> barra(new Barra(modelo,&referencia_mapa_x,&referencia_mapa_y));
 	this->barra=barra;
+	shared_ptr<Dibujo> dibujo(new Dibujo());
+	this->edificioACrear = dibujo;
+	this->entidadACrear=NULL;
 	this->gameController = gameController;
 }
 
@@ -236,6 +239,17 @@ void Vista::detectar_mouse_borde() {
 
 	}
 }
+void Vista::cargarEdificioACrear(string tipo){
+	//seteo el dibujo a lo q deberia ser
+	edificioACrear = this->factory->get_dibujo(this->factory->get_idDibujo(tipo));
+	entidadACrear = new Entidad(this->modelo->juego->tipos[tipo]);
+}
+void Vista::dejarDeDibujarEdificio(){
+	if (this->entidadACrear) {
+		delete this->entidadACrear;
+		this->entidadACrear = NULL;
+	}
+}
 
 bool Vista::run() {
 	bool quit = false;
@@ -250,6 +264,7 @@ bool Vista::run() {
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 			if (e.button.button == SDL_BUTTON_RIGHT) {
+				this->dejarDeDibujarEdificio();
 				SDL_GetMouseState(&mov_x, &mov_y);
 				this->transformador->transformar_pantalla_isometrica(mov_x,
 						mov_y, personaje_x, personaje_y);
@@ -268,16 +283,35 @@ bool Vista::run() {
 				}
 
 			}
+			//TODO
+			//no dejo que se dibuje el edificio si clique
+
 			if (e.button.button == SDL_BUTTON_LEFT) {
 				double a, b;
 				SDL_GetMouseState(&mov_x, &mov_y);
-				this->transformador->transformar_pantalla_isometrica(mov_x,
-						mov_y, a, b);
-				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
-				this->barra->setDisplay(modelo->seleccionar(a, b));
+				if (mov_y < this->barra->obtenerYDondeSeDibuja()){
+					this->transformador->transformar_pantalla_isometrica(mov_x,
+							mov_y, a, b);
+					this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
+					if (this->modelo->oscuridad(0,a,b)==VISIBLE){
+						this->barra->setDisplay(modelo->seleccionar(a, b));
+					}
+					if (this->entidadACrear){
+						this->gameController->crearEdificio(this->entidadACrear->mostrar_contenido(),floor(a),floor(b));
+						this->dejarDeDibujarEdificio();
+					}
+					//mandar mensaje para crear si queria crear
+				}
+				else{
+					this->cargarEdificioACrear(this->barra->seleccionar(mov_x,mov_y));
+					printf ("%s\n",this->barra->seleccionar(mov_x,mov_y).c_str());
+				}
+
 			}
+
 		}
 		if (e.type == SDL_KEYDOWN) {
+			this->dejarDeDibujarEdificio();
 			SDL_Keycode keyPressed = e.key.keysym.sym;
 
 			switch (keyPressed) {
@@ -304,12 +338,30 @@ bool Vista::run() {
 
 	modelo->actualizarMapa(); //lo tiene que hacer el server
 	dibujar_mapa();
+	SDL_GetMouseState(&mov_x, &mov_y);
+	dibujar_edificio(mov_x,mov_y);
 	dibujar_barra();
 	detectar_mouse_borde();
 	SDL_RenderPresent(gRenderer);
 	return quit;
 }
-
+void Vista::dibujar_edificio(int mov_x,int mov_y){
+	double a,b;
+	if (this->entidadACrear){
+		//transformacion de posiciones
+		this->transformador->transformar_pantalla_isometrica(mov_x, mov_y, a,
+				b);
+		this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
+		this->entidadACrear->set_posicion(floor(a),floor(b));
+		if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)){
+			this->edificioACrear->ponerRojo();
+		}
+		this->edificioACrear->set_posicion_default(mov_x-this->ancho_por_celda()/2,mov_y);
+		this->edificioACrear->render(gRenderer);
+		this->edificioACrear->resetear();
+		this->edificioACrear->reiniciar(); //pone el color original
+	}
+}
 vector<int> Vista::calcular_bordes() {
 	/**
 	 Fuente:
@@ -339,6 +391,8 @@ vector<int> Vista::calcular_bordes() {
 	vector<int> bordes = { x_start, y_min, x_max, y_max };
 	return bordes;
 }
+
+
 void Vista::corregir_referencia_coordenadas_pantalla_mapa(double& coord_x,
 		double& coord_y) {
 	coord_x += referencia_mapa_x - 0.5;
@@ -472,7 +526,7 @@ void Vista::dibujar_mapa() {
 }
 
 void Vista::dibujar_barra() {
-	this->barra->actualizar(this->modelo->getJugador());
+	this->barra->actualizar(this->modelo->getJugador(),this->modelo->devolverPersonajeSeleccionado());
 	this->barra->render(gRenderer);
 }
 

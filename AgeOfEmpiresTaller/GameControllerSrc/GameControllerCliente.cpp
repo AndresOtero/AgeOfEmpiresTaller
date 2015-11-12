@@ -127,7 +127,16 @@ void GameControllerCliente::desconectar(string id){
 void GameControllerCliente::reconectar(string id){
 	this->modelo->descongelarPersonaje(id);
 }
-
+void GameControllerCliente::crearEdificio(string nombre,int x, int y){
+	//manda al server a crear la entidad
+	msg_t mensaje;
+	mensaje.type = CREAR_ENTIDAD;
+	memcpy(mensaje.paramNombre,string_to_char_array(nombre),sizeof(mensaje.paramNombre));
+	mensaje.paramDouble1 =x;
+	mensaje.paramDouble2 = y;
+	printf("Envia mensaje con %s,%d,%d\n",nombre.c_str(),x,y);
+	this->agregarMensaje(mensaje);
+}
 
 bool GameControllerCliente::hayEventos(){
 	return (!this->cola.empty());

@@ -24,9 +24,6 @@
 using namespace std;
 #define VISIBILIDAD 5
 #define CICLOS_MAX 500
-#define PISADA 1
-#define VISIBLE 0
-#define OSCURO 2
 #define ORO 0
 #define PIEDRA 1
 #define DIMENSIONES 2 //TILE Y ESCENARIO
@@ -39,6 +36,11 @@ Modelo::Modelo(Juego* juego) {
 	this->personajes=vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
 	this->jugador=juego->escenario->jugador;
+	printf("esta por setear\n");
+	if (this->jugador){
+		this->jugador->cargarEdificios(this->juego->tipos);
+	}
+	printf("seteo\n");
 	personaje_seleccionado=NULL;
 	this->insertarEntidades();
 	this->totalRecursos=0;
@@ -549,9 +551,18 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 	}
 	return 0;
 }
-
-
-
+//server
+int Modelo::crearEdificio(string nombre,int x, int y){
+	ObjetoMapa*objeto =this->juego->tipos[nombre];
+	Entidad * entidad = new Entidad(objeto);
+	entidad->set_posicion(x,y);
+	if(this->mapa->puedeUbicar(entidad)){
+		this->insertarEntidad(entidad);
+		printf("cre enridad\n");
+		return entidad->getId();
+	}
+	return EDIFICIO_SUPERPUESTO;
+}
 
 
 int Modelo::crearPersonajeServer(Personaje* personaje){

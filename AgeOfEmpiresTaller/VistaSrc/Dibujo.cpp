@@ -26,7 +26,9 @@ void Dibujo::iluminar(){
 	Uint8 alpha=127;
 	this->textura->setAlpha(alpha);
 }
-
+void Dibujo::ponerRojo(){
+	this->textura->setColor(255,0,0);
+}
 void Dibujo::resetear(){
 	this->textura->setAlpha(RESET);
 }

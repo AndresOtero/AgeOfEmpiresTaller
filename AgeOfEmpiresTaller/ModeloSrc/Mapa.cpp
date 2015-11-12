@@ -233,7 +233,20 @@ Posicion Mapa::posicionVacia(){
 bool Mapa::hayRecursosEn(Posicion posicion){
 	return this->getCelda(posicion.getX(),posicion.getY())->tieneRecurso();
 }
-
+bool Mapa::puedeUbicar(Entidad* entidad){
+	Posicion pos = entidad->get_posicion();
+	int x,y,ancho,alto;
+	ancho = entidad->objetoMapa->baseLogica->ancho;
+	alto = entidad->objetoMapa->baseLogica->alto;
+	for (x=pos.getX();x<pos.getX()+ancho;x++){
+		for(y=pos.getY();y<pos.getY()+alto;y++){
+			if(this->getCelda(x,y)->estaOcupada()){
+				return false;
+			}
+		}
+	}
+	return true;
+}
 Mapa::~Mapa() {
 	int largo = this->largo;
 	int ancho = this->ancho;

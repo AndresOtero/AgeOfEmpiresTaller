@@ -32,6 +32,7 @@ public:
 	void oscurecer();
 	void resetear();
 	void reiniciar();
+	void ponerRojo();
 	virtual ~Dibujo_Estatico();
 protected:
 	SDL_Rect spriteClips;

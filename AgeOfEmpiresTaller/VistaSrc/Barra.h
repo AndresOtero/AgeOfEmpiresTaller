@@ -8,6 +8,7 @@
 #ifndef BARRA_H_
 #define BARRA_H_
 #include <plog/Log.h>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <math.h>
 #include "Dibujo.h"
@@ -25,8 +26,12 @@ public:
 	void render(SDL_Renderer * renderer);
 	void load(SDL_Renderer * renderer,string path, int ancho_por_celda, int alto_por_celda);
 	void setDisplay(string display);
-	void actualizar(Jugador * jugador);
+	void actualizar(Jugador * jugador,Personaje * personaje);
 	void closeFont();
+	void setListaCreables(map<string,ObjetoMapa*> tipos);
+	string seleccionar(int pixel_x,int pixel_y);
+	void imprimirLista(SDL_Renderer * renderer);
+	int obtenerYDondeSeDibuja();
 	virtual ~Barra();
 private:
 	void dibujarDondeMiro(SDL_Renderer* renderer);
@@ -34,7 +39,8 @@ private:
 	void dimensionRectanguloDeMiniMapa(int ancho, int alto);
 	void renderFondo(SDL_Renderer*renderer);
 	void renderTexto(SDL_Renderer*renderer);
-	bool cargarTexto(int x,int y,SDL_Renderer* renderer,SDL_Color color,shared_ptr<Textura> textura, string display);
+	bool cargarTexto(SDL_Renderer* renderer,SDL_Color color,shared_ptr<Textura> textura, string display);
+	void imprimirTexto(int x, int y,SDL_Renderer* renderer,shared_ptr<Textura> textura);
 	shared_ptr<Minimapa> mapa;
 	shared_ptr<Textura> texto;
 	shared_ptr<Textura> nombreJugador;
@@ -53,6 +59,8 @@ private:
 	int tamFont;
 	int ancho_por_celda;
 	int alto_por_celda;
+	map<string,ObjetoMapa*> listaCreables;
+	bool seleccionable;
 };
 
 #endif /* BARRA_H_ */

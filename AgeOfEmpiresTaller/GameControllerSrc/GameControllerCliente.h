@@ -36,6 +36,7 @@ public:
 	void cambiar_destino_personaje(Id id, double mov_x, double mov_y);
 	void conectarCliente(string name,string str, int x,int y,dibujo_t dibujo,int id);
 	bool esNombre(char* nombre);
+	void crearEdificio(string nombre,int x,int y);
 	//Personaje* conectarme(string name,string str, int x,int y);
 	//void setearPosicionPersonaje(int id,double pos_x,double pos_y);
 	void setId(double x,double y,int id);

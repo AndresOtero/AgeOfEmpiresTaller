@@ -96,7 +96,9 @@ public:
 	void setDibujo(dibujo_t dibujo) {
 		this->dibujo = dibujo;
 	}
-
+	bool puedeCrear(){
+		return (this->construccion > 0);
+	}
 	bool puedeRecolectar(){
 		if (this->recoleccion>0)
 			return true;

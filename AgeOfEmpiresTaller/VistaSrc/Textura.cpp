@@ -68,6 +68,10 @@ void Textura::congelar(){
 	SDL_SetTextureColorMod(this->mTexture,a,a,a);
 
 }
+
+void Textura::setColor(Uint8 r,Uint8 g,Uint8 b){
+	SDL_SetTextureColorMod(this->mTexture,r,g,b);
+}
 void Textura::descongelar(){
 	SDL_SetTextureColorMod(this->mTexture,r,g,b);
 
