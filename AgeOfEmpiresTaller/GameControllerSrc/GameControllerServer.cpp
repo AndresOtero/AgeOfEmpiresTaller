@@ -58,10 +58,8 @@ void GameControllerServer::atacar(Id idAtacante, Id idAtacado){
 }
 
 void GameControllerServer::crearEdificio(string nombre, int x, int y,SDL_mutex *mutex){
-	printf("Crea entidad en lugar\n");
 	int id = this->modelo->crearEdificio(nombre,x,y);
 	if (id!=EDIFICIO_SUPERPUESTO){
-		printf("Manda a cliente crear entidad\n");
 		msg_t msg;
 		msg.type = CREAR_ENTIDAD;
 		memcpy(msg.paramNombre,string_to_char_array(nombre),sizeof(msg.paramNombre));

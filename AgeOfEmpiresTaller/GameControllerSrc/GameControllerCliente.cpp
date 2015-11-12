@@ -134,7 +134,6 @@ void GameControllerCliente::crearEdificio(string nombre,int x, int y){
 	memcpy(mensaje.paramNombre,string_to_char_array(nombre),sizeof(mensaje.paramNombre));
 	mensaje.paramDouble1 =x;
 	mensaje.paramDouble2 = y;
-	printf("Envia mensaje con %s,%d,%d\n",nombre.c_str(),x,y);
 	this->agregarMensaje(mensaje);
 }
 

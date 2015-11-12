@@ -304,7 +304,7 @@ bool Vista::run() {
 				}
 				else{
 					this->cargarEdificioACrear(this->barra->seleccionar(mov_x,mov_y));
-					printf ("%s\n",this->barra->seleccionar(mov_x,mov_y).c_str());
+					//printf ("%s\n",this->barra->seleccionar(mov_x,mov_y).c_str());
 				}
 
 			}
