@@ -372,11 +372,13 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 			personaje_y);
 	this->transformador->transformar_isometrica_pantalla(personaje_x,
 			personaje_y, img_personaje_x, img_personaje_y);
-	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast
-			< DibujoPersonaje
-			> (this->factory->get_dibujo(personaje->dibujar()));
 
+	shared_ptr<DibujoPersonaje> dibujo_pers_anterior = dynamic_pointer_cast< DibujoPersonaje> (this->factory->get_dibujo(personaje->getDibujoAnterior()));
+	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast< DibujoPersonaje> (this->factory->get_dibujo(personaje->dibujar()));
+
+	dibujo_pers->setMovimientoActual(dibujo_pers_anterior->getMovimientoActual());
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
+
 	Posicion destino = personaje->get_camino();
 	double mover_x = destino.get_x_exacta();
 	double mover_y = destino.get_y_exacta();

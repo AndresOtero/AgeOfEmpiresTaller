@@ -15,7 +15,7 @@
 #define SDL_RECT rect
 #define CANTIDAD_DE_MOVIMIENTOS 8
 
-enum movimientos {ABAJO,DIAGONAL_IZQUIERDA_ABAJO,IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ABAJO,DERECHA,DIAGONAL_DERECHA_ARRIBA,QUIETO_DERECHA, QUIETO_IZQUIERDA,QUIETO_ARRIBA,QUIETO_ABAJO,QUIETO_DERECHA_ARRIBA,QUIETO_DERECHA_ABAJO,QUIETO_IZQUIERDA_ARRIBA,QUIETO_IZQUIERDA_ABAJO};
+enum movimientos {ABAJO,DIAGONAL_IZQUIERDA_ABAJO,IZQUIERDA,DIAGONAL_IZQUIERDA_ARRIBA,ARRIBA,DIAGONAL_DERECHA_ABAJO,DERECHA,DIAGONAL_DERECHA_ARRIBA};
 
 using namespace std;
 class DibujoPersonaje: public Dibujo {
@@ -38,6 +38,12 @@ public:
 	int get_ancho(int n_mov, int n_imagen);
 	int get_alto();
 	int get_ancho();
+	int getMovimientoActual(){
+		return movimiento_actual;
+	}
+	void setMovimientoActual(int mov){
+		this->movimiento_actual = mov;
+	}
 	void render(SDL_Renderer* renderer);
 	void elegir_frame(int des_x,int des_y);
 	void cambiar_frame();
