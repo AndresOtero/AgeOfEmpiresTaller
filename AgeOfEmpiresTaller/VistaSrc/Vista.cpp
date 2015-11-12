@@ -177,13 +177,15 @@ bool Vista::loadMedia() {
 	return true;
 }
 
-dibujo_t Vista::crearPersonaje(string tipo) {
-
+void Vista::crearPersonaje(string tipo,Personaje* personaje) {
 	ObjetoMapa* obj=this->modelo->juego->tipos[tipo];
-
 	this->factory->crear_dibujo_personaje(obj->imagen,MOVIMIENTOS,CANTIDAD_DE_IMAGENES,obj->fps);//el ultimo parametro es velocidad
-	dibujo_t pers = this->factory->ultimo_dibujo();
-	return pers;
+	dibujo_t pers_moviendo = this->factory->ultimo_dibujo();
+	this->factory->crear_dibujo_personaje(obj->imagen_quieto,MOVIMIENTOS,CANTIDAD_DE_IMAGENES,obj->fps);//el ultimo parametro es velocidad
+	dibujo_t pers_esta_quieto = this->factory->ultimo_dibujo();
+	this->factory->crear_dibujo_personaje(obj->imagen_atacando,MOVIMIENTOS,CANTIDAD_DE_IMAGENES,obj->fps);//el ultimo parametro es velocidad
+	dibujo_t pers_esta_atacando = this->factory->ultimo_dibujo();
+	personaje->setDibujo(pers_esta_atacando,pers_esta_quieto,pers_moviendo);
 }
 
 void Vista::mover_referencia(double vel_x,double vel_y) {
@@ -439,7 +441,6 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	if (personaje->estaCongelado()) {
 		dibujo_pers->congelar();
 	} else {
-
 		dibujo_pers->descongelar();
 	}
 	int adonde_va_x, adonde_va_y;

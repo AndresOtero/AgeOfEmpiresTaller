@@ -19,7 +19,10 @@ typedef int dibujo_t;
 class Personaje:public Atacable {
 	RecursosJugador * recursos;
 	double referencia_mapa_x,referencia_mapa_y;
-	dibujo_t dibujo;
+	dibujo_t dibujo_atacando;
+	dibujo_t dibujo_esta_quieto;
+	dibujo_t dibujo_esta_moviendo;
+	dibujo_t dibujo_actual;
 	double velocidad;
 	int vida;
 	int fuerza;
@@ -31,6 +34,7 @@ class Personaje:public Atacable {
 	Contador contador_ataque;
 	bool congelado;
 	bool se_movio;
+	bool atacando_cliente;
 	Atacable* atacado;
 	Entidad* objetivo;
 	int id;
@@ -93,8 +97,12 @@ public:
 		return this->atacado->getId();
 	}
 
-	void setDibujo(dibujo_t dibujo) {
-		this->dibujo = dibujo;
+	void setDibujo(dibujo_t dibujo_esta_atacando,dibujo_t dibujo_esta_quieto,dibujo_t dibujo_esta_moviendo) {
+		this->dibujo_atacando = dibujo_esta_atacando;
+		this->dibujo_esta_quieto = dibujo_esta_quieto;
+		this->dibujo_esta_moviendo = dibujo_esta_moviendo;
+		this->dibujo_actual=dibujo_esta_quieto;
+
 	}
 	bool puedeCrear(){
 		return (this->construccion > 0);
@@ -169,6 +177,13 @@ public:
 		return this->armadura;
 	}
 
+	bool estaAtacandoCliente() {
+		return atacando_cliente;
+	}
+
+	void atacandoCliente(bool atacandoCliente) {
+		atacando_cliente = atacandoCliente;
+	}
 };
 
 #endif /* PERSONAJE_H_ */
