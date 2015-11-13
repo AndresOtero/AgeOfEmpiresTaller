@@ -122,12 +122,15 @@ void Personaje::mover() {
 
 		this->referencia_mapa_x += des_x;
 		this->referencia_mapa_y += des_y;
+		dibujo_anterior = dibujo_actual;
 		dibujo_actual=dibujo_esta_moviendo;
 	}else{
 		se_movio=false;
 		if(!this->atacando_cliente){
+			dibujo_anterior = dibujo_actual;
 			dibujo_actual=dibujo_esta_quieto;
 		}else{
+			dibujo_anterior = dibujo_actual;
 			dibujo_actual=dibujo_atacando;
 		}
 	}

@@ -62,7 +62,7 @@ string Modelo::ipJugador(){
 //llama server al agregar personaje
 void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 	//Posicion pos = this->mapa->posicionVacia();
-	Posicion pos(9,9);
+	Posicion pos(8,8);
 	personaje->set_posicion(pos);
 	//manda en que posicion ubicarlo
 }

@@ -23,6 +23,7 @@ class Personaje:public Atacable {
 	dibujo_t dibujo_esta_quieto;
 	dibujo_t dibujo_esta_moviendo;
 	dibujo_t dibujo_actual;
+	dibujo_t dibujo_anterior;
 	double velocidad;
 	int vida;
 	int fuerza;
@@ -44,6 +45,9 @@ public:
 	Personaje();
 	Personaje(ObjetoMapa* objetoMapa);
 	Personaje(ObjetoMapa* objetoMapa, int x, int y);
+	int getDibujoAnterior(){
+		return dibujo_anterior;
+	}
 	RecursosJugador * recursosJugador();
 	string mostrar_contenido();
 	ObjetoMapa* objetoMapa;
