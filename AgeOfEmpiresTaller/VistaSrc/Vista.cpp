@@ -260,7 +260,6 @@ bool Vista::run() {
 	int mov_x=0, mov_y=0;
 	//this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
 	double personaje_x,personaje_y;
-	printf("CorreVista\n");
 	while (SDL_PollEvent(&e) != 0) {
 		if (e.type == SDL_QUIT) {
 			quit = true;
@@ -312,10 +311,40 @@ bool Vista::run() {
 				this->setear_seleccion();
 				SDL_GetMouseState(&seleccion_x_final, &seleccion_y_final);
 				double a, b;
-				this->transformador->transformar_pantalla_isometrica(seleccion_x_final,
-						seleccion_y_final, a, b);
-				this->corregir_referencia_coordenadas_pantalla_mapa(a,b);
-				this->barra->setDisplay(modelo->seleccionar(a, b));
+				this->transformador->transformar_pantalla_isometrica(
+						seleccion_x_final, seleccion_y_final, a, b);
+				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
+				//si seleeciono sobre mapa
+				if (seleccion_y_final < this->barra->obtenerYDondeSeDibuja()){
+					//si ve donde esta haciendo click
+					if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
+						if (this->entidadACrear) {
+							//TODO crear con muchos tipitos
+							//si puede crear es porque tiene un tipito seleccionado
+							this->gameController->crearEdificio(
+									this->entidadACrear->mostrar_contenido(),
+									this->modelo->devolverPersonajeSeleccionado().front()->getId(),
+									floor(a), floor(b));
+							//podria moverse a cuando recibe que se creo asi se deja de dibjar
+							//en ese momento
+							this->dejarDeDibujarEdificio();
+						}else{
+							//si no creo estoy seleccionando
+							this->barra->setDisplay(modelo->seleccionar(a, b));
+						}
+
+
+					}
+				}
+				else {
+					string tipo =this->barra->seleccionar(seleccion_x_final, seleccion_y_final);
+					if (tipo!=""){
+						this->cargarEdificioACrear(tipo);
+					}
+				}
+
+
+
 			}
 
 		}

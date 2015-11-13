@@ -36,9 +36,9 @@ Modelo::Modelo(Juego* juego) {
 	this->personajes=vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
 	this->jugador=juego->escenario->jugador;
-	printf("esta por setear\n");
 	if (this->jugador){
 		this->jugador->cargarEdificios(this->juego->tipos);
+		printf("CargoEdificios\n");
 	}
 	personajes_seleccionados.clear();
 	if(!personajes_seleccionados.empty()){
@@ -99,9 +99,6 @@ void Modelo::actualizarMapa(){
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		mover_personaje(p);
-		if (p->esta_recolectando()&&p->contar()) {
-			this->recolectar(p, (Recurso *) p->get_objetivo());
-		}
 	}
 
 
@@ -115,7 +112,7 @@ void Modelo::eliminar_personaje(Personaje* eliminado) {
 		Personaje* p = (*it);
 		if (p->esta_atacando()){
 			if(p->get_atacado_id() == eliminado->getId()) {
-				p->dejar_de_atacar();
+				p->terminarAccion();
 			}
 		}
 	}
@@ -395,7 +392,7 @@ void Modelo::eliminarEntidadPorID(int id){
 
 			}if (p->esta_atacando()){
 				if (p->get_atacado()->getId() == id) {
-					p->dejar_de_atacar();
+					p->terminarAccion();
 				}
 
 			}

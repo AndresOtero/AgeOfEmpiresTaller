@@ -157,7 +157,6 @@ void GameControllerServer::generarRecursoRandom(SDL_mutex *mutex){
 		this->agregarMensaje(mensaje, mutex);
 
 	}
-	printf("Genera RecursoRandom\n");
 }
 
 void GameControllerServer::setAccionEntidad(int id_personaje,int id_recurso){
@@ -191,7 +190,6 @@ void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant, 
 
 }
 void GameControllerServer::actualizar(SDL_mutex *mutex) {
-	printf("ActualizarMApa\n");
 	this->modelo->actualizarMapa();		//mueven los tipitos
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator it = personajes.begin();
@@ -238,6 +236,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 
 		}
 		if (p->esta_recolectando()){
+			p->set_destino(p->get_objetivo()->get_posicion());
 			if (p->esAdyacente(p->get_objetivo())){
 				if (!p->estaAtacandoCliente()) {
 					p->atacandoCliente(true);
@@ -246,39 +245,41 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					msg.paramInt1 = p->getId();
 					this->agregarMensaje(msg, mutex);
 				}
-			}
-		}
-		if (p->tieneRecursos()){
-			//printf("Recolecto recursos\n");
-			//solucion que soluciona no tener que tener una lista con la info de los jugadores
-			msg_t mensaje;
-			mensaje.type = ACTUALIZACION_RECURSOS;
-			memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),sizeof(mensaje.paramNombre));
-			mensaje.paramInt1 = p->recursosJugador()->cantOro();
-			mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
-			mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
-			this->agregarMensaje(mensaje, mutex);
-			p->recursosJugador()->reset();
-			//reset, el q acumula es el jugador
-			//puede explotar con muchos recolectando
-			Recurso * recurso = (Recurso *)p->get_objetivo();
-			if (recurso){
-				if (recurso->seAcabo()){
-					p->terminarAccion();
-					mensaje.type = ELIMINAR_ENTIDAD;
-					mensaje.paramInt1 = recurso->getId();
+				if (p->contar()){
+					((Recurso *) p->get_objetivo())->recolectar(
+							p->recursosJugador(), p->getRecoleccion());
+					//solucion para no tener que tener una lista con la info de los jugadores
+					msg_t mensaje;
+					mensaje.type = ACTUALIZACION_RECURSOS;
+					memcpy(mensaje.paramNombre,
+							string_to_char_array(p->getNombreJugador()),
+							sizeof(mensaje.paramNombre));
+					mensaje.paramInt1 = p->recursosJugador()->cantOro();
+					mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
+					mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
 					this->agregarMensaje(mensaje, mutex);
-					this->modelo->eliminarEntidad(recurso);
-					msg_t msg;
-					msg.type = TERMINAR_ACCION;
-					msg.paramInt1 = p->getId();
-					this->agregarMensaje(msg, mutex);
-					//si el recurso se acabo lo saco y mando mensaje
+					p->recursosJugador()->reset();
+					//reset, el q acumula es el jugador
+					//puede explotar con muchos recolectando
+					Recurso * recurso = (Recurso *) p->get_objetivo();
+					if (recurso->seAcabo()) {
+						p->terminarAccion();
+						mensaje.type = ELIMINAR_ENTIDAD;
+						mensaje.paramInt1 = recurso->getId();
+						this->agregarMensaje(mensaje, mutex);
+						this->modelo->eliminarEntidad(recurso);
+						msg_t msg;
+						msg.type = TERMINAR_ACCION;
+						msg.paramInt1 = p->getId();
+						this->agregarMensaje(msg, mutex);
+						//si el recurso se acabo lo saco y mando mensaje
+					}
+
 				}
 			}
-
 		}
 		if (p->esta_contruyendo()){
+			printf("Esta contrusendo\n");
 			p->set_destino(p->get_objetivo()->get_posicion());
 			if (p->esAdyacente(p->get_objetivo())){
 				if (!p->estaAtacandoCliente()){
@@ -329,7 +330,6 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 		}
 
 	}
-	printf("ActualiorMApaBIEN\n");
 }
 
 
