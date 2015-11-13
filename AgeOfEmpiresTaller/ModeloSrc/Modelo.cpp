@@ -554,6 +554,21 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 	}
 	return 0;
 }
+
+bool Modelo::tocaSombra(Entidad * entidad){
+	int ancho,alto,x,y;
+	ancho = entidad->objetoMapa->baseLogica->ancho;
+	alto = entidad->objetoMapa->baseLogica->alto;
+	for (x = 0; x < ancho; x++) {
+		for (y = 0; y < alto; y++) {
+			if (this->oscuridad(0, entidad->get_posicion().getX() + x,
+					entidad->get_posicion().getY() + y)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
 //server
 int Modelo::crearEdificio(string nombre,int x, int y){
 	ObjetoMapa*objeto =this->juego->tipos[nombre];

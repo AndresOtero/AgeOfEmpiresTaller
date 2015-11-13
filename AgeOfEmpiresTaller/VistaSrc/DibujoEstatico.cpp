@@ -31,6 +31,12 @@ void Dibujo_Estatico::reiniciar(){
 void Dibujo_Estatico::ponerRojo(){
 	this->textura->setColor(255,0,0);
 }
+void Dibujo_Estatico::ponerVerde(){
+	this->textura->setColor(0,255,0);
+}
+void Dibujo_Estatico::ponerAmarillo(){
+	this->textura->setColor(255,255,0);
+}
 
 void Dibujo_Estatico::resetear(){
 	this->textura->setAlpha(RESET);

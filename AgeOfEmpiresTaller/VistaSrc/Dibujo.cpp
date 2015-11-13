@@ -29,6 +29,12 @@ void Dibujo::iluminar(){
 void Dibujo::ponerRojo(){
 	this->textura->setColor(255,0,0);
 }
+void Dibujo::ponerVerde(){
+	this->textura->setColor(0,255,0);
+}
+void Dibujo::ponerAmarillo(){
+	this->textura->setColor(255,255,0);
+}
 void Dibujo::resetear(){
 	this->textura->setAlpha(RESET);
 }

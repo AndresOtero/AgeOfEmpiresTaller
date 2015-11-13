@@ -117,6 +117,7 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 					it->first)){
 				imprimirTexto(0,y,renderer,creable);
 			}
+			y+=TTF_FontHeight(font);
 		}
 	}
 }

@@ -308,20 +308,23 @@ bool Vista::run() {
 						seleccion_x_final, seleccion_y_final, a, b);
 				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
 				//si seleeciono sobre mapa
-				if (seleccion_y_final < this->barra->obtenerYDondeSeDibuja()){
+				if (seleccion_y_final < this->barra->obtenerYDondeSeDibuja()) {
 					//si ve donde esta haciendo click
 					if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
 						if (this->entidadACrear) {
-							//TODO crear con muchos tipitos
-							//si puede crear es porque tiene un tipito seleccionado
-							this->gameController->crearEdificio(
-									this->entidadACrear->mostrar_contenido(),
-									this->modelo->devolverPersonajeSeleccionado().front()->getId(),
-									floor(a), floor(b));
-							//podria moverse a cuando recibe que se creo asi se deja de dibjar
-							//en ese momento
+							//no lo puede crear en lugar donde no ve
+							if (!this->modelo->tocaSombra(entidadACrear)) {
+								//TODO crear con muchos tipitos
+								//si puede crear es porque tiene un tipito seleccionado
+								this->gameController->crearEdificio(
+										this->entidadACrear->mostrar_contenido(),
+										this->modelo->devolverPersonajeSeleccionado().front()->getId(),
+										floor(a), floor(b));
+								//podria moverse a cuando recibe que se creo asi se deja de dibjar
+								//en ese momento
+							}
 							this->dejarDeDibujarEdificio();
-						}else{
+						} else {
 							//si no creo estoy seleccionando
 							this->barra->setDisplay(modelo->seleccionar(a, b));
 						}
@@ -375,9 +378,14 @@ void Vista::dibujar_edificio(int mov_x,int mov_y){
 				b);
 		this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
 		this->entidadACrear->set_posicion(floor(a),floor(b));
-		if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)){
+		if (this->modelo->tocaSombra(this->entidadACrear)){
+			this->edificioACrear->ponerAmarillo();
+		}else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear))  {
 			this->edificioACrear->ponerRojo();
+		}else{
+			this->edificioACrear->ponerVerde();
 		}
+
 		double pant_x,pant_y;
 		this->transformador->transformar_isometrica_pantalla(floor(a)-this->referencia_mapa_x,floor(b)-this->referencia_mapa_y,pant_x,pant_y);
 		this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
