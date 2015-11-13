@@ -37,7 +37,7 @@ void DibujoAnimado::set_imagen(unsigned int n_imagen, int x, int y,int h, int w)
 	}
 	this->spriteClips[n_imagen].x = x;
 	this->spriteClips[n_imagen].y = y;
-	this->spriteClips[n_imagen].w = w / 5 ;
+	this->spriteClips[n_imagen].w = w  ;
 	this->spriteClips[n_imagen].h = h ;
 }
 

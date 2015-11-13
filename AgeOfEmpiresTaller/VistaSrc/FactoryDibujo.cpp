@@ -6,7 +6,7 @@
  */
 
 #include "FactoryDibujo.h"
-#define DIBUJOS_POR_DEFAULT 5
+#define DIBUJOS_POR_DEFAULT 4
 #define CANTIDAD_DE_PARAMETROS 4
 enum parametros {
 	X = 0, Y = 1, ANCHO = 2, ALTO = 3
@@ -44,20 +44,21 @@ bool FactoryDibujo::crear_dibujo_personaje(string path,
 	}
 	return false;
 }
-bool FactoryDibujo::crear_dibujo_animado(string path, vector<int> pixeles,
-		std::vector<std::vector<int> > parametros_de_imagen, int fps,
-		int delay) {
+bool FactoryDibujo::crear_dibujo_animado(string path, vector<int> pixeles, int fps,	int delay) {
+
 	shared_ptr<DibujoAnimado> dibujo_nuevo = shared_ptr<DibujoAnimado>(
 			new DibujoAnimado());
 	if (dibujo_nuevo->cargar_archivo(path, gRenderer)) {
 
 		dibujo_nuevo->set_cantidad_de_imagenes(DIBUJOS_POR_DEFAULT);
+
+		int ancho = dibujo_nuevo->getWidth() / DIBUJOS_POR_DEFAULT;
+
 		for (int i = 0; i < DIBUJOS_POR_DEFAULT; i++) {
 			dibujo_nuevo->setPixeles(pixeles[X], pixeles[Y]);
-			dibujo_nuevo->set_imagen(i, parametros_de_imagen[i][X],
-					parametros_de_imagen[i][Y], dibujo_nuevo->getHeight(),
-					dibujo_nuevo->getWidth());
+			dibujo_nuevo->set_imagen(i, i * ancho,0, dibujo_nuevo->getHeight(),	ancho);
 		}
+
 		dibujo_nuevo->set_fps(fps);
 		dibujo_nuevo->set_delay(delay);
 		this->set_dibujo(dibujo_nuevo);
