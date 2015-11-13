@@ -22,6 +22,7 @@ public:
 	string imagen;
 	string imagen_quieto;
 	string imagen_atacando;
+	string icono;
 	BaseLogica* baseLogica;
 	PixelsReferencia* pixelsReferencia;
 	int fps;
