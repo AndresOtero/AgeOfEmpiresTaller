@@ -28,7 +28,6 @@ enum bordes {X_START,Y_MIN,X_MAX,Y_MAX};
 #define ESCENARIO 1
 #define TILES 0
 #define DIMENSIONES 2
-#define ANIMACIONES 5
 #define MOVIMIENTOS 8
 #define CANTIDAD_DE_IMAGENES 8
 
@@ -132,12 +131,6 @@ bool Vista::loadMedia() {
 	std::map<std::string, ObjetoMapa*> ::iterator it;
 	std::map<std::string, dibujo_t> hashDibujos;
 
-	//***********DIBUJOS DINAMICOS *****************
-	vector<vector<dibujo_t>>v2d=vector<vector<dibujo_t>>(ANIMACIONES);
-	for(int i=0;i<ANIMACIONES;i++){
-		v2d[i]={i*ANCHO_ANIMACION,0};
-	}
-
 	Configuracion* configuracion = this->modelo->juego->conf;
 	for ( it = modelo->juego->tipos.begin(); it !=modelo->juego->tipos.end(); it++ )
 	{
@@ -146,7 +139,7 @@ bool Vista::loadMedia() {
 	     if(tipo->fps == 0){
 	    	 this->factory->crear_dibujo_estatico(tipo->imagen,v1d);
 	     }else if(tipo->delay!=0){
-	    	 this->factory->crear_dibujo_animado(tipo->imagen,v1d,v2d,tipo->fps, tipo->delay);
+	    	 this->factory->crear_dibujo_animado(tipo->imagen,v1d,tipo->fps, tipo->delay);
 	     }else{
 	    	this->factory->crear_dibujo_personaje(tipo->imagen,MOVIMIENTOS,CANTIDAD_DE_IMAGENES,tipo->fps);//el ultimo parametro es velocidad
 	     }
