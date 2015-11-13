@@ -37,6 +37,7 @@ public:
 	//void desconectar(int id);
 	void actualizar(SDL_mutex *mutex);
 	char* string_to_char_array(string str);
+	void crearEdificio(string nombre,int id_constructor, int x, int y,SDL_mutex *mutex);
 	queue <msg_t>  inicializacion();
 
 

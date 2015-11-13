@@ -23,6 +23,7 @@ class Personaje:public Atacable {
 	dibujo_t dibujo_esta_quieto;
 	dibujo_t dibujo_esta_moviendo;
 	dibujo_t dibujo_actual;
+	dibujo_t dibujo_anterior;
 	double velocidad;
 	int vida;
 	int fuerza;
@@ -39,11 +40,14 @@ class Personaje:public Atacable {
 	Entidad* objetivo;
 	int id;
 	string nombreJugador;
-
+	string raza;
 public:
 	Personaje();
 	Personaje(ObjetoMapa* objetoMapa);
 	Personaje(ObjetoMapa* objetoMapa, int x, int y);
+	int getDibujoAnterior(){
+		return dibujo_anterior;
+	}
 	RecursosJugador * recursosJugador();
 	string mostrar_contenido();
 	ObjetoMapa* objetoMapa;
@@ -71,6 +75,9 @@ public:
 	void terminarAccion();
 	bool esAdyacente(Entidad* entidad);
 
+	string get_raza(){
+		return this->raza;
+	}
 	bool tieneRecursos(){
 		return !this->recursos->estaVacio();
 	}
@@ -96,7 +103,9 @@ public:
 	int get_atacado_id(){
 		return this->atacado->getId();
 	}
-
+	int get_construccion(){
+		return this->construccion;
+	}
 	void setDibujo(dibujo_t dibujo_esta_atacando,dibujo_t dibujo_esta_quieto,dibujo_t dibujo_esta_moviendo) {
 		this->dibujo_atacando = dibujo_esta_atacando;
 		this->dibujo_esta_quieto = dibujo_esta_quieto;
@@ -104,7 +113,9 @@ public:
 		this->dibujo_actual=dibujo_esta_quieto;
 
 	}
-
+	bool puedeCrear(){
+		return (this->construccion > 0);
+	}
 	bool puedeRecolectar(){
 		if (this->recoleccion>0)
 			return true;
@@ -155,8 +166,19 @@ public:
 
 	bool esta_recolectando(){
 		if (this->puedeRecolectar()){
-			//falla si el tipo puede atacar y recolectar
-			return (this->objetivo!=NULL);
+			//para diferenciar recursos de construcciones
+			if(this->objetivo){
+				return this->objetivo->esUnRecurso();
+			}
+		}
+		return false;
+	}
+	bool esta_contruyendo() {
+		if (this->puedeRecolectar()) {
+			//para diferenciar recursos de construcciones
+			if (this->objetivo) {
+				return !this->objetivo->esUnRecurso();
+			}
 		}
 		return false;
 	}

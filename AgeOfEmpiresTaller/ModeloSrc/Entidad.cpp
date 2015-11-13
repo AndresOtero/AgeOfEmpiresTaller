@@ -16,6 +16,8 @@ Entidad::Entidad(ObjetoMapa* objetoMapa) {
 	GeneradorNumeros generar;
 	this->id = generar.otroID();
 	this->vida = 50; //TODO
+	this->raza = objetoMapa->raza;
+	this->velocidad_cosntruccion = objetoMapa->velocidad_construcccion;
 }
 Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	this -> objetoMapa = objetoMapa;
@@ -23,6 +25,8 @@ Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	GeneradorNumeros generar;
 	this->id = generar.otroID();
 	this->vida = 50;//TODO
+	this->raza = objetoMapa->raza;
+	this->velocidad_cosntruccion = objetoMapa->velocidad_construcccion;
 }
 bool Entidad::esUnRecurso(){
 	if (Recurso* rec = dynamic_cast<Recurso*>(this)){
@@ -40,7 +44,7 @@ bool Entidad::esAdyacente(Posicion pos){
 	ancho = this->objetoMapa->baseLogica->ancho;
 	Posicion temp1,temp2;
 	//reviso si alguna fila de ancho esta en rango de la posicion
-	for (x = 0; x <= (ancho); x++){
+	for (x = 0; x < (ancho); x++){
 		temp1 = {this->posicion->getX()+x,this->posicion->getY()};
 		temp2 = {this->posicion->getX()+x,posicion->getY()+alto};
 		if (pos.es_adyacente(temp1)|| pos.es_adyacente(temp2)) {

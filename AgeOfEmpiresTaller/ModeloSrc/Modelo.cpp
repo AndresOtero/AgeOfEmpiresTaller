@@ -24,9 +24,6 @@
 using namespace std;
 #define VISIBILIDAD 5
 #define CICLOS_MAX 500
-#define PISADA 1
-#define VISIBLE 0
-#define OSCURO 2
 #define ORO 0
 #define PIEDRA 1
 #define DIMENSIONES 2 //TILE Y ESCENARIO
@@ -39,6 +36,10 @@ Modelo::Modelo(Juego* juego) {
 	this->personajes=vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
 	this->jugador=juego->escenario->jugador;
+	printf("esta por setear\n");
+	if (this->jugador){
+		this->jugador->cargarEdificios(this->juego->tipos);
+	}
 	personajes_seleccionados.clear();
 	if(!personajes_seleccionados.empty()){
 		printf("ERROR");
@@ -63,7 +64,7 @@ string Modelo::ipJugador(){
 //llama server al agregar personaje
 void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 	//Posicion pos = this->mapa->posicionVacia();
-	Posicion pos(9,9);
+	Posicion pos(8,8);
 	personaje->set_posicion(pos);
 	//manda en que posicion ubicarlo
 }
@@ -209,14 +210,12 @@ bool Modelo::estaSeleccionada(int x,int y){
 string Modelo::seleccionar(double mov_x,double mov_y){
 	this->mapa->deseleccionar();
 	Posicion seleccionada= Posicion(mov_x,mov_y);
-	printf("Selecciono el %d,%d\n",seleccionada.getX(),seleccionada.getY());
 	if (this->oscuridad(TILES,seleccionada.getX(),seleccionada.getY())==OSCURO){
 			return "";
 	}
 	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
 	personajes_seleccionados.clear();
 	if(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY())){
-		printf("Eligio a este personaje\n");
 		personajes_seleccionados.push_back(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY()));
 	}
 	return this->mapa->mostrar_contenido(seleccionada.getX(),seleccionada.getY());
@@ -558,9 +557,18 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 	}
 	return 0;
 }
-
-
-
+//server
+int Modelo::crearEdificio(string nombre,int x, int y){
+	ObjetoMapa*objeto =this->juego->tipos[nombre];
+	Entidad * entidad = new Entidad(objeto);
+	entidad->set_posicion(x,y);
+	if(this->mapa->puedeUbicar(entidad)){
+		this->insertarEntidad(entidad);
+		printf("cre enridad\n");
+		return entidad->getId();
+	}
+	return EDIFICIO_SUPERPUESTO;
+}
 
 
 int Modelo::crearPersonajeServer(Personaje* personaje){

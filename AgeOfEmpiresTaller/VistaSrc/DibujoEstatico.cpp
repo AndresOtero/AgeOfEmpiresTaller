@@ -28,6 +28,10 @@ void Dibujo_Estatico::reiniciar(){
 	this->textura->reiniciar();
 }
 
+void Dibujo_Estatico::ponerRojo(){
+	this->textura->setColor(255,0,0);
+}
+
 void Dibujo_Estatico::resetear(){
 	this->textura->setAlpha(RESET);
 }

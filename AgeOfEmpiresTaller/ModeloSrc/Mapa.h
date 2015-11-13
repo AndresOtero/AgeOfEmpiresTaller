@@ -45,6 +45,7 @@ public:
 	void actualizar(vector<Personaje*> personajes);
 	Posicion validar_destino(Posicion adonde_voy,Posicion adonde_estoy);
 	vector<Posicion> adyacencias(Posicion posicion);
+	bool puedeUbicar(Entidad * entidad);
 private:
 	Celda* getCelda(int x,int y);
 

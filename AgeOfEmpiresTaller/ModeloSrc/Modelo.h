@@ -12,6 +12,10 @@
 #include "../ModeloSrc/Juego.h"
 #include "Personaje.h"
 #include <sys/time.h>
+#define PISADA 1
+#define VISIBLE 0
+#define OSCURO 2
+#define EDIFICIO_SUPERPUESTO -1
 using namespace std;
 
 #ifndef MODELO_H_
@@ -79,6 +83,7 @@ public:
 	void eliminarEntidad(Entidad *entidad);
 	void eliminar(int id);
 	void finalizarAccion(int id);
+	int crearEdificio(string nombre, int x,int y);
 
 
 private:

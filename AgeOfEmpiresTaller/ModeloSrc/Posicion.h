@@ -16,7 +16,10 @@ public:
 	Posicion(int x, int y);
 	Posicion(double x, double y);
 	 ~Posicion();
-
+	void set(int x, int y){
+		this->x =x;
+		this->y = y;
+	}
 	int getX() const {
 		return floor(x);
 	}

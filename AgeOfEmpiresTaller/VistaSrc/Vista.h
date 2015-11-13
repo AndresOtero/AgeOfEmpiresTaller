@@ -33,9 +33,11 @@ class Vista {
 	shared_ptr<FactoryDibujo> factory;
 	shared_ptr<CambioDeCoordendas> transformador;
 	Pantalla* pantalla;
+	shared_ptr<Dibujo> edificioACrear;
 	GameControllerCliente * gameController;
 	int margen_scroll;
 	int seleccion_x_inicio,seleccion_y_inicio,seleccion_x_final,seleccion_y_final;
+	Entidad* entidadACrear;
 
 	bool esta_eligiendo,termino_de_elegir;
 	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
@@ -55,8 +57,10 @@ private:
 	bool repito_dibujo(int x,int y,int dimension);
 	void corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, double& coord_y);
 	void corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y);
-
+	void cargarEdificioACrear(string tipo);
 	void dibujar_barra();
+	void dibujar_edificio(int mov_x,int mov_y);
+	void dejarDeDibujarEdificio();
 
 
 public:

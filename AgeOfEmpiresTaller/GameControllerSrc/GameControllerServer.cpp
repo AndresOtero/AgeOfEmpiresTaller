@@ -57,6 +57,22 @@ void GameControllerServer::atacar(Id idAtacante, Id idAtacado){
 	this->modelo->atacarServer(idAtacante,idAtacado);
 }
 
+void GameControllerServer::crearEdificio(string nombre, int id_constructor,int x, int y,SDL_mutex *mutex){
+	int id = this->modelo->crearEdificio(nombre,x,y);
+	if (id!=EDIFICIO_SUPERPUESTO){
+		msg_t msg;
+		msg.type = CREAR_ENTIDAD;
+		memcpy(msg.paramNombre,string_to_char_array(nombre),sizeof(msg.paramNombre));
+		msg.paramInt1 = id;
+		msg.paramDouble1 =x;
+		msg.paramDouble2 = y;
+		this->agregarMensaje(msg,mutex);
+		this->setAccionEntidad(id_constructor,id);
+	}else{
+		//no pudo crear
+	}
+
+}
 
 
 queue <msg_t>  GameControllerServer::inicializacion(){
@@ -84,7 +100,7 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 
 		//problema no puede pasar los id de los recursos
 		if (!ent->esUnRecurso()){
-			entidad.type = CREAR_ENTIDAD;
+			entidad.type = CREAR_ENTIDAD_CONSTRUIDA;
 			entidad.paramInt1 = ent->getId();
 			colaInicializacion.push(entidad);
 
@@ -141,9 +157,11 @@ void GameControllerServer::generarRecursoRandom(SDL_mutex *mutex){
 		this->agregarMensaje(mensaje, mutex);
 
 	}
+	printf("Genera RecursoRandom\n");
 }
 
 void GameControllerServer::setAccionEntidad(int id_personaje,int id_recurso){
+	//podria reusar para construir esto TODO
 	Personaje * personaje = this->modelo->get_Personaje_Por_Id(id_personaje);
 	Entidad * entidad = this->modelo->buscarEntidad(id_recurso);
 	if (entidad != NULL){
@@ -173,6 +191,7 @@ void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant, 
 
 }
 void GameControllerServer::actualizar(SDL_mutex *mutex) {
+	printf("ActualizarMApa\n");
 	this->modelo->actualizarMapa();		//mueven los tipitos
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator it = personajes.begin();
@@ -181,9 +200,17 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 		if(p->esta_atacando()){
 			//printf("Esta atacando\n");
 			p->set_destino_al_ataque();
-			if(p->es_adyacente_al_atacado()&&p->contar()){
+			if(p->es_adyacente_al_atacado()){
+				if (!p->estaAtacandoCliente()) {
+					msg_t msg;
+					msg.type = EMPEZAR_ACCION;
+					msg.paramInt1 = p->getId();
+					this->agregarMensaje(msg, mutex);
+				}
+				if (p->contar()){
+
 				p->ejecutar_ataque();
-				//printf("Ataco\n");
+				//printf("Ataca\n");
 				msg_t mensaje;
 				mensaje.type = ATACAR;
 				memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),	sizeof(mensaje.paramNombre));
@@ -191,6 +218,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 				mensaje.paramDouble1 = p->get_atacado_id();
 				mensaje.paramDouble2 = p->danioInfringido();
 				this->agregarMensaje(mensaje, mutex);
+			}
 			}
 		}
 		if (p->seMovio()) {
@@ -208,6 +236,17 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 
 
 
+		}
+		if (p->esta_recolectando()){
+			if (p->esAdyacente(p->get_objetivo())){
+				if (!p->estaAtacandoCliente()) {
+					p->atacandoCliente(true);
+					msg_t msg;
+					msg.type = EMPEZAR_ACCION;
+					msg.paramInt1 = p->getId();
+					this->agregarMensaje(msg, mutex);
+				}
+			}
 		}
 		if (p->tieneRecursos()){
 			//printf("Recolecto recursos\n");
@@ -230,23 +269,67 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					mensaje.paramInt1 = recurso->getId();
 					this->agregarMensaje(mensaje, mutex);
 					this->modelo->eliminarEntidad(recurso);
+					msg_t msg;
+					msg.type = TERMINAR_ACCION;
+					msg.paramInt1 = p->getId();
+					this->agregarMensaje(msg, mutex);
 					//si el recurso se acabo lo saco y mando mensaje
 				}
 			}
 
 		}
+		if (p->esta_contruyendo()){
+			p->set_destino(p->get_objetivo()->get_posicion());
+			if (p->esAdyacente(p->get_objetivo())){
+				if (!p->estaAtacandoCliente()){
+					msg_t msg;
+					msg.type = EMPEZAR_ACCION;
+					msg.paramInt1 = p->getId();
+					this->agregarMensaje(msg, mutex);
+				}
+				if(p->contar()){
+				msg_t mensaje;
+				mensaje.type = CONSTRUIR;
+				mensaje.paramInt1 = p->getId();
+				mensaje.paramDouble1 = p->get_objetivo()->getId();
+				int construyo = p->get_objetivo()->construir(
+						p->get_construccion());
+				mensaje.paramDouble2 = construyo;
+				this->agregarMensaje(mensaje,mutex);
+				if (p->get_objetivo()->estaConstruida()) {
+						p->terminarAccion();
+						msg_t msg;
+						msg.type = TERMINAR_ACCION;
+						msg.paramInt1 = p->getId();
+						this->agregarMensaje(msg, mutex);
+					//tendria q mandarle a todos los tipitos q dejen de atacar
+					//hacer que todos los tipitos paren
+					//this->modelo->terminarConstruccion(p->get_objetivo());
+
+				}
+			}
+			}
+		}
+
 		if (p->esta_atacando()){
+
 			if (!p->get_atacado()->esta_vivo()) {
+				printf("MURIO\n");
 				//printf("Eliminar algo con id %d\n",p->get_atacado()->getId());
 				msg_t mensaje;
 				mensaje.type = ELIMINAR;
 				mensaje.paramInt1 = p->get_atacado()->getId();
 				this->agregarMensaje(mensaje, mutex);
 				this->modelo->eliminar(p->get_atacado()->getId());
+				msg_t msg;
+				msg.type = TERMINAR_ACCION;
+				msg.paramInt1 = p->getId();
+				this->agregarMensaje(msg, mutex);
 			}
 		}
 
 	}
+	printf("ActualiorMApaBIEN\n");
 }
 
 

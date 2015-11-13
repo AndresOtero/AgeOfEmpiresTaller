@@ -45,6 +45,9 @@ Vista::Vista(Modelo* modelo,GameControllerCliente* gameController) {
 	this->transformador=shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(),altura_por_celda()));
 	shared_ptr<Barra> barra(new Barra(modelo,&referencia_mapa_x,&referencia_mapa_y));
 	this->barra=barra;
+	shared_ptr<Dibujo> dibujo(new Dibujo());
+	this->edificioACrear = dibujo;
+	this->entidadACrear=NULL;
 	this->gameController = gameController;
 	this->esta_eligiendo=false;
 }
@@ -239,6 +242,17 @@ void Vista::detectar_mouse_borde() {
 
 	}
 }
+void Vista::cargarEdificioACrear(string tipo){
+	//seteo el dibujo a lo q deberia ser
+	edificioACrear = this->factory->get_dibujo(this->factory->get_idDibujo(tipo));
+	entidadACrear = new Entidad(this->modelo->juego->tipos[tipo]);
+}
+void Vista::dejarDeDibujarEdificio(){
+	if (this->entidadACrear) {
+		delete this->entidadACrear;
+		this->entidadACrear = NULL;
+	}
+}
 
 bool Vista::run() {
 	bool quit = false;
@@ -246,13 +260,14 @@ bool Vista::run() {
 	int mov_x=0, mov_y=0;
 	//this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
 	double personaje_x,personaje_y;
-
+	printf("CorreVista\n");
 	while (SDL_PollEvent(&e) != 0) {
 		if (e.type == SDL_QUIT) {
 			quit = true;
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 			if (e.button.button == SDL_BUTTON_RIGHT) {
+				this->dejarDeDibujarEdificio();
 				SDL_GetMouseState(&mov_x, &mov_y);
 				this->transformador->transformar_pantalla_isometrica(mov_x,
 						mov_y, personaje_x, personaje_y);
@@ -277,6 +292,9 @@ bool Vista::run() {
 				}
 
 			}
+			//TODO
+			//no dejo que se dibuje el edificio si clique
+
 			if (e.button.button == SDL_BUTTON_LEFT) {
 				esta_eligiendo=true;
 				double a, b;
@@ -299,8 +317,10 @@ bool Vista::run() {
 				this->corregir_referencia_coordenadas_pantalla_mapa(a,b);
 				this->barra->setDisplay(modelo->seleccionar(a, b));
 			}
+
 		}
 		if (e.type == SDL_KEYDOWN) {
+			this->dejarDeDibujarEdificio();
 			SDL_Keycode keyPressed = e.key.keysym.sym;
 
 			switch (keyPressed) {
@@ -318,12 +338,33 @@ bool Vista::run() {
 
 	modelo->actualizarMapa(); //lo tiene que hacer el server
 	dibujar_mapa();
+	SDL_GetMouseState(&mov_x, &mov_y);
+	dibujar_edificio(mov_x,mov_y);
 	dibujar_barra();
 	detectar_mouse_borde();
 	SDL_RenderPresent(gRenderer);
 	return quit;
 }
-
+void Vista::dibujar_edificio(int mov_x,int mov_y){
+	double a,b;
+	if (this->entidadACrear){
+		//transformacion de posiciones
+		this->transformador->transformar_pantalla_isometrica(mov_x, mov_y, a,
+				b);
+		this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
+		this->entidadACrear->set_posicion(floor(a),floor(b));
+		if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)){
+			this->edificioACrear->ponerRojo();
+		}
+		double pant_x,pant_y;
+		this->transformador->transformar_isometrica_pantalla(floor(a)-this->referencia_mapa_x,floor(b)-this->referencia_mapa_y,pant_x,pant_y);
+		this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
+		this->edificioACrear->set_posicion_default(pant_x,pant_y);
+		this->edificioACrear->render(gRenderer);
+		this->edificioACrear->resetear();
+		this->edificioACrear->reiniciar(); //pone el color original
+	}
+}
 vector<int> Vista::calcular_bordes() {
 	/**
 	 Fuente:
@@ -353,6 +394,8 @@ vector<int> Vista::calcular_bordes() {
 	vector<int> bordes = { x_start, y_min, x_max, y_max };
 	return bordes;
 }
+
+
 void Vista::corregir_referencia_coordenadas_pantalla_mapa(double& coord_x,
 		double& coord_y) {
 	coord_x += referencia_mapa_x - 0.5;
@@ -400,10 +443,11 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 			personaje_y);
 	this->transformador->transformar_isometrica_pantalla(personaje_x,
 			personaje_y, img_personaje_x, img_personaje_y);
-	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast
-			< DibujoPersonaje
-			> (this->factory->get_dibujo(personaje->dibujar()));
 
+	shared_ptr<DibujoPersonaje> dibujo_pers_anterior = dynamic_pointer_cast< DibujoPersonaje> (this->factory->get_dibujo(personaje->getDibujoAnterior()));
+	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast< DibujoPersonaje> (this->factory->get_dibujo(personaje->dibujar()));
+
+	dibujo_pers->setMovimientoActual(dibujo_pers_anterior->getMovimientoActual());
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
 	if(esta_en_seleccion(img_personaje_x,img_personaje_y)&&termino_de_elegir){
 		modelo->seleccionar(personaje->getReferenciaMapaX(),personaje->getReferenciaMapaY());
@@ -515,7 +559,7 @@ void Vista::dibujar_mapa() {
 }
 
 void Vista::dibujar_barra() {
-	this->barra->actualizar(this->modelo->getJugador());
+	this->barra->actualizar(this->modelo->getJugador(),this->modelo->devolverPersonajeSeleccionado());
 	this->barra->render(gRenderer);
 }
 

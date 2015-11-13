@@ -19,14 +19,20 @@
 class Entidad :public Atacable{
 	bool seleccionado=false;
 	int vida;
+	string raza;
+	int velocidad_cosntruccion;
 public:
 	Entidad(ObjetoMapa* objetoMapa);
 	Entidad(ObjetoMapa* objetoMapa, int x, int y);
 	string mostrar_contenido();
 	ObjetoMapa* objetoMapa;
 	Posicion* posicion;
+
 	bool esUnRecurso();
 	bool esAdyacente(Posicion pos);
+	void set_posicion(int x, int y){
+		this->posicion->set(x,y);
+	}
 	void seleccionar(){
 		this->seleccionado=true;
 	}
@@ -48,6 +54,21 @@ public:
 	}
 	int getArmadura(){
 		return 0;
+	}
+	bool estaConstruida(){
+		return (this->velocidad_cosntruccion<=0);
+	}
+	int construir(int construccion){
+		printf("Construccion en %d\n",this->velocidad_cosntruccion-construccion);
+		this->velocidad_cosntruccion-=construccion;
+		return construccion;
+
+	}
+	void finalizarConstruccion(){
+			this->velocidad_cosntruccion=0;
+		}
+	string get_raza(){
+		return raza;
 	}
 	virtual ~Entidad();
 	int id;

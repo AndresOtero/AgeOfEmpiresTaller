@@ -36,6 +36,8 @@ public:
 	void cambiar_destino_personaje(Id id, double mov_x, double mov_y);
 	Personaje* conectarCliente(string name,string tipo, int x,int y,dibujo_t dibujo,int id);
 	bool esNombre(char* nombre);
+	void crearEdificio(string nombre,int id_constructor,int x,int y);
+	void construir(Id idAtacante,Id idConstruido,int construccion);
 	//Personaje* conectarme(string name,string str, int x,int y);
 	//void setearPosicionPersonaje(int id,double pos_x,double pos_y);
 	void setId(double x,double y,int id);
@@ -44,6 +46,9 @@ public:
 	void eliminarEntidad(int id);
 	void eliminar(int id);
 	char* string_to_char_array(string str);
+	void empezarAccion(int id);
+	void terminarAccion(int id);
+	void finalizarConstruccion(int id);
 
 };
 

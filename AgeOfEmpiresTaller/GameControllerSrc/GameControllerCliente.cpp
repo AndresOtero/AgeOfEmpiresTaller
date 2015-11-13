@@ -76,6 +76,17 @@ void GameControllerCliente::ataque(Id idAtacante,Id idAtacado,int danio){
 
 }
 
+void GameControllerCliente::construir(Id idAtacante,Id idConstruido,int construccion){
+	Personaje* pConstructor=this->modelo->get_Personaje_Por_Id(idAtacante);
+	Entidad * entidad = this->modelo->buscarEntidad(idConstruido);
+	//no esta atacando pero esta accionando
+	pConstructor->atacandoCliente(true);
+	entidad->construir(construccion);
+	if (entidad->estaConstruida()){
+		pConstructor->atacandoCliente(false);
+	}
+}
+
 void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
 	//si no esta en rango no puede hacer nada
 	if(this->modelo->afueraDelMapa(p.getX(),p.getY())){
@@ -136,7 +147,27 @@ void GameControllerCliente::desconectar(string id){
 void GameControllerCliente::reconectar(string id){
 	this->modelo->descongelarPersonaje(id);
 }
+void GameControllerCliente::crearEdificio(string nombre,int id_constructor,int x, int y){
+	//manda al server a crear la entidad
+	msg_t mensaje;
+	mensaje.type = CREAR_ENTIDAD;
+	memcpy(mensaje.paramNombre,string_to_char_array(nombre),sizeof(mensaje.paramNombre));
+	mensaje.paramInt1 = id_constructor;
+	mensaje.paramDouble1 =x;
+	mensaje.paramDouble2 = y;
+	this->agregarMensaje(mensaje);
+}
+void GameControllerCliente::empezarAccion(int id){
+	this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(true);
+}
 
+void GameControllerCliente::terminarAccion(int id){
+	this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(false);
+}
+void GameControllerCliente::finalizarConstruccion(int id){
+	Entidad * entidad = this->modelo->buscarEntidad(id);
+	entidad->finalizarConstruccion();
+}
 
 bool GameControllerCliente::hayEventos(){
 	return (!this->cola.empty());

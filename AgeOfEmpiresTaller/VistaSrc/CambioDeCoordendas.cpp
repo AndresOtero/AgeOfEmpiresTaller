@@ -16,6 +16,12 @@ void CambioDeCoordendas::transformar_isometrica_pantalla(double iso_x,double iso
 	pant_x = (( iso_x - iso_y ) * this->ancho_por_celda())/2;
 	pant_y =(( iso_x + iso_y)*  this->altura_por_celda()) /2;
 }
+
+void CambioDeCoordendas::transformar_isometrica_pantalla(double iso_x,double iso_y,double& pant_x,double& pant_y){
+	pant_x = (( iso_x - iso_y ) * this->ancho_por_celda())/2;
+	pant_y =(( iso_x + iso_y)*  this->altura_por_celda()) /2;
+}
+
 void CambioDeCoordendas::transformar_isometrica_pantalla(int iso_x,int iso_y,int& pant_x,int& pant_y){
 	pant_x = (( iso_x - iso_y ) * this->ancho_por_celda())/2;
 	pant_y =(( iso_x + iso_y)*  this->altura_por_celda()) /2;

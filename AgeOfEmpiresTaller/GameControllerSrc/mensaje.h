@@ -20,6 +20,7 @@ enum MensajeType {
 	ACTUALIZACION_RECURSOS, /* params (oro,plata,madera) */
 	NUEVO_PERSONAJE,/*params name, id, pos_x,pos_y*/
 	CREAR_ENTIDAD, /*name tipo, pos_x, pos_y*/
+	CREAR_ENTIDAD_CONSTRUIDA,
 	CREAR_RECURSO,/*name tipo,int cantidad,pos_x,pos_y*/
 	FIN_INICIALIZACION,
 	PARAM_MAPA,
@@ -30,7 +31,10 @@ enum MensajeType {
 	RECOLECCION_RECURSOS, /*int id recolector, double id recurso*/
 	ELIMINAR_ENTIDAD, /* int id*/
 	SET_ID_RECURSO, /*porque no se puede setear en una instruccion parece MIPS esto*/
-	ELIMINAR
+	ELIMINAR,
+	CONSTRUIR,
+	EMPEZAR_ACCION,
+	TERMINAR_ACCION //TODO
 };
 
 typedef struct {
