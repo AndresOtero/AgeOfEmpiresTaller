@@ -32,6 +32,7 @@ void GameControllerServer::agregarCliente(string name,string tipo, SDL_mutex *mu
 	//seteo mensaje
 	msg_t mensaje;
 	mensaje.type = LOGIN;
+	memcpy(mensaje.paramTipo,string_to_char_array(tipo),sizeof(mensaje.paramTipo));
 	memcpy(mensaje.paramNombre,string_to_char_array(name),sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
@@ -124,6 +125,7 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 			Personaje* personaje = (*iter);
 			msg_crear_personaje.type=NUEVO_PERSONAJE;
 			Posicion pos=personaje->get_posicion();
+			memcpy(msg_crear_personaje.paramTipo,string_to_char_array(personaje->objetoMapa->nombre), sizeof(msg_crear_personaje.paramTipo));
 			memcpy(msg_crear_personaje.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(msg_crear_personaje.paramNombre));
 			msg_crear_personaje.paramDouble1=pos.get_x_exacta();
 			msg_crear_personaje.paramDouble2=pos.get_y_exacta();
