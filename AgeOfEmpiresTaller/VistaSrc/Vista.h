@@ -35,10 +35,14 @@ class Vista {
 	Pantalla* pantalla;
 	GameControllerCliente * gameController;
 	int margen_scroll;
+	int seleccion_x_inicio,seleccion_y_inicio,seleccion_x_final,seleccion_y_final;
 
+	bool esta_eligiendo,termino_de_elegir;
 	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;
 private:
+	bool esta_en_seleccion(int x,int y);
+	void setear_seleccion();
 	void dibujar_mapa();
 	void mover_referencia(double vel_x,double vel_y);
 	int ancho_por_celda();

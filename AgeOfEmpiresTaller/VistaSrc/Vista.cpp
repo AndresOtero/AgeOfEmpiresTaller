@@ -46,6 +46,7 @@ Vista::Vista(Modelo* modelo,GameControllerCliente* gameController) {
 	shared_ptr<Barra> barra(new Barra(modelo,&referencia_mapa_x,&referencia_mapa_y));
 	this->barra=barra;
 	this->gameController = gameController;
+	this->esta_eligiendo=false;
 }
 
 int Vista::altura_por_celda(){
@@ -259,23 +260,43 @@ bool Vista::run() {
 						personaje_y);
 				Posicion p = Posicion(personaje_x, personaje_y);
 				//le envia al server que cambie el destino
-				if (this->modelo->devolverPersonajeSeleccionado()) {
-					if (this->modelo->devolverPersonajeSeleccionado()->getNombreJugador()
-							== this->modelo->nombreJugador()) {
-						this->gameController->cambiar_destino_personaje(
-								this->modelo->devolverPersonajeSeleccionado()->getId(),
-								personaje_x, personaje_y);
-						this->gameController->interactuar(this->modelo->devolverPersonajeSeleccionado(),p);
+				vector<Personaje*> personajes=this->modelo->devolverPersonajeSeleccionado();
+
+				if (!personajes.empty()) {
+					vector<Personaje*>::iterator it = personajes.begin();
+					for (; it != personajes.end(); it++) {
+						Personaje* personaje = (*it);
+						if (personaje->getNombreJugador()
+								== this->modelo->nombreJugador()) {
+							this->gameController->cambiar_destino_personaje(
+									personaje->getId(), personaje_x,
+									personaje_y);
+							this->gameController->interactuar(personaje, p);
+						}
 					}
 				}
 
 			}
 			if (e.button.button == SDL_BUTTON_LEFT) {
+				esta_eligiendo=true;
 				double a, b;
-				SDL_GetMouseState(&mov_x, &mov_y);
+				SDL_GetMouseState(&seleccion_x_inicio, &seleccion_y_inicio);
 				this->transformador->transformar_pantalla_isometrica(mov_x,
 						mov_y, a, b);
 				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
+
+			}
+		}
+		if (e.type == SDL_MOUSEBUTTONUP) {
+			if (e.button.button == SDL_BUTTON_LEFT) {
+				esta_eligiendo=false;
+				termino_de_elegir=true;
+				this->setear_seleccion();
+				SDL_GetMouseState(&seleccion_x_final, &seleccion_y_final);
+				double a, b;
+				this->transformador->transformar_pantalla_isometrica(seleccion_x_final,
+						seleccion_y_final, a, b);
+				this->corregir_referencia_coordenadas_pantalla_mapa(a,b);
 				this->barra->setDisplay(modelo->seleccionar(a, b));
 			}
 		}
@@ -288,16 +309,7 @@ bool Vista::run() {
 				break;
 			case SDLK_r:
 				return true;
-			case SDLK_c:
-				if (modelo->devolverPersonajeSeleccionado()) {
-					modelo->congelarPersonaje(modelo->nombreJugador());
-				}
-				break;
-			case SDLK_d:
-				if (modelo->devolverPersonajeSeleccionado()) {
-					modelo->descongelarPersonaje(modelo->nombreJugador());
-				}
-				break;
+
 			}
 		}
 	}
@@ -364,6 +376,22 @@ bool Vista::adentro_del_mapa(int coord_x, int coord_y) {
 			&& (coord_y >= 0));
 }
 
+bool Vista::esta_en_seleccion(int x,int y){
+	return ((x<seleccion_x_final)&&(x>seleccion_x_inicio)&&(y<seleccion_y_final)&&(y>seleccion_y_inicio));
+
+}
+void Vista::setear_seleccion(){
+	if (seleccion_x_final < seleccion_x_inicio) {
+		int extra = seleccion_x_final;
+		seleccion_x_final = seleccion_x_inicio;
+		seleccion_x_inicio = extra;
+	}
+	if (seleccion_y_final < seleccion_y_inicio) {
+		int extra = seleccion_y_final;
+		seleccion_y_final = seleccion_y_inicio;
+		seleccion_y_inicio = extra;
+	}
+}
 void Vista::dibujar_personaje(Personaje* personaje) {
 	int img_personaje_x, img_personaje_y;
 	double personaje_x = personaje->getReferenciaMapaX();
@@ -377,6 +405,9 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 			> (this->factory->get_dibujo(personaje->dibujar()));
 
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
+	if(esta_en_seleccion(img_personaje_x,img_personaje_y)&&termino_de_elegir){
+		modelo->seleccionar(personaje->getReferenciaMapaX(),personaje->getReferenciaMapaY());
+	}
 	Posicion destino = personaje->get_camino();
 	double mover_x = destino.get_x_exacta();
 	double mover_y = destino.get_y_exacta();
@@ -409,7 +440,6 @@ void Vista::dibujar_mapa() {
 	int x_start = bordes[X_START], y_min = bordes[Y_MIN], x_max = bordes[X_MAX],
 			y_max = bordes[Y_MAX];
 	int x_imagen, y_imagen;
-
 	for (int dim = 0; dim < DIMENSIONES; dim++) {
 		int max = abs(x_max) + abs(y_max);
 		int i = 0, j = 0;
@@ -457,6 +487,7 @@ void Vista::dibujar_mapa() {
 							dibujo->oscurecer();
 						dibujo->setAnimar(false);
 						if (oscuro != 1 && oscuro < 2) {
+
 							dibujo->setAnimar(true);
 						}
 						if (oscuro < 2) {
@@ -470,6 +501,17 @@ void Vista::dibujar_mapa() {
 			}
 		}
 	}
+	if (esta_eligiendo) {
+		int mouse_x, mouse_y;
+		SDL_GetMouseState(&mouse_x, &mouse_y);
+		SDL_Rect rect;
+		rect.x = seleccion_x_inicio;
+		rect.y = seleccion_y_inicio;
+		rect.w = mouse_x - seleccion_x_inicio;
+		rect.h = mouse_y - seleccion_y_inicio;
+		SDL_RenderDrawRect(gRenderer,&rect);
+	}
+	termino_de_elegir=false;
 }
 
 void Vista::dibujar_barra() {

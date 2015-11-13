@@ -25,7 +25,8 @@ typedef struct{
 typedef int Id;
 
 class Modelo {
-	Personaje* personaje_seleccionado;
+	vector<Personaje*> personajes_seleccionados;
+
 	Jugador* jugador;
 	vector<Jugador*> jugadores; //asi puedo ver todos los jugadores
 	vector<Personaje*> personajes;
@@ -46,7 +47,7 @@ public:
 	int oscuridad(int dim,int x,int y);
 	string seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();
-	Personaje* devolverPersonajeSeleccionado();
+	vector<Personaje*> devolverPersonajeSeleccionado();
 	void  cambiar_destino_personaje(Id id ,double mov_x,double mov_y);
 	Personaje* devolverPersonaje(int x,int y);
 	int get_ancho_mapa();

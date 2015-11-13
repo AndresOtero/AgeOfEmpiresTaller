@@ -39,7 +39,10 @@ Modelo::Modelo(Juego* juego) {
 	this->personajes=vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
 	this->jugador=juego->escenario->jugador;
-	personaje_seleccionado=NULL;
+	personajes_seleccionados.clear();
+	if(!personajes_seleccionados.empty()){
+		printf("ERROR");
+	}
 	this->insertarEntidades();
 	this->totalRecursos=0;
 	gettimeofday(&estado,NULL);
@@ -131,8 +134,8 @@ void Modelo::eliminar(int id){
 	this->eliminar_personaje_por_Id(id);
 	this->eliminarEntidadPorID(id);
 }
-Personaje* Modelo::devolverPersonajeSeleccionado() {
-	return personaje_seleccionado;
+vector<Personaje*> Modelo::devolverPersonajeSeleccionado() {
+	return personajes_seleccionados;
 }
 bool Modelo::afueraDelMapa(int x,int y){
 	return this->mapa->afueraDelMapa( x, y);
@@ -192,13 +195,13 @@ bool Modelo::celdaOcupada(Posicion posicion){
 
 
 bool Modelo::estaSeleccionada(int x,int y){
-	if(personaje_seleccionado){
-		Posicion pos_p=this->personaje_seleccionado->get_posicion();
+	if(!personajes_seleccionados.empty()){
+		Posicion pos_p=this->personajes_seleccionados[0]->get_posicion();
 		if((pos_p.getX()==x)&&(pos_p.getY()==y)){
 			return true;
 		}
-	}else{
-		return (this->mapa->estaSeleccionada(x,y));
+	} else {
+		return (this->mapa->estaSeleccionada(x, y));
 	}
 	return false;
 }
@@ -206,11 +209,16 @@ bool Modelo::estaSeleccionada(int x,int y){
 string Modelo::seleccionar(double mov_x,double mov_y){
 	this->mapa->deseleccionar();
 	Posicion seleccionada= Posicion(mov_x,mov_y);
+	printf("Selecciono el %d,%d\n",seleccionada.getX(),seleccionada.getY());
 	if (this->oscuridad(TILES,seleccionada.getX(),seleccionada.getY())==OSCURO){
 			return "";
 	}
 	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
-	personaje_seleccionado=this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY());
+	personajes_seleccionados.clear();
+	if(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY())){
+		printf("Eligio a este personaje\n");
+		personajes_seleccionados.push_back(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY()));
+	}
 	return this->mapa->mostrar_contenido(seleccionada.getX(),seleccionada.getY());
 }
 
