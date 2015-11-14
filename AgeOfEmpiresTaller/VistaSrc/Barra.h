@@ -15,6 +15,7 @@
 #include "../ModeloSrc/Jugador.h"
 #include <memory>
 #include <sstream>
+#include <tuple>
 #ifndef BARRA_H_
 #define BARRA_H_
 
@@ -30,7 +31,7 @@ public:
 	void  actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad* entidad);
 	void closeFont();
 	void setListaCreables(map<string,ObjetoMapa*> tipos);
-	string seleccionar(int pixel_x,int pixel_y);
+	tuple<string,int> seleccionar(int pixel_x,int pixel_y);
 	void imprimirLista(SDL_Renderer * renderer);
 	int obtenerYDondeSeDibuja();
 	virtual ~Barra();
@@ -64,6 +65,8 @@ private:
 	int x_comienzo_recurso;
 	map<string,ObjetoMapa*> listaCreables;
 	bool seleccionable;
+	bool personaje_a_crear;
+	int id_edificio_creador;
 };
 
 #endif /* BARRA_H_ */

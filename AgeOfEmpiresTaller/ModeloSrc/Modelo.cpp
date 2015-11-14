@@ -202,6 +202,7 @@ bool Modelo::estaSeleccionada(int x,int y){
 	return false;
 }
 void Modelo::limpiarSeleccion(){
+	printf("Limpia Seleccion\n");
 	personajes_seleccionados.clear();
 }
 
@@ -214,6 +215,7 @@ string Modelo::seleccionar(double mov_x,double mov_y){
 	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
 	entidad_seleccionada=NULL;
 	if(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY())){
+		printf("selecciono uno\n");
 		personajes_seleccionados.push_back(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY()));
 	}else{
 		if(this->mapa->entidad_celda(seleccionada.getX(),seleccionada.getY())!=NULL){

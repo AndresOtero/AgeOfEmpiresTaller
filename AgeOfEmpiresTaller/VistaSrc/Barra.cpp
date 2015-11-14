@@ -38,6 +38,7 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	this->nombreJugador = text2;
 	this->nombre = modelo->nombreJugador();
 	this->x_comienzo_recurso=(this->mapa->anchoPantalla()-this->mapa->altoMapa())/5;
+	this->id_edificio_creador=-1;
 }
 
 
@@ -74,13 +75,12 @@ void  Barra::actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad
 	comida->cambiarCant(jugador->recursosJugador()->cantComida());
 	if (personajes.size()==1){
 		if (personajes[0]->puedeCrear()){
+			this->id_edificio_creador = -1;
 			this->setListaCreables(jugador->devolverEdificiosCreables());
 		}
-	}else{
-		//no existe
-		this->seleccionable= false;
 	}
 	if(entidad){
+		this->id_edificio_creador = entidad->getId();
 		this->setListaCreables(entidad->devolverPersonajesCreables());
 	}
 
@@ -143,7 +143,7 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 	}
 }
 
-string Barra::seleccionar(int pixel_x, int pixel_y){
+tuple<string,int> Barra::seleccionar(int pixel_x, int pixel_y){
 	if (pixel_x < TTF_FontHeight(font)){
 		int seleccion = (pixel_y-this->referencia_y)/TTF_FontHeight(font) - 1;
 		//si es un indice positivo y dentro del rango
@@ -152,13 +152,15 @@ string Barra::seleccionar(int pixel_x, int pixel_y){
 			int x = 0;
 			for (it =listaCreables.begin(); it != this->listaCreables.end();++it){
 				if (x==(seleccion)){
-					return it->first;
+					tuple<string,int> foo (it->first,this->id_edificio_creador);
+					return foo;
 				}
 				x++;
 			}
 		}
 	}
-	return "";
+	tuple<string,int> nada ("",0);
+	return nada;
 }
 int Barra::obtenerYDondeSeDibuja(){
 	return this->referencia_y;

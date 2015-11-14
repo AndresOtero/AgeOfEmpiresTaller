@@ -133,6 +133,7 @@ Personaje* GameControllerCliente::conectarCliente(string name,string tipo, int x
 	printf("Entro\n");
 	ObjetoMapa* obj= this->juego->tipos[tipo];
 	printf("Esta bien el tipo\n");
+	printf("Tipo %s\n",tipo.c_str());
 	Personaje* personaje =new Personaje(obj,x,y);
 	printf("Creo el personaje\n");
 	personaje->setNombreJugador(name);

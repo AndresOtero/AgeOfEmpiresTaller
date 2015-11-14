@@ -8,7 +8,7 @@
 #include "Entidad.h"
 #include "Recurso.h"
 using namespace std;
-int GeneradorNumeros::id =0;
+unsigned int GeneradorNumeros::id =0;
 
 Entidad::Entidad(ObjetoMapa* objetoMapa) {
 	this -> objetoMapa = objetoMapa;

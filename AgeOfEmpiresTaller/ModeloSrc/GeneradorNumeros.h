@@ -14,7 +14,7 @@ class GeneradorNumeros {
 private:
 	int devolver;
 public:
-	static int id;
+	static unsigned int id;
 	GeneradorNumeros(){devolver = id++;};
 	int otroID(){return devolver;};
 	int numeroRandom(int min, int max);
