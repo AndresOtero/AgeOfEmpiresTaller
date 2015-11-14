@@ -389,6 +389,7 @@ msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
 }
 void GameControllerServer::crearCentroCivicoNuevoUser(string raza){
 	Entidad * entidad = this->modelo->set_CentroCivicoNuevoServer(raza);
+	//ULTRA HARCODE TODO
 	printf("Nombre %s\n",entidad->objetoMapa->nombre.c_str());
 	printf("crear personaje\n");
 	Personaje* personaje =new Personaje(entidad->devolverPersonajesCreables().begin()->second);
