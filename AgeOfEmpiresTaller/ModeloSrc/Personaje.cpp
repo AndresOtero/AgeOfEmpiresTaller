@@ -44,6 +44,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->atacado=NULL;
 	this->objetivo=NULL;
 	this->raza=objetoMapa->raza;
+	this->costo.setCosto(objetoMapa->oro,objetoMapa->madera,objetoMapa->piedra,objetoMapa->comida);
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_x=x;
@@ -60,6 +61,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->objetoMapa = objetoMapa;
 	this->recursos = new RecursosJugador();
 	this->congelado=false;
+	this->costo.setCosto(objetoMapa->oro,objetoMapa->madera,objetoMapa->piedra,objetoMapa->comida);
 
 	this->atacando_cliente  =false;
 	this->atacado=NULL;

@@ -13,7 +13,7 @@ Jugador::Jugador(string nombre,string ip,string raza) {
 	this->raza=raza;
 	this->nombre=nombre;
 	this->ip=ip;
-	this->recursos = new RecursosJugador();
+	this->recursos = new RecursosJugador(200,200,200,200);
 	this->factory.setRaza(raza);
 
 }
@@ -28,6 +28,12 @@ void Jugador::actualizarRecursos(int oro, int madera, int piedra){
 	this->recursos->colectarOro(oro);
 	this->recursos->colectarMadera(madera);
 	this->recursos->colectarPiedra(piedra);
+}
+void Jugador::pagar(Entidad * entidad){
+	this->recursos->pagar(entidad->getCosto());
+}
+bool Jugador::puedePagar(Entidad * entidad){
+	return this->recursos->puedePagar(entidad->getCosto());
 }
 
 Jugador::~Jugador() {

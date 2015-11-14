@@ -38,7 +38,6 @@ Modelo::Modelo(Juego* juego) {
 	this->jugador=juego->escenario->jugador;
 	if (this->jugador){
 		this->jugador->cargarEdificios(this->juego->tipos);
-		printf("CargoEdificios\n");
 	}
 	this->factory_personaje.cargarPersonajes(this->juego->tipos);
 	personajes_seleccionados.clear();

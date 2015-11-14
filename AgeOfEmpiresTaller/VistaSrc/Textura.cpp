@@ -31,18 +31,17 @@ bool Textura::loadFromFile(std::string path, SDL_Renderer* gRenderer) {
 	free();
 
 	SDL_Texture* newTexture = NULL;
-
 	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
 	if (loadedSurface == NULL) {
-		LOG_WARNING << "No se pudo cargar: %s. SDL_image Error: %s\n", path.c_str(),
-				IMG_GetError();
+		//LOG_WARNING << "No se pudo cargar: %s. SDL_image Error: %s\n", path.c_str(),
+				//IMG_GetError();
 	} else {
 		//SDL_SetColorKey(loadedSurface, SDL_TRUE,						SDL_MapRGB(loadedSurface->format, 0xFF, 0xFF, 0xFF));
 
 		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 		if (newTexture == NULL) {
-			LOG_WARNING << "No se pudo cargar la textura: %s. SDL Error: %s\n",
-					path.c_str(), SDL_GetError();
+			//LOG_WARNING << "No se pudo cargar la textura: %s. SDL Error: %s\n",
+					//path.c_str(), SDL_GetError();
 		} else {
 			mWidth = loadedSurface->w;
 			mHeight = loadedSurface->h;

@@ -12,6 +12,7 @@
 #include "Posicion.h"
 #include "Atacable.h"
 #include "FactoryPersonaje.h"
+#include "Costo.h"
 
 /*obs: la entidad tiene el tipo (ObjetoMapa donde guardo imagen, bases, pixels ref. Se comparte para todas las entidades de un mismo tipo).
  *  Incluye la posicion de cada entidad
@@ -23,6 +24,7 @@ class Entidad :public Atacable{
 	string raza;
 	map<string,ObjetoMapa*> diccionario_de_personajes;
 	int velocidad_cosntruccion;
+	Costo costo;
 public:
 	Entidad(ObjetoMapa* objetoMapa);
 	Entidad(ObjetoMapa* objetoMapa, int x, int y);
@@ -43,6 +45,9 @@ public:
 	}
 	bool estaSeleccionado(){
 		return seleccionado;
+	}
+	Costo getCosto(){
+		return this->costo;
 	}
 	Posicion get_posicion(){
 		return *(this->posicion);

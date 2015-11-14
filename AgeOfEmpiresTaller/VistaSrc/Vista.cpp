@@ -320,9 +320,10 @@ bool Vista::run() {
 					if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
 						if (this->entidadACrear) {
 							//no lo puede crear en lugar donde no ve
-							if (!this->modelo->tocaSombra(entidadACrear)) {
+							if (!this->modelo->tocaSombra(entidadACrear)&&this->modelo->getJugador()->puedePagar(entidadACrear)) {
 								//TODO crear con muchos tipitos
 								//si puede crear es porque tiene un tipito seleccionado
+								this->modelo->getJugador()->pagar(entidadACrear);
 								this->gameController->crearEdificio(
 										this->entidadACrear->mostrar_contenido(),
 										this->modelo->devolverPersonajeSeleccionado().front()->getId(),

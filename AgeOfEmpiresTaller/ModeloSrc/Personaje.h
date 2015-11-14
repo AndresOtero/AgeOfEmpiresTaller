@@ -12,6 +12,7 @@
 #include "../ModeloSrc/Contador.h"
 #include "Entidad.h"
 #include "Atacable.h"
+#include "Costo.h"
 #ifndef PERSONAJE_H_
 #define PERSONAJE_H_
 typedef int dibujo_t;
@@ -41,12 +42,16 @@ class Personaje:public Atacable {
 	int id;
 	string nombreJugador;
 	string raza;
+	Costo costo;
 public:
 	Personaje();
 	Personaje(ObjetoMapa* objetoMapa);
 	Personaje(ObjetoMapa* objetoMapa, int x, int y);
 	int getDibujoAnterior(){
 		return dibujo_anterior;
+	}
+	Costo getCosto(){
+		return this->costo;
 	}
 	RecursosJugador * recursosJugador();
 	string mostrar_contenido();

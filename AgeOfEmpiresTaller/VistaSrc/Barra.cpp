@@ -6,6 +6,7 @@
  */
 
 #include "Barra.h"
+
 #define PIXELESDIGITOS 200
 #define ANCHO_BASE  249
 #define ALTO_BASE  124
@@ -18,9 +19,11 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	shared_ptr<RecursoVista> oro(new RecursoVista());
 	shared_ptr<RecursoVista> madera(new RecursoVista());
 	shared_ptr<RecursoVista> piedra(new RecursoVista());
+	shared_ptr<RecursoVista> comida(new RecursoVista());
 	this->oro=oro;
 	this->madera=madera;
 	this->piedra=piedra;
+	this->comida = comida;
 	this->x_ref=x;
 	this->y_ref=y;
 	this->referencia_y = modelo->juego->pantalla->getAlto()-mapa->altoMapa();
@@ -34,6 +37,7 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	shared_ptr<Textura> text2(new Textura());
 	this->nombreJugador = text2;
 	this->nombre = modelo->nombreJugador();
+	this->x_comienzo_recurso=(this->mapa->anchoPantalla()-this->mapa->altoMapa())/5;
 }
 
 
@@ -47,6 +51,8 @@ void Barra::load(SDL_Renderer * renderer, string path, int ancho_por_celda,int a
 			LOG_WARNING << "Atencion no pudo cargar imagen de barra\n";
 	if (!this->madera->imagen()->loadFromFile("img/madera.png",renderer))
 			LOG_WARNING << "Atencion no pudo cargar imagen de barra\n";
+	if (!this->comida->imagen()->loadFromFile("img/comida.gif",renderer))
+				LOG_WARNING << "Atencion no pudo cargar imagen de barra\n";
 	if (!this->mapa->inicializar(renderer))
 		LOG_WARNING << "Atencion no pudo inicializar Minimapa\n";
 	font = TTF_OpenFont( path.c_str(), 25 );
@@ -65,6 +71,7 @@ void  Barra::actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad
 	oro->cambiarCant(jugador->recursosJugador()->cantOro());
 	madera->cambiarCant(jugador->recursosJugador()->cantMadera());
 	piedra->cambiarCant(jugador->recursosJugador()->cantPiedra());
+	comida->cambiarCant(jugador->recursosJugador()->cantComida());
 	if (personajes.size()==1){
 		if (personajes[0]->puedeCrear()){
 			this->setListaCreables(jugador->devolverEdificiosCreables());
@@ -94,11 +101,12 @@ void Barra::renderTexto(SDL_Renderer*renderer){
 
 	}
 
-	int x_oro,x_piedra,x_madera;
-	x_oro = this->mapa->anchoPantalla()/4;
+	int x_oro,x_piedra,x_madera,x_comida;
+	x_oro = this->x_comienzo_recurso;
 	x_piedra =imprimirNumeroDeRecurso(renderer,this->oro,x_oro);
 	x_madera =imprimirNumeroDeRecurso(renderer,this->piedra,x_piedra);
-	imprimirNumeroDeRecurso(renderer,this->madera,x_madera);
+	x_comida = imprimirNumeroDeRecurso(renderer,this->madera,x_madera);
+	imprimirNumeroDeRecurso(renderer,this->comida,x_comida);
 
 	SDL_Color color = this->mapa->paleta(BLANCO);
 	if (cargarTexto(renderer,color,this->nombreJugador,this->nombre)){
@@ -110,16 +118,25 @@ void Barra::renderTexto(SDL_Renderer*renderer){
 }
 void Barra::imprimirLista(SDL_Renderer* renderer){
 	std::map<string,ObjetoMapa*>::iterator it;
-	//int x = 0;
+	int lado_icono = TTF_FontHeight(font);
 	if (seleccionable){
 		int y = this->referencia_y + TTF_FontHeight(font);
 		for (it = this->listaCreables.begin(); it != this->listaCreables.end();
 				++it) {
-			//ver si imprime esto
+
+			shared_ptr<Textura> icono(new Textura());
+			if (icono->loadFromFile(it->second->icono,renderer)){
+				SDL_Rect rect ={0,y,lado_icono,lado_icono};
+				icono->renderEx(0,NULL,&rect,renderer,NULL);
+
+			}
+			//a cambiar por costo
 			shared_ptr<Textura> creable(new Textura());
+			std::ostringstream oss;
+			oss << it->second->oro <<"/"<< it->second->piedra <<"/"<< it->second->madera <<"/"<< it->second->comida;
 			if (cargarTexto(renderer, this->mapa->paleta(NEGRO), creable,
-					it->first)){
-				imprimirTexto(0,y,renderer,creable);
+					oss.str())){
+				imprimirTexto(lado_icono,y,renderer,creable);
 			}
 			y+=TTF_FontHeight(font);
 		}
@@ -127,7 +144,7 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 }
 
 string Barra::seleccionar(int pixel_x, int pixel_y){
-	if (pixel_x < PIXELESDIGITOS){
+	if (pixel_x < TTF_FontHeight(font)){
 		int seleccion = (pixel_y-this->referencia_y)/TTF_FontHeight(font) - 1;
 		//si es un indice positivo y dentro del rango
 		if (seleccion>=0 && ((this->listaCreables.size())>(seleccion))){
@@ -155,7 +172,7 @@ int Barra::imprimirNumeroDeRecurso(SDL_Renderer* renderer, shared_ptr<RecursoVis
 		imprimirTexto(x_ref-texto->getWidth(),referencia_y,renderer,texto);
 	}
 	recurso->imagen()->renderEx(0,NULL,&rect,renderer,NULL);
-	return x_ref+ancho+PIXELESDIGITOS;
+	return x_ref+ancho+this->x_comienzo_recurso;
 }
 bool Barra::cargarTexto(SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display){
 	plog::init(plog::warning, "Log.txt" );

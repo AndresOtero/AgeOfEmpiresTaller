@@ -4,9 +4,6 @@
  *  Created on: Oct 8, 2015
  *      Author: tobias
  */
-
-#ifndef BARRA_H_
-#define BARRA_H_
 #include <plog/Log.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -17,6 +14,10 @@
 #include "RecursoVista.h"
 #include "../ModeloSrc/Jugador.h"
 #include <memory>
+#include <sstream>
+#ifndef BARRA_H_
+#define BARRA_H_
+
 
 
 
@@ -47,6 +48,7 @@ private:
 	shared_ptr<RecursoVista> oro;
 	shared_ptr<RecursoVista> madera;
 	shared_ptr<RecursoVista> piedra;
+	shared_ptr<RecursoVista> comida;
 	string nombre;
 	double desfasaje;
 	TTF_Font* font;
@@ -59,6 +61,7 @@ private:
 	int tamFont;
 	int ancho_por_celda;
 	int alto_por_celda;
+	int x_comienzo_recurso;
 	map<string,ObjetoMapa*> listaCreables;
 	bool seleccionable;
 };

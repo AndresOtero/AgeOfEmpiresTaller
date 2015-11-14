@@ -33,6 +33,10 @@ public:
 	int armadura;
 	int recoleccion;
 	int construccion;
+	int oro;
+	int piedra;
+	int madera;
+	int comida;
 	string raza;
 	int velocidad_construcccion;
 	string edificio_constructor;
