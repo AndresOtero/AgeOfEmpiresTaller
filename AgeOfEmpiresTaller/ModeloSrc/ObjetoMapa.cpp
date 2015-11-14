@@ -21,6 +21,7 @@ ObjetoMapa::ObjetoMapa(string nombre, string imagen) {
 	this->baseLogica = new BaseLogica();
 	this->pixelsReferencia = new PixelsReferencia();
 	this->raza="";
+	this->edificio_constructor="";
 }
 ObjetoMapa::~ObjetoMapa() {
 	delete this -> baseLogica;

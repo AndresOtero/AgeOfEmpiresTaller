@@ -253,12 +253,18 @@ bool Vista::run() {
 	int mov_x=0, mov_y=0;
 	//this->transformador->transformar_isometrica_pantalla(pers->getReferenciaMapaX()-referencia_mapa_x,pers->getReferenciaMapaY()-referencia_mapa_y,mov_x,mov_y);
 	double personaje_x,personaje_y;
-	printf("CorreVista\n");
 	while (SDL_PollEvent(&e) != 0) {
 		if (e.type == SDL_QUIT) {
 			quit = true;
 		}
+		if (e.type == SDL_KEYDOWN) {
+			switch (e.key.keysym.sym) {
+			case SDLK_c:
+				break;
+			}
+		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
+
 			if (e.button.button == SDL_BUTTON_RIGHT) {
 				this->dejarDeDibujarEdificio();
 				SDL_GetMouseState(&mov_x, &mov_y);
@@ -552,7 +558,7 @@ void Vista::dibujar_mapa() {
 }
 
 void Vista::dibujar_barra() {
-	this->barra->actualizar(this->modelo->getJugador(),this->modelo->devolverPersonajeSeleccionado());
+	this->barra->actualizar(this->modelo->getJugador(),this->modelo->devolverPersonajeSeleccionado(),this->modelo->get_entidad_seleccionada());
 	this->barra->render(gRenderer);
 }
 

@@ -161,12 +161,10 @@ msg_t Personaje::interactuar(Entidad* otra_entidad){
 		}
 	}else{
 		if (otra_entidad->esUnRecurso() && this->puedeRecolectar()) {
-			printf("Interaccion Recurso\n");
 			mensaje.type = RECOLECCION_RECURSOS;
 			return mensaje;
 		} else if (this->puedeAtacar() && (!otra_entidad->esUnRecurso())) { //falta ver q sea del enemigo
 
-			printf("Interaccion atacar\n");
 			mensaje.type = ATACAR;
 			return mensaje;
 		}
@@ -201,7 +199,6 @@ bool  Personaje::ejecutar_ataque(){
 }
 void  Personaje::recibirDanio(int danio){
 	this->vida-=danio;
-	printf("La vida es: %d\n",vida);
 }
 bool operator== (Personaje &P1, Personaje &P2)
 {
@@ -230,6 +227,5 @@ void Personaje::set_destino_al_ataque(){
 	this->set_destino(this->atacado->get_posicion());
 }
 bool Personaje::es_adyacente_al_atacado(){
-	printf( (this->atacado->get_posicion().es_adyacente(this->get_posicion()))?"Es adyacente":"No es adyacente");
 	return this->atacado->get_posicion().es_adyacente(this->get_posicion());
 }

@@ -11,6 +11,7 @@
 #include <vector>
 #include "../ModeloSrc/Juego.h"
 #include "Personaje.h"
+
 #include <sys/time.h>
 #define PISADA 1
 #define VISIBLE 0
@@ -30,8 +31,9 @@ typedef int Id;
 
 class Modelo {
 	vector<Personaje*> personajes_seleccionados;
-
+	Entidad* entidad_seleccionada;
 	Jugador* jugador;
+	FactoryPersonaje factory_personaje;
 	vector<Jugador*> jugadores; //asi puedo ver todos los jugadores
 	vector<Personaje*> personajes;
 	vector<vector<int>> pisadas;
@@ -70,7 +72,7 @@ public:
 	//cliente
 	void actualizarRecursos(int oro,int madera,int piedra);
 	int agregarEntidad(string nombre,int x, int y,int cantidad);
-
+	Entidad* get_entidad_seleccionada();
 	~Modelo();
 	void agregarPersonajeCliente(Personaje* personaje);
 	int crearPersonajeServer(Personaje* personaje);

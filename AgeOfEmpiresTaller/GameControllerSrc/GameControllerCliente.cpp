@@ -55,6 +55,7 @@ void GameControllerCliente::eliminar(int id){
 void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
+
 void GameControllerCliente::ataque(Id idAtacante,Id idAtacado,int danio){
 	//aca crasheaba mal
 	Personaje* pAtacando=this->modelo->get_Personaje_Por_Id(idAtacante);

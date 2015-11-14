@@ -61,7 +61,7 @@ void Barra::load(SDL_Renderer * renderer, string path, int ancho_por_celda,int a
 void Barra::setDisplay(string display){
 	this->display= display;
 }
-void  Barra::actualizar(Jugador * jugador,vector<Personaje *> personajes){
+void  Barra::actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad* entidad){
 	oro->cambiarCant(jugador->recursosJugador()->cantOro());
 	madera->cambiarCant(jugador->recursosJugador()->cantMadera());
 	piedra->cambiarCant(jugador->recursosJugador()->cantPiedra());
@@ -73,6 +73,10 @@ void  Barra::actualizar(Jugador * jugador,vector<Personaje *> personajes){
 		//no existe
 		this->seleccionable= false;
 	}
+	if(entidad){
+		this->setListaCreables(entidad->devolverPersonajesCreables());
+	}
+
 }
 //tengo q hacer actualizar de jugador no de personaje
 void Barra::setListaCreables(map<string,ObjetoMapa*> tipos){

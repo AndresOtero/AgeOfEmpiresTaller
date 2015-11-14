@@ -26,7 +26,7 @@ public:
 	void render(SDL_Renderer * renderer);
 	void load(SDL_Renderer * renderer,string path, int ancho_por_celda, int alto_por_celda);
 	void setDisplay(string display);
-	void  actualizar(Jugador * jugador,vector<Personaje *> personajes);
+	void  actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad* entidad);
 	void closeFont();
 	void setListaCreables(map<string,ObjetoMapa*> tipos);
 	string seleccionar(int pixel_x,int pixel_y);

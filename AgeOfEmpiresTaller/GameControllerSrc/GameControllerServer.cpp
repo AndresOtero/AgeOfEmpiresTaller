@@ -157,7 +157,6 @@ void GameControllerServer::generarRecursoRandom(SDL_mutex *mutex){
 		this->agregarMensaje(mensaje, mutex);
 
 	}
-	printf("Genera RecursoRandom\n");
 }
 
 void GameControllerServer::setAccionEntidad(int id_personaje,int id_recurso){
@@ -191,7 +190,6 @@ void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant, 
 
 }
 void GameControllerServer::actualizar(SDL_mutex *mutex) {
-	printf("ActualizarMApa\n");
 	this->modelo->actualizarMapa();		//mueven los tipitos
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator it = personajes.begin();
@@ -329,7 +327,6 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 		}
 
 	}
-	printf("ActualiorMApaBIEN\n");
 }
 
 

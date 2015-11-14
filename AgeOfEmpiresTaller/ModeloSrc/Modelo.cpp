@@ -36,14 +36,11 @@ Modelo::Modelo(Juego* juego) {
 	this->personajes=vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
 	this->jugador=juego->escenario->jugador;
-	printf("esta por setear\n");
 	if (this->jugador){
 		this->jugador->cargarEdificios(this->juego->tipos);
 	}
+	this->factory_personaje.cargarPersonajes(this->juego->tipos);
 	personajes_seleccionados.clear();
-	if(!personajes_seleccionados.empty()){
-		printf("ERROR");
-	}
 	this->insertarEntidades();
 	this->totalRecursos=0;
 	gettimeofday(&estado,NULL);
@@ -54,6 +51,7 @@ Modelo::Modelo(Juego* juego) {
 	for(int i=0;i<alto;i++){
 		pisadas.push_back(row);
 	}
+	entidad_seleccionada=NULL;
 }
 string Modelo::nombreJugador(){
 	return jugador->getNombre();
@@ -215,12 +213,20 @@ string Modelo::seleccionar(double mov_x,double mov_y){
 	}
 	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
 	personajes_seleccionados.clear();
+	entidad_seleccionada=NULL;
 	if(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY())){
 		personajes_seleccionados.push_back(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY()));
+	}else{
+		if(this->mapa->entidad_celda(seleccionada.getX(),seleccionada.getY())!=NULL){
+			entidad_seleccionada=this->mapa->entidad_celda(seleccionada.getX(),seleccionada.getY());
+		}
 	}
 	return this->mapa->mostrar_contenido(seleccionada.getX(),seleccionada.getY());
 }
 
+Entidad* Modelo::get_entidad_seleccionada(){
+	return entidad_seleccionada;
+}
 
 
 double Modelo::heuristica(Posicion adonde_voy,Posicion adonde_estoy){
@@ -451,16 +457,13 @@ Personaje*  Modelo::get_Personaje_Por_Id(Id id){
 			return NULL;
 }
 void  Modelo::atacarServer(Id idAtacante ,Id idAtacado){
-	printf("Ataco\n");
 	Personaje* atacado =this->get_Personaje_Por_Id(idAtacado);
 	Personaje* atacante =this->get_Personaje_Por_Id(idAtacante);
 	if (atacado){
-		printf("Ataca personaje\n");
 		atacante->set_ataque(atacado);
 	}else {
 		Entidad* entidad = this->buscarEntidad(idAtacado);
 		if (entidad){
-			printf("Ataca Entidad\n");
 			atacante->set_ataque(entidad);
 		}
 	}
@@ -548,6 +551,8 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 		entidad = new Madera(objeto, x, y);
 	else
 		entidad = new Entidad(objeto, x, y);
+		entidad->cargarPersonajes(factory_personaje.devolverTipos(objeto->nombre));
+
 
 	this->insertarEntidad(entidad);
 
@@ -562,9 +567,9 @@ int Modelo::crearEdificio(string nombre,int x, int y){
 	ObjetoMapa*objeto =this->juego->tipos[nombre];
 	Entidad * entidad = new Entidad(objeto);
 	entidad->set_posicion(x,y);
+	entidad->cargarPersonajes(factory_personaje.devolverTipos(objeto->nombre));
 	if(this->mapa->puedeUbicar(entidad)){
 		this->insertarEntidad(entidad);
-		printf("cre enridad\n");
 		return entidad->getId();
 	}
 	return EDIFICIO_SUPERPUESTO;

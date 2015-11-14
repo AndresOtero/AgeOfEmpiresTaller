@@ -25,7 +25,6 @@ Posicion::Posicion(double x, double y) {
 bool Posicion::es_adyacente(Posicion posicion){
 	Posicion este = Posicion(this->getX(),this->getY());
 	Posicion otro = Posicion(posicion.getX(),posicion.getY());
-	printf("Distancia %g\n",este.distancia_octal(otro));
 	return (este.distancia_octal(otro)<=14);
 
 }

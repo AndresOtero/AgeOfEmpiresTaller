@@ -34,6 +34,7 @@ public:
 	int construccion;
 	string raza;
 	int velocidad_construcccion;
+	string edificio_constructor;
 	ObjetoMapa(string nombre, string imagen);
 
 	virtual ~ObjetoMapa();

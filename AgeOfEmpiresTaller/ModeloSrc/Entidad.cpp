@@ -18,6 +18,7 @@ Entidad::Entidad(ObjetoMapa* objetoMapa) {
 	this->vida = 50; //TODO
 	this->raza = objetoMapa->raza;
 	this->velocidad_cosntruccion = objetoMapa->velocidad_construcccion;
+
 }
 Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	this -> objetoMapa = objetoMapa;
@@ -34,10 +35,23 @@ bool Entidad::esUnRecurso(){
 	}
 	return false;
 }
+void Entidad::cargarPersonajes(map<string,ObjetoMapa*> diccionario_de_personajes){
+	this->diccionario_de_personajes=diccionario_de_personajes;
+}
+map<string,ObjetoMapa*>  Entidad::devolverPersonajesCreables(){
+	return this->diccionario_de_personajes;
+}
+
+bool  Entidad::puedeCrearPersonajes(){
+	return (!diccionario_de_personajes.empty());
+}
+
+
 string Entidad::mostrar_contenido() {
 	return objetoMapa->nombre;
 
 }
+
 bool Entidad::esAdyacente(Posicion pos){
 	int alto,ancho,x,y;
 	alto = this->objetoMapa->baseLogica->alto;
