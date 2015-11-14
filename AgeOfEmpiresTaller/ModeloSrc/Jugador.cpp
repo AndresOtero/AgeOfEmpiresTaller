@@ -29,11 +29,11 @@ void Jugador::actualizarRecursos(int oro, int madera, int piedra){
 	this->recursos->colectarMadera(madera);
 	this->recursos->colectarPiedra(piedra);
 }
-void Jugador::pagar(Entidad * entidad){
-	this->recursos->pagar(entidad->getCosto());
+void Jugador::pagar(Costo costo){
+	this->recursos->pagar(costo);
 }
-bool Jugador::puedePagar(Entidad * entidad){
-	return this->recursos->puedePagar(entidad->getCosto());
+bool Jugador::puedePagar(Costo costo){
+	return this->recursos->puedePagar(costo);
 }
 
 Jugador::~Jugador() {

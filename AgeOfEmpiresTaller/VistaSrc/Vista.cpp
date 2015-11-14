@@ -324,11 +324,10 @@ bool Vista::run() {
 					if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
 						if (this->entidadACrear) {
 							//no lo puede crear en lugar donde no ve
-							if (!this->modelo->tocaSombra(entidadACrear)&&this->modelo->getJugador()->puedePagar(entidadACrear)) {
+							if (!this->modelo->tocaSombra(entidadACrear)&&this->modelo->getJugador()->puedePagar(entidadACrear->getCosto())) {
 								//TODO crear con muchos tipitos
 								//si puede crear es porque tiene un tipito seleccionado
-								this->modelo->getJugador()->pagar(entidadACrear);
-								printf("Size seleccionados %d\n",this->modelo->devolverPersonajeSeleccionado().size());
+								this->modelo->getJugador()->pagar(entidadACrear->getCosto());
 								this->gameController->crearEdificio(
 										this->entidadACrear->mostrar_contenido(),
 										this->modelo->devolverPersonajeSeleccionado().front()->getId(),
@@ -347,12 +346,20 @@ bool Vista::run() {
 					}
 				}
 				else {
-					tuple<string,int> tipo =this->barra->seleccionar(seleccion_x_final, seleccion_y_final);
-					if (std::get<0>(tipo)!=""){
-						if (std::get<1>(tipo)>=0){
-							this->gameController->crearPersonajeEdificio(std::get<0>(tipo),std::get<1>(tipo));
+					tuple<ObjetoMapa*,int> tipo =this->barra->seleccionar(seleccion_x_final, seleccion_y_final);
+					ObjetoMapa* objeto = std::get<0>(tipo);
+					if (objeto){
+						Costo costo;
+						costo.setCosto(objeto->oro,objeto->piedra,objeto->madera,objeto->comida);
+						if (std::get<1>(tipo) >= 0) {
+							if (this->modelo->getJugador()->puedePagar(costo)) {
+								this->gameController->crearPersonajeEdificio(
+										objeto->nombre, std::get<1>(tipo));
+								this->modelo->getJugador()->pagar(costo);
+							}
+
 						}else{
-							this->cargarEdificioACrear(std::get<0>(tipo));
+							this->cargarEdificioACrear(objeto->nombre);
 						}
 						//elegir entre mandar a crear personaje o crear edificio
 
@@ -380,15 +387,11 @@ bool Vista::run() {
 	}
 	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 	SDL_RenderClear(gRenderer);
-	printf("Analizo click\n");
 	modelo->actualizarMapa(); //lo tiene que hacer el server
 	dibujar_mapa();
-	printf("Dibujo Mapa\n");
 	SDL_GetMouseState(&mov_x, &mov_y);
 	dibujar_edificio(mov_x,mov_y);
-	printf("dibuja/no dibujo edificio\n");
 	dibujar_barra();
-	printf("dibuja Barra\n");
 	detectar_mouse_borde();
 	SDL_RenderPresent(gRenderer);
 	return quit;
@@ -563,11 +566,9 @@ void Vista::dibujar_mapa() {
 
 					if (this->modelo->devolverPersonaje(coord_x, coord_y)) {
 						if (oscuro == 0) {
-							printf("Entro a dibujar personaje\n");
 							dibujar_personaje(
 									this->modelo->devolverPersonaje(coord_x,
 											coord_y));
-							printf("Salio de dibujar personaje\n");
 						}
 					}
 					if (dim == TILES) {

@@ -143,7 +143,7 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 	}
 }
 
-tuple<string,int> Barra::seleccionar(int pixel_x, int pixel_y){
+tuple<ObjetoMapa*,int> Barra::seleccionar(int pixel_x, int pixel_y){
 	if (pixel_x < TTF_FontHeight(font)){
 		int seleccion = (pixel_y-this->referencia_y)/TTF_FontHeight(font) - 1;
 		//si es un indice positivo y dentro del rango
@@ -152,14 +152,14 @@ tuple<string,int> Barra::seleccionar(int pixel_x, int pixel_y){
 			int x = 0;
 			for (it =listaCreables.begin(); it != this->listaCreables.end();++it){
 				if (x==(seleccion)){
-					tuple<string,int> foo (it->first,this->id_edificio_creador);
+					tuple<ObjetoMapa*,int> foo (it->second,this->id_edificio_creador);
 					return foo;
 				}
 				x++;
 			}
 		}
 	}
-	tuple<string,int> nada ("",0);
+	tuple<ObjetoMapa*,int> nada (NULL,0);
 	return nada;
 }
 int Barra::obtenerYDondeSeDibuja(){

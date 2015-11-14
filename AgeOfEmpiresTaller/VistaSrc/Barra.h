@@ -31,7 +31,7 @@ public:
 	void  actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad* entidad);
 	void closeFont();
 	void setListaCreables(map<string,ObjetoMapa*> tipos);
-	tuple<string,int> seleccionar(int pixel_x,int pixel_y);
+	tuple<ObjetoMapa*,int> seleccionar(int pixel_x,int pixel_y);
 	void imprimirLista(SDL_Renderer * renderer);
 	int obtenerYDondeSeDibuja();
 	virtual ~Barra();
