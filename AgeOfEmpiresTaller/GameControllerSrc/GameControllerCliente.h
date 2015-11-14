@@ -23,6 +23,7 @@ public:
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
 			vector<vector<dibujo_t>> tiles);
 	void eliminar_personaje(Id id);
+	void crearPersonajeEdificio(string tipo,int id);
 
 	void crearPersonaje(string nombre,double x, double y, int id);
 	void generarRecursoRandom();

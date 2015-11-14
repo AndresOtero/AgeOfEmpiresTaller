@@ -46,7 +46,7 @@ public:
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
 	dibujo_t dibujar(int dim,int x,int y);
 
-
+	int crearPersonajeServerEdificio(Personaje* personaje,Id id_edificio);
 	string nombreJugador();
 	string ipJugador();
 	bool afueraDelMapa(int x,int y);
@@ -87,7 +87,7 @@ public:
 	void eliminar(int id);
 	void finalizarAccion(int id);
 	int crearEdificio(string nombre, int x,int y);
-
+	void limpiarSeleccion();
 
 private:
 

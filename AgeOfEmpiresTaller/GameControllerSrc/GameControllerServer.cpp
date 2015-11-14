@@ -74,6 +74,26 @@ void GameControllerServer::crearEdificio(string nombre, int id_constructor,int x
 	}
 
 }
+void GameControllerServer::crearPersonajeEdificio(string name, string tipo,Id id_edificio,SDL_mutex *mutex){
+	ObjetoMapa* obj=this->juego->tipos[tipo];
+		Personaje* personaje =new Personaje(obj);
+		personaje->setNombreJugador(name);
+		printf("llego\n");
+		int id=this->modelo->crearPersonajeServerEdificio(personaje,id_edificio);
+		printf("salio\n");
+
+		//seteo mensaje
+		msg_t mensaje;
+		mensaje.type = NUEVO_PERSONAJE;
+		memcpy(mensaje.paramTipo,string_to_char_array(tipo),sizeof(mensaje.paramTipo));
+		memcpy(mensaje.paramNombre,string_to_char_array(name),sizeof(mensaje.paramNombre));
+		mensaje.paramInt1 = id;
+		mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
+		mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
+
+		this->agregarMensaje(mensaje, mutex);
+}
+
 
 
 queue <msg_t>  GameControllerServer::inicializacion(){

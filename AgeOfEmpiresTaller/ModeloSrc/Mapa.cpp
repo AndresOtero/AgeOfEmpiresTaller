@@ -189,7 +189,26 @@ vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 	}
 	return adyacentes;
 }
+Posicion Mapa::encontrarAdyacenteMasCercano(Posicion posicion) {
+	queue<Posicion> pila;
+	pila.push(posicion);
+	while (!pila.empty()) {
+		Posicion p = pila.front();
+		pila.pop();
+		vector<Posicion> adyacentes_no_ocupados =this->adyacenciasNoOcupadas(p);
+		if (adyacentes_no_ocupados.empty()) {
+			vector<Posicion> adyacentes = this->adyacencias(p);
+			vector<Posicion>::iterator it = adyacentes.begin();
+			for (; it != adyacentes_no_ocupados.end(); ++it) {
+				Posicion ady = (*it);
+				pila.push(ady);
+			}
 
+		} else {
+			return adyacentes_no_ocupados.front();
+		}
+	}
+}
 void Mapa::posicionarEntidad(Entidad* entidad){
 	int i,j,x,y,alto,ancho;
 	alto = entidad->objetoMapa->baseLogica->alto;
