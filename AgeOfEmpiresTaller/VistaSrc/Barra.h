@@ -16,6 +16,7 @@
 #include <memory>
 #include <sstream>
 #include <tuple>
+#include "../VistaSrc/DatosSeleccionado.h"
 #ifndef BARRA_H_
 #define BARRA_H_
 
@@ -27,7 +28,7 @@ public:
 	Barra(Modelo * modelo, double *x,double *y);
 	void render(SDL_Renderer * renderer);
 	void load(SDL_Renderer * renderer,string path, int ancho_por_celda, int alto_por_celda);
-	void setDisplay(string display);
+	void setDisplay(DatosSeleccionado display);
 	void  actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad* entidad);
 	void closeFont();
 	void setListaCreables(map<string,ObjetoMapa*> tipos);
@@ -36,6 +37,11 @@ public:
 	int obtenerYDondeSeDibuja();
 	virtual ~Barra();
 private:
+	void dibujarDatosSeleccionados(SDL_Renderer* renderer);
+	void dibujarDatosRecurso(SDL_Renderer* renderer);
+	void dibujarDatosEdificio(SDL_Renderer* renderer);
+	void dibujarDatosPersonaje(SDL_Renderer* renderer);
+	void dibujarCargaDeBarra(int actual, int total,SDL_Color primero,SDL_Color segundo,SDL_Renderer* renderer,int y);
 	void dibujarDondeMiro(SDL_Renderer* renderer);
 	int imprimirNumeroDeRecurso(SDL_Renderer* renderer,shared_ptr<RecursoVista> recurso, int x_ref);
 	void dimensionRectanguloDeMiniMapa(int ancho, int alto);
@@ -53,7 +59,7 @@ private:
 	string nombre;
 	double desfasaje;
 	TTF_Font* font;
-	string display;
+	DatosSeleccionado display;
 	shared_ptr<CambioDeCoordendas> transformador;
 	double *x_ref;
 	double*y_ref;

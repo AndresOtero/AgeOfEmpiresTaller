@@ -72,8 +72,13 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 dibujo_t Personaje::dibujar(){
 	return dibujo_actual;
 }
-string Personaje::mostrar_contenido(){
-	return this->objetoMapa->nombre+string(",")+this->nombreJugador;
+DatosSeleccionado Personaje::mostrar_contenido(){
+	DatosSeleccionado datos;
+	datos.setTipo(PERSONAJE);
+	datos.setNombre(this->objetoMapa->nombre);
+	datos.setJugador(this->nombreJugador);
+	datos.setVida(&this->vida,this->objetoMapa->vida);
+	return datos;
 }
 void Personaje::set_posicion(Posicion pos){
 	this->referencia_mapa_x=pos.get_x_exacta();

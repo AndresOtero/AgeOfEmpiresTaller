@@ -13,6 +13,7 @@
 #include "Entidad.h"
 #include "Atacable.h"
 #include "Costo.h"
+#include "../VistaSrc/DatosSeleccionado.h"
 #ifndef PERSONAJE_H_
 #define PERSONAJE_H_
 typedef int dibujo_t;
@@ -54,7 +55,7 @@ public:
 		return this->costo;
 	}
 	RecursosJugador * recursosJugador();
-	string mostrar_contenido();
+	DatosSeleccionado mostrar_contenido();
 	ObjetoMapa* objetoMapa;
 	dibujo_t dibujar();
 	virtual ~Personaje();

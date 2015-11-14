@@ -10,6 +10,7 @@
 #define PIXELESDIGITOS 200
 #define ANCHO_BASE  249
 #define ALTO_BASE  124
+#define ALTO_BARRITA 10
 
 Barra::Barra(Modelo * modelo,double * x, double *y) {
 	shared_ptr<Minimapa> mapa(new Minimapa(modelo));
@@ -65,8 +66,8 @@ void Barra::load(SDL_Renderer * renderer, string path, int ancho_por_celda,int a
 
 }
 
-void Barra::setDisplay(string display){
-	this->display= display;
+void Barra::setDisplay(DatosSeleccionado datos){
+	this->display= datos;
 }
 void  Barra::actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad* entidad){
 	oro->cambiarCant(jugador->recursosJugador()->cantOro());
@@ -77,12 +78,17 @@ void  Barra::actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad
 		if (personajes[0]->puedeCrear()){
 			this->id_edificio_creador = -1;
 			this->setListaCreables(jugador->devolverEdificiosCreables());
+			return;
 		}
 	}
 	if(entidad){
-		this->id_edificio_creador = entidad->getId();
-		this->setListaCreables(entidad->devolverPersonajesCreables());
+		if (entidad->estaConstruida()){
+			this->id_edificio_creador = entidad->getId();
+			this->setListaCreables(entidad->devolverPersonajesCreables());
+			return;
+		}
 	}
+	this->seleccionable=false;
 
 }
 //tengo q hacer actualizar de jugador no de personaje
@@ -92,14 +98,6 @@ void Barra::setListaCreables(map<string,ObjetoMapa*> tipos){
 }
 
 void Barra::renderTexto(SDL_Renderer*renderer){
-	if (!this->display.empty()){
-		SDL_Color color = this->mapa->paleta(NEGRO);
-		if (cargarTexto(renderer,color,this->texto, this->display)){
-			imprimirTexto(this->mapa->anchoPantalla()/4,referencia_y+this->mapa->altoMapa()/2,
-							renderer,this->texto);
-		}
-
-	}
 
 	int x_oro,x_piedra,x_madera,x_comida;
 	x_oro = this->x_comienzo_recurso;
@@ -144,7 +142,7 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 }
 
 tuple<ObjetoMapa*,int> Barra::seleccionar(int pixel_x, int pixel_y){
-	if (pixel_x < TTF_FontHeight(font)){
+	if (pixel_x < TTF_FontHeight(font)&&seleccionable){
 		int seleccion = (pixel_y-this->referencia_y)/TTF_FontHeight(font) - 1;
 		//si es un indice positivo y dentro del rango
 		if (seleccion>=0 && ((this->listaCreables.size())>(seleccion))){
@@ -192,11 +190,112 @@ void Barra::render(SDL_Renderer*renderer){
 	SDL_Rect rect = {0,this->referencia_y,this->mapa->anchoPantalla(),this->mapa->altoMapa()};
 	this->textura->renderEx(0,NULL,&rect,renderer,NULL);
 	this->renderTexto(renderer);
+	this->dibujarDatosSeleccionados(renderer);
 	this->mapa->render(renderer);
 	this->dibujarDondeMiro(renderer);
 
 }
+void Barra::dibujarDatosSeleccionados(SDL_Renderer* renderer){
+	switch (this->display.getTipoSeleccionado()){
+	case RECURSO:
+		this->dibujarDatosRecurso(renderer);
+		break;
+	case EDIFICIO:
+		this->dibujarDatosEdificio(renderer);
+		break;
+	case PERSONAJE:
+		this->dibujarDatosPersonaje(renderer);
+		break;
+	default:
+		break;
+	}
+}
+void Barra::dibujarDatosRecurso(SDL_Renderer* renderer){
+	shared_ptr<Textura> nombre(new Textura()),recurso(new Textura());
+	int y_escalar = (this->mapa->altoMapa()/TTF_FontHeight(font));
+	int y = this->referencia_y + 2*this->mapa->altoMapa()/y_escalar;
+	if (this->cargarTexto(renderer,this->mapa->paleta(NEGRO),nombre,this->display.getNombre())){
+		this->imprimirTexto(this->x_comienzo_recurso,y,renderer,nombre);
+	}
+	printf("%d\n",this->display.getRecurso());
+	if (this->cargarTexto(renderer, this->mapa->paleta(NEGRO), recurso,
+			to_string(this->display.getRecurso()))) {
+		this->imprimirTexto(this->x_comienzo_recurso, y+TTF_FontHeight(font), renderer, recurso);
+	}
+	if (this->display.getRecurso()<=0){
+		DatosSeleccionado datos;
+		this->display = datos;
+	}
+}
+void Barra::dibujarDatosEdificio(SDL_Renderer* renderer){
+	shared_ptr<Textura> nombre(new Textura());
+	int y_escalar = (this->mapa->altoMapa() / TTF_FontHeight(font));
+	int x, y = this->referencia_y + 2*this->mapa->altoMapa()/y_escalar;
+	if (this->cargarTexto(renderer, this->mapa->paleta(NEGRO), nombre,
+			this->display.getNombre())) {
+		this->imprimirTexto(this->x_comienzo_recurso, y, renderer, nombre);
+	}
+	this->dibujarCargaDeBarra(this->display.getVidaActual(),
+			this->display.getVidaTotal(), this->mapa->paleta(VERDE),
+			this->mapa->paleta(ROJO), renderer, y + nombre->getHeight());
 
+	if (this->display.getConstruccionActual()>0){
+		this->dibujarCargaDeBarra(
+				this->display.getConstruccionTotal()
+						- this->display.getConstruccionActual(),
+				this->display.getConstruccionTotal(),
+				this->mapa->paleta(AMARILLO), this->mapa->paleta(BLANCO),
+				renderer, y + nombre->getHeight() + ALTO_BARRITA);
+	}
+	if (this->display.getVidaActual()<=0){
+		DatosSeleccionado datos;
+		this->display = datos;
+	}
+
+
+}
+void Barra::dibujarDatosPersonaje(SDL_Renderer* renderer){
+	shared_ptr<Textura> nombre(new Textura()), jugador(new Textura());
+	int y_escalar = (this->mapa->altoMapa() / TTF_FontHeight(font));
+	int x, y = this->referencia_y + 2*this->mapa->altoMapa()/y_escalar;
+	if (this->cargarTexto(renderer, this->mapa->paleta(NEGRO), nombre,
+			this->display.getNombre())) {
+		this->imprimirTexto(this->x_comienzo_recurso, y, renderer, nombre);
+	}
+	if (this->cargarTexto(renderer, this->mapa->paleta(NEGRO), jugador,
+			this->display.getJugador())) {
+		//MINI HARCODE TODO
+		this->imprimirTexto(this->x_comienzo_recurso+nombre->getWidth()+30, y, renderer, jugador);
+	}
+	this->dibujarCargaDeBarra(this->display.getVidaActual(),
+			this->display.getVidaTotal(), this->mapa->paleta(VERDE),
+			this->mapa->paleta(ROJO), renderer, y + nombre->getHeight());
+	if (this->display.getVidaActual()<=0){
+			DatosSeleccionado datos;
+			this->display = datos;
+		}
+
+
+}
+
+void Barra::dibujarCargaDeBarra(int actual, int total,SDL_Color primero,SDL_Color segundo,SDL_Renderer* renderer,int y){
+	if (total!=0){
+		int largo_total = (this->mapa->anchoPantalla() - this->mapa->altoMapa()
+				- this->x_comienzo_recurso) / 2;
+		int largo_actual = (largo_total * actual) / total;
+		SDL_SetRenderDrawColor(renderer, primero.r, primero.g, primero.b,
+				primero.a);
+		SDL_Rect rect = { this->x_comienzo_recurso, y, largo_actual,
+				ALTO_BARRITA };
+		SDL_RenderFillRect(renderer, &rect);
+		SDL_SetRenderDrawColor(renderer, segundo.r, segundo.g, segundo.b,
+				segundo.a);
+		SDL_Rect rect2 = { this->x_comienzo_recurso + largo_actual, y,
+				largo_total - largo_actual, ALTO_BARRITA };
+		SDL_RenderFillRect(renderer, &rect2);
+	}
+
+}
 void Barra::dibujarDondeMiro(SDL_Renderer * renderer){
 	int x;
 	int y;

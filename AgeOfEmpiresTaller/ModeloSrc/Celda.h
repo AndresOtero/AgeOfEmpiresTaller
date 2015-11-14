@@ -7,6 +7,7 @@
 #include <iostream>
 #include "Entidad.h"
 #include "Personaje.h"
+#include "../VistaSrc/DatosSeleccionado.h"
 typedef int dibujo_t;
 #define DEFAULT 0
 #define AFUERA -1
@@ -32,8 +33,8 @@ public:
 	bool tieneRecurso();
 	dibujo_t dibujarEscenario();
 	dibujo_t dibujarTiles();
-	string mostrar_contenido();
-	string mostrar_entidad();
+	DatosSeleccionado mostrar_contenido();
+	DatosSeleccionado mostrar_entidad();
 	void ocuparCelda(Entidad*entidad);
 	void liberarCelda();
 	void seleccionarEntidad();

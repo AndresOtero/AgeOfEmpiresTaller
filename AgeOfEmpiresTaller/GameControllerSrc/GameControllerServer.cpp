@@ -278,9 +278,9 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					memcpy(mensaje.paramNombre,
 							string_to_char_array(p->getNombreJugador()),
 							sizeof(mensaje.paramNombre));
-					mensaje.paramInt1 = p->recursosJugador()->cantOro();
-					mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
-					mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
+					mensaje.paramInt1 = p->getId();
+					mensaje.paramDouble1 = p->getRecoleccion();
+					mensaje.paramDouble2 = ((Recurso *) p->get_objetivo())->getId();
 					this->agregarMensaje(mensaje, mutex);
 					p->recursosJugador()->reset();
 					//reset, el q acumula es el jugador

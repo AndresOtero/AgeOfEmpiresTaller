@@ -15,6 +15,7 @@
 #include "../ModeloSrc/Personaje.h"
 #include "Barra.h"
 #include "../ModeloSrc/Mapa.h"
+#include "../VistaSrc/DatosSeleccionado.h"
 using namespace std;
 
 class Dibujo;

@@ -66,14 +66,14 @@ void Celda::ocuparCelda(Entidad * entidad){
 	this->entidad=entidad;
 	//deberia setear el escenario con el modelo en que estamos
 }
-string Celda::mostrar_contenido(){
-	string nombre;
+DatosSeleccionado Celda::mostrar_contenido(){
+	DatosSeleccionado datos;
 	if (this->personaje!=NULL){
-			nombre = this->personaje->mostrar_contenido();
+			datos = this->personaje->mostrar_contenido();
 	}
 	else
-		nombre = this->mostrar_entidad();
-	return nombre;
+		datos = this->mostrar_entidad();
+	return datos;
 }
 void Celda::seleccionarEntidad(){
 	if (this->entidad!=NULL){
@@ -91,16 +91,13 @@ bool Celda::estaSeleccionada(){
 	}
 	return false;
 }
-string Celda::mostrar_entidad(){
-	string nombre;
+DatosSeleccionado Celda::mostrar_entidad(){
+	DatosSeleccionado datos;
 	if (this->entidad!=NULL){
-			nombre = this->entidad->mostrar_contenido();
+			datos = this->entidad->mostrar_contenido();
 
 		}
-	else {
-		nombre = "";
-	}
-	return nombre;
+	return datos;
 }
 Personaje* Celda::devolver_personaje(){
 	return personaje;

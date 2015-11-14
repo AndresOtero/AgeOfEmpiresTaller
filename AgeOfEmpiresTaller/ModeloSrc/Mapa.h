@@ -9,6 +9,7 @@
 #include <vector>
 #include "Posicion.h"
 #include "GeneradorNumeros.h"
+#include "../VistaSrc/DatosSeleccionado.h"
 
 using namespace std;
 #ifndef MAPA_H_
@@ -29,8 +30,8 @@ public:
 	dibujo_t dibujarEscenario(int x, int y);
 	void setTiles(dibujo_t dibujo,int x,int y);
 	void setEscenario(dibujo_t dibujo,int x,int y);
-	string mostrar_contenido(int x,int y);
-	string mostrar_entidad(int x, int y);
+	DatosSeleccionado mostrar_contenido(int x,int y);
+	DatosSeleccionado mostrar_entidad(int x, int y);
 	virtual ~Mapa();
 	Personaje* personaje_celda(int x, int y);
 	bool hay_personaje(int x, int y);
