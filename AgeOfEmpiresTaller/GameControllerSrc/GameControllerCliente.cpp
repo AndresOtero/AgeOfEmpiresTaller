@@ -38,7 +38,6 @@ void GameControllerCliente::cambiar_destino_personaje(Id id, double mov_x,double
 	msg_t mensaje;
 
 	mensaje.type = MOVER_PERSONAJE;
-
 	mensaje.paramDouble1 = mov_x;
 	mensaje.paramDouble2 = mov_y;
 	mensaje.paramInt1=id;

@@ -32,6 +32,8 @@ public:
 	virtual void setAnimar(bool a);
 	virtual void resetear();
 	virtual void ponerRojo();
+	virtual void ponerVerde();
+	virtual void ponerAmarillo();
 	virtual ~Dibujo();
 protected:
 	SDL_Rect spriteClips;

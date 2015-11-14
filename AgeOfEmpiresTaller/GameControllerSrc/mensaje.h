@@ -8,6 +8,7 @@
 #ifndef GAMECONTROLLERSRC_MENSAJE_H_
 #define GAMECONTROLLERSRC_MENSAJE_H_
 const int PARAM_STRING_LEN = 20;
+const int PARAM_TIPO_STRING_LEN = 7;
 
 enum MensajeType {
 	KEEPALIVE,
@@ -41,8 +42,10 @@ typedef struct {
 	MensajeType type;
 	char paramNombre[PARAM_STRING_LEN];
 	unsigned int paramInt1;
+	//unsigned int paramInt2;
 	double paramDouble1;
 	double paramDouble2;
+	char paramTipo[PARAM_TIPO_STRING_LEN];
 } msg_t;
 
 class mensaje {

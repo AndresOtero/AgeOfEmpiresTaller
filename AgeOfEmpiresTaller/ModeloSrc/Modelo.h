@@ -72,6 +72,7 @@ public:
 	//cliente
 	void actualizarRecursos(int oro,int madera,int piedra);
 	int agregarEntidad(string nombre,int x, int y,int cantidad);
+	bool tocaSombra(Entidad * entidad);
 	Entidad* get_entidad_seleccionada();
 	~Modelo();
 	void agregarPersonajeCliente(Personaje* personaje);

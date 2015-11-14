@@ -57,19 +57,22 @@ bool Entidad::esAdyacente(Posicion pos){
 	alto = this->objetoMapa->baseLogica->alto;
 	ancho = this->objetoMapa->baseLogica->ancho;
 	Posicion temp1,temp2;
+	printf("Ancho %d Alto %d\n",ancho,alto);
 	//reviso si alguna fila de ancho esta en rango de la posicion
-	for (x = 0; x < (ancho); x++){
+	for (x = 0; x < (ancho); x++) {
 		temp1 = {this->posicion->getX()+x,this->posicion->getY()};
 		temp2 = {this->posicion->getX()+x,posicion->getY()+alto};
 		if (pos.es_adyacente(temp1)|| pos.es_adyacente(temp2)) {
+			printf("Pos %g,%g; Temp1: %g,%g Temp2: %g,%g\n",pos.get_x_exacta(),pos.get_y_exacta(),temp1.get_x_exacta(),temp1.get_y_exacta(),temp1.get_x_exacta(),temp1.get_y_exacta());
 			return true;
 		}
 	}
 	//reviso si alguna que no cheque esta en rango
-	for (y = 1 ; y < (alto-1); y++){
+	for (y = 1; y < (alto - 1); y++) {
 		temp1 = {posicion->getX(),posicion->getY()+y};
 		temp2 = {posicion->getX()+ancho,posicion->getY()+y};
 		if (pos.es_adyacente(temp1)|| pos.es_adyacente(temp2)) {
+			printf("Pos %g,%g; Temp1: %g,%g Temp2: %g,%g\n",pos.get_x_exacta(),pos.get_y_exacta(),temp1.get_x_exacta(),temp1.get_y_exacta(),temp1.get_x_exacta(),temp1.get_y_exacta());
 			return true;
 		}
 	}

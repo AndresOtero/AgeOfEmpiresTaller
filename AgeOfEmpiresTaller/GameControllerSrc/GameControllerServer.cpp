@@ -32,6 +32,7 @@ void GameControllerServer::agregarCliente(string name,string tipo, SDL_mutex *mu
 	//seteo mensaje
 	msg_t mensaje;
 	mensaje.type = LOGIN;
+	memcpy(mensaje.paramTipo,string_to_char_array(tipo),sizeof(mensaje.paramTipo));
 	memcpy(mensaje.paramNombre,string_to_char_array(name),sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
@@ -124,6 +125,7 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 			Personaje* personaje = (*iter);
 			msg_crear_personaje.type=NUEVO_PERSONAJE;
 			Posicion pos=personaje->get_posicion();
+			memcpy(msg_crear_personaje.paramTipo,string_to_char_array(personaje->objetoMapa->nombre), sizeof(msg_crear_personaje.paramTipo));
 			memcpy(msg_crear_personaje.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(msg_crear_personaje.paramNombre));
 			msg_crear_personaje.paramDouble1=pos.get_x_exacta();
 			msg_crear_personaje.paramDouble2=pos.get_y_exacta();
@@ -190,7 +192,9 @@ void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant, 
 
 }
 void GameControllerServer::actualizar(SDL_mutex *mutex) {
+	printf("Actualizar\n");
 	this->modelo->actualizarMapa();		//mueven los tipitos
+	printf("Termino de actualizar\n");
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
@@ -236,6 +240,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 
 		}
 		if (p->esta_recolectando()){
+			p->set_destino(p->get_objetivo()->get_posicion());
 			if (p->esAdyacente(p->get_objetivo())){
 				if (!p->estaAtacandoCliente()) {
 					p->atacandoCliente(true);
@@ -244,39 +249,41 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					msg.paramInt1 = p->getId();
 					this->agregarMensaje(msg, mutex);
 				}
-			}
-		}
-		if (p->tieneRecursos()){
-			//printf("Recolecto recursos\n");
-			//solucion que soluciona no tener que tener una lista con la info de los jugadores
-			msg_t mensaje;
-			mensaje.type = ACTUALIZACION_RECURSOS;
-			memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),sizeof(mensaje.paramNombre));
-			mensaje.paramInt1 = p->recursosJugador()->cantOro();
-			mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
-			mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
-			this->agregarMensaje(mensaje, mutex);
-			p->recursosJugador()->reset();
-			//reset, el q acumula es el jugador
-			//puede explotar con muchos recolectando
-			Recurso * recurso = (Recurso *)p->get_objetivo();
-			if (recurso){
-				if (recurso->seAcabo()){
-					p->terminarAccion();
-					mensaje.type = ELIMINAR_ENTIDAD;
-					mensaje.paramInt1 = recurso->getId();
+				if (p->contar()){
+					((Recurso *) p->get_objetivo())->recolectar(
+							p->recursosJugador(), p->getRecoleccion());
+					//solucion para no tener que tener una lista con la info de los jugadores
+					msg_t mensaje;
+					mensaje.type = ACTUALIZACION_RECURSOS;
+					memcpy(mensaje.paramNombre,
+							string_to_char_array(p->getNombreJugador()),
+							sizeof(mensaje.paramNombre));
+					mensaje.paramInt1 = p->recursosJugador()->cantOro();
+					mensaje.paramDouble1 = p->recursosJugador()->cantMadera();
+					mensaje.paramDouble2 = p->recursosJugador()->cantPiedra();
 					this->agregarMensaje(mensaje, mutex);
-					this->modelo->eliminarEntidad(recurso);
-					msg_t msg;
-					msg.type = TERMINAR_ACCION;
-					msg.paramInt1 = p->getId();
-					this->agregarMensaje(msg, mutex);
-					//si el recurso se acabo lo saco y mando mensaje
+					p->recursosJugador()->reset();
+					//reset, el q acumula es el jugador
+					//puede explotar con muchos recolectando
+					Recurso * recurso = (Recurso *) p->get_objetivo();
+					if (recurso->seAcabo()) {
+						p->terminarAccion();
+						mensaje.type = ELIMINAR_ENTIDAD;
+						mensaje.paramInt1 = recurso->getId();
+						this->agregarMensaje(mensaje, mutex);
+						this->modelo->eliminarEntidad(recurso);
+						msg_t msg;
+						msg.type = TERMINAR_ACCION;
+						msg.paramInt1 = p->getId();
+						this->agregarMensaje(msg, mutex);
+						//si el recurso se acabo lo saco y mando mensaje
+					}
+
 				}
 			}
-
 		}
 		if (p->esta_contruyendo()){
+			printf("Esta contrusendo\n");
 			p->set_destino(p->get_objetivo()->get_posicion());
 			if (p->esAdyacente(p->get_objetivo())){
 				if (!p->estaAtacandoCliente()){
@@ -327,6 +334,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 		}
 
 	}
+	printf("Termino de procesar los personajes\n");
 }
 
 

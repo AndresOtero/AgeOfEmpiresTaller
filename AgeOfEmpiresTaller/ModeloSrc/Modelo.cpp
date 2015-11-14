@@ -38,6 +38,7 @@ Modelo::Modelo(Juego* juego) {
 	this->jugador=juego->escenario->jugador;
 	if (this->jugador){
 		this->jugador->cargarEdificios(this->juego->tipos);
+		printf("CargoEdificios\n");
 	}
 	this->factory_personaje.cargarPersonajes(this->juego->tipos);
 	personajes_seleccionados.clear();
@@ -97,9 +98,6 @@ void Modelo::actualizarMapa(){
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		mover_personaje(p);
-		if (p->esta_recolectando()&&p->contar()) {
-			this->recolectar(p, (Recurso *) p->get_objetivo());
-		}
 	}
 
 
@@ -113,7 +111,7 @@ void Modelo::eliminar_personaje(Personaje* eliminado) {
 		Personaje* p = (*it);
 		if (p->esta_atacando()){
 			if(p->get_atacado_id() == eliminado->getId()) {
-				p->dejar_de_atacar();
+				p->terminarAccion();
 			}
 		}
 	}
@@ -401,7 +399,7 @@ void Modelo::eliminarEntidadPorID(int id){
 
 			}if (p->esta_atacando()){
 				if (p->get_atacado()->getId() == id) {
-					p->dejar_de_atacar();
+					p->terminarAccion();
 				}
 
 			}
@@ -561,6 +559,21 @@ int Modelo::agregarEntidad(string nombre,int x, int y,int cantidad){
 			return ((Recurso *)entidad)->obtenerRecurso();
 	}
 	return 0;
+}
+
+bool Modelo::tocaSombra(Entidad * entidad){
+	int ancho,alto,x,y;
+	ancho = entidad->objetoMapa->baseLogica->ancho;
+	alto = entidad->objetoMapa->baseLogica->alto;
+	for (x = 0; x < ancho; x++) {
+		for (y = 0; y < alto; y++) {
+			if (this->oscuridad(0, entidad->get_posicion().getX() + x,
+					entidad->get_posicion().getY() + y)) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 //server
 int Modelo::crearEdificio(string nombre,int x, int y){
