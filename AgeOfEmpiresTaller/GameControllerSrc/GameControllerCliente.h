@@ -16,8 +16,7 @@ public:
 	 bool hayEventos();
 	 msg_t sacarMensaje();
 	 void agregarMensaje(msg_t mensaje);
-	string nombreJugador() ;
-	string ipJugador() ;
+	string nombreJugador() ;;
 	void insertarModelo(Modelo* modelo);
 	void setMapa(int ancho, int largo);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,

@@ -7,12 +7,11 @@
 
 #include "Jugador.h"
 
-Jugador::Jugador(string nombre,string ip,string raza) {
+Jugador::Jugador(string nombre,string raza) {
 	// TODO Auto-generated constructor stub
 	printf("crea jugador\n");
 	this->raza=raza;
 	this->nombre=nombre;
-	this->ip=ip;
 	this->recursos = new RecursosJugador(200,200,200,200);
 	this->factory.setRaza(raza);
 

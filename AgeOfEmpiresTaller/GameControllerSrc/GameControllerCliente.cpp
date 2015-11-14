@@ -28,10 +28,6 @@ string GameControllerCliente::nombreJugador() {
 bool GameControllerCliente::esNombre(char* nombre) {
 	return (!this->juego->escenario->jugador->getNombre().compare(nombre));
 }
-string GameControllerCliente::ipJugador() {
-	return this->juego->escenario->jugador->getIp();
-}
-
 
 void GameControllerCliente::cambiar_destino_personaje(Id id, double mov_x,double mov_y){
 

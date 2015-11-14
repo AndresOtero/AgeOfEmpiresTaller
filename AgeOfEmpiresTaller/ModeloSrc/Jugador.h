@@ -12,21 +12,20 @@
  using namespace std;
 
 class Jugador {
-	string nombre;
+
 	//Personaje* personaje;
 	RecursosJugador * recursos;
-	string ip;
-	string raza;
+
 	FactoryEdificio factory;
 public:
-	Jugador(string nombre,string ip,string raza);
+	string nombre;
+	string raza;
+
+	Jugador(string nombre,string raza);
 	virtual ~Jugador();
 
 	string getNombre() {
 		return nombre;
-	}
-	string getIp() {
-			return ip;
 	}
 	/**Personaje* getPersonaje()  {
 		return personaje;

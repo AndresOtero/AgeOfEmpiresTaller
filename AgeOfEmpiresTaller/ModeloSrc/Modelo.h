@@ -48,7 +48,6 @@ public:
 
 	int crearPersonajeServerEdificio(Personaje* personaje,Id id_edificio);
 	string nombreJugador();
-	string ipJugador();
 	bool afueraDelMapa(int x,int y);
 	int oscuridad(int dim,int x,int y);
 	string seleccionar(double x,double y);

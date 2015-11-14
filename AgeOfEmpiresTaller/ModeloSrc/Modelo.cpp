@@ -56,9 +56,6 @@ Modelo::Modelo(Juego* juego) {
 string Modelo::nombreJugador(){
 	return jugador->getNombre();
 }
-string Modelo::ipJugador(){
-	return jugador->getIp();
-}
 //llama server al agregar personaje
 void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 	//Posicion pos = this->mapa->posicionVacia();
