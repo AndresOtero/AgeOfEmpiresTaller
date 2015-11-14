@@ -21,6 +21,9 @@ public:
 	void setRecurso(int cantidad);
 	int sacarRecurso(int cantidad);
 	bool seAcabo();
+	int* obtenerPunteroRecurso(){
+		return &(this->cantidad);
+	}
 	virtual void recolectar(RecursosJugador* recursos, int cantidad){};
 	virtual ~Recurso();
 };

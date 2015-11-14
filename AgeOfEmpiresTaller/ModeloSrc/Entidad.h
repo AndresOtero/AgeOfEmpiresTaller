@@ -13,6 +13,7 @@
 #include "Atacable.h"
 #include "FactoryPersonaje.h"
 #include "Costo.h"
+#include "../VistaSrc/DatosSeleccionado.h"
 
 /*obs: la entidad tiene el tipo (ObjetoMapa donde guardo imagen, bases, pixels ref. Se comparte para todas las entidades de un mismo tipo).
  *  Incluye la posicion de cada entidad
@@ -29,7 +30,7 @@ public:
 	Entidad(ObjetoMapa* objetoMapa);
 	Entidad(ObjetoMapa* objetoMapa, int x, int y);
 	void cargarPersonajes(map<string,ObjetoMapa*> tipos);
-	string mostrar_contenido();
+	DatosSeleccionado mostrar_contenido();
 	ObjetoMapa* objetoMapa;
 	Posicion* posicion;
 	bool esUnRecurso();

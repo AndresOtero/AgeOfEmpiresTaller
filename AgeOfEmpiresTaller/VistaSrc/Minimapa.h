@@ -13,7 +13,10 @@
 #define NEGRO 4
 #define BLANCO 5
 #define VERDE_OSCURO 6
-#define NARANJA 7
+#define AMARILLO 7
+#define AMARILLO_OSCURO 8
+#define ROJO_OSCURO 9
+#define AZUL_OSCURO 10
 #include "Dibujo.h"
 #include "../ModeloSrc/Modelo.h"
 #include <math.h>

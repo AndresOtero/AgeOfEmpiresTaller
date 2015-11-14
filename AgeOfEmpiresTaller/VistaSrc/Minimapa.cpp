@@ -10,18 +10,6 @@
 #include <vector>
 #include "../ModeloSrc/Personaje.h"
 
-#define AZUL 1
-#define ROJO 2
-#define VERDE 3
-#define NEGRO 4
-#define BLANCO 5
-#define VERDE_OSCURO 6
-#define AMARILLO 7
-#define AMARILLO_OSCURO 8
-#define ROJO_OSCURO 9
-#define AZUL_OSCURO 10
-
-
 
 Minimapa::Minimapa(Modelo *modelo) {
 

@@ -49,10 +49,10 @@ void Mapa::setTiles(dibujo_t dibujo,int x,int y){
 void Mapa::setEscenario(dibujo_t dibujo,int x,int y){
 	this->getCelda(x,y)->setEscenario(dibujo);
 }
-string Mapa::mostrar_contenido(int x,int y){
+DatosSeleccionado Mapa::mostrar_contenido(int x,int y){
 	return this->getCelda(x,y)->mostrar_contenido();
 }
-string Mapa::mostrar_entidad(int x, int y){
+DatosSeleccionado Mapa::mostrar_entidad(int x, int y){
 	return this->getCelda(x,y)->mostrar_entidad();
 }
 Entidad* Mapa::entidad_celda(int x, int y){

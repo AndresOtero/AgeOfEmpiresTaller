@@ -11,7 +11,7 @@
 #include <vector>
 #include "../ModeloSrc/Juego.h"
 #include "Personaje.h"
-
+#include "../VistaSrc/DatosSeleccionado.h"
 #include <sys/time.h>
 #define PISADA 1
 #define VISIBLE 0
@@ -50,7 +50,7 @@ public:
 	string nombreJugador();
 	bool afueraDelMapa(int x,int y);
 	int oscuridad(int dim,int x,int y);
-	string seleccionar(double x,double y);
+	DatosSeleccionado seleccionar(double x,double y);
 	vector<Personaje*> devolverTodosLosPersonajes();
 	vector<Personaje*> devolverPersonajeSeleccionado();
 	void  cambiar_destino_personaje(Id id ,double mov_x,double mov_y);
@@ -69,7 +69,7 @@ public:
 	bool estaSeleccionada(int x,int y);
 	vector<Entidad*> obtenerEntidadesDeInicializacion();
 	//cliente
-	void actualizarRecursos(int oro,int madera,int piedra);
+	void actualizarRecursos(string jugador, int id_pers, int cant,int id_rec);
 	int agregarEntidad(string nombre,int x, int y,int cantidad);
 	bool tocaSombra(Entidad * entidad);
 	Entidad* get_entidad_seleccionada();

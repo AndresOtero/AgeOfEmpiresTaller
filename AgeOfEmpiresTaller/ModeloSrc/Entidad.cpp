@@ -15,7 +15,7 @@ Entidad::Entidad(ObjetoMapa* objetoMapa) {
 	this -> posicion = new Posicion();
 	GeneradorNumeros generar;
 	this->id = generar.otroID();
-	this->vida = 50; //TODO
+	this->vida = objetoMapa->vida; //TODO
 	this->raza = objetoMapa->raza;
 	this->velocidad_cosntruccion = objetoMapa->velocidad_construcccion;
 	this->costo.setCosto(objetoMapa->oro,objetoMapa->madera,objetoMapa->piedra,objetoMapa->comida);
@@ -26,7 +26,7 @@ Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	this -> posicion = new Posicion(x, y);
 	GeneradorNumeros generar;
 	this->id = generar.otroID();
-	this->vida = 50;//TODO
+	this->vida = objetoMapa->vida;//TODO
 	this->raza = objetoMapa->raza;
 	this->velocidad_cosntruccion = objetoMapa->velocidad_construcccion;
 	this->costo.setCosto(objetoMapa->oro,objetoMapa->madera,objetoMapa->piedra,objetoMapa->comida);
@@ -49,8 +49,18 @@ bool  Entidad::puedeCrearPersonajes(){
 }
 
 
-string Entidad::mostrar_contenido() {
-	return objetoMapa->nombre;
+DatosSeleccionado Entidad::mostrar_contenido() {
+	DatosSeleccionado datos;
+	datos.setNombre(objetoMapa->nombre);
+	if (this->esUnRecurso()){
+		datos.setTipo(RECURSO);
+		datos.setRecurso(((Recurso*)this)->obtenerPunteroRecurso());
+	}else{
+		datos.setTipo(EDIFICIO);
+		datos.setVida(&this->vida,this->objetoMapa->vida);
+		datos.setConstruccion(&this->velocidad_cosntruccion,this->objetoMapa->velocidad_construcccion);
+	}
+	return datos;
 
 }
 

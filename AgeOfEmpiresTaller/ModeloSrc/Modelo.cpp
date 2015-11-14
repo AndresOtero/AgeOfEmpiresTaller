@@ -203,11 +203,12 @@ void Modelo::limpiarSeleccion(){
 	personajes_seleccionados.clear();
 }
 
-string Modelo::seleccionar(double mov_x,double mov_y){
+DatosSeleccionado Modelo::seleccionar(double mov_x,double mov_y){
 	this->mapa->deseleccionar();
 	Posicion seleccionada= Posicion(mov_x,mov_y);
 	if (this->oscuridad(TILES,seleccionada.getX(),seleccionada.getY())==OSCURO){
-			return "";
+		DatosSeleccionado datos;
+		return datos;
 	}
 	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
 	entidad_seleccionada=NULL;
@@ -317,8 +318,16 @@ Posicion Modelo::mover_personaje(Personaje* personaje){
 }
 
 //cliente con la cantidad q recolecto
-void Modelo::actualizarRecursos(int oro,int madera,int piedra){
-	this->jugador->actualizarRecursos(oro,madera,piedra);
+void Modelo::actualizarRecursos(string jugador, int id_pers, int cant, int id_rec){
+	Personaje * p = this->get_Personaje_Por_Id(id_pers);
+	p->atacandoCliente(true);
+	Recurso * recurso = (Recurso * )this->buscarEntidad(id_rec);
+	if (this->jugador->getNombre()==jugador){
+		recurso->recolectar(this->jugador->recursosJugador(),cant);
+	}else{
+		recurso->sacarRecurso(cant);
+	}
+
 }
 
 /*void Modelo::actualizarRecursosServer(int id ,int oro,int madera,int piedra){

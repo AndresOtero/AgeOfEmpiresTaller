@@ -327,11 +327,15 @@ bool Vista::run() {
 							if (!this->modelo->tocaSombra(entidadACrear)&&this->modelo->getJugador()->puedePagar(entidadACrear->getCosto())) {
 								//TODO crear con muchos tipitos
 								//si puede crear es porque tiene un tipito seleccionado
-								this->modelo->getJugador()->pagar(entidadACrear->getCosto());
-								this->gameController->crearEdificio(
-										this->entidadACrear->mostrar_contenido(),
-										this->modelo->devolverPersonajeSeleccionado().front()->getId(),
-										floor(a), floor(b));
+								if (this->modelo->mapa->puedeUbicar(entidadACrear)){
+									this->modelo->getJugador()->pagar(
+											entidadACrear->getCosto());
+									this->gameController->crearEdificio(
+											this->entidadACrear->mostrar_contenido().getNombre(),
+											this->modelo->devolverPersonajeSeleccionado().front()->getId(),
+											floor(a), floor(b));
+								}
+
 
 								//podria moverse a cuando recibe que se creo asi se deja de dibjar
 								//en ese momento
@@ -340,10 +344,9 @@ bool Vista::run() {
 							//si no creo estoy seleccionando
 							this->barra->setDisplay(modelo->seleccionar(a, b));
 						}
-						this->dejarDeDibujarEdificio();
-
-
 					}
+					//si clickeo pase lo q pase dejo de dibujar
+					this->dejarDeDibujarEdificio();
 				}
 				else {
 					tuple<ObjetoMapa*,int> tipo =this->barra->seleccionar(seleccion_x_final, seleccion_y_final);
@@ -557,7 +560,7 @@ void Vista::dibujar_mapa() {
 					} else {
 						n_imagen = this->factory->get_idDibujo(
 								this->modelo->mapa->mostrar_entidad(coord_x,
-										coord_y));
+										coord_y).getNombre());
 					}
 					//fin cambio villero
 					int oscuro = modelo->oscuridad(dim, coord_x, coord_y);

@@ -31,7 +31,7 @@ public:
 	void interactuar(Personaje* personaje,Posicion pos);
 	void interactuar(Entidad * entidad,Posicion pos);
 	//Cliente
-	void acutalizarRecursos(int oro, int madera, int piedra);
+	void acutalizarRecursos(string jugador, int id_pers, int cant,int id_rec);
 	void agregarEntidad(string nombre,int x,int y,int cant);
 	void cambiar_destino_personaje(Id id, double mov_x, double mov_y);
 	Personaje* conectarCliente(string name,string tipo, int x,int y,dibujo_t dibujo,int id);
