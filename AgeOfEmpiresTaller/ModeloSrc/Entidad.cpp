@@ -87,6 +87,18 @@ bool Entidad::esAdyacente(Posicion pos){
 	}
 	return false;
 }
+bool Entidad::esUnCentroCivio(){
+	if (!this->diccionario_de_personajes.empty()){
+		map<string, ObjetoMapa*>::iterator it;
+		for (it = this->diccionario_de_personajes.begin(); it != this->diccionario_de_personajes.end(); it++){
+			//si puede construir tipitos que construyen es un centro civico
+			if (it->second->construccion>0){
+				return true;
+			}
+		}
+	}
+	return false;
+}
 Entidad::~Entidad() {
 	delete posicion;
 	if(this->objetoMapa==NULL){

@@ -48,6 +48,9 @@ public:
 	Posicion validar_destino(Posicion adonde_voy,Posicion adonde_estoy);
 	vector<Posicion> adyacencias(Posicion posicion);
 	bool puedeUbicar(Entidad * entidad);
+	bool estaDentroDeSector(Posicion sector,Posicion entidad);
+	Posicion posicionValidaEnSector(Posicion sector,Entidad * entidad);
+	Posicion posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base);
 private:
 	Celda* getCelda(int x,int y);
 

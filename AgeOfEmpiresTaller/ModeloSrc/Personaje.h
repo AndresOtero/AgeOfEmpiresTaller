@@ -133,7 +133,18 @@ public:
 			return true;
 		return false;
 	}
-
+	bool esRey(){
+		//si es inutil es rey
+		bool esRey= true;
+		if (puedeAtacar()){
+			esRey=false;
+		}else if(puedeRecolectar()){
+			esRey=false;
+		}else if (puedeCrear()){
+			esRey=false;
+		}
+		return esRey;
+	}
 	double getReferenciaMapaX() const {
 		return referencia_mapa_x;
 	}

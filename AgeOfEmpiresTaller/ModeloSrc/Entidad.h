@@ -76,6 +76,8 @@ public:
 	string get_raza(){
 		return raza;
 	}
+	bool esUnCentroCivio();
+	bool esUnaBandera();
 	virtual ~Entidad();
 	int id;
 	int getId(){

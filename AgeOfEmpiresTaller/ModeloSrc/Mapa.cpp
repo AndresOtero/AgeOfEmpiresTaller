@@ -266,6 +266,73 @@ bool Mapa::puedeUbicar(Entidad* entidad){
 	}
 	return true;
 }
+
+
+Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base){
+	//devuelve una posicion valida en el mapa
+	Posicion pos;
+
+	//Lo puede hacer un for per ya fueee
+	//MALDAD AL MAXIMO
+	vector<Posicion> sectores;
+	Posicion sector1 = { 0, 0 };
+	Posicion sector2 = { this->getAncho() / 2, 0 };
+	Posicion sector3 = { 0, this->getLargo() / 2 };
+	Posicion sector4 = { this->getAncho() / 2, this->getLargo() / 2 };
+	sectores.push_back(sector1);
+	sectores.push_back(sector2);
+	sectores.push_back(sector3);
+	sectores.push_back(sector4);
+	vector<Entidad*>::iterator it = centros.begin();
+	vector<Posicion>::iterator it_pos = sectores.begin();
+	//por cada centro civico
+	for (; it != centros.end(); ++it) {
+		for (; it_pos != sectores.end(); ++it_pos) {
+			//elimina el sector donde se encuentra
+			if (this->estaDentroDeSector(*it_pos, (*it)->get_posicion())) {
+				sectores.erase(it_pos);
+				break;
+			}
+		}
+		it_pos = sectores.begin();
+	}
+	if (sectores.empty()) {
+		printf("Errores todos los sectores ocupados\n");
+		pos.set(-1,-1);
+		return pos;
+	} else {
+		GeneradorNumeros generador;
+		int i = generador.numeroRandom(0, sectores.size() - 1);
+		return this->posicionValidaEnSector(sectores[i], base);
+	}
+
+}
+Posicion Mapa::posicionValidaEnSector(Posicion sector,Entidad * entidad){
+	//devuelve una posicion random dentro de un cuarto del mapa que este vacia y sea ubicable
+	GeneradorNumeros num;
+	int x;
+	int y;
+	Celda * celda;
+	do {
+		x = num.numeroRandom(sector.getX(), sector.getX()+ this->ancho-1);
+		y = num.numeroRandom(sector.getY(), sector.getY() + this->largo-1);
+		celda = this->getCelda(x, y);
+		entidad->set_posicion(x,y);
+	} while (celda->estaOcupada() || !this->puedeUbicar(entidad));
+	Posicion posicion = { x, y };
+	return posicion;
+}
+
+bool Mapa::estaDentroDeSector(Posicion sector,Posicion entidad){
+	//su referencia al mapa esta dentro del sector
+	if (entidad.getX() < sector.getX()+this->getAncho()/2){
+		if (entidad.getY() < sector.getY() + this->getLargo()/2){
+			return true;
+		}
+	}
+	return false;
+}
+
 Mapa::~Mapa() {
 	int largo = this->largo;
 	int ancho = this->ancho;

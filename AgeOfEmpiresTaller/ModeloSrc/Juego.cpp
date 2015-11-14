@@ -12,6 +12,7 @@ Juego::Juego() {
 	this -> pantalla = new Pantalla();
 	this -> conf = new Configuracion();
 	this -> escenario = new Escenario();
+	this->modo = MODO_DEFAULT;
 	//cargarTiposDefault();
 }
 void Juego::cargarTiposDefault(){
@@ -26,8 +27,22 @@ Juego::Juego(Pantalla* pantalla, Configuracion* conf, Escenario* escenario, std:
 	this -> conf = conf;
 	this -> escenario = escenario;
 	this->tipos = tipos;
+	this->modo = MODO_DEFAULT;
 	//cargarTiposDefault();
 
+}
+
+Entidad * Juego::centroCivicoDe(string raza){
+	map<string,ObjetoMapa*>::iterator it = this->tipos.begin();
+	for(;it!=this->tipos.end();++it){
+		//si el personaje es constructor y de la misma raza
+		//su edificio constructor es el centro civico
+		if (it->second->construccion>0 && it->second->raza==raza){
+			Entidad * entidad = new Entidad(this->tipos[it->second->edificio_constructor]);
+			return entidad;
+		}
+	}
+	return NULL;
 }
 void Juego::setEscenario(string nombre,int ancho,int largo){
 	this -> escenario->nombre=nombre;

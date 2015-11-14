@@ -350,6 +350,8 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 				msg.type = TERMINAR_ACCION;
 				msg.paramInt1 = p->getId();
 				this->agregarMensaje(msg, mutex);
+
+				//chequear que si lo q se elimino termino el juego de alguien
 			}
 		}
 
