@@ -387,6 +387,14 @@ msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
 	}
 	return mensaje;
 }
+void GameControllerServer::crearCentroCivicoNuevoUser(string raza){
+	Entidad * entidad = this->modelo->set_CentroCivicoNuevoServer(raza);
+	printf("Nombre %s\n",entidad->objetoMapa->nombre.c_str());
+	printf("crear personaje\n");
+	Personaje* personaje =new Personaje(entidad->devolverPersonajesCreables().begin()->second);
+	personaje->setNombreJugador("ger");
+	this->modelo->crearPersonajeServerEdificio(personaje,entidad->id);
+}
 
 void GameControllerServer::agregarMensaje(msg_t mensaje,SDL_mutex *mutex){
 	bool paso = false;

@@ -287,9 +287,12 @@ Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad 
 	vector<Posicion>::iterator it_pos = sectores.begin();
 	//por cada centro civico
 	for (; it != centros.end(); ++it) {
+		printf("L2Por centro en mapa\n");
 		for (; it_pos != sectores.end(); ++it_pos) {
 			//elimina el sector donde se encuentra
+
 			if (this->estaDentroDeSector(*it_pos, (*it)->get_posicion())) {
+				printf("L2Saca un sector%d,%d\n",(*it_pos).getX(),(*it_pos).getY());
 				sectores.erase(it_pos);
 				break;
 			}
@@ -297,7 +300,7 @@ Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad 
 		it_pos = sectores.begin();
 	}
 	if (sectores.empty()) {
-		printf("Errores todos los sectores ocupados\n");
+		printf("L2Errores todos los sectores ocupados\n");
 		pos.set(-1,-1);
 		return pos;
 	} else {
@@ -314,11 +317,13 @@ Posicion Mapa::posicionValidaEnSector(Posicion sector,Entidad * entidad){
 	int y;
 	Celda * celda;
 	do {
-		x = num.numeroRandom(sector.getX(), sector.getX()+ this->ancho-1);
-		y = num.numeroRandom(sector.getY(), sector.getY() + this->largo-1);
+		x = num.numeroRandom(sector.getX(), sector.getX()+ this->ancho/2-1);
+		y = num.numeroRandom(sector.getY(), sector.getY() + this->largo/2-1);
 		celda = this->getCelda(x, y);
 		entidad->set_posicion(x,y);
+		printf("L3En while\n");
 	} while (celda->estaOcupada() || !this->puedeUbicar(entidad));
+	printf("L3EncontroPosicion\n");
 	Posicion posicion = { x, y };
 	return posicion;
 }

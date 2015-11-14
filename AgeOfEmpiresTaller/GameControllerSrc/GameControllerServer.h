@@ -40,6 +40,7 @@ public:
 	void crearEdificio(string nombre,int id_constructor, int x, int y,SDL_mutex *mutex);
 	void crearPersonajeEdificio(string nombre, string tipo,Id id_edificio,SDL_mutex *mutex);
 	queue <msg_t>  inicializacion();
+	void crearCentroCivicoNuevoUser(string raza);
 
 
 private:

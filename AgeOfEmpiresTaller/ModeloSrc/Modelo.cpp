@@ -67,14 +67,19 @@ void Modelo::set_posicionRandomPersonaje(Personaje* personaje){
 Entidad* Modelo::set_CentroCivicoNuevoServer(string raza){
 	Entidad* base = this->juego->centroCivicoDe(raza);
 	if (base){
+		printf("L1Existe la base\n");
 		vector<Entidad*> centros = this->obtenerCentrosCivicosEnMapa();
 		//esta funcion q viene es complejaaa
+		printf("L1Obtuvo centros civicos\n");
 		Posicion pos = this->mapa->posicionValidaParaCentroCivico(centros, base);
+		printf("L1Pudo obtener posicion\n");
 		base->set_posicion(pos.getX(), pos.getY());
+		printf("L1 pos %d,%d\n",pos.getX(), pos.getY());
 		this->insertarEntidad(base);
 	}else{
 		printf("ERROR no existe centro civico de esa raza\n");
 	}
+	base->cargarPersonajes(factory_personaje.devolverTipos(base->objetoMapa->nombre));
 	return base;
 }
 
