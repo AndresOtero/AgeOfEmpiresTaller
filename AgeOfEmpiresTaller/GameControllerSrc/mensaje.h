@@ -35,6 +35,7 @@ enum MensajeType {
 	ELIMINAR,
 	CONSTRUIR,
 	EMPEZAR_ACCION,
+	CREAR_PERSONAJE_EDIFICIO,/*Id edificio Nombre de Personaje*/
 	TERMINAR_ACCION //TODO
 };
 

@@ -54,6 +54,14 @@ void GameControllerCliente::eliminar(int id){
 void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
+void GameControllerCliente::crearPersonajeEdificio(string tipo,int id){
+	msg_t mensaje;
+	mensaje.type = CREAR_PERSONAJE_EDIFICIO;
+	memcpy(mensaje.paramNombre,string_to_char_array(this->modelo->nombreJugador()),sizeof(mensaje.paramNombre));
+	memcpy(mensaje.paramTipo,string_to_char_array(tipo),sizeof(mensaje.paramTipo));
+	mensaje.paramInt1=id;
+	this->agregarMensaje(mensaje);
+}
 
 void GameControllerCliente::ataque(Id idAtacante,Id idAtacado,int danio){
 	//aca crasheaba mal
@@ -122,14 +130,17 @@ void GameControllerCliente::setId(double x, double y, int id){
 }
 
 Personaje* GameControllerCliente::conectarCliente(string name,string tipo, int x,int y,dibujo_t dibujo,int id){
+	printf("Entro\n");
 	ObjetoMapa* obj= this->juego->tipos[tipo];
-
+	printf("Esta bien el tipo\n");
 	Personaje* personaje =new Personaje(obj,x,y);
+	printf("Creo el personaje\n");
 	personaje->setNombreJugador(name);
 	personaje->setId(id);
 
 
 	this->modelo->agregarPersonajeCliente(personaje);
+	printf("agrego el personaje\n");
 	return personaje;
 
 }

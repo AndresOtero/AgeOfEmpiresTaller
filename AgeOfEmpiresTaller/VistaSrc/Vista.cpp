@@ -260,6 +260,10 @@ bool Vista::run() {
 		if (e.type == SDL_KEYDOWN) {
 			switch (e.key.keysym.sym) {
 			case SDLK_c:
+				if (this->modelo->get_entidad_seleccionada()) {
+					this->gameController->crearPersonajeEdificio("gandalf",
+							this->modelo->get_entidad_seleccionada()->getId());
+				}
 				break;
 			}
 		}
@@ -487,6 +491,7 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	dibujo_pers->setMovimientoActual(dibujo_pers_anterior->getMovimientoActual());
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
 	if(esta_en_seleccion(img_personaje_x,img_personaje_y)&&termino_de_elegir){
+		printf("Termino de elegir, elijo : %d,%d\n",img_personaje_x,img_personaje_y);
 		modelo->seleccionar(personaje->getReferenciaMapaX(),personaje->getReferenciaMapaY());
 	}
 	Posicion destino = personaje->get_camino();
@@ -591,6 +596,7 @@ void Vista::dibujar_mapa() {
 		rect.w = mouse_x - seleccion_x_inicio;
 		rect.h = mouse_y - seleccion_y_inicio;
 		SDL_RenderDrawRect(gRenderer,&rect);
+		this->modelo->limpiarSeleccion();
 	}
 	termino_de_elegir=false;
 }

@@ -202,6 +202,9 @@ bool Modelo::estaSeleccionada(int x,int y){
 	}
 	return false;
 }
+void Modelo::limpiarSeleccion(){
+	personajes_seleccionados.clear();
+}
 
 string Modelo::seleccionar(double mov_x,double mov_y){
 	this->mapa->deseleccionar();
@@ -210,7 +213,6 @@ string Modelo::seleccionar(double mov_x,double mov_y){
 			return "";
 	}
 	this->mapa->seleccionar(seleccionada.getX(),seleccionada.getY());
-	personajes_seleccionados.clear();
 	entidad_seleccionada=NULL;
 	if(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY())){
 		personajes_seleccionados.push_back(this->mapa->personaje_celda(seleccionada.getX(),seleccionada.getY()));
@@ -218,6 +220,7 @@ string Modelo::seleccionar(double mov_x,double mov_y){
 		if(this->mapa->entidad_celda(seleccionada.getX(),seleccionada.getY())!=NULL){
 			entidad_seleccionada=this->mapa->entidad_celda(seleccionada.getX(),seleccionada.getY());
 		}
+		this->limpiarSeleccion();
 	}
 	return this->mapa->mostrar_contenido(seleccionada.getX(),seleccionada.getY());
 }
@@ -598,7 +601,16 @@ int Modelo::crearPersonajeServer(Personaje* personaje){
 	return (id);
 }
 
-
+int Modelo::crearPersonajeServerEdificio(Personaje* personaje,Id id_edificio){
+	Entidad* edificio=this->buscarEntidad(id_edificio);
+	Posicion pos=this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());
+	personaje->set_posicion(pos);
+	personajes.push_back(personaje);
+	GeneradorNumeros generar;
+	int id = generar.otroID();
+	personaje->setId(id);
+	return (id);
+}
 
 
 Modelo::~Modelo() {

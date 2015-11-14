@@ -40,6 +40,7 @@ public:
 	bool afueraDelMapa(int x,int y);
 	bool celdaOcupada(int x,int y);
 	vector<Posicion> adyacenciasNoOcupadas(Posicion posicion);
+	Posicion encontrarAdyacenteMasCercano(Posicion posicion);
 	void posicionarEntidad(Entidad* entidad);
 	void sacarEntidad(Entidad * entidad);
 	void actualizar(vector<Personaje*> personajes);
