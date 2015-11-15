@@ -8,6 +8,7 @@
 #include "FactoryEdificio.h"
 
 FactoryEdificio::FactoryEdificio() {
+	this->raza="";
 }
 
 FactoryEdificio::FactoryEdificio(string raza) {
@@ -17,15 +18,18 @@ void FactoryEdificio::setRaza(string raza){
 	this->raza =raza;
 }
 void FactoryEdificio::cargarEdificios(map<string,ObjetoMapa*> tipos){
+
 	map<string, ObjetoMapa*>::iterator it;
 	for (it = tipos.begin(); it != tipos.end(); it++)
 	{
 		//first es key, second es value
-	    if (it->second->raza == this->raza && (it->second->velocidad_construcccion!=0)){
+		if (it->second->raza == this->raza && (it->second->velocidad_construcccion!=0)){
+	    	printf("igualo raza y connstruyo\n");
 	    	this->edificios_raza[it->first]=tipos[it->first];
 	    }
 
 	}
+	printf("salio\n");
 
 
 }

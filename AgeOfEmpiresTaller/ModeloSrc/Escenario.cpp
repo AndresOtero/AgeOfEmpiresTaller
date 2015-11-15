@@ -18,6 +18,7 @@ Escenario::Escenario(string nombre, int size_x, int size_y){
 	this -> size_x = size_x;
 	this -> size_y = size_y;
 	this -> protagonista = NULL;
+	this->jugador = NULL;
 }
 Entidad* Escenario::getTexturaDefault(){
 	ObjetoMapa* tipo = new ObjetoMapa("pasto","img/PASTITO.png");

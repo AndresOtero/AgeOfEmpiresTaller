@@ -33,6 +33,7 @@ bool Textura::loadFromFile(std::string path, SDL_Renderer* gRenderer) {
 	SDL_Texture* newTexture = NULL;
 	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
 	if (loadedSurface == NULL) {
+		printf("No pudo cargar iamgen %s\n",IMG_GetError());
 		//LOG_WARNING << "No se pudo cargar: %s. SDL_image Error: %s\n", path.c_str(),
 				//IMG_GetError();
 	} else {
@@ -40,6 +41,7 @@ bool Textura::loadFromFile(std::string path, SDL_Renderer* gRenderer) {
 
 		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 		if (newTexture == NULL) {
+			printf("No pudo cargar iamgen %s\n",SDL_GetError());
 			//LOG_WARNING << "No se pudo cargar la textura: %s. SDL Error: %s\n",
 					//path.c_str(), SDL_GetError();
 		} else {

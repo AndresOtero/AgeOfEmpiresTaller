@@ -7,6 +7,7 @@
 
 #include "Minimapa.h"
 #define TAM_ENTIDAD 2
+
 #include <vector>
 #include "../ModeloSrc/Personaje.h"
 
@@ -103,14 +104,11 @@ void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer,int * count)
 		int color;
 		if (this->modelo->mapa->celdaOcupada(x, y)) {
 			if (this->modelo->mapa->hay_personaje(x, y)) {
-				if (this->modelo->nombreJugador() != this->modelo->mapa->personaje_celda(x,y)->getNombreJugador()){
-					color = BLANCO;
-				}else
-					color = ROJO;
+				color = this->obtenerColor(this->modelo->mapa->personaje_celda(x,y)->get_raza());
 			} else if (this->modelo->mapa->hayRecursosEn(pos)) {
 				color = AMARILLO;
 			}else {
-				color = AZUL;
+				color = this->obtenerColor(this->modelo->mapa->entidad_celda(x,y)->get_raza());
 			}
 		}else{
 			color = VERDE;
@@ -136,6 +134,18 @@ void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer,int * count)
 		this->dibujarPuntoMapa(x_pant, y_pant, paleta, renderer);
 	}
 }
+int Minimapa::obtenerColor(string raza){
+	if (raza == "Elfo"){
+		return BLANCO;
+	}else if (raza == "Hobbit"){
+		return VIOLETA;
+	}else if (raza == "Humano"){
+		return AZUL;
+	}else{
+		return ROJO;
+	}
+}
+
 int Minimapa::sombra(int color){
 	switch (color){
 		case AZUL:
@@ -146,6 +156,8 @@ int Minimapa::sombra(int color){
 			return VERDE_OSCURO;
 		case AMARILLO:
 			return AMARILLO_OSCURO;
+		case VIOLETA:
+			return VIOLETA_OSCURO;
 	}
 }
 
@@ -179,6 +191,12 @@ SDL_Color Minimapa::paleta(int Color){
 			break;
 		case AMARILLO_OSCURO:
 			c = {255,171,2};
+			break;
+		case VIOLETA_OSCURO:
+			c = {175,0,175};
+			break;
+		case VIOLETA:
+			c = {255,0,255};
 			break;
 		default:
 			c = {0xFF,0xFF,0xFF};

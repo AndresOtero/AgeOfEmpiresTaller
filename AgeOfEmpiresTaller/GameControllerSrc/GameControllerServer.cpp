@@ -411,9 +411,12 @@ void GameControllerServer::crearCentroCivicoNuevoUser(string raza, string Nombre
 
 	//crea la cantidad de personaje de inicializacion -1
 	for (int i = 0; i < CANTIDAD_PERSONAJES_INICIALES;i++){
+		printf("Por crear personaje\n");
 		this->crearPersonajeEdificio(NombreJugador,entidad->devolverPersonajesCreables().begin()->first,entidad->getId(),mutex);
+		printf("Por crear personaje\n");
 	}
 	//crea un ultimo personaje para setear la vista
+
 	msg_t mssg;
 	mssg.type = LOGIN;
 	memcpy(mssg.paramNombre, string_to_char_array(NombreJugador),

@@ -38,7 +38,9 @@ Entidad * Juego::centroCivicoDe(string raza){
 		//si el personaje es constructor y de la misma raza
 		//su edificio constructor es el centro civico
 		if (it->second->construccion>0 && it->second->raza==raza){
+			printf("%s\n",it->second->edificio_constructor.c_str());
 			Entidad * entidad = new Entidad(this->tipos[it->second->edificio_constructor]);
+			printf("Creo entidad\n");
 			return entidad;
 		}
 	}

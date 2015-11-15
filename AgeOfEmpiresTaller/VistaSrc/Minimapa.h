@@ -17,6 +17,12 @@
 #define AMARILLO_OSCURO 8
 #define ROJO_OSCURO 9
 #define AZUL_OSCURO 10
+#define VIOLETA 11
+#define VIOLETA_OSCURO 12
+#define COLOR_JUGADOR1 AZUL
+#define COLOR_JUGADOR2 ROJO
+#define COLOR_JUGADOR3 BLANCO
+#define COLOR_JUGADOR4 VIOLETA
 #include "Dibujo.h"
 #include "../ModeloSrc/Modelo.h"
 #include <math.h>
@@ -35,6 +41,7 @@ public:
 	int altoPorCelda();
 	int anchoPorCelda();
 private:
+	int obtenerColor(string raza);
 	bool invertir;
 	int x;
 	int y;

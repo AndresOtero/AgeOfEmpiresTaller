@@ -40,6 +40,7 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	this->nombre = modelo->nombreJugador();
 	this->x_comienzo_recurso=(this->mapa->anchoPantalla()-this->mapa->altoMapa())/5;
 	this->id_edificio_creador=-1;
+	printf("salio de la barra\n");
 }
 
 
