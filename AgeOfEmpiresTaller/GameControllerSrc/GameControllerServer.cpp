@@ -409,13 +409,25 @@ void GameControllerServer::crearCentroCivicoNuevoUser(string raza, string Nombre
 	mensaje.paramDouble2 = entidad->get_posicion().getY();
 	this->agregarMensaje(mensaje,mutex);
 
-	//crea la cantidad de personaje de inicializacion -1
-	for (int i = 0; i < CANTIDAD_PERSONAJES_INICIALES;i++){
-		printf("Por crear personaje\n");
-		this->crearPersonajeEdificio(NombreJugador,entidad->devolverPersonajesCreables().begin()->first,entidad->getId(),mutex);
-		printf("Por crear personaje\n");
+	string tipito;
+	ObjetoMapa* tipo = entidad->devolverPersonajesCreables().begin()->second;
+	if (tipo->construccion > 0 || tipo->recoleccion > 0) {
+		printf(" es constructor %s\n",tipo->nombre.c_str());
+		tipito = tipo->nombre;
+	}else{
+		map<string,ObjetoMapa*>::iterator it = entidad->devolverPersonajesCreables().begin();
+		it++;
+		//tipo 1 es heroe este es aldeano
+		printf(" no es %s\n",it->first.c_str());
+		tipito =it->first;
 	}
-	//crea un ultimo personaje para setear la vista
+
+	//crea la cantidad de personaje de inicializacion
+	for (int i = 0; i < CANTIDAD_PERSONAJES_INICIALES;i++){
+
+		this->crearPersonajeEdificio(NombreJugador,tipito,entidad->getId(),mutex);
+
+	}
 
 	msg_t mssg;
 	mssg.type = LOGIN;
