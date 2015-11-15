@@ -168,11 +168,13 @@ msg_t Personaje::interactuar(Entidad* otra_entidad){
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = otra_entidad->getId();
 	if (this->get_raza()==otra_entidad->get_raza()){
+		printf("Construye\n");
 		if (this->puedeCrear() && (!otra_entidad->estaConstruida())) { //falta ver que sea suya
 			mensaje.type = CONSTRUIR;
 			return mensaje;
 		}
 	}else{
+		printf("ataca\n");
 		if (otra_entidad->esUnRecurso() && this->puedeRecolectar()) {
 			mensaje.type = RECOLECCION_RECURSOS;
 			return mensaje;

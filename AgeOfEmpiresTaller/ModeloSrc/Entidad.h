@@ -78,6 +78,7 @@ public:
 	}
 	bool esUnCentroCivio();
 	bool esUnaBandera();
+	bool esInternaLaPosicion(int x, int y);
 	virtual ~Entidad();
 	int id;
 	int getId(){

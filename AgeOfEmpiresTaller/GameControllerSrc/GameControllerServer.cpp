@@ -53,6 +53,17 @@ void GameControllerServer::reconectar(string Id){
 
 void GameControllerServer::cambiar_destino_personaje(Id id, double mov_x,double mov_y){
 	this->modelo->finalizarAccion(id);
+	// esto le mando una posicion inaccesible si la posicion es de una entidad de 3x3
+	/*if (this->modelo->mapa->entidad_celda(mov_x, mov_y)) {
+		Entidad * entidad = this->modelo->mapa->entidad_celda(mov_x, mov_y);
+		if (entidad->esInternaLaPosicion(mov_x,mov_y)){
+			printf("Cambio el destino\n");
+			Posicion pos = { mov_x,mov_y};
+			Posicion nueva = this->modelo->mapa->encontrarAdyacenteMasCercano(pos);
+			mov_x = nueva.get_x_exacta() +0.5;
+			mov_y = nueva.get_y_exacta() + 0.5;
+		}
+	}*/
 	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
 }
 void GameControllerServer::atacar(Id idAtacante, Id idAtacado){

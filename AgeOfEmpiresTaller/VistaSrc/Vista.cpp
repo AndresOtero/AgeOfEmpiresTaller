@@ -286,6 +286,7 @@ bool Vista::run() {
 						Personaje* personaje = (*it);
 						if (personaje->getNombreJugador()
 								== this->modelo->nombreJugador()) {
+							//si esta en el medio de una entidad el server se tiene que dar cuenta
 							this->gameController->cambiar_destino_personaje(
 									personaje->getId(), personaje_x,
 									personaje_y);
@@ -417,7 +418,7 @@ void Vista::dibujar_edificio(int mov_x,int mov_y){
 
 		double pant_x,pant_y;
 		this->transformador->transformar_isometrica_pantalla(floor(a)-this->referencia_mapa_x,floor(b)-this->referencia_mapa_y,pant_x,pant_y);
-		this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
+		//this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
 		this->edificioACrear->set_posicion_default(pant_x,pant_y);
 		this->edificioACrear->render(gRenderer);
 		this->edificioACrear->resetear();

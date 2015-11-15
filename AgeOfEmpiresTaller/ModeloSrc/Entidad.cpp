@@ -99,6 +99,23 @@ bool Entidad::esUnCentroCivio(){
 	}
 	return false;
 }
+bool Entidad::esInternaLaPosicion(int x, int y){
+	int ancho = this->objetoMapa->baseLogica->ancho;
+	int alto =this->objetoMapa->baseLogica->alto;
+	int x_inicio = this->get_posicion().getX()+1;
+	int x_final =this->get_posicion().getX()+ancho-1;
+	int y_inicio = this->get_posicion().getY()+1;
+	int y_final =this->get_posicion().getY()+alto-1;
+
+	for (;x_inicio < x_final; x_inicio++ ){
+		for(;y_inicio < y_final; y_inicio++){
+			if (x_inicio == x && y_inicio == y){
+				return true;
+			}
+		}
+	}
+	return false;
+}
 Entidad::~Entidad() {
 	delete posicion;
 	if(this->objetoMapa==NULL){
