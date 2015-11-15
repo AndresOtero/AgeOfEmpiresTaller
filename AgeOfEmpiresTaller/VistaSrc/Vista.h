@@ -44,6 +44,7 @@ class Vista {
 	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;
 private:
+	SDL_Texture *backgroundTexture;
 	bool esta_en_seleccion(int x,int y);
 	void setear_seleccion();
 	void dibujar_mapa();
@@ -68,6 +69,7 @@ public:
 	Vista(Modelo* modelo,GameControllerCliente* gameControler);
 	bool init();
 	bool loadMedia();
+	bool mostrarPantallaEspera();
 	void crearPersonaje(string tipo,Personaje* personaje);
 	void setear_referencia(double ref_x,double ref_y) ;
 
