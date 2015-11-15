@@ -18,10 +18,8 @@ char* GameControllerServer::string_to_char_array(string str){
 }
 
 GameControllerServer::GameControllerServer() {
-	// TODO Auto-generated constructor stub
 }
 GameControllerServer::~GameControllerServer() {
-	// TODO Auto-generated constructor stub
 }
 
 void GameControllerServer::agregarCliente(string name,string tipo, SDL_mutex *mutex){
@@ -399,8 +397,7 @@ msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
 	}
 	return mensaje;
 }
-void GameControllerServer::crearCentroCivicoNuevoUser(string tipo, string NombreJugador,SDL_mutex *mutex){
-	string raza  = this->modelo->juego->tipos[tipo]->raza;
+void GameControllerServer::crearCentroCivicoNuevoUser(string raza, string NombreJugador,SDL_mutex *mutex){
 	Entidad * entidad = this->modelo->set_CentroCivicoNuevoServer(raza);
 	//creo centro civico
 	msg_t mensaje;

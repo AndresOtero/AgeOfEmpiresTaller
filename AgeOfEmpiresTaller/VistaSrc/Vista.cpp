@@ -20,7 +20,6 @@
 #include <unistd.h>
 #include <plog/Log.h>
 
-
 #include "../ModeloSrc/Modelo.h"
 #include "Dibujo.h"
 #include "DibujoPersonaje.h"
@@ -101,20 +100,34 @@ bool Vista::init() {
 					LOG_WARNING << "No se pudo crear el cargador de imagenes .SDL Error: %s\n",
 										SDL_GetError();
 					success = false;
-				}
-				else{
-					//Initialize SDL_ttf
-					if( TTF_Init() == -1 ){
-						LOG_WARNING << "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError();
+				} else {
+					SDL_Surface *background = IMG_Load("img/extras/loading.jpg");
+					if (!background) {
+						LOG_WARNING << "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
 						success = false;
+					} else {
+						backgroundTexture = SDL_CreateTextureFromSurface(gRenderer, background);
+
+						if (backgroundTexture == NULL) {
+							LOG_WARNING << "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
+							success = false;
+						} else {
+							//Initialize SDL_ttf
+							if (TTF_Init() == -1) {
+								LOG_WARNING << "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError();
+								success = false;
+							}
+						}
+
 					}
+
 				}
 			}
 		}
 
 	}
 
-	this -> factory=shared_ptr<FactoryDibujo> ( new FactoryDibujo(gRenderer));
+	this->factory = shared_ptr<FactoryDibujo>(new FactoryDibujo(gRenderer));
 
 	return success;
 }
@@ -284,12 +297,8 @@ bool Vista::run() {
 					vector<Personaje*>::iterator it = personajes.begin();
 					for (; it != personajes.end(); it++) {
 						Personaje* personaje = (*it);
-						if (personaje->getNombreJugador()
-								== this->modelo->nombreJugador()) {
-							//si esta en el medio de una entidad el server se tiene que dar cuenta
-							this->gameController->cambiar_destino_personaje(
-									personaje->getId(), personaje_x,
-									personaje_y);
+						if (personaje->getNombreJugador() == this->modelo->nombreJugador()) {
+							this->gameController->cambiar_destino_personaje(personaje->getId(), personaje_x, personaje_y);
 							this->gameController->interactuar(personaje, p);
 						}
 					}
@@ -400,19 +409,35 @@ bool Vista::run() {
 	SDL_RenderPresent(gRenderer);
 	return quit;
 }
-void Vista::dibujar_edificio(int mov_x,int mov_y){
-	double a,b;
-	if (this->entidadACrear){
+
+bool Vista::mostrarPantallaEspera() {
+
+	bool quit = false;
+	SDL_Event e;
+
+	while (SDL_PollEvent(&e) != 0) {
+		if (e.type == SDL_QUIT) {
+			quit = true;
+		}
+	}
+	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
+	SDL_RenderClear(gRenderer);
+	SDL_RenderCopy(gRenderer, backgroundTexture, NULL, NULL);
+	SDL_RenderPresent(gRenderer);
+	return quit;
+}
+void Vista::dibujar_edificio(int mov_x, int mov_y) {
+	double a, b;
+	if (this->entidadACrear) {
 		//transformacion de posiciones
-		this->transformador->transformar_pantalla_isometrica(mov_x, mov_y, a,
-				b);
+		this->transformador->transformar_pantalla_isometrica(mov_x, mov_y, a, b);
 		this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
-		this->entidadACrear->set_posicion(floor(a),floor(b));
-		if (this->modelo->tocaSombra(this->entidadACrear)){
+		this->entidadACrear->set_posicion(floor(a), floor(b));
+		if (this->modelo->tocaSombra(this->entidadACrear)) {
 			this->edificioACrear->ponerAmarillo();
-		}else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear))  {
+		} else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
 			this->edificioACrear->ponerRojo();
-		}else{
+		} else {
 			this->edificioACrear->ponerVerde();
 		}
 
@@ -431,20 +456,16 @@ vector<int> Vista::calcular_bordes() {
 	 http://www.java-gaming.org/index.php?topic=24922.0
 	 **/
 	int pantalla_refencia_x, pantalla_refencia_y;
-	this->transformador->transformar_isometrica_pantalla(referencia_mapa_x,
-			referencia_mapa_y, pantalla_refencia_x, pantalla_refencia_y);
+	this->transformador->transformar_isometrica_pantalla(referencia_mapa_x, referencia_mapa_y, pantalla_refencia_x, pantalla_refencia_y);
 	int x_start, y_start;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,
-			pantalla_refencia_y, x_start, y_start);
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x, pantalla_refencia_y, x_start, y_start);
 	x_start = x_start - 2;
 	int x_max, y;
-	this->transformador->transformar_pantalla_isometrica(
-			pantalla_refencia_x + pantalla->getAncho(),
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x + pantalla->getAncho(),
 			pantalla_refencia_y + pantalla->getAlto(), x_max, y);
 	x_max += 2;
 	int x, y_max;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,
-			pantalla_refencia_y + pantalla->getAlto(), x, y_max);
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x, pantalla_refencia_y + pantalla->getAlto(), x, y_max);
 	y_max = y_max + 2;
 	int y_min;
 	this->transformador->transformar_pantalla_isometrica(
@@ -655,6 +676,7 @@ void Vista::setear_vista(string nombreJugador){
 }
 Vista::~Vista() {
 	this->barra->closeFont();
+	SDL_DestroyTexture(backgroundTexture);
 	TTF_Quit();
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);

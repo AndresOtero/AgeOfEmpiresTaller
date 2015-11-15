@@ -36,7 +36,8 @@ enum MensajeType {
 	CONSTRUIR,
 	EMPEZAR_ACCION,
 	CREAR_PERSONAJE_EDIFICIO,/*Id edificio Nombre de Personaje*/
-	TERMINAR_ACCION //TODO
+	TERMINAR_ACCION, //TODO
+	COMENZAR_PARTIDA
 };
 
 typedef struct {
