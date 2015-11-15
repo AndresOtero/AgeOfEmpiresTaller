@@ -9,6 +9,10 @@
 #ifndef GAMECONTROLLERSRC_GAMECONTROLLERSERVER_H_
 #define GAMECONTROLLERSRC_GAMECONTROLLERSERVER_H_
 
+#define KILL_ALL 0
+#define FLAG 1
+#define KING 2
+
 class GameControllerServer:public GameController{
 public:
 	GameControllerServer();
@@ -41,9 +45,16 @@ public:
 	void crearPersonajeEdificio(string nombre, string tipo,Id id_edificio,SDL_mutex *mutex);
 	queue <msg_t>  inicializacion();
 
+	int getObjetivo() {
+		return objetivo;
+	}
+
+	void setObjetivo(int objetivo) {
+		this->objetivo = objetivo;
+	}
 
 private:
-
+	int objetivo;
 };
 
 #endif /* GAMECONTROLLERSRC_GAMECONTROLLERSERVER_H_ */

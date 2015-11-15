@@ -17,10 +17,8 @@ char* GameControllerServer::string_to_char_array(string str){
 }
 
 GameControllerServer::GameControllerServer() {
-	// TODO Auto-generated constructor stub
 }
 GameControllerServer::~GameControllerServer() {
-	// TODO Auto-generated constructor stub
 }
 
 void GameControllerServer::agregarCliente(string name,string tipo, SDL_mutex *mutex){
