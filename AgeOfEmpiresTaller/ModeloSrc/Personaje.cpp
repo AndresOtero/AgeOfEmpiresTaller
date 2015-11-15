@@ -45,6 +45,9 @@ Personaje::Personaje(ObjetoMapa* objetoMapa){
 	this->objetivo=NULL;
 	this->raza=objetoMapa->raza;
 	this->costo.setCosto(objetoMapa->oro,objetoMapa->madera,objetoMapa->piedra,objetoMapa->comida);
+	GeneradorNumeros generar;
+	int id = generar.otroID();
+	this->id = id;
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->referencia_mapa_x=x;
@@ -67,6 +70,9 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y){
 	this->atacado=NULL;
 	this->objetivo=NULL;
 	this->raza=objetoMapa->raza;
+	GeneradorNumeros generar;
+	int id = generar.otroID();
+	this->id = id;
 }
 
 dibujo_t Personaje::dibujar(){

@@ -88,6 +88,7 @@ public:
 	int crearEdificio(string nombre, int x,int y);
 	void limpiarSeleccion();
 	Entidad* set_CentroCivicoNuevoServer(string raza);
+
 private:
 	vector<Entidad *> obtenerCentrosCivicosEnMapa();
 	void eliminar_personaje(Personaje* eliminado);

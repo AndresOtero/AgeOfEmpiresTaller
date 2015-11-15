@@ -51,6 +51,7 @@ public:
 	bool estaDentroDeSector(Posicion sector,Posicion entidad);
 	Posicion posicionValidaEnSector(Posicion sector,Entidad * entidad);
 	Posicion posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base);
+	void posicionarPersonaje(Personaje * pers);
 private:
 	Celda* getCelda(int x,int y);
 

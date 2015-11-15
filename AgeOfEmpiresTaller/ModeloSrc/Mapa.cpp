@@ -199,7 +199,7 @@ Posicion Mapa::encontrarAdyacenteMasCercano(Posicion posicion) {
 		if (adyacentes_no_ocupados.empty()) {
 			vector<Posicion> adyacentes = this->adyacencias(p);
 			vector<Posicion>::iterator it = adyacentes.begin();
-			for (; it != adyacentes_no_ocupados.end(); ++it) {
+			for (; it != adyacentes.end(); ++it) {
 				Posicion ady = (*it);
 				pila.push(ady);
 			}
@@ -209,6 +209,11 @@ Posicion Mapa::encontrarAdyacenteMasCercano(Posicion posicion) {
 		}
 	}
 }
+
+void Mapa::posicionarPersonaje(Personaje * pers){
+	this->getCelda(pers->get_posicion().getX(),pers->get_posicion().getY())->ocuparCeldaPersonaje(pers);
+}
+
 void Mapa::posicionarEntidad(Entidad* entidad){
 	int i,j,x,y,alto,ancho;
 	alto = entidad->objetoMapa->baseLogica->alto;

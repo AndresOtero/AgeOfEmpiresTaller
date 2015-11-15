@@ -6,6 +6,7 @@
  */
 
 #include "GameControllerServer.h"
+#define CANTIDAD_PERSONAJES_INICIALES 4
 
 char* GameControllerServer::string_to_char_array(string str){
 	int str_size = str.size();
@@ -75,7 +76,7 @@ void GameControllerServer::crearEdificio(string nombre, int id_constructor,int x
 
 }
 void GameControllerServer::crearPersonajeEdificio(string name, string tipo,Id id_edificio,SDL_mutex *mutex){
-	ObjetoMapa* obj=this->juego->tipos[tipo];
+		ObjetoMapa* obj=this->juego->tipos[tipo];
 		Personaje* personaje =new Personaje(obj);
 		personaje->setNombreJugador(name);
 		printf("llego\n");
@@ -387,14 +388,31 @@ msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
 	}
 	return mensaje;
 }
-void GameControllerServer::crearCentroCivicoNuevoUser(string raza){
+void GameControllerServer::crearCentroCivicoNuevoUser(string tipo, string NombreJugador,SDL_mutex *mutex){
+	string raza  = this->modelo->juego->tipos[tipo]->raza;
 	Entidad * entidad = this->modelo->set_CentroCivicoNuevoServer(raza);
-	//ULTRA HARCODE TODO
-	printf("Nombre %s\n",entidad->objetoMapa->nombre.c_str());
-	printf("crear personaje\n");
-	Personaje* personaje =new Personaje(entidad->devolverPersonajesCreables().begin()->second);
-	personaje->setNombreJugador("ger");
-	this->modelo->crearPersonajeServerEdificio(personaje,entidad->id);
+	//creo centro civico
+	msg_t mensaje;
+	mensaje.type =  CREAR_ENTIDAD_CONSTRUIDA;
+	memcpy(mensaje.paramNombre, string_to_char_array(entidad->objetoMapa->nombre),
+				sizeof(mensaje.paramNombre));
+	mensaje.paramInt1 = entidad->getId();
+	mensaje.paramDouble1 = entidad->get_posicion().getX();
+	mensaje.paramDouble2 = entidad->get_posicion().getY();
+	this->agregarMensaje(mensaje,mutex);
+
+	//crea la cantidad de personaje de inicializacion -1
+	for (int i = 0; i < CANTIDAD_PERSONAJES_INICIALES;i++){
+		this->crearPersonajeEdificio(NombreJugador,entidad->devolverPersonajesCreables().begin()->first,entidad->getId(),mutex);
+	}
+	//crea un ultimo personaje para setear la vista
+	msg_t mssg;
+	mssg.type = LOGIN;
+	memcpy(mssg.paramNombre, string_to_char_array(NombreJugador),
+			sizeof(mssg.paramNombre));
+	this->agregarMensaje(mssg, mutex);
+	printf("Mando login\n");
+
 }
 
 void GameControllerServer::agregarMensaje(msg_t mensaje,SDL_mutex *mutex){

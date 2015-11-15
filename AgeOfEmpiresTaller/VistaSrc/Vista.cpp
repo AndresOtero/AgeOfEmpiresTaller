@@ -640,7 +640,18 @@ bool Vista::repito_dibujo(int x, int y,int dimension){
 	}
 	return false;
 }
-
+void Vista::setear_vista(string nombreJugador){
+	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*>::iterator it = personajes.begin();
+	for(;it!=personajes.end();it++){
+		Personaje* p = *it;
+		if ((p)->getNombreJugador()==nombreJugador){
+			printf("Encontro personaje del jugador\n");
+			this->setear_referencia(p->get_posicion().get_x_exacta(),p->get_posicion().get_y_exacta());
+			return;
+		}
+	}
+}
 Vista::~Vista() {
 	this->barra->closeFont();
 	TTF_Quit();

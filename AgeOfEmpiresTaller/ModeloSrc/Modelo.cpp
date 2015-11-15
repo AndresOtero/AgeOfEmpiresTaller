@@ -74,6 +74,7 @@ Entidad* Modelo::set_CentroCivicoNuevoServer(string raza){
 		Posicion pos = this->mapa->posicionValidaParaCentroCivico(centros, base);
 		printf("L1Pudo obtener posicion\n");
 		base->set_posicion(pos.getX(), pos.getY());
+		base->finalizarConstruccion();
 		printf("L1 pos %d,%d\n",pos.getX(), pos.getY());
 		this->insertarEntidad(base);
 	}else{
@@ -631,8 +632,7 @@ int Modelo::crearPersonajeServer(Personaje* personaje){
 	this->set_posicionRandomPersonaje(personaje);
 	personajes.push_back(personaje);
 	GeneradorNumeros generar;
-	int id = generar.otroID();
-	personaje->setId(id);
+	int id = personaje->getId();
 	return (id);
 }
 
@@ -640,10 +640,10 @@ int Modelo::crearPersonajeServerEdificio(Personaje* personaje,Id id_edificio){
 	Entidad* edificio=this->buscarEntidad(id_edificio);
 	Posicion pos=this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());
 	personaje->set_posicion(pos);
+	printf("%d,%d\n",pos.getX(),pos.getY());
+	this->mapa->posicionarPersonaje(personaje);
 	personajes.push_back(personaje);
-	GeneradorNumeros generar;
-	int id = generar.otroID();
-	personaje->setId(id);
+	int id = personaje->getId();
 	return (id);
 }
 

@@ -70,6 +70,7 @@ public:
 	bool loadMedia();
 	void crearPersonaje(string tipo,Personaje* personaje);
 	void setear_referencia(double ref_x,double ref_y) ;
+	void setear_vista(string nombreJugador);
 
 	bool run();
 	virtual ~Vista();
