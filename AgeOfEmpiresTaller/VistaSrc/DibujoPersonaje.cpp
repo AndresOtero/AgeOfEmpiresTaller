@@ -13,12 +13,18 @@ DibujoPersonaje::DibujoPersonaje() {
 	this->movimiento_actual=0;
 	this->acumulador=0;
 	this->fps=1;
+	pixel_x=0;
+	pixel_y=0;
 }
 void DibujoPersonaje::congelar(){
 	this->textura->congelar();
 }
 void DibujoPersonaje::setFps(int fps){
 	this->fps = fps;
+}
+void DibujoPersonaje::setPixeles(int x, int y){
+	this->pixel_x = x;
+	this->pixel_y = y;
 }
 void DibujoPersonaje::descongelar(){
 	this->textura->descongelar();

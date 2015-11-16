@@ -22,6 +22,10 @@ Dibujo::Dibujo() {
 	this->animado = true;
 
 }
+void Dibujo::setPixeles(int x, int y){
+	this->pixel_x = x;
+	this->pixel_y = y;
+}
 void Dibujo::iluminar(){
 	Uint8 alpha=127;
 	this->textura->setAlpha(alpha);

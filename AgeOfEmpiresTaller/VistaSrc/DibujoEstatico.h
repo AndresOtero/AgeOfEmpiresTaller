@@ -35,6 +35,7 @@ public:
 	void ponerRojo();
 	void ponerVerde();
 	void ponerAmarillo();
+	void setPixeles(int x, int y);
 	virtual ~Dibujo_Estatico();
 protected:
 	SDL_Rect spriteClips;

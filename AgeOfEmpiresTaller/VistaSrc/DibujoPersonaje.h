@@ -47,6 +47,7 @@ public:
 	void render(SDL_Renderer* renderer);
 	void elegir_frame(int des_x,int des_y);
 	void cambiar_frame();
+	void setPixeles(int x, int y);
 	~DibujoPersonaje();
 };
 

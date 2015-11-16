@@ -85,7 +85,7 @@ bool FactoryDibujo::crear_dibujo_estatico(string path,
 	shared_ptr<Dibujo_Estatico> dibujo_nuevo = shared_ptr<Dibujo_Estatico>(
 			new Dibujo_Estatico());
 	if (dibujo_nuevo->cargar_archivo(path, gRenderer)) {
-		dibujo_nuevo->set_imagen(parametros_de_imagen[X],
+		dibujo_nuevo->setPixeles(parametros_de_imagen[X],
 				parametros_de_imagen[Y]);
 		this->set_dibujo(dibujo_nuevo);
 		return true;

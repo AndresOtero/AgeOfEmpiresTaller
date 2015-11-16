@@ -34,6 +34,7 @@ public:
 	virtual void ponerRojo();
 	virtual void ponerVerde();
 	virtual void ponerAmarillo();
+	virtual void setPixeles(int x, int y);
 	virtual ~Dibujo();
 protected:
 	SDL_Rect spriteClips;
@@ -43,6 +44,8 @@ protected:
 	int x_imagen;
 	int y_imagen;
 	bool animado;
+	int pixel_x;
+	int pixel_y;
 };
 
 #endif /* DIBUJO_H_ */
