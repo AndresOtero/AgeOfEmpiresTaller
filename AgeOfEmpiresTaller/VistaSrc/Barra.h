@@ -49,6 +49,8 @@ private:
 	void renderTexto(SDL_Renderer*renderer);
 	bool cargarTexto(SDL_Renderer* renderer,SDL_Color color,shared_ptr<Textura> textura, string display);
 	void imprimirTexto(int x, int y,SDL_Renderer* renderer,shared_ptr<Textura> textura);
+	bool cargarTextoConFont(SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display,TTF_Font* font);
+	bool cargarTextoChico(SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display);
 	shared_ptr<Minimapa> mapa;
 	shared_ptr<Textura> texto;
 	shared_ptr<Textura> nombreJugador;
@@ -59,6 +61,7 @@ private:
 	string nombre;
 	double desfasaje;
 	TTF_Font* font;
+	TTF_Font* font_chico;
 	DatosSeleccionado display;
 	shared_ptr<CambioDeCoordendas> transformador;
 	double *x_ref;
@@ -73,6 +76,7 @@ private:
 	bool seleccionable;
 	bool personaje_a_crear;
 	int id_edificio_creador;
+	int x_datos;
 };
 
 #endif /* BARRA_H_ */

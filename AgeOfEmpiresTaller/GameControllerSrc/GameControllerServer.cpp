@@ -222,9 +222,9 @@ void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant, 
 
 }
 void GameControllerServer::actualizar(SDL_mutex *mutex) {
-	printf("Actualizar\n");
+	//printf("Actualizar\n");
 	this->modelo->actualizarMapa();		//mueven los tipitos
-	printf("Termino de actualizar\n");
+	//printf("Termino de actualizar\n");
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
@@ -366,7 +366,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 		}
 
 	}
-	printf("Termino de procesar los personajes\n");
+	//printf("Termino de procesar los personajes\n");
 }
 
 

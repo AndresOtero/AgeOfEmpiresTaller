@@ -313,7 +313,7 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy) {
 		}
 	}
 	if((cont==CICLOS_MAX)||(donde_vengo.count(adonde_voy)==0)){
-	 		return adonde_estoy;
+	 	return adonde_estoy;
 	}
 
 	stack<Posicion> camino;

@@ -106,6 +106,31 @@ int Mapa::getLargo(){
 bool Mapa::afueraDelMapa(int x,int y){
 	return ((y >= this->largo) || (x >= this->ancho)||(y <0)||(x <0));
 }
+
+double cuantoMeAcerco(int actual, int acercarme){
+	if (actual == acercarme){
+		return 0;
+	}
+	double factor= 0.75;
+	if(actual < acercarme){
+		return factor;
+	}else{
+		return 1-factor;
+	}
+
+}
+Posicion Mapa::acercar(Posicion adonde_estoy,Posicion adonde_voy){
+	double x_factor,y_factor;
+	int x_estoy = adonde_estoy.getX();
+	int y_estoy = adonde_estoy.getY();
+	int x_voy = adonde_voy.getX();
+	int y_voy = adonde_voy.getY();
+	x_factor = cuantoMeAcerco(x_estoy,x_voy);
+	y_factor = cuantoMeAcerco(y_estoy,y_voy);
+	Posicion pos = {(double)x_estoy+x_factor,(double)y_estoy+y_factor};
+	return pos;
+
+}
 Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	if(afueraDelMapa(adonde_voy.getX(),adonde_voy.getY())){
 		return adonde_estoy;
@@ -113,19 +138,22 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	if((adonde_estoy==adonde_voy)||(!celdaOcupada(adonde_voy.getX(), adonde_voy.getY()))) {
 		return adonde_voy;
 	}
-	if(adonde_estoy.distancia_octal(adonde_voy)<=14){
+	/*if(adonde_estoy.distancia_octal(adonde_voy)<=14){
+		printf("Estoy %d,%d\n",adonde_estoy.getX(),adonde_estoy.getY());
+		printf("Voy %d,%d\n",adonde_voy.getX(),adonde_voy.getY());
 		return adonde_estoy;
-	}
-
+	}*/
 	// si me quiero mover a un lugar ocupado adyacente a mi
 	if (adonde_voy.es_adyacente(adonde_estoy) && celdaOcupada(adonde_voy.getX(), adonde_voy.getY())){
-		return adonde_estoy;
+		//para que no se quede muy lejos
+		printf("es adyacente y esta ocupada\n");
+		return this->acercar(adonde_estoy,adonde_voy);
 	}
 	//si me quiero acercar a una entidad  y clicke en el medio
 	if (estoyAlLadoDeEntidadDestino(adonde_voy, adonde_estoy)) {
-		return adonde_estoy;
+		return this->acercar(adonde_estoy,adonde_voy);
 	}
-	printf("Voy hacia uno ocupado\n");
+	//printf("Voy hacia uno ocupado\n");
 	adonde_voy=Posicion(adonde_voy.getX(),adonde_voy.getY());
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>,
 				CompDistancias> pila_no_ocupadas;
@@ -134,25 +162,25 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	pila_ocupadas.push(pair<Posicion, double>(adonde_voy, adonde_voy.distancia_octal(adonde_estoy)));
 	while(pila_no_ocupadas.empty()){
 		Posicion ocupado_mas_cercano=pila_ocupadas.top().first;
-		printf("Ocupado: %d,%d\n",ocupado_mas_cercano.getX(),ocupado_mas_cercano.getY());
+		//printf("Ocupado: %d,%d\n",ocupado_mas_cercano.getX(),ocupado_mas_cercano.getY());
 		vector<Posicion> adyacentes_no_ocupados = adyacenciasNoOcupadas(ocupado_mas_cercano);
 		vector<Posicion>::iterator it = adyacentes_no_ocupados.begin();
 		for (; it != adyacentes_no_ocupados.end(); ++it) {
 			Posicion ady = (*it);
-			printf("No Ocupado: %d,%d\n",ady.getX(),ady.getY());
+			//printf("No Ocupado: %d,%d\n",ady.getX(),ady.getY());
 			pila_no_ocupadas.push(pair<Posicion, double>(ady,adonde_voy.distancia_octal(ady)+adonde_estoy.distancia_octal(ady)));
 		}
 		if(!pila_no_ocupadas.empty()){
-			printf("No Ocupado Elegido: %d,%d\n",pila_no_ocupadas.top().first.getX(),pila_no_ocupadas.top().first.getY());
+			//printf("No Ocupado Elegido: %d,%d\n",pila_no_ocupadas.top().first.getX(),pila_no_ocupadas.top().first.getY());
 
 			return pila_no_ocupadas.top().first;
 		}else{
 			vector<Posicion> adyacentes_ocupados = adyacencias(ocupado_mas_cercano);
 			vector<Posicion>::iterator it = adyacentes_ocupados.begin();
 			for (; it != adyacentes_ocupados.end(); ++it) {
-				printf("en for de ocupadas\n");
+				//printf("en for de ocupadas\n");
 				Posicion ady = (*it);
-				printf("%d,%d\n",ady.getX(),ady.getY());
+				//printf("%d,%d\n",ady.getX(),ady.getY());
 				pila_ocupadas.push(pair<Posicion, double>(ady,adonde_estoy.distancia_octal(ady)));
 			}
 		}
@@ -308,12 +336,12 @@ Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad 
 	vector<Posicion>::iterator it_pos = sectores.begin();
 	//por cada centro civico
 	for (; it != centros.end(); ++it) {
-		printf("L2Por centro en mapa\n");
+		//printf("L2Por centro en mapa\n");
 		for (; it_pos != sectores.end(); ++it_pos) {
 			//elimina el sector donde se encuentra
 
 			if (this->estaDentroDeSector(*it_pos, (*it)->get_posicion())) {
-				printf("L2Saca un sector%d,%d\n",(*it_pos).getX(),(*it_pos).getY());
+				//printf("L2Saca un sector%d,%d\n",(*it_pos).getX(),(*it_pos).getY());
 				sectores.erase(it_pos);
 				break;
 			}
@@ -321,7 +349,7 @@ Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad 
 		it_pos = sectores.begin();
 	}
 	if (sectores.empty()) {
-		printf("L2Errores todos los sectores ocupados\n");
+		//printf("L2Errores todos los sectores ocupados\n");
 		pos.set(-1,-1);
 		return pos;
 	} else {
@@ -342,9 +370,9 @@ Posicion Mapa::posicionValidaEnSector(Posicion sector,Entidad * entidad){
 		y = num.numeroRandom(sector.getY(), sector.getY() + this->largo/2-1);
 		celda = this->getCelda(x, y);
 		entidad->set_posicion(x,y);
-		printf("L3En while\n");
+		//printf("L3En while\n");
 	} while (celda->estaOcupada() || !this->puedeUbicar(entidad));
-	printf("L3EncontroPosicion\n");
+	//printf("L3EncontroPosicion\n");
 	Posicion posicion = { x, y };
 	return posicion;
 }

@@ -40,7 +40,7 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	this->nombre = modelo->nombreJugador();
 	this->x_comienzo_recurso=(this->mapa->anchoPantalla()-this->mapa->altoMapa())/5;
 	this->id_edificio_creador=-1;
-	printf("salio de la barra\n");
+	this->x_datos = x_comienzo_recurso*2;
 }
 
 
@@ -62,6 +62,10 @@ void Barra::load(SDL_Renderer * renderer, string path, int ancho_por_celda,int a
 		if( font == NULL ){
 			LOG_WARNING << "Failed to load font!%s\n" , TTF_GetError();
 		}
+	font_chico = TTF_OpenFont(path.c_str(), 18);
+	if (font_chico == NULL) {
+		LOG_WARNING << "Failed to load font_chcia!%s\n", TTF_GetError();
+	}
 	this->ancho_por_celda = ancho_por_celda;
 	this->alto_por_celda = alto_por_celda;
 
@@ -129,14 +133,17 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 				icono->renderEx(0,NULL,&rect,renderer,NULL);
 
 			}
-			//a cambiar por costo
+
 			shared_ptr<Textura> creable(new Textura());
+			//oss es un stream en el q cargo el precio
 			std::ostringstream oss;
 			oss << it->second->oro <<"/"<< it->second->piedra <<"/"<< it->second->madera <<"/"<< it->second->comida;
-			if (cargarTexto(renderer, this->mapa->paleta(NEGRO), creable,
+
+			if (cargarTextoChico(renderer, this->mapa->paleta(NEGRO), creable,
 					oss.str())){
 				imprimirTexto(lado_icono,y,renderer,creable);
 			}
+
 			y+=TTF_FontHeight(font);
 		}
 	}
@@ -176,12 +183,20 @@ int Barra::imprimirNumeroDeRecurso(SDL_Renderer* renderer, shared_ptr<RecursoVis
 	return x_ref+ancho+this->x_comienzo_recurso;
 }
 bool Barra::cargarTexto(SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display){
-	plog::init(plog::warning, "Log.txt" );
+	return this->cargarTextoConFont(renderer,color,textura,display,this->font);
+}
+
+bool Barra::cargarTextoChico(SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display){
+	return this->cargarTextoConFont(renderer,color,textura,display,this->font_chico);
+}
+bool Barra::cargarTextoConFont(SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display,TTF_Font* font){
+	plog::init(plog::warning, "Log.txt");
 	bool success = true;
-	if( !textura->loadFromRenderedText( display.c_str(), color,this->font,renderer ) ){
-			LOG_WARNING << "Atencion no pudo escribir texto\n";
-			success = false;
-		}
+	if (!textura->loadFromRenderedText(display.c_str(), color, font,
+			renderer)) {
+		LOG_WARNING << "Atencion no pudo escribir texto\n";
+		success = false;
+	}
 	return success;
 }
 void Barra::imprimirTexto(int x, int y,SDL_Renderer* renderer,shared_ptr<Textura> textura){
@@ -215,14 +230,16 @@ void Barra::dibujarDatosRecurso(SDL_Renderer* renderer){
 	shared_ptr<Textura> nombre(new Textura()),recurso(new Textura());
 	int y_escalar = (this->mapa->altoMapa()/TTF_FontHeight(font));
 	int y = this->referencia_y + 2*this->mapa->altoMapa()/y_escalar;
+
 	if (this->cargarTexto(renderer,this->mapa->paleta(NEGRO),nombre,this->display.getNombre())){
-		this->imprimirTexto(this->x_comienzo_recurso,y,renderer,nombre);
+		this->imprimirTexto(this->x_datos,y,renderer,nombre);
 	}
-	printf("%d\n",this->display.getRecurso());
+
 	if (this->cargarTexto(renderer, this->mapa->paleta(NEGRO), recurso,
 			to_string(this->display.getRecurso()))) {
-		this->imprimirTexto(this->x_comienzo_recurso, y+TTF_FontHeight(font), renderer, recurso);
+		this->imprimirTexto(this->x_datos, y+TTF_FontHeight(font), renderer, recurso);
 	}
+	//terminar display
 	if (this->display.getRecurso()<=0){
 		DatosSeleccionado datos;
 		this->display = datos;
@@ -234,7 +251,7 @@ void Barra::dibujarDatosEdificio(SDL_Renderer* renderer){
 	int x, y = this->referencia_y + 2*this->mapa->altoMapa()/y_escalar;
 	if (this->cargarTexto(renderer, this->mapa->paleta(NEGRO), nombre,
 			this->display.getNombre())) {
-		this->imprimirTexto(this->x_comienzo_recurso, y, renderer, nombre);
+		this->imprimirTexto(this->x_datos, y, renderer, nombre);
 	}
 	this->dibujarCargaDeBarra(this->display.getVidaActual(),
 			this->display.getVidaTotal(), this->mapa->paleta(VERDE),
@@ -248,6 +265,8 @@ void Barra::dibujarDatosEdificio(SDL_Renderer* renderer){
 				this->mapa->paleta(AMARILLO), this->mapa->paleta(BLANCO),
 				renderer, y + nombre->getHeight() + ALTO_BARRITA);
 	}
+
+	//terminar display
 	if (this->display.getVidaActual()<=0){
 		DatosSeleccionado datos;
 		this->display = datos;
@@ -259,18 +278,21 @@ void Barra::dibujarDatosPersonaje(SDL_Renderer* renderer){
 	shared_ptr<Textura> nombre(new Textura()), jugador(new Textura());
 	int y_escalar = (this->mapa->altoMapa() / TTF_FontHeight(font));
 	int x, y = this->referencia_y + 2*this->mapa->altoMapa()/y_escalar;
+
 	if (this->cargarTexto(renderer, this->mapa->paleta(NEGRO), nombre,
 			this->display.getNombre())) {
-		this->imprimirTexto(this->x_comienzo_recurso, y, renderer, nombre);
+		this->imprimirTexto(this->x_datos, y, renderer, nombre);
 	}
+
 	if (this->cargarTexto(renderer, this->mapa->paleta(NEGRO), jugador,
 			this->display.getJugador())) {
-		//MINI HARCODE TODO
-		this->imprimirTexto(this->x_comienzo_recurso+nombre->getWidth()+30, y, renderer, jugador);
+		this->imprimirTexto(this->x_datos+nombre->getWidth()+TTF_FontHeight(font), y, renderer, jugador);
 	}
+
 	this->dibujarCargaDeBarra(this->display.getVidaActual(),
 			this->display.getVidaTotal(), this->mapa->paleta(VERDE),
 			this->mapa->paleta(ROJO), renderer, y + nombre->getHeight());
+	//terminar display
 	if (this->display.getVidaActual()<=0){
 			DatosSeleccionado datos;
 			this->display = datos;
@@ -286,12 +308,12 @@ void Barra::dibujarCargaDeBarra(int actual, int total,SDL_Color primero,SDL_Colo
 		int largo_actual = (largo_total * actual) / total;
 		SDL_SetRenderDrawColor(renderer, primero.r, primero.g, primero.b,
 				primero.a);
-		SDL_Rect rect = { this->x_comienzo_recurso, y, largo_actual,
+		SDL_Rect rect = { this->x_datos, y, largo_actual,
 				ALTO_BARRITA };
 		SDL_RenderFillRect(renderer, &rect);
 		SDL_SetRenderDrawColor(renderer, segundo.r, segundo.g, segundo.b,
 				segundo.a);
-		SDL_Rect rect2 = { this->x_comienzo_recurso + largo_actual, y,
+		SDL_Rect rect2 = { this->x_datos + largo_actual, y,
 				largo_total - largo_actual, ALTO_BARRITA };
 		SDL_RenderFillRect(renderer, &rect2);
 	}
@@ -319,6 +341,9 @@ void Barra::dibujarDondeMiro(SDL_Renderer * renderer){
 void Barra::closeFont(){
 	TTF_CloseFont(this->font);
 	this->font = NULL;
+	TTF_CloseFont(this->font_chico);
+	this->font_chico=NULL;
+
 }
 Barra::~Barra() {
 
