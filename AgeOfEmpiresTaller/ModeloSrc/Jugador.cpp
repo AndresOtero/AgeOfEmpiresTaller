@@ -12,7 +12,7 @@ Jugador::Jugador(string nombre,string raza) {
 	printf("crea jugador\n");
 	this->raza=raza;
 	this->nombre=nombre;
-	this->recursos = new RecursosJugador(200,200,200,200);
+	this->recursos = new RecursosJugador(1200,1200,1200,1200);
 	this->factory.setRaza(raza);
 
 }

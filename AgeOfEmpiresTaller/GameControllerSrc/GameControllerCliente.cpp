@@ -126,18 +126,13 @@ void GameControllerCliente::setId(double x, double y, int id){
 }
 
 Personaje* GameControllerCliente::conectarCliente(string name,string tipo, int x,int y,dibujo_t dibujo,int id){
-	printf("Entro\n");
 	ObjetoMapa* obj= this->juego->tipos[tipo];
-	printf("Esta bien el tipo\n");
-	printf("Tipo %s\n",tipo.c_str());
 	Personaje* personaje =new Personaje(obj,x,y);
-	printf("Creo el personaje\n");
 	personaje->setNombreJugador(name);
 	personaje->setId(id);
 
 
 	this->modelo->agregarPersonajeCliente(personaje);
-	printf("agrego el personaje\n");
 	return personaje;
 
 }

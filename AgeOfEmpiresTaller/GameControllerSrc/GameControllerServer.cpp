@@ -7,8 +7,9 @@
 
 #include "GameControllerServer.h"
 #define CANTIDAD_PERSONAJES_INICIALES 4
+#define MAX_RECURSOS 45
 
-char* GameControllerServer::string_to_char_array(string str){
+char* GameControllerServer::string_to_char_array(string str) {
 	int str_size = str.size();
 	char charArray[PARAM_STRING_LEN];
 	for (int a = 0; a <= str_size; a++) {
@@ -22,17 +23,17 @@ GameControllerServer::GameControllerServer() {
 GameControllerServer::~GameControllerServer() {
 }
 
-void GameControllerServer::agregarCliente(string name,string tipo, SDL_mutex *mutex){
-	ObjetoMapa* obj=this->juego->tipos[tipo];
-	Personaje* personaje =new Personaje(obj);
+void GameControllerServer::agregarCliente(string name, string tipo, SDL_mutex *mutex) {
+	ObjetoMapa* obj = this->juego->tipos[tipo];
+	Personaje* personaje = new Personaje(obj);
 	personaje->setNombreJugador(name);
-	int id =this->modelo->crearPersonajeServer(personaje);
+	int id = this->modelo->crearPersonajeServer(personaje);
 
 	//seteo mensaje
 	msg_t mensaje;
 	mensaje.type = LOGIN;
-	memcpy(mensaje.paramTipo,string_to_char_array(tipo),sizeof(mensaje.paramTipo));
-	memcpy(mensaje.paramNombre,string_to_char_array(name),sizeof(mensaje.paramNombre));
+	memcpy(mensaje.paramTipo, string_to_char_array(tipo), sizeof(mensaje.paramTipo));
+	memcpy(mensaje.paramNombre, string_to_char_array(name), sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
 	mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
@@ -40,74 +41,93 @@ void GameControllerServer::agregarCliente(string name,string tipo, SDL_mutex *mu
 	this->agregarMensaje(mensaje, mutex);
 }
 
-void GameControllerServer::desconectar(string Id){
+void GameControllerServer::desconectar(string Id) {
 	this->modelo->congelarPersonaje(Id);
 	//Congelar en todos
 }
-void GameControllerServer::reconectar(string Id){
-					this->modelo->descongelarPersonaje(Id);
-					//Descongelar en todos
-			 }
+void GameControllerServer::reconectar(string Id) {
+	this->modelo->descongelarPersonaje(Id);
+	//Descongelar en todos
+}
 
-void GameControllerServer::cambiar_destino_personaje(Id id, double mov_x,double mov_y){
+void GameControllerServer::cambiar_destino_personaje(Id id, double mov_x, double mov_y) {
 	this->modelo->finalizarAccion(id);
-	// esto le mando una posicion inaccesible si la posicion es de una entidad de 3x3
-	/*if (this->modelo->mapa->entidad_celda(mov_x, mov_y)) {
-		Entidad * entidad = this->modelo->mapa->entidad_celda(mov_x, mov_y);
-		if (entidad->esInternaLaPosicion(mov_x,mov_y)){
-			printf("Cambio el destino\n");
-			Posicion pos = { mov_x,mov_y};
-			Posicion nueva = this->modelo->mapa->encontrarAdyacenteMasCercano(pos);
-			mov_x = nueva.get_x_exacta() +0.5;
-			mov_y = nueva.get_y_exacta() + 0.5;
-		}
-	}*/
-	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
+	this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);
 }
-void GameControllerServer::atacar(Id idAtacante, Id idAtacado){
-	this->modelo->atacarServer(idAtacante,idAtacado);
+void GameControllerServer::atacar(Id idAtacante, Id idAtacado) {
+	this->modelo->atacarServer(idAtacante, idAtacado);
 }
 
-void GameControllerServer::crearEdificio(string nombre, int id_constructor,int x, int y,SDL_mutex *mutex){
-	int id = this->modelo->crearEdificio(nombre,x,y);
-	if (id!=EDIFICIO_SUPERPUESTO){
+void GameControllerServer::crearEdificio(string nombre, int id_constructor, int x, int y, SDL_mutex *mutex) {
+	int id = this->modelo->crearEdificio(nombre, x, y);
+	if (id != EDIFICIO_SUPERPUESTO) {
 		msg_t msg;
 		msg.type = CREAR_ENTIDAD;
-		memcpy(msg.paramNombre,string_to_char_array(nombre),sizeof(msg.paramNombre));
+		memcpy(msg.paramNombre, string_to_char_array(nombre), sizeof(msg.paramNombre));
 		msg.paramInt1 = id;
-		msg.paramDouble1 =x;
+		msg.paramDouble1 = x;
 		msg.paramDouble2 = y;
-		this->agregarMensaje(msg,mutex);
-		this->setAccionEntidad(id_constructor,id);
-	}else{
+		this->agregarMensaje(msg, mutex);
+		this->setAccionEntidad(id_constructor, id);
+	} else {
 		//no pudo crear
 	}
 
 }
-void GameControllerServer::crearPersonajeEdificio(string name, string tipo,Id id_edificio,SDL_mutex *mutex){
-		ObjetoMapa* obj=this->juego->tipos[tipo];
-		Personaje* personaje =new Personaje(obj);
-		personaje->setNombreJugador(name);
-		printf("llego\n");
-		int id=this->modelo->crearPersonajeServerEdificio(personaje,id_edificio);
-		printf("salio\n");
+void GameControllerServer::crearPersonajeEdificio(string name, string tipo, Id id_edificio, SDL_mutex *mutex) {
+	ObjetoMapa* obj = this->juego->tipos[tipo];
+	Personaje* personaje = new Personaje(obj);
+	personaje->setNombreJugador(name);
+	int id = this->modelo->crearPersonajeServerEdificio(personaje, id_edificio);
 
-		//seteo mensaje
-		msg_t mensaje;
-		mensaje.type = NUEVO_PERSONAJE;
-		memcpy(mensaje.paramTipo,string_to_char_array(tipo),sizeof(mensaje.paramTipo));
-		memcpy(mensaje.paramNombre,string_to_char_array(name),sizeof(mensaje.paramNombre));
-		mensaje.paramInt1 = id;
-		mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
-		mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
+	//seteo mensaje
+	msg_t mensaje;
+	mensaje.type = NUEVO_PERSONAJE;
+	memcpy(mensaje.paramTipo, string_to_char_array(tipo), sizeof(mensaje.paramTipo));
+	memcpy(mensaje.paramNombre, string_to_char_array(name), sizeof(mensaje.paramNombre));
+	mensaje.paramInt1 = id;
+	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
+	mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
 
-		this->agregarMensaje(mensaje, mutex);
+	this->agregarMensaje(mensaje, mutex);
 }
 
+void GameControllerServer::crearBandera(string name, string raza, int idCentro, SDL_mutex *mutex) {
 
+	string tipo;
+	if (raza == "Elfo") {
+		tipo = "banderaElfos";
+	} else if (raza == "Hobbit") {
+		tipo = "banderaHobbit";
+	} else if (raza == "Humano") {
+		tipo = "banderaHumano";
+	} else
+		tipo = "banderaMordor";
 
-queue <msg_t>  GameControllerServer::inicializacion(){
-	queue <msg_t> colaInicializacion;
+	ObjetoMapa* obj = this->juego->tipos[tipo];
+	obj->raza = raza;
+
+	Entidad* bandera = new Entidad(obj);
+
+	bandera->esUnaBandera = true;
+
+	int id = this->modelo->crearBandera(bandera, idCentro);
+
+	printf("path de la bandera: %s\n", bandera->objetoMapa->imagen.c_str());
+
+	//seteo mensaje
+	msg_t mensaje;
+	mensaje.type = CREAR_ENTIDAD_CONSTRUIDA;
+	memcpy(mensaje.paramNombre, string_to_char_array(bandera->objetoMapa->nombre), sizeof(mensaje.paramNombre));
+	mensaje.paramInt1 = id;
+	mensaje.paramDouble1 = bandera->get_posicion().get_x_exacta();
+	mensaje.paramDouble2 = bandera->get_posicion().get_y_exacta();
+
+	this->agregarMensaje(mensaje, mutex);
+}
+
+queue<msg_t> GameControllerServer::inicializacion() {
+	queue<msg_t> colaInicializacion;
 	msg_t mapa;
 	mapa.type = PARAM_MAPA;
 	mapa.paramDouble1 = this->modelo->get_ancho_mapa();
@@ -117,26 +137,26 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 	msg_t conf;
 	conf.type = CONFIGURACION;
 	conf.paramDouble1 = this->modelo->juego->conf->get_margen_scroll();
-	conf.paramDouble2 =  this->modelo->juego->conf->get_vel_personaje();
+	conf.paramDouble2 = this->modelo->juego->conf->get_vel_personaje();
 	colaInicializacion.push(conf);
 
-	vector<Entidad*> entidades= this->modelo->obtenerEntidadesDeInicializacion();
+	vector<Entidad*> entidades = this->modelo->obtenerEntidadesDeInicializacion();
 	vector<Entidad*>::iterator it = entidades.begin();
 	for (; it != entidades.end(); it++) {
 		msg_t entidad;
 		Entidad* ent = (*it);
-		memcpy(entidad.paramNombre,string_to_char_array(ent->objetoMapa->nombre),sizeof(entidad.paramNombre));
+		memcpy(entidad.paramNombre, string_to_char_array(ent->objetoMapa->nombre), sizeof(entidad.paramNombre));
 		entidad.paramDouble1 = ent->posicion->getX();
 		entidad.paramDouble2 = ent->posicion->getY();
 
 		//problema no puede pasar los id de los recursos
-		if (!ent->esUnRecurso()){
+		if (!ent->esUnRecurso()) {
 			entidad.type = CREAR_ENTIDAD_CONSTRUIDA;
 			entidad.paramInt1 = ent->getId();
 			colaInicializacion.push(entidad);
 
-		}else{
-			int cant = ((Recurso*)ent)->obtenerRecurso();
+		} else {
+			int cant = ((Recurso*) ent)->obtenerRecurso();
 			entidad.paramInt1 = cant;
 			entidad.type = CREAR_RECURSO;
 			colaInicializacion.push(entidad);
@@ -146,75 +166,70 @@ queue <msg_t>  GameControllerServer::inicializacion(){
 
 		}
 
-
 	}
-	vector<Personaje*> personajes=this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator iter = personajes.begin();
-		for (; iter != personajes.end(); iter++) {
-			msg_t msg_crear_personaje;
-			Personaje* personaje = (*iter);
-			msg_crear_personaje.type=NUEVO_PERSONAJE;
-			Posicion pos=personaje->get_posicion();
-			memcpy(msg_crear_personaje.paramTipo,string_to_char_array(personaje->objetoMapa->nombre), sizeof(msg_crear_personaje.paramTipo));
-			memcpy(msg_crear_personaje.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(msg_crear_personaje.paramNombre));
-			msg_crear_personaje.paramDouble1=pos.get_x_exacta();
-			msg_crear_personaje.paramDouble2=pos.get_y_exacta();
-			msg_crear_personaje.paramInt1=personaje->getId();
-			colaInicializacion.push(msg_crear_personaje);
-			if(personaje->estaCongelado()){
-							msg_t mensajeDesconexion;
-							mensajeDesconexion.type = QUIT;
-							memcpy(mensajeDesconexion.paramNombre,string_to_char_array(personaje->getNombreJugador()),sizeof(mensajeDesconexion.paramNombre));
-							colaInicializacion.push(mensajeDesconexion);
-			}
+	for (; iter != personajes.end(); iter++) {
+		msg_t msg_crear_personaje;
+		Personaje* personaje = (*iter);
+		msg_crear_personaje.type = NUEVO_PERSONAJE;
+		Posicion pos = personaje->get_posicion();
+		memcpy(msg_crear_personaje.paramTipo, string_to_char_array(personaje->objetoMapa->nombre), sizeof(msg_crear_personaje.paramTipo));
+		memcpy(msg_crear_personaje.paramNombre, string_to_char_array(personaje->getNombreJugador()),
+				sizeof(msg_crear_personaje.paramNombre));
+		msg_crear_personaje.paramDouble1 = pos.get_x_exacta();
+		msg_crear_personaje.paramDouble2 = pos.get_y_exacta();
+		msg_crear_personaje.paramInt1 = personaje->getId();
+		colaInicializacion.push(msg_crear_personaje);
+		if (personaje->estaCongelado()) {
+			msg_t mensajeDesconexion;
+			mensajeDesconexion.type = QUIT;
+			memcpy(mensajeDesconexion.paramNombre, string_to_char_array(personaje->getNombreJugador()),
+					sizeof(mensajeDesconexion.paramNombre));
+			colaInicializacion.push(mensajeDesconexion);
 		}
+	}
+
 	return colaInicializacion;
 
 }
 
-void GameControllerServer::generarRecursoRandom(SDL_mutex *mutex){
-	Posicion pos = this->modelo->mapa->posicionVacia();
-	recurso_t tipo = this->modelo->generarRecursoRandom(pos);
-	//creacion mensaje si creo recurso
-	if (tipo.cantidad > 0) {
-		msg_t mensaje;
-		mensaje.type = CREAR_RECURSO;
-		memcpy(mensaje.paramNombre,string_to_char_array(tipo.nombre),sizeof(mensaje.paramNombre));
-		mensaje.paramInt1 = tipo.cantidad;
-		mensaje.paramDouble1 = pos.getX();
-		mensaje.paramDouble2 = pos.getY();
-		this->agregarMensaje(mensaje, mutex);
-		mensaje.type = SET_ID_RECURSO;
-		mensaje.paramInt1 = this->modelo->mapa->entidad_celda(pos.get_x_exacta(),pos.get_y_exacta())->getId();
-		this->agregarMensaje(mensaje, mutex);
+void GameControllerServer::generarRecursoRandom(SDL_mutex *mutex) {
 
+	for (int i = 0; i <= MAX_RECURSOS; i++) {
+		Posicion pos = this->modelo->mapa->posicionVacia();
+		recurso_t tipo = this->modelo->generarRecursoRandom(pos);
+		//creacion mensaje si creo recurso
+		if (tipo.cantidad > 0) {
+			msg_t mensaje;
+			mensaje.type = CREAR_RECURSO;
+			memcpy(mensaje.paramNombre, string_to_char_array(tipo.nombre), sizeof(mensaje.paramNombre));
+			mensaje.paramInt1 = tipo.cantidad;
+			mensaje.paramDouble1 = pos.getX();
+			mensaje.paramDouble2 = pos.getY();
+			this->agregarMensaje(mensaje, mutex);
+			mensaje.type = SET_ID_RECURSO;
+			mensaje.paramInt1 = this->modelo->mapa->entidad_celda(pos.get_x_exacta(), pos.get_y_exacta())->getId();
+			this->agregarMensaje(mensaje, mutex);
+		}
 	}
 }
 
-void GameControllerServer::setAccionEntidad(int id_personaje,int id_recurso){
+void GameControllerServer::setAccionEntidad(int id_personaje, int id_recurso) {
 	//podria reusar para construir esto TODO
 	Personaje * personaje = this->modelo->get_Personaje_Por_Id(id_personaje);
 	Entidad * entidad = this->modelo->buscarEntidad(id_recurso);
-	if (entidad != NULL){
+	if (entidad != NULL) {
 		personaje->setAccion(entidad);
 	}
 
 }
 
-/*void GameControllerServer::setRecoleccion(int id_personaje,int x , int y){
-	Entidad * entidad = this->modelo->mapa->entidad_celda(x,y);
-	if (entidad==NULL)
-		return;
-	Personaje * personaje = this->modelo->get_Personaje_Por_Id(id_personaje);
-	personaje->setAccion(entidad);
-	printf("%d\n",((Recurso *) entidad)->obtenerRecurso());
-}*/
-
-void GameControllerServer::agregarEntidad(string nombre,int x, int y, int cant, SDL_mutex *mutex){
-	this->agregarEntidad(nombre,x,y,cant, mutex);
+void GameControllerServer::agregarEntidad(string nombre, int x, int y, int cant, SDL_mutex *mutex) {
+	this->agregarEntidad(nombre, x, y, cant, mutex);
 	msg_t mensaje;
-	mensaje.type=CREAR_ENTIDAD;
-	memcpy(mensaje.paramNombre,string_to_char_array(nombre),sizeof(mensaje.paramNombre));
+	mensaje.type = CREAR_ENTIDAD;
+	memcpy(mensaje.paramNombre, string_to_char_array(nombre), sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = cant;
 	mensaje.paramDouble1 = x;
 	mensaje.paramDouble2 = y;
@@ -229,28 +244,28 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
-		if(p->esta_atacando()){
+		if (p->esta_atacando()) {
 			//printf("Esta atacando\n");
 			p->set_destino_al_ataque();
-			if(p->es_adyacente_al_atacado()){
+			if (p->es_adyacente_al_atacado()) {
 				if (!p->estaAtacandoCliente()) {
 					msg_t msg;
 					msg.type = EMPEZAR_ACCION;
 					msg.paramInt1 = p->getId();
 					this->agregarMensaje(msg, mutex);
 				}
-				if (p->contar()){
+				if (p->contar()) {
 
-				p->ejecutar_ataque();
-				//printf("Ataca\n");
-				msg_t mensaje;
-				mensaje.type = ATACAR;
-				memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),	sizeof(mensaje.paramNombre));
-				mensaje.paramInt1 = p->getId();
-				mensaje.paramDouble1 = p->get_atacado_id();
-				mensaje.paramDouble2 = p->danioInfringido();
-				this->agregarMensaje(mensaje, mutex);
-			}
+					p->ejecutar_ataque();
+					//printf("Ataca\n");
+					msg_t mensaje;
+					mensaje.type = ATACAR;
+					memcpy(mensaje.paramNombre, string_to_char_array(p->getNombreJugador()), sizeof(mensaje.paramNombre));
+					mensaje.paramInt1 = p->getId();
+					mensaje.paramDouble1 = p->get_atacado_id();
+					mensaje.paramDouble2 = p->danioInfringido();
+					this->agregarMensaje(mensaje, mutex);
+				}
 			}
 		}
 		if (p->seMovio()) {
@@ -260,18 +275,16 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			//creo mensaje y guardo
 			msg_t mensaje;
 			mensaje.type = MOVER_PERSONAJE;
-			memcpy(mensaje.paramNombre,string_to_char_array(p->getNombreJugador()),	sizeof(mensaje.paramNombre));
+			memcpy(mensaje.paramNombre, string_to_char_array(p->getNombreJugador()), sizeof(mensaje.paramNombre));
 			mensaje.paramDouble1 = mov_x;
 			mensaje.paramDouble2 = mov_y;
 			mensaje.paramInt1 = p->getId();
 			this->agregarMensaje(mensaje, mutex);
 
-
-
 		}
-		if (p->esta_recolectando()){
+		if (p->esta_recolectando()) {
 			p->set_destino(p->get_objetivo()->get_posicion());
-			if (p->esAdyacente(p->get_objetivo())){
+			if (p->esAdyacente(p->get_objetivo())) {
 				if (!p->estaAtacandoCliente()) {
 					p->atacandoCliente(true);
 					msg_t msg;
@@ -279,15 +292,12 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					msg.paramInt1 = p->getId();
 					this->agregarMensaje(msg, mutex);
 				}
-				if (p->contar()){
-					((Recurso *) p->get_objetivo())->recolectar(
-							p->recursosJugador(), p->getRecoleccion());
+				if (p->contar()) {
+					((Recurso *) p->get_objetivo())->recolectar(p->recursosJugador(), p->getRecoleccion());
 					//solucion para no tener que tener una lista con la info de los jugadores
 					msg_t mensaje;
 					mensaje.type = ACTUALIZACION_RECURSOS;
-					memcpy(mensaje.paramNombre,
-							string_to_char_array(p->getNombreJugador()),
-							sizeof(mensaje.paramNombre));
+					memcpy(mensaje.paramNombre, string_to_char_array(p->getNombreJugador()), sizeof(mensaje.paramNombre));
 					mensaje.paramInt1 = p->getId();
 					mensaje.paramDouble1 = p->getRecoleccion();
 					mensaje.paramDouble2 = ((Recurso *) p->get_objetivo())->getId();
@@ -312,40 +322,39 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 				}
 			}
 		}
-		if (p->esta_contruyendo()){
+		if (p->esta_contruyendo()) {
 			p->set_destino(p->get_objetivo()->get_posicion());
-			if (p->esAdyacente(p->get_objetivo())){
-				if (!p->estaAtacandoCliente()){
+			if (p->esAdyacente(p->get_objetivo())) {
+				if (!p->estaAtacandoCliente()) {
 					msg_t msg;
 					msg.type = EMPEZAR_ACCION;
 					msg.paramInt1 = p->getId();
 					this->agregarMensaje(msg, mutex);
 				}
-				if(p->contar()){
-				msg_t mensaje;
-				mensaje.type = CONSTRUIR;
-				mensaje.paramInt1 = p->getId();
-				mensaje.paramDouble1 = p->get_objetivo()->getId();
-				int construyo = p->get_objetivo()->construir(
-						p->get_construccion());
-				mensaje.paramDouble2 = construyo;
-				this->agregarMensaje(mensaje,mutex);
-				if (p->get_objetivo()->estaConstruida()) {
+				if (p->contar()) {
+					msg_t mensaje;
+					mensaje.type = CONSTRUIR;
+					mensaje.paramInt1 = p->getId();
+					mensaje.paramDouble1 = p->get_objetivo()->getId();
+					int construyo = p->get_objetivo()->construir(p->get_construccion());
+					mensaje.paramDouble2 = construyo;
+					this->agregarMensaje(mensaje, mutex);
+					if (p->get_objetivo()->estaConstruida()) {
 						p->terminarAccion();
 						msg_t msg;
 						msg.type = TERMINAR_ACCION;
 						msg.paramInt1 = p->getId();
 						this->agregarMensaje(msg, mutex);
-					//tendria q mandarle a todos los tipitos q dejen de atacar
-					//hacer que todos los tipitos paren
-					//this->modelo->terminarConstruccion(p->get_objetivo());
+						//tendria q mandarle a todos los tipitos q dejen de atacar
+						//hacer que todos los tipitos paren
+						//this->modelo->terminarConstruccion(p->get_objetivo());
 
+					}
 				}
-			}
 			}
 		}
 
-		if (p->esta_atacando()){
+		if (p->esta_atacando()) {
 
 			if (!p->get_atacado()->esta_vivo()) {
 				printf("MURIO\n");
@@ -368,12 +377,11 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 	//printf("Termino de procesar los personajes\n");
 }
 
-
-bool GameControllerServer::hayEventos(SDL_mutex *mutex){
+bool GameControllerServer::hayEventos(SDL_mutex *mutex) {
 	bool result;
 	bool paso = false;
 
-	while (!paso){
+	while (!paso) {
 		if (SDL_LockMutex(mutex) == 0) {
 			result = !this->cola.empty();
 			SDL_UnlockMutex(mutex);
@@ -383,10 +391,10 @@ bool GameControllerServer::hayEventos(SDL_mutex *mutex){
 	return result;
 }
 
-msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
+msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex) {
 	msg_t mensaje;
 	bool paso = false;
-	while (!paso){
+	while (!paso) {
 		if (SDL_LockMutex(mutex) == 0) {
 			mensaje = this->cola.front();
 			this->cola.pop();
@@ -396,54 +404,54 @@ msg_t GameControllerServer::sacarMensaje(SDL_mutex *mutex){
 	}
 	return mensaje;
 }
-void GameControllerServer::crearCentroCivicoNuevoUser(string raza, string NombreJugador,SDL_mutex *mutex){
+void GameControllerServer::crearCentroCivicoNuevoUser(string raza, string NombreJugador, SDL_mutex *mutex) {
 	Entidad * entidad = this->modelo->set_CentroCivicoNuevoServer(raza);
 	//creo centro civico
 	msg_t mensaje;
-	mensaje.type =  CREAR_ENTIDAD_CONSTRUIDA;
-	memcpy(mensaje.paramNombre, string_to_char_array(entidad->objetoMapa->nombre),
-				sizeof(mensaje.paramNombre));
+	mensaje.type = CREAR_ENTIDAD_CONSTRUIDA;
+	memcpy(mensaje.paramNombre, string_to_char_array(entidad->objetoMapa->nombre), sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = entidad->getId();
 	mensaje.paramDouble1 = entidad->get_posicion().getX();
 	mensaje.paramDouble2 = entidad->get_posicion().getY();
-	this->agregarMensaje(mensaje,mutex);
+	this->agregarMensaje(mensaje, mutex);
 
 	string tipito;
 	ObjetoMapa* tipo = entidad->devolverPersonajesCreables().begin()->second;
 	if (tipo->construccion > 0 || tipo->recoleccion > 0) {
-		printf(" es constructor %s\n",tipo->nombre.c_str());
 		tipito = tipo->nombre;
-	}else{
-		map<string,ObjetoMapa*>::iterator it = entidad->devolverPersonajesCreables().begin();
+	} else {
+		map<string, ObjetoMapa*>::iterator it = entidad->devolverPersonajesCreables().begin();
 		it++;
 		//tipo 1 es heroe este es aldeano
-		printf(" no es %s\n",it->first.c_str());
-		tipito =it->first;
+		tipito = it->first;
 	}
 
 	//crea la cantidad de personaje de inicializacion
-	for (int i = 0; i < CANTIDAD_PERSONAJES_INICIALES;i++){
+	for (int i = 0; i < CANTIDAD_PERSONAJES_INICIALES; i++) {
 
-		this->crearPersonajeEdificio(NombreJugador,tipito,entidad->getId(),mutex);
+		this->crearPersonajeEdificio(NombreJugador, tipito, entidad->getId(), mutex);
 
+	}
+
+	if (this->objetivo == FLAG) {
+		printf("objetivo del flag\n");
+		this->crearBandera(NombreJugador, raza, entidad->getId(), mutex);
 	}
 
 	msg_t mssg;
 	mssg.type = LOGIN;
-	memcpy(mssg.paramNombre, string_to_char_array(NombreJugador),
-			sizeof(mssg.paramNombre));
+	memcpy(mssg.paramNombre, string_to_char_array(NombreJugador), sizeof(mssg.paramNombre));
 	this->agregarMensaje(mssg, mutex);
-	printf("Mando login\n");
 
 }
 
-void GameControllerServer::agregarMensaje(msg_t mensaje,SDL_mutex *mutex){
+void GameControllerServer::agregarMensaje(msg_t mensaje, SDL_mutex *mutex) {
 	bool paso = false;
-	while (!paso){
+	while (!paso) {
 		if (SDL_LockMutex(mutex) == 0) {
 			this->cola.push(mensaje);
 			SDL_UnlockMutex(mutex);
-			paso= true;
+			paso = true;
 		}
 	}
 

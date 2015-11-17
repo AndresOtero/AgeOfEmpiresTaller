@@ -30,7 +30,7 @@ enum bordes {
 #define TILES 0
 #define DIMENSIONES 2
 #define MOVIMIENTOS 8
-#define MAX_NRO_TEXTURA 9
+#define MAX_NRO_TEXTURA 5
 #define CANTIDAD_DE_IMAGENES 8
 
 #define ANCHO_ANIMACION 128
@@ -40,10 +40,8 @@ enum bordes {
 Vista::Vista(Modelo* modelo, GameControllerCliente* gameController) {
 	this->modelo = modelo;
 	this->pantalla = modelo->juego->pantalla;
-	printf("seteo pantalla\n");
 	this->velocidad_de_scroll = 0.25;
 	this->margen_scroll = modelo->juego->conf->get_margen_scroll();
-	printf("seteo margen\n");
 	this->transformador = shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(), altura_por_celda()));
 	shared_ptr<Barra> barra(new Barra(modelo, &referencia_mapa_x, &referencia_mapa_y));
 	this->barra = barra;
@@ -504,7 +502,6 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	dibujo_pers->setMovimientoActual(dibujo_pers_anterior->getMovimientoActual());
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
 	if (esta_en_seleccion(img_personaje_x, img_personaje_y) && termino_de_elegir) {
-		printf("Termino de elegir, elijo : %d,%d\n", img_personaje_x, img_personaje_y);
 		modelo->seleccionar(personaje->getReferenciaMapaX(), personaje->getReferenciaMapaY());
 	}
 	Posicion destino = personaje->get_camino();
@@ -644,7 +641,6 @@ void Vista::setear_vista(string nombreJugador) {
 	for (; it != personajes.end(); it++) {
 		Personaje* p = *it;
 		if ((p)->getNombreJugador() == nombreJugador) {
-			printf("Encontro personaje del jugador\n");
 			this->setear_referencia(p->get_posicion().get_x_exacta(), p->get_posicion().get_y_exacta());
 			return;
 		}

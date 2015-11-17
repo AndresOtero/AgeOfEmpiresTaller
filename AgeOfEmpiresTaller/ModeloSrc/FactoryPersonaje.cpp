@@ -16,7 +16,6 @@ FactoryPersonaje::~FactoryPersonaje() {
 	// TODO Auto-generated destructor stub
 }
 void FactoryPersonaje::cargarPersonajes(map<string,ObjetoMapa*> tipos){
-	printf("entro\n");
 	map<string, ObjetoMapa*>::iterator it_edificios;
 	map<string, ObjetoMapa*>::iterator it_personajes;
 		for (it_edificios = tipos.begin(); it_edificios != tipos.end(); it_edificios++)	{
@@ -31,7 +30,6 @@ void FactoryPersonaje::cargarPersonajes(map<string,ObjetoMapa*> tipos){
 
 		}
 	}
-	printf("salio\n");
 }
 map<string,ObjetoMapa*> FactoryPersonaje::devolverTipos(string edificio){
 	return this->diccionario_de_diccionarios_de_personajes_por_edificio[edificio];

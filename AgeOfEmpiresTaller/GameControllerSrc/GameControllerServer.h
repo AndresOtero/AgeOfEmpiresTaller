@@ -26,6 +26,8 @@ public:
 	void setMapa(int ancho, int largo);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,
 			vector<vector<dibujo_t>> tiles);
+
+	void crearBandera(string name, string raza,int idCentro, SDL_mutex *mutex);
 	void conectar();
 	void eliminarEntidad(int id);
 	void cambiar_destino_personaje(Id id, double mov_x,double mov_y);

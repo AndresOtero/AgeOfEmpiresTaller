@@ -20,7 +20,6 @@
 #include "Madera.h"
 #include "Piedra.h"
 #include "Comida.h"
-#define MAX_RECURSOS 300
 #define RITMO 5
 using namespace std;
 #define VISIBILIDAD 5
@@ -37,16 +36,13 @@ Modelo::Modelo(Juego* juego) {
 	this->acumuladorPiso = 0;
 	this->juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
-	printf("seteo mapa\n");
 	this->personajes = vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
 	this->jugador = juego->escenario->jugador;
 	if (this->jugador) {
-		printf("hay jugador\n");
 		this->jugador->cargarEdificios(this->juego->tipos);
 	}
 	this->factory_personaje.cargarPersonajes(this->juego->tipos);
-	printf("cargo perso\n");
 	personajes_seleccionados.clear();
 	this->insertarEntidades();
 	this->totalRecursos = 0;
@@ -72,25 +68,17 @@ void Modelo::set_posicionRandomPersonaje(Personaje* personaje) {
 }
 
 Entidad* Modelo::set_CentroCivicoNuevoServer(string raza) {
-	printf("entro\n");
 	Entidad* base = this->juego->centroCivicoDe(raza);
 	if (base) {
-		printf("L1Existe la base\n");
 		vector<Entidad*> centros = this->obtenerCentrosCivicosEnMapa();
-		//esta funcion q viene es complejaaa
-		printf("L1Obtuvo centros civicos\n");
 		Posicion pos = this->mapa->posicionValidaParaCentroCivico(centros, base);
-		printf("L1Pudo obtener posicion\n");
 		base->set_posicion(pos.getX(), pos.getY());
 		base->finalizarConstruccion();
-		printf("L1 pos %d,%d\n", pos.getX(), pos.getY());
 		this->insertarEntidad(base);
 	} else {
 		printf("ERROR no existe centro civico de esa raza\n");
 	}
-	printf("Por cargar personajes en entidad\n");
 	base->cargarPersonajes(factory_personaje.devolverTipos(base->objetoMapa->nombre));
-	printf("Cargados\n");
 	return base;
 }
 
@@ -253,7 +241,6 @@ bool Modelo::estaSeleccionada(int x, int y) {
 	return false;
 }
 void Modelo::limpiarSeleccion() {
-	printf("Limpia Seleccion\n");
 	personajes_seleccionados.clear();
 }
 
@@ -550,11 +537,6 @@ recurso_t Modelo::generarRecursoRandom(Posicion pos) {
 	//double tiempo = tf - ti;
 	GeneradorNumeros num;
 	recurso_t recurso;
-	if ((this->totalRecursos + 1 > MAX_RECURSOS))/* || (tiempo < RITMO))*/{
-		recurso.nombre = "";
-		recurso.cantidad = 0;
-		return recurso;
-	}
 	int x = pos.getX();
 	int y = pos.getY();
 	Entidad * entidad;
@@ -664,11 +646,19 @@ int Modelo::crearPersonajeServerEdificio(Personaje* personaje, Id id_edificio) {
 	Entidad* edificio = this->buscarEntidad(id_edificio);
 	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());
 	personaje->set_posicion(pos);
-	printf("%d,%d\n", pos.getX(), pos.getY());
 	this->mapa->posicionarPersonaje(personaje);
 	personajes.push_back(personaje);
 	int id = personaje->getId();
 	return (id);
+}
+
+int Modelo::crearBandera(Entidad* bandera, Id id_edificio) {
+	Entidad* edificio = this->buscarEntidad(id_edificio);
+	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());
+	bandera->set_posicion(pos.getX(), pos.getY()) ;
+	this->insertarEntidad(bandera);
+	int id = bandera->getId();
+	return id;
 }
 
 Modelo::~Modelo() {
