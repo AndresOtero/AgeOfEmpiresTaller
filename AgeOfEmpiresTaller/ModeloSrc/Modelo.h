@@ -45,7 +45,7 @@ public:
 	void setMapa(int largo,int ancho);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<vector<dibujo_t>>> tiles);
 	dibujo_t dibujar(int dim,int x,int y);
-
+	int crearBandera(Entidad* bandera, Id id_edificio);
 	int crearPersonajeServerEdificio(Personaje* personaje,Id id_edificio);
 	string nombreJugador();
 	bool afueraDelMapa(int x,int y);

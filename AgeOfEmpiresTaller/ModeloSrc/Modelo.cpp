@@ -75,22 +75,16 @@ Entidad* Modelo::set_CentroCivicoNuevoServer(string raza) {
 	printf("entro\n");
 	Entidad* base = this->juego->centroCivicoDe(raza);
 	if (base) {
-		printf("L1Existe la base\n");
 		vector<Entidad*> centros = this->obtenerCentrosCivicosEnMapa();
-		//esta funcion q viene es complejaaa
-		printf("L1Obtuvo centros civicos\n");
 		Posicion pos = this->mapa->posicionValidaParaCentroCivico(centros, base);
-		printf("L1Pudo obtener posicion\n");
 		base->set_posicion(pos.getX(), pos.getY());
 		base->finalizarConstruccion();
-		printf("L1 pos %d,%d\n", pos.getX(), pos.getY());
 		this->insertarEntidad(base);
 	} else {
 		printf("ERROR no existe centro civico de esa raza\n");
 	}
 	printf("Por cargar personajes en entidad\n");
 	base->cargarPersonajes(factory_personaje.devolverTipos(base->objetoMapa->nombre));
-	printf("Cargados\n");
 	return base;
 }
 
@@ -669,6 +663,15 @@ int Modelo::crearPersonajeServerEdificio(Personaje* personaje, Id id_edificio) {
 	personajes.push_back(personaje);
 	int id = personaje->getId();
 	return (id);
+}
+
+int Modelo::crearBandera(Entidad* bandera, Id id_edificio) {
+	Entidad* edificio = this->buscarEntidad(id_edificio);
+	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());
+	bandera->set_posicion(pos.getX(), pos.getY()) ;
+	this->insertarEntidad(bandera);
+	int id = bandera->getId();
+	return id;
 }
 
 Modelo::~Modelo() {

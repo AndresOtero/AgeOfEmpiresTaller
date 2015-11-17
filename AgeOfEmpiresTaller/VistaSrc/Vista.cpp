@@ -30,7 +30,7 @@ enum bordes {
 #define TILES 0
 #define DIMENSIONES 2
 #define MOVIMIENTOS 8
-#define MAX_NRO_TEXTURA 9
+#define MAX_NRO_TEXTURA 5
 #define CANTIDAD_DE_IMAGENES 8
 
 #define ANCHO_ANIMACION 128

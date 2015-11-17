@@ -19,6 +19,7 @@ Entidad::Entidad(ObjetoMapa* objetoMapa) {
 	this->raza = objetoMapa->raza;
 	this->velocidad_cosntruccion = objetoMapa->velocidad_construcccion;
 	this->costo.setCosto(objetoMapa->oro,objetoMapa->madera,objetoMapa->piedra,objetoMapa->comida);
+	this->esUnaBandera = false;
 
 }
 Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
@@ -30,6 +31,7 @@ Entidad::Entidad(ObjetoMapa* objetoMapa, int x, int y) {
 	this->raza = objetoMapa->raza;
 	this->velocidad_cosntruccion = objetoMapa->velocidad_construcccion;
 	this->costo.setCosto(objetoMapa->oro,objetoMapa->madera,objetoMapa->piedra,objetoMapa->comida);
+	this->esUnaBandera = false;
 }
 bool Entidad::esUnRecurso(){
 	if (Recurso* rec = dynamic_cast<Recurso*>(this)){
