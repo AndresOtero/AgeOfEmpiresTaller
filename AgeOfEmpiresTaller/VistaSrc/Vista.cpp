@@ -30,6 +30,7 @@ enum bordes {
 #define TILES 0
 #define DIMENSIONES 2
 #define MOVIMIENTOS 8
+#define MAX_NRO_TEXTURA 9
 #define CANTIDAD_DE_IMAGENES 8
 
 #define ANCHO_ANIMACION 128
@@ -133,25 +134,18 @@ bool Vista::init() {
 bool Vista::loadMedia() {
 	/**Creo el dibujo del pasto**/
 
-	Entidad* entidadPasto = this->modelo->juego->escenario->getTexturaDefault();
-
-	this->factory->crear_dibujo_tile(entidadPasto->objetoMapa->imagen);
-
-	dibujo_t pasto_id = this->factory->ultimo_dibujo();
-
-	Entidad* entidadPasto2 = this->modelo->juego->escenario->getTexturaDefault2();
-
-	this->factory->crear_dibujo_tile(entidadPasto2->objetoMapa->imagen);
-
-	dibujo_t pasto_id2 = this->factory->ultimo_dibujo();
-
 	vector<dibujo_t> pastos;
+	for (int nroTextura = 1; nroTextura <= MAX_NRO_TEXTURA;nroTextura++ ){
 
-	pastos.push_back(pasto_id);
-	pastos.push_back(pasto_id2);
+		Entidad* entidadPasto = this->modelo->juego->escenario->getTexturaDefault(nroTextura);
+		this->factory->crear_dibujo_tile(entidadPasto->objetoMapa->imagen);
+		dibujo_t pasto_id = this->factory->ultimo_dibujo();
+		pastos.push_back(pasto_id);
 
-	delete entidadPasto;
-	delete entidadPasto2;
+		delete entidadPasto;
+
+	}
+
 	std::map<std::string, ObjetoMapa*>::iterator it;
 	std::map<std::string, dibujo_t> hashDibujos;
 

@@ -20,13 +20,11 @@ Escenario::Escenario(string nombre, int size_x, int size_y){
 	this -> protagonista = NULL;
 	this->jugador = NULL;
 }
-Entidad* Escenario::getTexturaDefault(){
-	ObjetoMapa* tipo = new ObjetoMapa("pasto","img/PASTO1.png");
-	Entidad* entidad = new Entidad(tipo);
-	return entidad;
-}
-Entidad* Escenario::getTexturaDefault2(){
-	ObjetoMapa* tipo = new ObjetoMapa("pasto","img/PASTO2.png");
+Entidad* Escenario::getTexturaDefault(int num){
+	string first = "img/extras/piso/";
+	string last = ".png";
+	string path = first + to_string(num) + last;
+	ObjetoMapa* tipo = new ObjetoMapa("pasto",path);
 	Entidad* entidad = new Entidad(tipo);
 	return entidad;
 }
