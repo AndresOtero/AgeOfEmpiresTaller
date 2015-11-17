@@ -20,8 +20,10 @@ Dibujo::Dibujo() {
 	shared_ptr <Textura> text(new Textura());
 	this->textura = text;
 	this->animado = true;
-
+	this->pixel_x = 0;
+	this->pixel_y = 0;
 }
+
 void Dibujo::setPixeles(int x, int y){
 	this->pixel_x = x;
 	this->pixel_y = y;
