@@ -40,6 +40,10 @@ void Dibujo_Estatico::ponerAmarillo(){
 	this->textura->setColor(255,255,0);
 }
 
+void Dibujo_Estatico::ponerGris(){
+	this->textura->setColor(128,128,128);
+}
+
 void Dibujo_Estatico::resetear(){
 	this->textura->setAlpha(RESET);
 }

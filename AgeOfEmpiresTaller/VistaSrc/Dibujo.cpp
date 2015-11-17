@@ -44,7 +44,9 @@ void Dibujo::ponerAmarillo(){
 void Dibujo::resetear(){
 	this->textura->setAlpha(RESET);
 }
-
+void Dibujo::ponerGris(){
+	this->textura->setColor(128,128,128);
+}
 void Dibujo::oscurecer(){
 	this->textura->oscurecer();
 }

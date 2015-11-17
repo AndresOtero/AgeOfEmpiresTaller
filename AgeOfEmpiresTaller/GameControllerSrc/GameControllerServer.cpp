@@ -313,7 +313,6 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			}
 		}
 		if (p->esta_contruyendo()){
-			printf("Esta contrusendo\n");
 			p->set_destino(p->get_objetivo()->get_posicion());
 			if (p->esAdyacente(p->get_objetivo())){
 				if (!p->estaAtacandoCliente()){

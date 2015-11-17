@@ -31,6 +31,7 @@ public:
 	virtual void iluminar();
 	virtual void setAnimar(bool a);
 	virtual void resetear();
+	virtual void ponerGris();
 	virtual void ponerRojo();
 	virtual void ponerVerde();
 	virtual void ponerAmarillo();

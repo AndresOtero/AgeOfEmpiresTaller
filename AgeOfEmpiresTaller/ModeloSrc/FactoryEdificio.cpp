@@ -24,12 +24,10 @@ void FactoryEdificio::cargarEdificios(map<string,ObjetoMapa*> tipos){
 	{
 		//first es key, second es value
 		if (it->second->raza == this->raza && (it->second->velocidad_construcccion!=0)){
-	    	printf("igualo raza y connstruyo\n");
 	    	this->edificios_raza[it->first]=tipos[it->first];
 	    }
 
 	}
-	printf("salio\n");
 
 
 }

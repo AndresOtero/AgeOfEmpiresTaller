@@ -32,6 +32,7 @@ public:
 	void oscurecer();
 	void resetear();
 	void reiniciar();
+	void ponerGris();
 	void ponerRojo();
 	void ponerVerde();
 	void ponerAmarillo();
