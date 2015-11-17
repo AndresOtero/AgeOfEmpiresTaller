@@ -135,7 +135,11 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	if (afueraDelMapa(adonde_voy.getX(), adonde_voy.getY())) {
 		return adonde_estoy;
 	}
-	if ((adonde_estoy == adonde_voy) || (!celdaOcupada(adonde_voy.getX(), adonde_voy.getY()))) {
+
+	bool celdaOcupad = celdaOcupada(adonde_voy.getX(), adonde_voy.getY());
+	//bool esAdyacente = adonde_voy.es_adyacente(adonde_estoy);
+
+	if ((adonde_estoy == adonde_voy) || (!celdaOcupad)) {
 		return adonde_voy;
 	}
 	/*if(adonde_estoy.distancia_octal(adonde_voy)<=14){
@@ -144,16 +148,19 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	 return adonde_estoy;
 	 }*/
 	// si me quiero mover a un lugar ocupado adyacente a mi
-	if (adonde_voy.es_adyacente(adonde_estoy) && celdaOcupada(adonde_voy.getX(), adonde_voy.getY())) {
-		//para que no se quede muy lejos
-		printf("es adyacente y esta ocupada\n");
-		return this->acercar(adonde_estoy, adonde_voy);
+	bool esAdyacente;
+	Entidad* entidad = this->entidad_celda(adonde_voy.getX(), adonde_voy.getY());
+	if (entidad) {
+		esAdyacente = entidad->esAdyacente(adonde_estoy);
+		if (esAdyacente)
+			return this->acercar(adonde_estoy, adonde_voy);
+	} else {
+		esAdyacente = adonde_voy.es_adyacente(adonde_estoy);
+		if ((esAdyacente) && (celdaOcupad))
+			return this->acercar(adonde_estoy, adonde_voy);
 	}
-	//si me quiero acercar a una entidad  y clicke en el medio
-	if (estoyAlLadoDeEntidadDestino(adonde_voy, adonde_estoy)) {
-		return this->acercar(adonde_estoy, adonde_voy);
-	}
-	//printf("Voy hacia uno ocupado\n");
+
+//printf("Voy hacia uno ocupado\n");
 	adonde_voy = Posicion(adonde_voy.getX(), adonde_voy.getY());
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>, CompDistancias> pila_no_ocupadas;
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>, CompDistancias> pila_ocupadas;
@@ -198,8 +205,9 @@ vector<Posicion> Mapa::adyacencias(Posicion posicion) {
 	return adyacentes;
 }
 bool Mapa::estoyAlLadoDeEntidadDestino(Posicion adonde_voy, Posicion adonde_estoy) {
-	if (this->entidad_celda(adonde_voy.getX(), adonde_voy.getY())) {
-		return this->entidad_celda(adonde_voy.getX(), adonde_voy.getY())->esAdyacente(adonde_estoy);
+	Entidad* entidad = this->entidad_celda(adonde_voy.getX(), adonde_voy.getY());
+	if (entidad) {
+		return entidad->esAdyacente(adonde_estoy);
 	}
 	return false;
 }
@@ -320,11 +328,11 @@ bool Mapa::puedeUbicar(Entidad* entidad) {
 }
 
 Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base) {
-	//devuelve una posicion valida en el mapa
+//devuelve una posicion valida en el mapa
 	Posicion pos;
 
-	//Lo puede hacer un for per ya fueee
-	//MALDAD AL MAXIMO
+//Lo puede hacer un for per ya fueee
+//MALDAD AL MAXIMO
 	vector<Posicion> sectores;
 	Posicion sector1 = { 0, 0 };
 	Posicion sector2 = { this->getAncho() / 2, 0 };
@@ -336,7 +344,7 @@ Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad 
 	sectores.push_back(sector4);
 	vector<Entidad*>::iterator it = centros.begin();
 	vector<Posicion>::iterator it_pos = sectores.begin();
-	//por cada centro civico
+//por cada centro civico
 	for (; it != centros.end(); ++it) {
 		//printf("L2Por centro en mapa\n");
 		for (; it_pos != sectores.end(); ++it_pos) {
@@ -362,7 +370,7 @@ Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad 
 
 }
 Posicion Mapa::posicionValidaEnSector(Posicion sector, Entidad * entidad) {
-	//devuelve una posicion random dentro de un cuarto del mapa que este vacia y sea ubicable
+//devuelve una posicion random dentro de un cuarto del mapa que este vacia y sea ubicable
 	GeneradorNumeros num;
 	int x;
 	int y;
@@ -374,13 +382,13 @@ Posicion Mapa::posicionValidaEnSector(Posicion sector, Entidad * entidad) {
 		entidad->set_posicion(x, y);
 		//printf("L3En while\n");
 	} while (celda->estaOcupada() || !this->puedeUbicar(entidad));
-	//printf("L3EncontroPosicion\n");
+//printf("L3EncontroPosicion\n");
 	Posicion posicion = { x, y };
 	return posicion;
 }
 
 bool Mapa::estaDentroDeSector(Posicion sector, Posicion entidad) {
-	//su referencia al mapa esta dentro del sector
+//su referencia al mapa esta dentro del sector
 	if (entidad.getX() < sector.getX() + this->getAncho() / 2) {
 		if (entidad.getY() < sector.getY() + this->getLargo() / 2) {
 			return true;

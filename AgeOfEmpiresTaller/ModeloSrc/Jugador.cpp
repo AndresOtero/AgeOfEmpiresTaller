@@ -9,7 +9,6 @@
 
 Jugador::Jugador(string nombre,string raza) {
 	// TODO Auto-generated constructor stub
-	printf("crea jugador\n");
 	this->raza=raza;
 	this->nombre=nombre;
 	this->recursos = new RecursosJugador(200,200,200,200);
