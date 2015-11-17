@@ -198,6 +198,19 @@ int Modelo::oscuridad(int dim, int x, int y) {
 			}
 		}
 	}
+
+	vector<Entidad*> lista = this->juego->escenario->entidades;
+	for (unsigned int i = 0; i < lista.size(); i++) {
+		if (lista[i]->objetoMapa->raza == this->getJugador()->raza) {
+			Posicion pos = lista[i]->get_posicion();
+			float d = (pos.getX() - x) * (pos.getX() - x) + (pos.getY() - y) * (pos.getY() - y);
+			d = sqrt(d);
+			if (d < VISIBILIDAD) {
+				agregarPosicionPisada(x, y);
+				return VISIBLE;
+			}
+		}
+	}
 	if (pisado(x, y)) {
 		return PISADA;
 	}
@@ -257,7 +270,7 @@ DatosSeleccionado Modelo::seleccionar(double mov_x, double mov_y) {
 	return this->mapa->mostrar_contenido(seleccionada.getX(), seleccionada.getY());
 }
 
-Entidad* Modelo::get_entidad_seleccionada() {
+Entidad * Modelo::get_entidad_seleccionada() {
 	return entidad_seleccionada;
 }
 
@@ -335,7 +348,7 @@ void Modelo::agregarPosicionPisada(int x, int y) {
 }
 
 //server
-Posicion Modelo::mover_personaje(Personaje* personaje) {
+Posicion Modelo::mover_personaje(Personaje * personaje) {
 
 	Posicion destino = personaje->get_destino();
 	Posicion adonde_estoy = personaje->get_posicion();
@@ -592,7 +605,7 @@ int Modelo::agregarEntidad(string nombre, int x, int y, int cantidad) {
 	else if (objeto->nombre.compare("madera") == 0)
 		entidad = new Madera(objeto, x, y);
 	else if (objeto->nombre.compare("comida") == 0)
-			entidad = new Comida(objeto, x, y);
+		entidad = new Comida(objeto, x, y);
 	else
 		entidad = new Entidad(objeto, x, y);
 	entidad->cargarPersonajes(factory_personaje.devolverTipos(objeto->nombre));
