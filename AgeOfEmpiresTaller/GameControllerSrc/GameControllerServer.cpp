@@ -422,20 +422,27 @@ void GameControllerServer::crearCentroCivicoNuevoUser(string raza, string Nombre
 	} else {
 		map<string, ObjetoMapa*>::iterator it = entidad->devolverPersonajesCreables().begin();
 		it++;
-		//tipo 1 es heroe este es aldeano
 		tipito = it->first;
 	}
-
-	//crea la cantidad de personaje de inicializacion
 	for (int i = 0; i < CANTIDAD_PERSONAJES_INICIALES; i++) {
-
 		this->crearPersonajeEdificio(NombreJugador, tipito, entidad->getId(), mutex);
-
 	}
 
 	if (this->objetivo == FLAG) {
 		printf("objetivo del flag\n");
 		this->crearBandera(NombreJugador, raza, entidad->getId(), mutex);
+	} else if (this->objetivo == KING) {
+		string heroeTipo;
+		if (raza == "Elfo") {
+			heroeTipo = "arwen";
+		} else if (raza == "Hobbit") {
+			heroeTipo = "aragon";
+		} else if (raza == "Humano") {
+			heroeTipo = "king";
+		} else
+			heroeTipo = "sauron";
+
+		this->crearPersonajeEdificio(NombreJugador, heroeTipo, entidad->getId(), mutex);
 	}
 
 	msg_t mssg;
