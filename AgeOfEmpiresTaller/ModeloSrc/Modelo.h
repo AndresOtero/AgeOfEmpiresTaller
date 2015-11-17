@@ -61,7 +61,7 @@ public:
 	void insertarEntidad(Entidad * entidad);
 	Entidad * buscarEntidad(int id_entidad);
 	//server
-	void actualizarRecursosServer(int id ,int oro,int madera,int piedra);
+	void actualizarRecursosServer(int id ,int oro,int madera,int piedra,int comida);
 	void congelarPersonaje(string id);
 	void descongelarPersonaje(string id);
 	void actualizarMapa();

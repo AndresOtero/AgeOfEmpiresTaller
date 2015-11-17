@@ -23,10 +23,11 @@ void Jugador::cargarEdificios(map<string,ObjetoMapa*> tipos){
 map<string,ObjetoMapa*> Jugador::devolverEdificiosCreables(){
 	return this->factory.devolverTipos();
 }
-void Jugador::actualizarRecursos(int oro, int madera, int piedra){
+void Jugador::actualizarRecursos(int oro, int madera, int piedra, int comida){
 	this->recursos->colectarOro(oro);
 	this->recursos->colectarMadera(madera);
 	this->recursos->colectarPiedra(piedra);
+	this->recursos->colectarComida(comida);
 }
 void Jugador::pagar(Costo costo){
 	this->recursos->pagar(costo);

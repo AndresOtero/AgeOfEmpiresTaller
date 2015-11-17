@@ -29,7 +29,7 @@ RecursosJugador::RecursosJugador(int oro, int madera, int piedra, int comida) {
 	this->comida = validarRecurso(comida);
 }
 bool RecursosJugador::estaVacio(){
-	if ((this->oro > 0) || (this->madera > 0) || (this->piedra >0) ){
+	if ((this->oro > 0) || (this->madera > 0) || (this->piedra >0) || (this->comida >0) ){
 		return false;
 	}
 	return true;
@@ -38,6 +38,7 @@ void RecursosJugador::reset(){
 	this->oro= 0;
 	this->madera= 0;
 	this->piedra = 0;
+	this->comida = 0;
 }
 void RecursosJugador::colectarOro(int cant){
 	this->oro+=cant;

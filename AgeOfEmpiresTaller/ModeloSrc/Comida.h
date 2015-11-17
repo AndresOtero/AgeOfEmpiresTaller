@@ -10,7 +10,6 @@
 
 #include "Recurso.h"
 #include "RecursosJugador.h"
-#include "Entidad.h"
 
 namespace std {
 

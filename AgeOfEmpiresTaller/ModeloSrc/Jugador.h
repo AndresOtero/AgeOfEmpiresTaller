@@ -35,7 +35,7 @@ public:
 	}
 	map<string,ObjetoMapa*> devolverEdificiosCreables();
 	void cargarEdificios(std::map<std::string, ObjetoMapa*> tipos);
-	void actualizarRecursos(int oro, int madera, int piedra);
+	void actualizarRecursos(int oro, int madera, int piedra, int comida);
 	void pagar(Costo costo);
 	bool puedePagar(Costo costo);
 };

@@ -11,6 +11,7 @@
 #include "Oro.h"
 #include "Madera.h"
 #include "Piedra.h"
+#include "Comida.h"
 
 
 #include "Configuracion.h"
