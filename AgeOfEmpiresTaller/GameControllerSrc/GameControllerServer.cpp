@@ -7,6 +7,7 @@
 
 #include "GameControllerServer.h"
 #define CANTIDAD_PERSONAJES_INICIALES 4
+#define MAX_RECURSOS 45
 
 char* GameControllerServer::string_to_char_array(string str) {
 	int str_size = str.size();
@@ -207,7 +208,7 @@ queue<msg_t> GameControllerServer::inicializacion() {
 
 void GameControllerServer::generarRecursoRandom(SDL_mutex *mutex) {
 
-	for (int i = 0; i <= 40; i++) {
+	for (int i = 0; i <= MAX_RECURSOS; i++) {
 		Posicion pos = this->modelo->mapa->posicionVacia();
 		recurso_t tipo = this->modelo->generarRecursoRandom(pos);
 		//creacion mensaje si creo recurso

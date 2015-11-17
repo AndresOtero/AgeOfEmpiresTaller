@@ -45,6 +45,7 @@ class Personaje:public Atacable {
 	string raza;
 	Costo costo;
 public:
+	bool adyacente;
 	Personaje();
 	Personaje(ObjetoMapa* objetoMapa);
 	Personaje(ObjetoMapa* objetoMapa, int x, int y);

@@ -20,7 +20,6 @@
 #include "Madera.h"
 #include "Piedra.h"
 #include "Comida.h"
-#define MAX_RECURSOS 300
 #define RITMO 5
 using namespace std;
 #define VISIBILIDAD 5
@@ -544,11 +543,6 @@ recurso_t Modelo::generarRecursoRandom(Posicion pos) {
 	//double tiempo = tf - ti;
 	GeneradorNumeros num;
 	recurso_t recurso;
-	if ((this->totalRecursos + 1 > MAX_RECURSOS))/* || (tiempo < RITMO))*/{
-		recurso.nombre = "";
-		recurso.cantidad = 0;
-		return recurso;
-	}
 	int x = pos.getX();
 	int y = pos.getY();
 	Entidad * entidad;
