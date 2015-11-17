@@ -19,7 +19,7 @@
 #include "Oro.h"
 #include "Madera.h"
 #include "Piedra.h"
-#define MAX_RECURSOS 30
+#define MAX_RECURSOS 300
 #define RITMO 5
 using namespace std;
 #define VISIBILIDAD 5
