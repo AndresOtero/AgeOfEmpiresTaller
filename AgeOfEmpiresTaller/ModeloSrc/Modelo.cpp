@@ -36,16 +36,13 @@ Modelo::Modelo(Juego* juego) {
 	this->acumuladorPiso = 0;
 	this->juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
-	printf("seteo mapa\n");
 	this->personajes = vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
 	this->jugador = juego->escenario->jugador;
 	if (this->jugador) {
-		printf("hay jugador\n");
 		this->jugador->cargarEdificios(this->juego->tipos);
 	}
 	this->factory_personaje.cargarPersonajes(this->juego->tipos);
-	printf("cargo perso\n");
 	personajes_seleccionados.clear();
 	this->insertarEntidades();
 	this->totalRecursos = 0;
@@ -71,7 +68,6 @@ void Modelo::set_posicionRandomPersonaje(Personaje* personaje) {
 }
 
 Entidad* Modelo::set_CentroCivicoNuevoServer(string raza) {
-	printf("entro\n");
 	Entidad* base = this->juego->centroCivicoDe(raza);
 	if (base) {
 		vector<Entidad*> centros = this->obtenerCentrosCivicosEnMapa();
@@ -82,7 +78,6 @@ Entidad* Modelo::set_CentroCivicoNuevoServer(string raza) {
 	} else {
 		printf("ERROR no existe centro civico de esa raza\n");
 	}
-	printf("Por cargar personajes en entidad\n");
 	base->cargarPersonajes(factory_personaje.devolverTipos(base->objetoMapa->nombre));
 	return base;
 }
@@ -246,7 +241,6 @@ bool Modelo::estaSeleccionada(int x, int y) {
 	return false;
 }
 void Modelo::limpiarSeleccion() {
-	printf("Limpia Seleccion\n");
 	personajes_seleccionados.clear();
 }
 
@@ -652,7 +646,6 @@ int Modelo::crearPersonajeServerEdificio(Personaje* personaje, Id id_edificio) {
 	Entidad* edificio = this->buscarEntidad(id_edificio);
 	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());
 	personaje->set_posicion(pos);
-	printf("%d,%d\n", pos.getX(), pos.getY());
 	this->mapa->posicionarPersonaje(personaje);
 	personajes.push_back(personaje);
 	int id = personaje->getId();

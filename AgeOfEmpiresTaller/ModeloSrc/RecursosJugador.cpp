@@ -70,16 +70,12 @@ int RecursosJugador::cantComida(){
 bool RecursosJugador::puedePagar(Costo costo){
 	bool puede = true;
 	if (this->comida < costo.getComida()){
-		printf("Comida a pagar %d\n",costo.getComida());
 		puede =false;
 	}else if (this->oro < costo.getOro()){
-		printf("Oro a pagar %d\n",costo.getOro());
 		puede =false;
 	}else if (this->piedra < costo.getPiedra()){
-		printf("Piedra a pagar %d\n",costo.getPiedra());
 		puede =false;
 	}else if (this->madera < costo.getMadera()){
-		printf("Madera a pagar %d\n",costo.getComida());
 		puede =false;
 	}
 	return puede;

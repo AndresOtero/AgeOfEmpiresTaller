@@ -113,11 +113,12 @@ void GameControllerServer::crearBandera(string name, string raza, int idCentro, 
 
 	int id = this->modelo->crearBandera(bandera, idCentro);
 
+	printf("path de la bandera: %s\n", bandera->objetoMapa->imagen.c_str());
+
 	//seteo mensaje
 	msg_t mensaje;
-	mensaje.type = CREAR_ENTIDAD;
-	memcpy(mensaje.paramTipo, string_to_char_array(tipo), sizeof(mensaje.paramTipo));
-	memcpy(mensaje.paramNombre, string_to_char_array(name), sizeof(mensaje.paramNombre));
+	mensaje.type = CREAR_ENTIDAD_CONSTRUIDA;
+	memcpy(mensaje.paramNombre, string_to_char_array(bandera->objetoMapa->nombre), sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = bandera->get_posicion().get_x_exacta();
 	mensaje.paramDouble2 = bandera->get_posicion().get_y_exacta();
@@ -223,15 +224,6 @@ void GameControllerServer::setAccionEntidad(int id_personaje, int id_recurso) {
 	}
 
 }
-
-/*void GameControllerServer::setRecoleccion(int id_personaje,int x , int y){
- Entidad * entidad = this->modelo->mapa->entidad_celda(x,y);
- if (entidad==NULL)
- return;
- Personaje * personaje = this->modelo->get_Personaje_Por_Id(id_personaje);
- personaje->setAccion(entidad);
- printf("%d\n",((Recurso *) entidad)->obtenerRecurso());
- }*/
 
 void GameControllerServer::agregarEntidad(string nombre, int x, int y, int cant, SDL_mutex *mutex) {
 	this->agregarEntidad(nombre, x, y, cant, mutex);
@@ -442,6 +434,7 @@ void GameControllerServer::crearCentroCivicoNuevoUser(string raza, string Nombre
 	}
 
 	if (this->objetivo == FLAG) {
+		printf("objetivo del flag\n");
 		this->crearBandera(NombreJugador, raza, entidad->getId(), mutex);
 	}
 
