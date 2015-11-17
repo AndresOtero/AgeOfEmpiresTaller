@@ -77,7 +77,7 @@ public:
 	int danioInfringido();
 	msg_t interactuar(Entidad * otra_entidad);
 
-	int atacar(Personaje* otro_personaje);
+	int atacar(Atacable* otro_personaje);
 	void terminarAccion();
 	bool esAdyacente(Entidad* entidad);
 

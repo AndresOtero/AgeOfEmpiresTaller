@@ -382,8 +382,8 @@ bool Vista::run() {
 	}
 	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 	SDL_RenderClear(gRenderer);
-	modelo->actualizarMapa(); //lo tiene que hacer el server
 	dibujar_mapa();
+	modelo->actualizarMapa(); //lo tiene que hacer el server
 	SDL_GetMouseState(&mov_x, &mov_y);
 	dibujar_edificio(mov_x, mov_y);
 	dibujar_barra();
@@ -519,13 +519,15 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	} else {
 		dibujo_pers->descongelar();
 	}
-	int adonde_va_x, adonde_va_y;
-	Posicion adonde_va = personaje->get_camino();
-	mover_x = adonde_va.get_x_exacta();
-	mover_y = adonde_va.get_y_exacta();
-	this->corregir_referencia_coordenadas_mapa_pantalla(mover_x, mover_y);
-	this->transformador->transformar_isometrica_pantalla(mover_x, mover_y, adonde_va_x, adonde_va_y);
-	dibujo_pers->elegir_frame((adonde_va_x - img_personaje_x), (adonde_va_y - img_personaje_y));
+	//cambio para mover por coordenadas
+	personaje_x = personaje->get_posicion().get_x_exacta();
+	personaje_y = personaje->get_posicion().get_y_exacta();
+	//la vista recibe destinos pequenios
+	double destino_x = personaje->get_destino().get_x_exacta();
+	double destino_y = personaje->get_destino().get_y_exacta();
+
+	dibujo_pers->elegir_frame((destino_x - personaje_x),
+			(destino_y - personaje_y));
 	dibujo_pers->render(gRenderer);
 
 }

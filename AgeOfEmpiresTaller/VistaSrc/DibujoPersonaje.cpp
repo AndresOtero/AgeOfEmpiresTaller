@@ -58,49 +58,52 @@ void DibujoPersonaje::set_imagen(int n_mov,int n_imagen, int x, int y, int ancho
 	this->spriteClips[n_mov][n_imagen].h = alto;
 }
 
-void DibujoPersonaje::elegir_frame(int des_x,int des_y) {
+void DibujoPersonaje::elegir_frame(double des_x,double des_y) {
 	double angulo = (std::atan2(des_y,des_x)/M_PI)*180.0;
-
-	if((angulo<10)&&(angulo>-10)&&((des_x!=0)||(des_y!=0))){
-		movimiento_actual=DERECHA;
+	//cambie a uso en coordenadas cartesianas
+	if ((angulo < 35) && (angulo > -35) && ((des_x != 0) || (des_y != 0))) {
+		movimiento_actual = DIAGONAL_DERECHA_ABAJO;
+		//movimiento_actual=DERECHA;
 		//printf("DERECHA\n");
 		//DERECHA
-	}
-	else if((des_x<-170)||(angulo>170)){
-		movimiento_actual=IZQUIERDA;
+	} else if ((des_x < -145) || (angulo > 145)) {
+		movimiento_actual = DIAGONAL_IZQUIERDA_ARRIBA;
+		//movimiento_actual=IZQUIERDA;
 		//printf("IZQUIERDA\n");
 		//IZQUIERDA
-	}
-	else if((angulo<-80)&&(angulo>-100)){
-		movimiento_actual=ARRIBA;
+	} else if ((angulo < -55) && (angulo > -125)) {
+
+		movimiento_actual = DIAGONAL_DERECHA_ARRIBA;
+		//movimiento_actual=ARRIBA;
 		//printf("ARRIBA\n");
 		//ARRIBA
-	}
-	else if((angulo>80)&&(angulo<100)){
-		movimiento_actual=ABAJO;
+	} else if ((angulo > 55) && (angulo < 125)) {
+		movimiento_actual = DIAGONAL_IZQUIERDA_ABAJO;
+		//movimiento_actual=ABAJO;
 		//printf("ABAJO\n");
 		//ABAJO
-	}
-	else if((angulo>=-80)&&(angulo<=-10)){
-		movimiento_actual=DIAGONAL_DERECHA_ARRIBA;
+	} else if ((angulo >= -55) && (angulo <= -35)) {
+		movimiento_actual = DERECHA;
+		//movimiento_actual=DIAGONAL_DERECHA_ARRIBA;
 		//printf("ARRIBA_DERECHA\n");
 		//ARRIBA_DERECHA
-	}
-	else if((angulo<=80)&&(angulo>=10)){
-		movimiento_actual=DIAGONAL_DERECHA_ABAJO;
+	} else if ((angulo <= 55) && (angulo >= 35)) {
+		movimiento_actual = ABAJO;
+		//movimiento_actual=DIAGONAL_DERECHA_ABAJO;
 		//printf("ABAJO_DERECHA\n");
 		//ABAJO_DERECHA
-	}
-	else if((angulo>=-170)&&(angulo<=-100)){
-		movimiento_actual=DIAGONAL_IZQUIERDA_ARRIBA;
+	} else if ((angulo >= -145) && (angulo <= -125)) {
+		movimiento_actual = ARRIBA;
+		//movimiento_actual=DIAGONAL_IZQUIERDA_ARRIBA;
 		//printf("ARRIBA_IZQUIERDA\n");
 		//ARRIBA_IZQUIERDA
-	}
-	else if((angulo<=170)&&(angulo>=100)){
-		movimiento_actual=DIAGONAL_IZQUIERDA_ABAJO;
+	} else if ((angulo <= 145) && (angulo >= 125)) {
+		movimiento_actual = IZQUIERDA;
+		//movimiento_actual=DIAGONAL_IZQUIERDA_ABAJO;
 		//printf("ABAJO_IZQUIERDA\n");
 		//ABAJO_IZQUIERDA
 	}
+
 	this->cambiar_frame();
 
 }

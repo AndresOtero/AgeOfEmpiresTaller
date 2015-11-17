@@ -191,8 +191,25 @@ msg_t Personaje::interactuar(Entidad* otra_entidad){
 bool Personaje::esAdyacente(Entidad* entidad){
 	return entidad->esAdyacente(this->get_posicion());
 }
-int Personaje::atacar(Personaje* otro_personaje){
-	return this->fuerza;
+int Personaje::atacar(Atacable* otro_personaje){
+	GeneradorNumeros generador;
+	int danio;
+	//cuanta mas fuerza mas probable que pegue
+	if (generador.numeroRandom(0,this->fuerza)!=0){
+		if (otro_personaje->getArmadura() >= this->fuerza){
+			//pega como mucho su maximo ataque
+			danio = 1 * generador.numeroRandom(1,this->fuerza);
+		}else{
+			//pega la diferencia entre fuerza armadura por su fuerza
+			//puede dar o muchisimo o poco
+			danio = ( this->fuerza-otro_personaje->getArmadura() )*generador.numeroRandom(1,this->fuerza);
+		}
+
+	}else{
+		danio = 0;
+	}
+	printf("Danio %d\n");
+	return danio;
 }
 void Personaje::set_ataque(Atacable* otro_personaje){
 	this->atacado=otro_personaje;
@@ -204,7 +221,7 @@ void Personaje::dejar_de_atacar(){
 	this->objetivo=NULL;
 }
 int  Personaje::danioInfringido(){
-	return 5;
+	return atacar(this->atacado);
 }
 bool  Personaje::ejecutar_ataque(){
 	if(this->atacado){
@@ -214,7 +231,12 @@ bool  Personaje::ejecutar_ataque(){
 	return false;
 }
 void  Personaje::recibirDanio(int danio){
-	this->vida-=danio;
+	int resultado = vida -danio;
+	if (resultado <0){
+		this->vida = 0;
+	}else{
+		this->vida = resultado;
+	}
 }
 bool operator== (Personaje &P1, Personaje &P2)
 {

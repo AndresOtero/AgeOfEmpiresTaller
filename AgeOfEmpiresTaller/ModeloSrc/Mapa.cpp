@@ -146,7 +146,6 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	// si me quiero mover a un lugar ocupado adyacente a mi
 	if (adonde_voy.es_adyacente(adonde_estoy) && celdaOcupada(adonde_voy.getX(), adonde_voy.getY())){
 		//para que no se quede muy lejos
-		printf("es adyacente y esta ocupada\n");
 		return this->acercar(adonde_estoy,adonde_voy);
 	}
 	//si me quiero acercar a una entidad  y clicke en el medio

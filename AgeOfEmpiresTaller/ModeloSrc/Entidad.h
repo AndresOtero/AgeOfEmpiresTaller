@@ -54,7 +54,12 @@ public:
 		return *(this->posicion);
 	}
 	void recibirDanio(int danio){
-		this->vida-=danio;
+		int resultado = vida - danio;
+		if (resultado < 0) {
+			this->vida = 0;
+		} else {
+			this->vida = resultado;
+		}
 	}
 	bool esta_vivo(){
 		return (vida>0);
