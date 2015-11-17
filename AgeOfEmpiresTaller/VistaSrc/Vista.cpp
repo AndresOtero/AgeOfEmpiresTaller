@@ -138,7 +138,20 @@ bool Vista::loadMedia() {
 	this->factory->crear_dibujo_tile(entidadPasto->objetoMapa->imagen);
 
 	dibujo_t pasto_id = this->factory->ultimo_dibujo();
+
+	Entidad* entidadPasto2 = this->modelo->juego->escenario->getTexturaDefault2();
+
+	this->factory->crear_dibujo_tile(entidadPasto2->objetoMapa->imagen);
+
+	dibujo_t pasto_id2 = this->factory->ultimo_dibujo();
+
+	vector<dibujo_t> pastos;
+
+	pastos.push_back(pasto_id);
+	pastos.push_back(pasto_id2);
+
 	delete entidadPasto;
+	delete entidadPasto2;
 	std::map<std::string, ObjetoMapa*>::iterator it;
 	std::map<std::string, dibujo_t> hashDibujos;
 
@@ -160,8 +173,8 @@ bool Vista::loadMedia() {
 	/**Dibujo el mapa**/
 	int largo = this->modelo->get_alto_mapa();
 	int ancho = this->modelo->get_ancho_mapa();
-	vector<dibujo_t> filas(ancho, pasto_id);
-	vector<vector<dibujo_t>> tiles(largo, filas);
+	vector<vector<dibujo_t>> filas(ancho, pastos);
+	vector<vector<vector<dibujo_t>>> tiles(largo, filas);
 	vector<dibujo_t> filas_escenario(ancho, 0);
 	vector<vector<dibujo_t>> escenario(largo, filas_escenario);
 

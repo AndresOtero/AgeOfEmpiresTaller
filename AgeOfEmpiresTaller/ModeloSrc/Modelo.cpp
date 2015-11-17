@@ -34,6 +34,7 @@ enum dimension {
 };
 
 Modelo::Modelo(Juego* juego) {
+	this->acumuladorPiso = 0;
 	this->juego = juego;
 	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 	printf("seteo mapa\n");
@@ -173,14 +174,20 @@ vector<Personaje*> Modelo::devolverTodosLosPersonajes() {
 	return personajes;
 }
 
-void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario, vector<vector<dibujo_t>> tiles) {
+void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario, vector<vector<vector<dibujo_t>>> tiles) {
 	int ancho = this->mapa->getAncho();
 	int largo = this->mapa->getLargo();
 	int i = 0, j = 0;
 	for (i = 0; i < ancho; i++) {
 		for (j = 0; j < largo; j++) {
 			this->mapa->setEscenario(escenario[i][j], i, j);
-			this->mapa->setTiles(tiles[i][j], i, j);
+
+			this->mapa->setTiles(tiles[i][j][this->acumuladorPiso], i, j);
+
+			if(this->acumuladorPiso == (tiles[i][j].size() - 1 ) ) {
+				this->acumuladorPiso = 0;
+			} else
+			this->acumuladorPiso++;
 		}
 	}
 }

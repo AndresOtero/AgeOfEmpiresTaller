@@ -43,7 +43,7 @@ public:
 	Modelo(Juego* juego);
 	Juego* juego;
 	void setMapa(int largo,int ancho);
-	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<dibujo_t>> tiles);
+	void setDibujoMapa(vector<vector<dibujo_t>> escenario,vector<vector<vector<dibujo_t>>> tiles);
 	dibujo_t dibujar(int dim,int x,int y);
 
 	int crearPersonajeServerEdificio(Personaje* personaje,Id id_edificio);
@@ -90,6 +90,7 @@ public:
 	Entidad* set_CentroCivicoNuevoServer(string raza);
 
 private:
+	size_t acumuladorPiso;
 	vector<Entidad *> obtenerCentrosCivicosEnMapa();
 	void eliminar_personaje(Personaje* eliminado);
 

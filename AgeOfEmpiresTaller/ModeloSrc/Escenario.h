@@ -24,7 +24,8 @@ public:
 	int size_y;
 	vector<Entidad*> entidades;
 	Personaje* protagonista;
-	Entidad* getTexturaDefault(); //para rellenar todos los espacios del mapa que no vengan del escenario. EJ: Pasto
+	Entidad* getTexturaDefault();
+	Entidad* getTexturaDefault2();//para rellenar todos los espacios del mapa que no vengan del escenario. EJ: Pasto
 	virtual ~Escenario();
 };
 
