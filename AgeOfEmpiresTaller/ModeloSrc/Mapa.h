@@ -49,7 +49,7 @@ public:
 	vector<Posicion> adyacencias(Posicion posicion);
 	bool puedeUbicar(Entidad * entidad);
 	bool estaDentroDeSector(Posicion sector,Posicion entidad);
-	Posicion posicionValidaEnSector(Posicion sector,Entidad * entidad);
+	Posicion posicionValidaEnSector(Posicion sector,Entidad * entidad, int ancho_sector, int alto_sector, int separacion_ancho, int separacion_alto);
 	Posicion posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base);
 	void posicionarPersonaje(Personaje * pers);
 	Celda* getCelda(int x,int y);

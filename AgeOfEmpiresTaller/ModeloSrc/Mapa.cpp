@@ -321,6 +321,9 @@ bool Mapa::puedeUbicar(Entidad* entidad) {
 	alto = entidad->objetoMapa->baseLogica->alto;
 	for (x = pos.getX(); x < pos.getX() + ancho; x++) {
 		for (y = pos.getY(); y < pos.getY() + alto; y++) {
+			if (this->afueraDelMapa(x,y)){
+				return false;
+			}
 			if (this->getCelda(x, y)->estaOcupada()) {
 				return false;
 			}
@@ -331,15 +334,19 @@ bool Mapa::puedeUbicar(Entidad* entidad) {
 
 Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base) {
 //devuelve una posicion valida en el mapa
+	printf("entro\n");
 	Posicion pos;
-
+	int ancho_medio = this->getAncho() / 2;
+	int alto_medio =this->getLargo() / 2;
+	int separacion_ancho = this->getAncho()/6 ;
+	int separacion_alto = this->getLargo()/6;
 //Lo puede hacer un for per ya fueee
 //MALDAD AL MAXIMO
 	vector<Posicion> sectores;
 	Posicion sector1 = { 0, 0 };
-	Posicion sector2 = { this->getAncho() / 2, 0 };
-	Posicion sector3 = { 0, this->getLargo() / 2 };
-	Posicion sector4 = { this->getAncho() / 2, this->getLargo() / 2 };
+	Posicion sector2 = { ancho_medio, 0 };
+	Posicion sector3 = { 0, alto_medio };
+	Posicion sector4 = { ancho_medio, alto_medio };
 	sectores.push_back(sector1);
 	sectores.push_back(sector2);
 	sectores.push_back(sector3);
@@ -347,13 +354,12 @@ Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad 
 	vector<Entidad*>::iterator it = centros.begin();
 	vector<Posicion>::iterator it_pos = sectores.begin();
 //por cada centro civico
-	for (; it != centros.end(); ++it) {
+	for (; it != centros.end(); it++) {
 		//printf("L2Por centro en mapa\n");
-		for (; it_pos != sectores.end(); ++it_pos) {
+		for (; it_pos != sectores.end(); it_pos++) {
 			//elimina el sector donde se encuentra
 
 			if (this->estaDentroDeSector(*it_pos, (*it)->get_posicion())) {
-				//printf("L2Saca un sector%d,%d\n",(*it_pos).getX(),(*it_pos).getY());
 				sectores.erase(it_pos);
 				break;
 			}
@@ -367,24 +373,45 @@ Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad 
 	} else {
 		GeneradorNumeros generador;
 		int i = generador.numeroRandom(0, sectores.size() - 1);
-		return this->posicionValidaEnSector(sectores[i], base);
+		return this->posicionValidaEnSector(sectores[i], base,ancho_medio,alto_medio,separacion_ancho,separacion_alto);
 	}
 
 }
-Posicion Mapa::posicionValidaEnSector(Posicion sector, Entidad * entidad) {
+Posicion Mapa::posicionValidaEnSector(Posicion sector, Entidad * entidad, int ancho_sector, int alto_sector, int separacion_ancho, int separacion_alto) {
 //devuelve una posicion random dentro de un cuarto del mapa que este vacia y sea ubicable
 	GeneradorNumeros num;
 	int x;
 	int y;
 	Celda * celda;
+	//logica para que no aparezcan ultra cerca
+	int corrimiento_anteriorx;
+	int corrimiento_posteriorx;
+	int corrimiento_anteriory;
+	int corrimiento_posteriory;
+	int x_sector = sector.getX();
+	int y_sector = sector.getY();
+	if (x_sector < ancho_sector){
+		corrimiento_anteriorx = 0;
+		corrimiento_posteriorx = separacion_ancho;
+	}else{
+		corrimiento_anteriorx= separacion_ancho;
+		corrimiento_posteriorx = 0;
+	}
+	if (y_sector < alto_sector){
+		corrimiento_anteriory = 0;
+		corrimiento_posteriory = separacion_alto;
+	}else{
+		corrimiento_anteriory= separacion_alto;
+		corrimiento_posteriory = 0;
+	}
+
 	do {
-		x = num.numeroRandom(sector.getX(), sector.getX() + this->ancho / 2 - 1);
-		y = num.numeroRandom(sector.getY(), sector.getY() + this->largo / 2 - 1);
+		x = num.numeroRandom(x_sector+corrimiento_anteriorx, x_sector + ancho_sector - corrimiento_posteriorx - 1);
+		y = num.numeroRandom(y_sector+corrimiento_anteriory, y_sector+ alto_sector - corrimiento_posteriory - 1);
 		celda = this->getCelda(x, y);
 		entidad->set_posicion(x, y);
-		//printf("L3En while\n");
 	} while (celda->estaOcupada() || !this->puedeUbicar(entidad));
-//printf("L3EncontroPosicion\n");
+	printf("L3EncontroPosicion %d,%d\n",x,y);
 	Posicion posicion = { x, y };
 	return posicion;
 }

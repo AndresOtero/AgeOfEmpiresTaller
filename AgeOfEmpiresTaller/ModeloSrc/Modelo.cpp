@@ -73,6 +73,7 @@ Entidad* Modelo::set_CentroCivicoNuevoServer(string raza) {
 	if (base) {
 		vector<Entidad*> centros = this->obtenerCentrosCivicosEnMapa();
 		Posicion pos = this->mapa->posicionValidaParaCentroCivico(centros, base);
+		printf("%d,%d\n",pos.getX(),pos.getY());
 		base->set_posicion(pos.getX(), pos.getY());
 		base->finalizarConstruccion();
 		this->insertarEntidad(base);
@@ -296,7 +297,10 @@ DatosSeleccionado Modelo::seleccionar(double mov_x, double mov_y) {
 	this->mapa->seleccionar(seleccionada.getX(), seleccionada.getY());
 	entidad_seleccionada = NULL;
 	if (this->mapa->personaje_celda(seleccionada.getX(), seleccionada.getY())) {
-		personajes_seleccionados.push_back(this->mapa->personaje_celda(seleccionada.getX(), seleccionada.getY()));
+		if(personajes_seleccionados.size() < SELECCION_MAXIMA){
+			personajes_seleccionados.push_back(this->mapa->personaje_celda(seleccionada.getX(), seleccionada.getY()));
+		}
+
 	} else {
 		if (this->mapa->entidad_celda(seleccionada.getX(), seleccionada.getY()) != NULL) {
 			entidad_seleccionada = this->mapa->entidad_celda(seleccionada.getX(), seleccionada.getY());
