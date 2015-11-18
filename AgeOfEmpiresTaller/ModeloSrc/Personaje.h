@@ -33,6 +33,7 @@ class Personaje:public Atacable {
 	int armadura;
 	int recoleccion;
 	int construccion;
+	int rango;
 	Posicion destino;
 	Posicion camino;
 	Contador contador_ataque;
@@ -230,6 +231,7 @@ public:
 		atacando_cliente = atacandoCliente;
 	}
 	bool esAdyacente(Posicion pos);
+	bool estaEnRango(int rango,Posicion pos);
 };
 
 #endif /* PERSONAJE_H_ */

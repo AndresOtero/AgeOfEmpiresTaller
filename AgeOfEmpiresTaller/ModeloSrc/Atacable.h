@@ -22,6 +22,7 @@ public:
 	virtual bool esBandera(){return false;};
 	virtual bool esUnCentroCivio(){return false;};
 	virtual bool esAdyacente(Posicion pos){};
+	virtual bool estaEnRango(int rango, Posicion atacante){};
 	virtual std::string get_raza(){};
 	virtual ~Atacable();
 };

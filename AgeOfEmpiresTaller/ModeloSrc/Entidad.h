@@ -102,6 +102,7 @@ public:
 	}
 	map<string,ObjetoMapa*> devolverPersonajesCreables();
 	bool  puedeCrearPersonajes();
+	bool estaEnRango(int rango, Posicion pos);
 
 };
 

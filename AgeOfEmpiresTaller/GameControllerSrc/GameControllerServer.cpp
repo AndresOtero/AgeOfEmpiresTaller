@@ -305,7 +305,6 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			p->set_destino(p->get_objetivo()->get_posicion());
 			if (p->esAdyacente(p->get_objetivo())) {
 				if (!p->estaAtacandoCliente()) {
-					p->atacandoCliente(true);
 					msg_t msg;
 					msg.type = EMPEZAR_ACCION;
 					msg.paramInt1 = p->getId();

@@ -25,6 +25,7 @@ Personaje::Personaje() {
 	this->congelado = false;
 	this->atacado = NULL;
 	this->objetivo = NULL;
+	this->rango = 0;
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa) {
 	this->esHeroe= false;
@@ -46,6 +47,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa) {
 	this->atacando_cliente = false;
 	this->atacado = NULL;
 	this->objetivo = NULL;
+	this->rango = objetoMapa->rango;
 	this->costo.setCosto(objetoMapa->oro, objetoMapa->madera, objetoMapa->piedra, objetoMapa->comida);
 	GeneradorNumeros generar;
 	int id = generar.otroID();
@@ -71,6 +73,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y) {
 	this->atacando_cliente = false;
 	this->atacado = NULL;
 	this->objetivo = NULL;
+	this->rango = objetoMapa->rango;
 	GeneradorNumeros generar;
 	int id = generar.otroID();
 	this->id = id;
@@ -255,12 +258,25 @@ Personaje::~Personaje() {
 	delete recursos;
 }
 void Personaje::set_destino_al_ataque() {
-	this->set_destino(this->atacado->get_posicion());
+	if (this->atacado->estaEnRango(rango,this->get_posicion())){
+		this->set_destino(this->get_posicion());
+	}else{
+		this->set_destino(this->atacado->get_posicion());
+	}
+
 }
 
 bool Personaje::esAdyacente(Posicion pos) {
 	return this->get_posicion().es_adyacente(pos);
 }
 bool Personaje::es_adyacente_al_atacado() {
-	return this->atacado->esAdyacente(this->get_posicion());
+	if (this->rango == 0){
+		return this->atacado->esAdyacente(this->get_posicion());
+	}else{
+		return (this->atacado->estaEnRango(rango,this->get_posicion()));
+	}
+
+}
+bool Personaje::estaEnRango(int rango, Posicion pos){
+	return (this->get_posicion().distancia(pos) <= rango );
 }
