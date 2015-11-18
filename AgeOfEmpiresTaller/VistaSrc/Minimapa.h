@@ -40,7 +40,10 @@ public:
 	SDL_Color paleta(int color);
 	int altoPorCelda();
 	int anchoPorCelda();
+
 private:
+	int desfasaje_x;
+	int desfasaje_y;
 	int obtenerColor(string raza);
 	bool invertir;
 	int x;
