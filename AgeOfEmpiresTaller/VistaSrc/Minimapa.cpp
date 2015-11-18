@@ -22,6 +22,8 @@ Minimapa::Minimapa(Modelo *modelo) {
 	this-> ancho_por_celda = modelo->juego->pantalla->getAncho()/modelo->get_ancho_mapa();
 	this-> alto_por_celda = modelo->juego->pantalla->getAlto()/modelo->get_alto_mapa();
 	this->invertir = false;
+	this->desfasaje_x =  (modelo->juego->pantalla->getAncho()%modelo->get_ancho_mapa());
+	this->desfasaje_y = (modelo->juego->pantalla->getAlto()%modelo->get_alto_mapa());
 }
 
 int Minimapa::altoMapa(){
@@ -40,7 +42,7 @@ int Minimapa::altoPorCelda(){
 }
 
 void Minimapa::dibujarPuntoMapa(int pant_x, int pant_y, SDL_Color color, SDL_Renderer *renderer){
-	SDL_Rect fillRect = { pant_x, pant_y, this->ancho_por_celda, this->alto_por_celda };
+	SDL_Rect fillRect = { pant_x, pant_y, this->ancho_por_celda, this->alto_por_celda};
 	SDL_SetRenderDrawColor( renderer, color.r, color.g, color.b, color.a );
 	SDL_RenderFillRect( renderer, &fillRect );
 }
@@ -87,7 +89,8 @@ void Minimapa::render(SDL_Renderer* renderer){
 		this->dibujarPuntoMapa(x, y, paleta(ROJO), renderer);
 	}*/
 	SDL_SetRenderTarget(renderer,NULL);
-	this->textura->renderEx(45,NULL,&dsRect,renderer,NULL);
+	SDL_Rect src = {0,0,modelo->juego->pantalla->getAncho()-desfasaje_x,modelo->juego->pantalla->getAlto()-desfasaje_y};
+	this->textura->renderEx(45,&src,&dsRect,renderer,NULL);
 	if (count > (this->modelo->mapa->getAncho()*this->modelo->mapa->getLargo()/2)){
 		//si mas de la mitad esta a la vista
 		this->invertir=true;
@@ -98,8 +101,8 @@ void Minimapa::render(SDL_Renderer* renderer){
 void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer,int * count){
 	int d = this->modelo->oscuridad(0, x, y);
 	Posicion pos={x,y};
-	int x_pant = x *ancho_por_celda;
-	int y_pant = y *alto_por_celda;
+	int x_pant = x*ancho_por_celda;
+	int y_pant = y*alto_por_celda;
 	if (d != 2) {
 		int color;
 		if (this->modelo->mapa->celdaOcupada(x, y)) {
