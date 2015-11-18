@@ -583,8 +583,7 @@ void GameControllerServer::capturaBandera(Personaje* personaje_que_captura,
 	}
 	msg_t mensajePierde;
 	mensajePierde.type = PIERDE;
-	memcpy(mensajePierde.paramNombre, string_to_char_array(razaPerdedora),
-			sizeof(mensajePierde.paramNombre)); //raza que pierde unidades
+	memcpy(mensajePierde.paramNombre, string_to_char_array(razaPerdedora),sizeof(mensajePierde.paramNombre)); //raza que pierde unidades
 
 	this->agregarMensaje(mensajePierde, mutex);
 

@@ -150,8 +150,20 @@ void GameControllerCliente::meFijoSiPerdi(string razaPerdedora) {
 	if (this->modelo->getJugador()->raza == razaPerdedora) {
 		this->modelo->getJugador()->perdi = true;
 		printf("Perdi\n");
+		return;
 		//mando mensaje
 	}
+	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*>::iterator iter = personajes.begin();
+
+	for (; iter != personajes.end(); iter++) {
+		Personaje* personaje = (*iter);
+		if (personaje->get_raza() != this->modelo->getJugador()->raza) {
+			return;
+		}
+	}
+	this->modelo->getJugador()->gane = true;
+	printf("Gane\n");
 
 }
 void GameControllerCliente::setMapa(int ancho, int largo) {
