@@ -166,6 +166,7 @@ vector<Personaje*> Modelo::devolverTodosLosPersonajes() {
 void Modelo::cambiar_personaje(Id id_personaje, string nombre,string raza){
 	Personaje* p =this->get_Personaje_Por_Id(id_personaje);
 	if(p){
+		printf("Nombre: %s Raza : %s \n",nombre.c_str(),raza.c_str());
 		p->setNombreJugador(nombre);
 		p->set_raza(raza);
 	}
@@ -183,7 +184,7 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario, vector<vector<vec
 
 			this->mapa->setTiles(vTiles[this->acumuladorPiso],vTiles[this->acumuladorPiso + 4],vTiles[this->acumuladorPiso + 8],vTiles[this->acumuladorPiso + 12],vTiles[this->acumuladorPiso + 16],vTiles[this->acumuladorPiso + 20], i, j);
 
-			if(this->acumuladorPiso == 3) {
+			if(this->acumuladorPiso == 2) {
 				this->acumuladorPiso = 0;
 			} else
 			this->acumuladorPiso++;

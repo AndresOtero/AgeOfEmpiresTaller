@@ -7,7 +7,7 @@
 
 #include "GameControllerServer.h"
 #define CANTIDAD_PERSONAJES_INICIALES 4
-#define MAX_RECURSOS 45
+#define MAX_RECURSOS 20
 
 char* GameControllerServer::string_to_char_array(string str) {
 	int str_size = str.size();
@@ -511,7 +511,9 @@ void GameControllerServer::capturaBandera(Personaje* personaje_que_captura, stri
 	vector<Personaje*>::iterator iter = personajes.begin();
 	for (; iter != personajes.end(); iter++) {
 		Personaje* personaje = (*iter);
+		printf("Comparo Perdedora:%s , Personaje : %s\n",razaPerdedora.c_str(),personaje->get_raza().c_str());
 			if (personaje->get_raza() == razaPerdedora) {
+				printf("Personaje cambio %d\n",personaje->getId());
 				msg_t mensaje_cambiar;
 				mensaje_cambiar.type = CAMBIAR_PERSONAJE;
 				mensaje_cambiar.paramInt1=personaje->getId();
