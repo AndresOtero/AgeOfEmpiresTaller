@@ -273,7 +273,6 @@ bool Vista::run() {
 		}
 		if (e.type == SDL_MOUSEBUTTONUP) {
 			if (e.button.button == SDL_BUTTON_LEFT) {
-				printf("up left\n");
 				esta_eligiendo = false;
 				termino_de_elegir = true;
 				SDL_GetMouseState(&seleccion_x_final, &seleccion_y_final);
@@ -368,11 +367,9 @@ bool Vista::run() {
 			//no dejo que se dibuje el edificio si clique
 
 			if (e.button.button == SDL_BUTTON_LEFT) {
-				printf("down left\n");
 				double a, b;
 				SDL_GetMouseState(&seleccion_x_inicio, &seleccion_y_inicio);
 				if (seleccion_y_inicio < this->barra->obtenerYDondeSeDibuja() && !this->entidadACrear) {
-					printf("Esta eligiendo\n");
 					esta_eligiendo = true;
 					this->modelo->limpiarSeleccion();
 				}
@@ -519,7 +516,6 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	dibujo_pers->setMovimientoActual(dibujo_pers_anterior->getMovimientoActual());
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
 	if (esta_en_seleccion(img_personaje_x, img_personaje_y) && termino_de_elegir) {
-		printf("selecciono a %d,%d\n",personaje->get_posicion().getX(),personaje->get_posicion().getY());
 		modelo->seleccionar(personaje->getReferenciaMapaX(), personaje->getReferenciaMapaY());
 	}
 	Posicion destino = personaje->get_camino();
