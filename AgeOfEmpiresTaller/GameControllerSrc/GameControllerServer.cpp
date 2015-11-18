@@ -7,7 +7,7 @@
 
 #include "GameControllerServer.h"
 #define CANTIDAD_PERSONAJES_INICIALES 4
-#define MAX_RECURSOS 30
+#define MAX_RECURSOS 16
 
 char* GameControllerServer::string_to_char_array(string str) {
 	int str_size = str.size();
