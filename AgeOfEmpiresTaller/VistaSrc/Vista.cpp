@@ -19,6 +19,7 @@
 #include <memory>
 #include <unistd.h>
 #include <plog/Log.h>
+#include "SDL2/SDL_mixer.h"
 
 #include "../ModeloSrc/Modelo.h"
 #include "Dibujo.h"
@@ -124,6 +125,13 @@ bool Vista::init() {
 		}
 
 	}
+	//Initialize SDL_mixer
+	if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+		success = false;
+	}
+    music = Mix_LoadWAV( "img/1elfos/GANADOR.wav" );	 if(!music)
+	if(!music)
+    	printf("No carga\n");
 
 	this->factory = shared_ptr<FactoryDibujo>(new FactoryDibujo(gRenderer));
 
@@ -157,7 +165,7 @@ bool Vista::loadMedia() {
 		} else if (tipo->delay != 0) {
 			this->factory->crear_dibujo_animado(tipo->imagen, v1d, tipo->fps, tipo->delay);
 		} else {
-			this->factory->crear_dibujo_personaje(tipo->imagen, MOVIMIENTOS, CANTIDAD_DE_IMAGENES, tipo->fps); //el ultimo parametro es velocidad
+			this->factory->crear_dibujo_personaje(tipo->imagen, tipo->musica,MOVIMIENTOS, CANTIDAD_DE_IMAGENES, tipo->fps); //el ultimo parametro es velocidad
 		}
 		dibujo_t dibujo_id = this->factory->ultimo_dibujo();
 		hashDibujos[tipo->nombre] = dibujo_id;
@@ -185,11 +193,11 @@ bool Vista::loadMedia() {
 
 void Vista::crearPersonaje(string tipo, Personaje* personaje) {
 	ObjetoMapa* obj = this->modelo->juego->tipos[tipo];
-	this->factory->crear_dibujo_personaje(obj->imagen, MOVIMIENTOS, CANTIDAD_DE_IMAGENES, obj->fps); //el ultimo parametro es velocidad
+	this->factory->crear_dibujo_personaje(obj->imagen,obj->musica ,MOVIMIENTOS, CANTIDAD_DE_IMAGENES, obj->fps); //el ultimo parametro es velocidad
 	dibujo_t pers_moviendo = this->factory->ultimo_dibujo();
-	this->factory->crear_dibujo_personaje(obj->imagen_quieto, MOVIMIENTOS, CANTIDAD_DE_IMAGENES, obj->fps); //el ultimo parametro es velocidad
+	this->factory->crear_dibujo_personaje(obj->imagen_quieto,obj->musica , MOVIMIENTOS, CANTIDAD_DE_IMAGENES, obj->fps); //el ultimo parametro es velocidad
 	dibujo_t pers_esta_quieto = this->factory->ultimo_dibujo();
-	this->factory->crear_dibujo_personaje(obj->imagen_atacando, MOVIMIENTOS, CANTIDAD_DE_IMAGENES, obj->fps); //el ultimo parametro es velocidad
+	this->factory->crear_dibujo_personaje(obj->imagen_atacando,obj->musica , MOVIMIENTOS, CANTIDAD_DE_IMAGENES, obj->fps); //el ultimo parametro es velocidad
 	dibujo_t pers_esta_atacando = this->factory->ultimo_dibujo();
 	personaje->setDibujo(pers_esta_atacando, pers_esta_quieto, pers_moviendo);
 }
@@ -415,6 +423,7 @@ bool Vista::mostrarPantallaEspera() {
 			quit = true;
 		}
 	}
+
 	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 	SDL_RenderClear(gRenderer);
 	SDL_RenderCopy(gRenderer, backgroundTexture, NULL, NULL);
@@ -518,6 +527,9 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
 	if (esta_en_seleccion(img_personaje_x, img_personaje_y) && termino_de_elegir) {
 		modelo->seleccionar(personaje->getReferenciaMapaX(), personaje->getReferenciaMapaY());
+	}
+	if(personaje->estaAtacandoCliente()){
+		dibujo_pers->playMusic();
 	}
 	Posicion destino = personaje->get_camino();
 	double mover_x = destino.get_x_exacta();
@@ -669,7 +681,8 @@ Vista::~Vista() {
 	TTF_Quit();
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
-
+    Mix_FreeChunk( music );
+    Mix_CloseAudio();
 	gWindow = NULL;
 	gRenderer = NULL;
 

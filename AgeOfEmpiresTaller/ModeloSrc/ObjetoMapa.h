@@ -38,6 +38,8 @@ public:
 	int madera;
 	int comida;
 	string raza;
+	string musica;
+
 	int velocidad_construcccion;
 	string edificio_constructor;
 	int rango;

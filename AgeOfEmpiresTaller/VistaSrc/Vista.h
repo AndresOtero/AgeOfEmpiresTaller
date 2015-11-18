@@ -6,6 +6,7 @@
  */
 
 #include <SDL2/SDL_video.h>
+#include <SDL2/SDL_mixer.h>
 #include <memory>
 #include "FactoryDibujo.h"
 #include "CambioDeCoordendas.h"
@@ -39,7 +40,7 @@ class Vista {
 	int margen_scroll;
 	int seleccion_x_inicio,seleccion_y_inicio,seleccion_x_final,seleccion_y_final;
 	Entidad* entidadACrear;
-
+	Mix_Chunk *music = NULL;
 	bool esta_eligiendo,termino_de_elegir;
 	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;

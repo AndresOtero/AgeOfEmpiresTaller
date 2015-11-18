@@ -7,8 +7,10 @@
 
 #include "DibujoPersonaje.h"
 #include  "Textura.h"
+#define MUSICA_CICLOS 20
 DibujoPersonaje::DibujoPersonaje() {
 	// TODO Auto-generated constructor stub
+	this->contador_musica=Contador(MUSICA_CICLOS);
 	this->imagen_actual = 0;
 	this->movimiento_actual=0;
 	this->acumulador=0;
@@ -22,6 +24,13 @@ void DibujoPersonaje::congelar(){
 void DibujoPersonaje::setFps(int fps){
 	this->fps = fps;
 }
+void DibujoPersonaje::setMusic(string music){
+    musica = Mix_LoadWAV( music.c_str() );
+}
+void DibujoPersonaje::playMusic(){
+	if((musica)&&(contador_musica.contar()))Mix_PlayChannel( -1, musica, 0 );
+}
+
 void DibujoPersonaje::setPixeles(int x, int y){
 	this->pixel_x = x;
 	this->pixel_y = y;
@@ -142,6 +151,9 @@ DibujoPersonaje::~DibujoPersonaje() {
 		if(this->spriteClips[var]){
 			delete this->spriteClips[var];
 		}
+	}
+	if(musica){
+	    Mix_FreeChunk( musica );
 	}
 }
 

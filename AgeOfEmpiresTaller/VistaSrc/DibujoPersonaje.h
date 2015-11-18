@@ -7,11 +7,13 @@
 
 #ifndef DIBUJOPERSONAJE_H_
 #define DIBUJOPERSONAJE_H_
-
+#include <SDL2/SDL_mixer.h>
 #include "DibujoAnimado.h"
 #include "vector"
 #include "memory.h"
 #include <cmath>
+#include "../ModeloSrc/Contador.h"
+
 #define SDL_RECT rect
 #define CANTIDAD_DE_MOVIMIENTOS 8
 
@@ -21,15 +23,19 @@ using namespace std;
 class DibujoPersonaje: public Dibujo {
 	vector<SDL_Rect*> spriteClips;
 	vector<int> cantidad_de_imagenes;
+	Contador contador_musica;
 	int cant_mov;
 	int movimiento_actual;
 	int acumulador;
 	int fps;
+	Mix_Chunk *musica;
+
 
 public:
 	void congelar();
 	void descongelar();
 	void setFps(int fps);
+	void setMusic(string music);
 	void set_cantidad_de_movimientos(int cant_de_mov);
 	void set_cantidad_de_imagenes(int n_mov,int cant_de_imagenes);
 	void set_imagen(int n_mov,int n_imagen, int x, int y, int ancho, int alto);
@@ -41,6 +47,7 @@ public:
 	int getMovimientoActual(){
 		return movimiento_actual;
 	}
+	void playMusic();
 	void setMovimientoActual(int mov){
 		this->movimiento_actual = mov;
 	}

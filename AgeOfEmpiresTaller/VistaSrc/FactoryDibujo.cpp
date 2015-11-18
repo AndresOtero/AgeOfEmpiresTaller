@@ -21,7 +21,7 @@ FactoryDibujo::FactoryDibujo(SDL_Renderer* gRenderer) {
 	this->ancho_tile = 0;
 	this->alto_tile = 0;
 }
-bool FactoryDibujo::crear_dibujo_personaje(string path,
+bool FactoryDibujo::crear_dibujo_personaje(string path,string musica,
 		int cantidad_de_movimientos, int frames, int fps) {
 	//printf("path: %s\n",path.c_str());
 	shared_ptr<DibujoPersonaje> dibujo_nuevo = shared_ptr<DibujoPersonaje>(
@@ -29,7 +29,7 @@ bool FactoryDibujo::crear_dibujo_personaje(string path,
 	if (dibujo_nuevo->cargar_archivo(path, gRenderer)) {
 		dibujo_nuevo->setFps(fps);
 		dibujo_nuevo->set_cantidad_de_movimientos(cantidad_de_movimientos);
-
+		dibujo_nuevo->setMusic(musica);
 		int ancho = dibujo_nuevo->getWidth() / frames;
 		int alto = dibujo_nuevo->getHeight() / frames;
 
