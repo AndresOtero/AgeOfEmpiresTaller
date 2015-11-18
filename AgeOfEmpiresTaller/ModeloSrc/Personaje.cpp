@@ -10,6 +10,7 @@
 #define FACTOR_CONTADOR 5
 
 Personaje::Personaje() {
+	this->esHeroe= false;
 	this->adyacente = false;
 	this->atacando_cliente = false;
 	this->objetoMapa = new ObjetoMapa("protagonistaDefault", "img/protagonista/spartan_small.png");
@@ -24,9 +25,9 @@ Personaje::Personaje() {
 	this->congelado = false;
 	this->atacado = NULL;
 	this->objetivo = NULL;
-	this->raza = "";
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa) {
+	this->esHeroe= false;
 	this->adyacente = false;
 	this->referencia_mapa_x = 1;
 	this->referencia_mapa_y = 1;
@@ -45,7 +46,6 @@ Personaje::Personaje(ObjetoMapa* objetoMapa) {
 	this->atacando_cliente = false;
 	this->atacado = NULL;
 	this->objetivo = NULL;
-	this->raza = objetoMapa->raza;
 	this->costo.setCosto(objetoMapa->oro, objetoMapa->madera, objetoMapa->piedra, objetoMapa->comida);
 	GeneradorNumeros generar;
 	int id = generar.otroID();
@@ -71,7 +71,6 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y) {
 	this->atacando_cliente = false;
 	this->atacado = NULL;
 	this->objetivo = NULL;
-	this->raza = objetoMapa->raza;
 	GeneradorNumeros generar;
 	int id = generar.otroID();
 	this->id = id;

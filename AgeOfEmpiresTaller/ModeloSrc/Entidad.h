@@ -27,7 +27,6 @@ class Entidad :public Atacable{
 	int velocidad_cosntruccion;
 	Costo costo;
 public:
-	bool esUnaBandera;
 	Entidad(ObjetoMapa* objetoMapa);
 	Entidad(ObjetoMapa* objetoMapa, int x, int y);
 	void cargarPersonajes(map<string,ObjetoMapa*> tipos);
@@ -83,6 +82,12 @@ public:
 		return raza;
 	}
 	bool esUnCentroCivio();
+	
+	bool esUnaBandera;
+
+	bool esBandera(){
+		return esUnaBandera;
+	}
 	bool esInternaLaPosicion(int x, int y);
 	virtual ~Entidad();
 	int id;

@@ -40,7 +40,7 @@ enum bordes {
 Vista::Vista(Modelo* modelo, GameControllerCliente* gameController) {
 	this->modelo = modelo;
 	this->pantalla = modelo->juego->pantalla;
-	this->velocidad_de_scroll = 0.25;
+	this->velocidad_de_scroll = 0.4;
 	this->margen_scroll = modelo->juego->conf->get_margen_scroll();
 	this->transformador = shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(), altura_por_celda()));
 	shared_ptr<Barra> barra(new Barra(modelo, &referencia_mapa_x, &referencia_mapa_y));

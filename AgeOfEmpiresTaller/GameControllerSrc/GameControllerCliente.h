@@ -49,6 +49,10 @@ public:
 	void empezarAccion(int id);
 	void terminarAccion(int id);
 	void finalizarConstruccion(int id);
+	void capturaBandera(string razaAtacante,string razaPerdedora);
+
+	void eliminarTodos(string razaPerdedora);
+
 
 };
 
