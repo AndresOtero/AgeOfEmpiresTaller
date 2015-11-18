@@ -49,6 +49,13 @@ void GameControllerCliente::eliminar(int id) {
 void GameControllerCliente::mover_personaje(Id id, double mov_x, double mov_y) {
 	this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);
 }
+void GameControllerCliente::cambiar_personaje(int id_personaje, string nombre,string raza) {
+	printf("Id personaje %d\n",id_personaje);
+	printf("Nombre %s\n",nombre.c_str());
+	printf("Raza %s\n",nombre.c_str());
+	this->modelo->cambiar_personaje(id_personaje,nombre,raza);
+}
+
 void GameControllerCliente::crearPersonajeEdificio(string tipo, int id) {
 	msg_t mensaje;
 	mensaje.type = CREAR_PERSONAJE_EDIFICIO;
@@ -171,6 +178,7 @@ void GameControllerCliente::crearEdificio(string nombre, int id_constructor, int
 	mensaje.paramDouble2 = y;
 	this->agregarMensaje(mensaje);
 }
+
 void GameControllerCliente::empezarAccion(int id) {
 	this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(true);
 }
@@ -182,33 +190,8 @@ void GameControllerCliente::finalizarConstruccion(int id) {
 	Entidad * entidad = this->modelo->buscarEntidad(id);
 	entidad->finalizarConstruccion();
 }
-void GameControllerCliente::capturaBandera(string razaAtacante, string razaPerdedora) {
 
-	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
-	vector<Personaje*>::iterator iter = personajes.begin();
-	bool encontrado = false;
-	string nombreAtacante;
-//	while ( (!encontrado) && (iter != personajes.end())) {
-//		Personaje* personaje = (*iter);
-//		if(personaje->get_raza() == razaAtacante){
-//			nombreAtacante = personaje->getNombreJugador();
-//			encontrado = true;
-//		}
-//		iter++;
-//	}
-	for (; iter != personajes.end(); iter++) {
-		printf("entra al for\n");
-		Personaje* personaje = (*iter);
-		if (personaje) {
-			if (personaje->get_raza() == razaPerdedora) {
-				printf("entra al if\n");
-				//personaje->objetoMapa->raza = razaAtacante;
-				//personaje->setNombreJugador(nombreAtacante);
-			}
-		}
-	}
 
-}
 bool GameControllerCliente::hayEventos() {
 	return (!this->cola.empty());
 }

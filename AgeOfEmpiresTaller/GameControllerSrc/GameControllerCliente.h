@@ -34,6 +34,7 @@ public:
 	void acutalizarRecursos(string jugador, int id_pers, int cant,int id_rec);
 	void agregarEntidad(string nombre,int x,int y,int cant);
 	void cambiar_destino_personaje(Id id, double mov_x, double mov_y);
+	void cambiar_personaje(int id_personaje, string nombre,string raza);
 	Personaje* conectarCliente(string name,string tipo, int x,int y,int id);
 	bool esNombre(char* nombre);
 	void crearEdificio(string nombre,int id_constructor,int x,int y);

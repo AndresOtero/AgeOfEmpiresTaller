@@ -22,6 +22,7 @@ void GameController::setEscenario(string nombre,int ancho,int largo){
 	this->juego->setEscenario(nombre,ancho,largo);
 }
 
+
 void GameController::setConfiguracion(int margenScroll,int velocidad_personaje){
 	this->juego->setConfiguracion(margenScroll,velocidad_personaje);
 

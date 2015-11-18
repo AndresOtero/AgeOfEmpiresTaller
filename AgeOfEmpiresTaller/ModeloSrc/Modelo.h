@@ -48,6 +48,7 @@ public:
 	int crearBandera(Entidad* bandera, Id id_edificio);
 	int crearPersonajeServerEdificio(Personaje* personaje,Id id_edificio);
 	string nombreJugador();
+	void cambiar_personaje(Id id_personaje, string nombre,string raza);
 	bool afueraDelMapa(int x,int y);
 	int oscuridad(int dim,int x,int y);
 	DatosSeleccionado seleccionar(double x,double y);

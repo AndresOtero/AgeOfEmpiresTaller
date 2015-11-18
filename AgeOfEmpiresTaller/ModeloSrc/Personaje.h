@@ -89,6 +89,9 @@ public:
 	string get_raza(){
 		return this->objetoMapa->raza;
 	}
+	void set_raza(string raza){
+			this->objetoMapa->raza=raza;
+	}
 	bool tieneRecursos(){
 		return !this->recursos->estaVacio();
 	}

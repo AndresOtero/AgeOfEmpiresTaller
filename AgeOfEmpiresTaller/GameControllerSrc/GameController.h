@@ -32,10 +32,10 @@ public:
 	 void setConfiguracion(int margenScroll,int velocidad_personaje);
 	 void crearModelo();
 	 Modelo* devolverModelo();
-
+	 void cambiar_personaje(int id_personaje, string nombre,string raza);
 	 //Controlar
 	virtual void agregarEntidad(string nombre, int x, int y,int cantidad);
-	virtual void cambiar_destino_personaje(Id id, double mov_x, double mov_y);
+	void cambiar_destino_personaje(int id, double mov_x, double mov_y);
 	void eliminarEntidad(int id);
 
 	//Red

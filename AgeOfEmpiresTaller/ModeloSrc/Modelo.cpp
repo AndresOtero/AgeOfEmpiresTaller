@@ -162,6 +162,14 @@ vector<Personaje*> Modelo::devolverTodosLosPersonajes() {
 	return personajes;
 }
 
+void Modelo::cambiar_personaje(Id id_personaje, string nombre,string raza){
+	Personaje* p =this->get_Personaje_Por_Id(id_personaje);
+	if(p){
+		p->setNombreJugador(nombre);
+		p->set_raza(raza);
+	}
+}
+
 void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario, vector<vector<vector<dibujo_t>>> tiles) {
 	int ancho = this->mapa->getAncho();
 	int largo = this->mapa->getLargo();
