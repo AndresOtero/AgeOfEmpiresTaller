@@ -359,15 +359,18 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					//puede explotar con muchos recolectando
 					Recurso * recurso = (Recurso *) p->get_objetivo();
 					if (recurso->seAcabo()) {
-						p->terminarAccion();
 						mensaje.type = ELIMINAR_ENTIDAD;
 						mensaje.paramInt1 = recurso->getId();
 						this->agregarMensaje(mensaje, mutex);
-						this->modelo->eliminarEntidad(recurso);
-						msg_t msg;
+						vector<msg_t> terminados = this->modelo->eliminarEntidad(recurso);
+						vector<msg_t>::iterator it;
+						for (it = terminados.begin();it!=terminados.end();it++){
+							this->agregarMensaje(*it,mutex);
+						}
+						/*msg_t msg;
 						msg.type = TERMINAR_ACCION;
 						msg.paramInt1 = p->getId();
-						this->agregarMensaje(msg, mutex);
+						this->agregarMensaje(msg, mutex);*/
 						//si el recurso se acabo lo saco y mando mensaje
 					}
 
@@ -393,11 +396,12 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					mensaje.paramDouble2 = construyo;
 					this->agregarMensaje(mensaje, mutex);
 					if (p->get_objetivo()->estaConstruida()) {
-						p->terminarAccion();
-						msg_t msg;
-						msg.type = TERMINAR_ACCION;
-						msg.paramInt1 = p->getId();
-						this->agregarMensaje(msg, mutex);
+						vector<msg_t> terminados = modelo->terminarConstruccion(p->get_objetivo()->getId());
+						vector<msg_t>::iterator it;
+						for (it = terminados.begin(); it != terminados.end();
+								it++) {
+							this->agregarMensaje(*it, mutex);
+						}
 						//tendria q mandarle a todos los tipitos q dejen de atacar
 						//hacer que todos los tipitos paren
 						//this->modelo->terminarConstruccion(p->get_objetivo());
@@ -447,11 +451,11 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 				mensaje.type = ELIMINAR;
 				mensaje.paramInt1 = p->get_atacado()->getId();
 				this->agregarMensaje(mensaje, mutex);
-				this->modelo->eliminar(p->get_atacado()->getId());
-				msg_t msg;
-				msg.type = TERMINAR_ACCION;
-				msg.paramInt1 = p->getId();
-				this->agregarMensaje(msg, mutex);
+				vector<msg_t> terminados = this->modelo->eliminar(p->get_atacado()->getId());
+				vector<msg_t>::iterator it;
+				for (it = terminados.begin(); it != terminados.end(); it++) {
+					this->agregarMensaje(*it, mutex);
+				}
 
 				//chequear que si lo q se elimino termino el juego de alguien
 			}

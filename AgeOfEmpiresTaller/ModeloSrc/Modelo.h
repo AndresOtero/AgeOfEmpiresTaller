@@ -77,14 +77,15 @@ public:
 	~Modelo();
 	void agregarPersonajeCliente(Personaje* personaje);
 	int crearPersonajeServer(Personaje* personaje);
-	void eliminarEntidadPorID(int id);
+	vector<msg_t> eliminarEntidadPorID(int id);
 	int cantidad_de_jugadores();
 	void recolectar(Personaje*personaje, Recurso* recurso);
 	void atacarServer(Id idAtacante ,Id idAtacado);
 	Personaje*  get_Personaje_Por_Id(Id id);
-	void eliminar_personaje_por_Id(Id id);
-	void eliminarEntidad(Entidad *entidad);
-	void eliminar(int id);
+	vector<msg_t> eliminar_personaje_por_Id(Id id);
+	vector<msg_t> eliminarEntidad(Entidad *entidad);
+	vector<msg_t> eliminar(int id);
+	vector<msg_t> terminarConstruccion(int id);
 	void finalizarAccion(int id);
 	int crearEdificio(string nombre, int x,int y);
 	void limpiarSeleccion();
@@ -93,7 +94,7 @@ public:
 private:
 	size_t acumuladorPiso;
 	vector<Entidad *> obtenerCentrosCivicosEnMapa();
-	void eliminar_personaje(Personaje* eliminado);
+	vector<msg_t> eliminar_personaje(Personaje* eliminado);
 
 	void set_posicionRandomPersonaje(Personaje* personaje);
 
