@@ -17,6 +17,7 @@
 #define VISIBLE 0
 #define OSCURO 2
 #define EDIFICIO_SUPERPUESTO -1
+#define SELECCION_MAXIMA 5
 using namespace std;
 
 #ifndef MODELO_H_

@@ -7,7 +7,7 @@
 
 #include "GameControllerServer.h"
 #define CANTIDAD_PERSONAJES_INICIALES 4
-#define MAX_RECURSOS 20
+#define MAX_RECURSOS 16
 
 char* GameControllerServer::string_to_char_array(string str) {
 	int str_size = str.size();
@@ -591,6 +591,9 @@ void GameControllerServer::capturaBandera(Personaje* personaje_que_captura,
 
 	this->agregarMensaje(mensajePierde, mutex);
 
+}
+void GameControllerServer::setMapa(int ancho, int largo){
+	this->modelo->setMapa(ancho,largo);
 }
 void GameControllerServer::cambiar_personaje(int id_personaje, string nombre,
 		string raza) { //nombre y raza a la que cambia

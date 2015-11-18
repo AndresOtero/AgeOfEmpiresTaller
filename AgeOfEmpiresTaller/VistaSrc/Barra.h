@@ -81,6 +81,7 @@ private:
 	int id_edificio_creador;
 	int x_datos;
 	int x_lista;
+	int lado_icono;
 };
 
 #endif /* BARRA_H_ */

@@ -40,12 +40,19 @@ class Vista {
 	int margen_scroll;
 	int seleccion_x_inicio,seleccion_y_inicio,seleccion_x_final,seleccion_y_final;
 	Entidad* entidadACrear;
-	Mix_Chunk *music = NULL;
+	Mix_Chunk *musica_creacion,*musicaLoading,*music_ganador_elfo,*musica_ganador_hobbit,*musica_ganador_humanos,*musica_ganador_mordor;
+
 	bool esta_eligiendo,termino_de_elegir;
 	double referencia_mapa_x,referencia_mapa_y,velocidad_de_scroll;
 	static const int VACIO = 0;
 private:
 	SDL_Texture *backgroundTexture;
+	SDL_Texture *perdedorTexture;
+	SDL_Texture *ganadorElfosTexture;
+	SDL_Texture *ganadorHobbitTexture;
+	SDL_Texture *ganadorHumanosTexture;
+	SDL_Texture *ganadorMordorTexture;
+
 	bool esta_en_seleccion(int x,int y);
 	void setear_seleccion();
 	void dibujar_mapa();
@@ -66,11 +73,15 @@ private:
 	void dejarDeDibujarEdificio();
 
 
+
 public:
 	Vista(Modelo* modelo,GameControllerCliente* gameControler);
+	void setBarra(Modelo * modelo);
 	bool init();
 	bool loadMedia();
 	bool mostrarPantallaEspera();
+	bool mostrarPantallaPerdedor();
+	bool mostrarPantallaGanador(string raza);
 	void crearPersonaje(string tipo,Personaje* personaje);
 	void setear_referencia(double ref_x,double ref_y) ;
 	void setear_vista(string nombreJugador);

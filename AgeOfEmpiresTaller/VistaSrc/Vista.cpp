@@ -44,14 +44,21 @@ Vista::Vista(Modelo* modelo, GameControllerCliente* gameController) {
 	this->velocidad_de_scroll = 1;
 	this->margen_scroll = modelo->juego->conf->get_margen_scroll();
 
-	this->transformador = shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(), altura_por_celda()));
-	shared_ptr<Barra> barra(new Barra(modelo, &referencia_mapa_x, &referencia_mapa_y));
-	this->barra = barra;
+	this->transformador = shared_ptr<CambioDeCoordendas>(
+			new CambioDeCoordendas(ancho_por_celda(), altura_por_celda()));
+	/*shared_ptr<Barra> barra(
+			new Barra(modelo, &referencia_mapa_x, &referencia_mapa_y));
+	this->barra = barra;*/
 	shared_ptr<Dibujo> dibujo(new Dibujo());
 	this->edificioACrear = dibujo;
 	this->entidadACrear = NULL;
 	this->gameController = gameController;
 	this->esta_eligiendo = false;
+}
+
+void Vista::setBarra(Modelo * modelo){
+	shared_ptr<Barra> barra(new Barra(modelo, &referencia_mapa_x, &referencia_mapa_y));
+	this->barra = barra;
 }
 
 int Vista::altura_por_celda() {
@@ -77,18 +84,21 @@ bool Vista::init() {
 	} else {
 		//Set texture filtering to linear
 		if (!SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1S")) {
-			LOG_WARNING << "Atencion no funciona SDL_HINT_RENDER_SCALE_QUALITY \n";
+			LOG_WARNING
+					<< "Atencion no funciona SDL_HINT_RENDER_SCALE_QUALITY \n";
 		}
 
 		//Create window
 		gWindow = SDL_CreateWindow("Age of empires", SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, pantalla->getAncho(), pantalla->getAlto(), SDL_WINDOW_SHOWN);
+		SDL_WINDOWPOS_UNDEFINED, pantalla->getAncho(), pantalla->getAlto(),
+				SDL_WINDOW_SHOWN);
 		if (gWindow == NULL) {
 			LOG_WARNING << "No se pudo crear la ventana .SDL Error: %s\n", SDL_GetError();
 
 			success = false;
 		} else {
-			gRenderer = SDL_CreateRenderer(&(*gWindow), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+			gRenderer = SDL_CreateRenderer(&(*gWindow), -1,
+					SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (gRenderer == NULL) {
 				LOG_WARNING << "No se pudo crear el renderer .SDL Error: %s\n", SDL_GetError();
 				success = false;
@@ -97,29 +107,91 @@ bool Vista::init() {
 
 				int imgFlags = IMG_INIT_PNG;
 				if (!(IMG_Init(imgFlags) & imgFlags)) {
-					LOG_WARNING << "No se pudo crear el cargador de imagenes .SDL Error: %s\n", SDL_GetError();
+					LOG_WARNING
+							<< "No se pudo crear el cargador de imagenes .SDL Error: %s\n", SDL_GetError();
 					success = false;
 				} else {
-					SDL_Surface *background = IMG_Load("img/extras/loading.jpg");
+					SDL_Surface *background = IMG_Load(
+							"img/extras/loading.jpg");
 					if (!background) {
-						LOG_WARNING << "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
+						LOG_WARNING
+								<< "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
 						success = false;
 					} else {
-						backgroundTexture = SDL_CreateTextureFromSurface(gRenderer, background);
+						backgroundTexture = SDL_CreateTextureFromSurface(
+								gRenderer, background);
 
 						if (backgroundTexture == NULL) {
-							LOG_WARNING << "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
+							LOG_WARNING
+									<< "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
 							success = false;
 						} else {
-							//Initialize SDL_ttf
-							if (TTF_Init() == -1) {
-								LOG_WARNING << "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError();
+							SDL_Surface *perdedorTextura = IMG_Load(
+									"img/extras/perdedor.jpg");
+							if (!perdedorTextura) {
+								LOG_WARNING
+										<< "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
 								success = false;
+							} else {
+								perdedorTexture = SDL_CreateTextureFromSurface(
+										gRenderer, perdedorTextura);
+
+								if (perdedorTexture == NULL) {
+									LOG_WARNING
+											<< "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
+									success = false;
+								} else {
+									SDL_Surface *ganadorElfosTextura = IMG_Load(
+											"img/extras/ganador_elfos.jpg");
+									SDL_Surface *ganadorHobbitTextura =
+											IMG_Load(
+													"img/extras/ganador_hobbit.jpg");
+									SDL_Surface *ganadorHumanosTextura =
+											IMG_Load(
+													"img/extras/ganador_humanos.jpg");
+									SDL_Surface *ganadorMordorTextura =
+											IMG_Load(
+													"img/extras/ganador_mordor.jpg");
+									if (!ganadorElfosTextura) {
+										LOG_WARNING
+												<< "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
+										success = false;
+									} else {
+										ganadorElfosTexture =
+												SDL_CreateTextureFromSurface(
+														gRenderer,
+														ganadorElfosTextura);
+										ganadorHobbitTexture =
+												SDL_CreateTextureFromSurface(
+														gRenderer,
+														ganadorHobbitTextura);
+										ganadorHumanosTexture =
+												SDL_CreateTextureFromSurface(
+														gRenderer,
+														ganadorHumanosTextura);
+										ganadorMordorTexture =
+												SDL_CreateTextureFromSurface(
+														gRenderer,
+														ganadorMordorTextura);
+
+										if (ganadorElfosTexture == NULL) {
+											LOG_WARNING
+													<< "No se pudo cargar la imagen .SDL Error: %s\n", SDL_GetError();
+											success = false;
+										} else {
+										}
+										//Initialize SDL_ttf
+										if (TTF_Init() == -1) {
+											LOG_WARNING
+													<< "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError();
+											success = false;
+										}
+									}
+
+								}
 							}
 						}
-
 					}
-
 				}
 			}
 		}
@@ -129,9 +201,7 @@ bool Vista::init() {
 	if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
 		success = false;
 	}
-    music = Mix_LoadWAV( "img/1elfos/GANADOR.wav" );	 if(!music)
-	if(!music)
-    	printf("No carga\n");
+
 
 	this->factory = shared_ptr<FactoryDibujo>(new FactoryDibujo(gRenderer));
 
@@ -142,9 +212,10 @@ bool Vista::loadMedia() {
 	/**Creo el dibujo del pasto**/
 
 	vector<dibujo_t> pastos;
-	for (int nroTextura = 1; nroTextura <= MAX_NRO_TEXTURA;nroTextura++ ){
+	for (int nroTextura = 1; nroTextura <= MAX_NRO_TEXTURA; nroTextura++) {
 
-		Entidad* entidadPasto = this->modelo->juego->escenario->getTexturaDefault(nroTextura);
+		Entidad* entidadPasto =
+				this->modelo->juego->escenario->getTexturaDefault(nroTextura);
 		this->factory->crear_dibujo_tile(entidadPasto->objetoMapa->imagen);
 		dibujo_t pasto_id = this->factory->ultimo_dibujo();
 		pastos.push_back(pasto_id);
@@ -157,13 +228,16 @@ bool Vista::loadMedia() {
 	std::map<std::string, dibujo_t> hashDibujos;
 
 	Configuracion* configuracion = this->modelo->juego->conf;
-	for (it = modelo->juego->tipos.begin(); it != modelo->juego->tipos.end(); it++) {
+	for (it = modelo->juego->tipos.begin(); it != modelo->juego->tipos.end();
+			it++) {
 		ObjetoMapa* tipo = it->second;
-		vector<int> v1d = { tipo->pixelsReferencia->x, tipo->pixelsReferencia->y };
+		vector<int> v1d =
+				{ tipo->pixelsReferencia->x, tipo->pixelsReferencia->y };
 		if (tipo->fps == 0) {
 			this->factory->crear_dibujo_estatico(tipo->imagen, v1d);
 		} else if (tipo->delay != 0) {
-			this->factory->crear_dibujo_animado(tipo->imagen, v1d, tipo->fps, tipo->delay);
+			this->factory->crear_dibujo_animado(tipo->imagen, v1d, tipo->fps,
+					tipo->delay);
 		} else {
 			this->factory->crear_dibujo_personaje(tipo->imagen, tipo->musica,MOVIMIENTOS, CANTIDAD_DE_IMAGENES, tipo->fps); //el ultimo parametro es velocidad
 		}
@@ -180,13 +254,22 @@ bool Vista::loadMedia() {
 	vector<vector<dibujo_t>> escenario(largo, filas_escenario);
 
 	//***********DIBUJOS (ENTIDADES ESTATICAS Y DINAMICAS EN YAML)*****************
-	for (unsigned i = 0; i < this->modelo->juego->escenario->entidades.size(); i++) {
+	for (unsigned i = 0; i < this->modelo->juego->escenario->entidades.size();
+			i++) {
 		Entidad* entidad = this->modelo->juego->escenario->entidades[i];
-		escenario[entidad->posicion->getX()][entidad->posicion->getY()] = hashDibujos[entidad->objetoMapa->nombre];
+		escenario[entidad->posicion->getX()][entidad->posicion->getY()] =
+				hashDibujos[entidad->objetoMapa->nombre];
 	}
 	modelo->setDibujoMapa(escenario, tiles); //MEZCLA VISTA CON MODELO
 
-	this->barra->load(gRenderer, "font.ttf", this->ancho_por_celda(), this->altura_por_celda());
+	this->barra->load(gRenderer, "font.ttf", this->ancho_por_celda(),
+			this->altura_por_celda());
+	musica_creacion = Mix_LoadWAV( "img/1elfos/CREACION.wav" );
+	musicaLoading = Mix_LoadWAV( "img/extras/loading.wav" );
+	music_ganador_elfo=Mix_LoadWAV( "img/1elfos/GANADOR.wav" );
+	musica_ganador_hobbit=Mix_LoadWAV( "img/2hobbit/GANADOR.wav" );
+	musica_ganador_humanos=Mix_LoadWAV( "img/3humanos/GANADOR.wav" );
+	musica_ganador_mordor=Mix_LoadWAV( "img/4mordor/GANADOR.wav" );
 
 	return true;
 }
@@ -205,7 +288,8 @@ void Vista::crearPersonaje(string tipo, Personaje* personaje) {
 void Vista::mover_referencia(double vel_x, double vel_y) {
 	double ref_x, ref_y;
 
-	this->transformador->transformar_pantalla_isometrica(vel_x, vel_y, ref_x, ref_y);
+	this->transformador->transformar_pantalla_isometrica(vel_x, vel_y, ref_x,
+			ref_y);
 	ref_x += referencia_mapa_x;
 	ref_y += referencia_mapa_y;
 
@@ -226,24 +310,28 @@ void Vista::detectar_mouse_borde() {
 	int mov_pantalla_x = margen_scroll, mov_pantalla_y = margen_scroll;
 
 	if ((mouse_x < mov_pantalla_x)) {
-		double vel_x = (-1) * this->velocidad_de_scroll * (mov_pantalla_x - mouse_x);
+		double vel_x = (-1) * this->velocidad_de_scroll
+				* (mov_pantalla_x - mouse_x);
 		mover_referencia(vel_x, 0);
 
 	}
 	if ((mouse_x > (this->pantalla->getAncho() - mov_pantalla_x))) {
-		double vel_x = this->velocidad_de_scroll * (mouse_x - (this->pantalla->getAncho() - mov_pantalla_x));
+		double vel_x = this->velocidad_de_scroll
+				* (mouse_x - (this->pantalla->getAncho() - mov_pantalla_x));
 		mover_referencia(vel_x, 0);
 
 	}
 	if (mouse_y < mov_pantalla_y) {
-		double vel_y = (-1) * this->velocidad_de_scroll * (mov_pantalla_y - mouse_y);
+		double vel_y = (-1) * this->velocidad_de_scroll
+				* (mov_pantalla_y - mouse_y);
 
 		mover_referencia(0, vel_y);
 
 	}
 	if (mouse_y > (this->pantalla->getAlto() - mov_pantalla_y)) {
 
-		double vel_y = this->velocidad_de_scroll * (mouse_y - (this->pantalla->getAlto() - mov_pantalla_y));
+		double vel_y = this->velocidad_de_scroll
+				* (mouse_y - (this->pantalla->getAlto() - mov_pantalla_y));
 
 		mover_referencia(0, vel_y);
 
@@ -251,7 +339,8 @@ void Vista::detectar_mouse_borde() {
 }
 void Vista::cargarEdificioACrear(string tipo) {
 	//seteo el dibujo a lo q deberia ser
-	edificioACrear = this->factory->get_dibujo(this->factory->get_idDibujo(tipo));
+	edificioACrear = this->factory->get_dibujo(
+			this->factory->get_idDibujo(tipo));
 	entidadACrear = new Entidad(this->modelo->juego->tipos[tipo]);
 }
 void Vista::dejarDeDibujarEdificio() {
@@ -275,7 +364,8 @@ bool Vista::run() {
 			switch (e.key.keysym.sym) {
 			case SDLK_c:
 				if (this->modelo->get_entidad_seleccionada()) {
-					this->gameController->crearPersonajeEdificio("gandalf", this->modelo->get_entidad_seleccionada()->getId());
+					this->gameController->crearPersonajeEdificio("gandalf",
+							this->modelo->get_entidad_seleccionada()->getId());
 				}
 				break;
 			}
@@ -335,6 +425,7 @@ bool Vista::run() {
 							if (this->modelo->getJugador()->puedePagar(costo)) {
 								this->gameController->crearPersonajeEdificio(
 										objeto->nombre, std::get<1>(tipo));
+								Mix_PlayChannel( -1, musica_creacion, 0 );
 								this->modelo->getJugador()->pagar(costo);
 							}
 
@@ -354,18 +445,24 @@ bool Vista::run() {
 			if (e.button.button == SDL_BUTTON_RIGHT) {
 				this->dejarDeDibujarEdificio();
 				SDL_GetMouseState(&mov_x, &mov_y);
-				this->transformador->transformar_pantalla_isometrica(mov_x, mov_y, personaje_x, personaje_y);
-				this->corregir_referencia_coordenadas_pantalla_mapa(personaje_x, personaje_y);
+				this->transformador->transformar_pantalla_isometrica(mov_x,
+						mov_y, personaje_x, personaje_y);
+				this->corregir_referencia_coordenadas_pantalla_mapa(personaje_x,
+						personaje_y);
 				Posicion p = Posicion(personaje_x, personaje_y);
 				//le envia al server que cambie el destino
-				vector<Personaje*> personajes = this->modelo->devolverPersonajeSeleccionado();
+				vector<Personaje*> personajes =
+						this->modelo->devolverPersonajeSeleccionado();
 
 				if (!personajes.empty()) {
 					vector<Personaje*>::iterator it = personajes.begin();
 					for (; it != personajes.end(); it++) {
 						Personaje* personaje = (*it);
-						if (personaje->getNombreJugador() == this->modelo->nombreJugador()) {
-							this->gameController->cambiar_destino_personaje(personaje->getId(), personaje_x, personaje_y);
+						if (personaje->getNombreJugador()
+								== this->modelo->nombreJugador()) {
+							this->gameController->cambiar_destino_personaje(
+									personaje->getId(), personaje_x,
+									personaje_y);
 							this->gameController->interactuar(personaje, p);
 						}
 					}
@@ -378,7 +475,8 @@ bool Vista::run() {
 			if (e.button.button == SDL_BUTTON_LEFT) {
 				double a, b;
 				SDL_GetMouseState(&seleccion_x_inicio, &seleccion_y_inicio);
-				if (seleccion_y_inicio < this->barra->obtenerYDondeSeDibuja() && !this->entidadACrear) {
+				if (seleccion_y_inicio < this->barra->obtenerYDondeSeDibuja()
+						&& !this->entidadACrear) {
 					esta_eligiendo = true;
 					this->modelo->limpiarSeleccion();
 				}
@@ -409,7 +507,56 @@ bool Vista::run() {
 	dibujar_barra();
 	detectar_mouse_borde();
 	SDL_RenderPresent(gRenderer);
-	this->termino_de_elegir =false;
+	this->termino_de_elegir = false;
+	return quit;
+}
+
+bool Vista::mostrarPantallaPerdedor() {
+
+	bool quit = false;
+	SDL_Event e;
+	while (SDL_PollEvent(&e) != 0) {
+		if (e.type == SDL_QUIT) {
+			quit = true;
+		}
+	}
+	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
+	SDL_RenderClear(gRenderer);
+	SDL_RenderCopy(gRenderer, perdedorTexture, NULL, NULL);
+	SDL_RenderPresent(gRenderer);
+	Mix_PlayChannel( -1, musicaLoading, 0 );
+	return quit;
+}
+
+bool Vista::mostrarPantallaGanador(string raza) {
+
+	bool quit = false;
+	SDL_Event e;
+
+	while (SDL_PollEvent(&e) != 0) {
+		if (e.type == SDL_QUIT) {
+			quit = true;
+		}
+	}
+	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
+	SDL_RenderClear(gRenderer);
+	if (raza == "Elfo") {
+		Mix_PlayChannel( -1, music_ganador_elfo, 0 );
+		SDL_RenderCopy(gRenderer, ganadorElfosTexture, NULL, NULL);
+	} else if (raza == "Hobbit") {
+		Mix_PlayChannel( -1, musica_ganador_hobbit, 0 );
+
+		SDL_RenderCopy(gRenderer, ganadorHobbitTexture, NULL, NULL);
+	} else if (raza == "Humano") {
+		Mix_PlayChannel( -1, musica_ganador_humanos, 0 );
+
+		SDL_RenderCopy(gRenderer, ganadorHumanosTexture, NULL, NULL);
+	} else{
+		Mix_PlayChannel( -1, musica_ganador_mordor, 0 );
+
+		SDL_RenderCopy(gRenderer, ganadorMordorTexture, NULL, NULL);
+	}
+	SDL_RenderPresent(gRenderer);
 	return quit;
 }
 
@@ -423,18 +570,20 @@ bool Vista::mostrarPantallaEspera() {
 			quit = true;
 		}
 	}
-
+	Mix_PlayChannel( -1, musicaLoading, 0 );
 	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 	SDL_RenderClear(gRenderer);
 	SDL_RenderCopy(gRenderer, backgroundTexture, NULL, NULL);
 	SDL_RenderPresent(gRenderer);
 	return quit;
 }
+
 void Vista::dibujar_edificio(int mov_x, int mov_y) {
 	double a, b;
 	if (this->entidadACrear) {
 		//transformacion de posiciones
-		this->transformador->transformar_pantalla_isometrica(mov_x, mov_y, a, b);
+		this->transformador->transformar_pantalla_isometrica(mov_x, mov_y, a,
+				b);
 		this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
 		this->entidadACrear->set_posicion(floor(a), floor(b));
 		if (this->modelo->tocaSombra(this->entidadACrear)) {
@@ -446,8 +595,9 @@ void Vista::dibujar_edificio(int mov_x, int mov_y) {
 		}
 
 		double pant_x, pant_y;
-		this->transformador->transformar_isometrica_pantalla(floor(a) - this->referencia_mapa_x, floor(b) - this->referencia_mapa_y, pant_x,
-				pant_y);
+		this->transformador->transformar_isometrica_pantalla(
+				floor(a) - this->referencia_mapa_x,
+				floor(b) - this->referencia_mapa_y, pant_x, pant_y);
 		//this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
 		this->edificioACrear->set_posicion_default(pant_x, pant_y);
 		this->edificioACrear->render(gRenderer);
@@ -461,43 +611,56 @@ vector<int> Vista::calcular_bordes() {
 	 http://www.java-gaming.org/index.php?topic=24922.0
 	 **/
 	int pantalla_refencia_x, pantalla_refencia_y;
-	this->transformador->transformar_isometrica_pantalla(referencia_mapa_x, referencia_mapa_y, pantalla_refencia_x, pantalla_refencia_y);
+	this->transformador->transformar_isometrica_pantalla(referencia_mapa_x,
+			referencia_mapa_y, pantalla_refencia_x, pantalla_refencia_y);
 	int x_start, y_start;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x, pantalla_refencia_y, x_start, y_start);
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,
+			pantalla_refencia_y, x_start, y_start);
 	x_start = x_start - 2;
 	int x_max, y;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x + pantalla->getAncho(),
+	this->transformador->transformar_pantalla_isometrica(
+			pantalla_refencia_x + pantalla->getAncho(),
 			pantalla_refencia_y + pantalla->getAlto(), x_max, y);
 	x_max += 2;
 	int x, y_max;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x, pantalla_refencia_y + pantalla->getAlto(), x, y_max);
+	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x,
+			pantalla_refencia_y + pantalla->getAlto(), x, y_max);
 	y_max = y_max + 2;
 	int y_min;
-	this->transformador->transformar_pantalla_isometrica(pantalla_refencia_x + pantalla->getAncho(), pantalla_refencia_y, x, y_min);
+	this->transformador->transformar_pantalla_isometrica(
+			pantalla_refencia_x + pantalla->getAncho(), pantalla_refencia_y, x,
+			y_min);
 	y_min -= 2;
 	vector<int> bordes = { x_start, y_min, x_max, y_max };
 	return bordes;
 }
 
-void Vista::corregir_referencia_coordenadas_pantalla_mapa(double& coord_x, double& coord_y) {
+void Vista::corregir_referencia_coordenadas_pantalla_mapa(double& coord_x,
+		double& coord_y) {
 	coord_x += referencia_mapa_x - 0.5;
 	coord_y += referencia_mapa_y + 0.5;
 }
-void Vista::corregir_referencia_coordenadas_mapa_pantalla(double& coord_x, double& coord_y) {
+void Vista::corregir_referencia_coordenadas_mapa_pantalla(double& coord_x,
+		double& coord_y) {
 	coord_x += (-referencia_mapa_x + 0.5);
 	coord_y += (-referencia_mapa_y - 0.5);
 }
 
 bool Vista::adentro_del_mapa(double coord_x, double coord_y) {
-	return ((coord_x < this->modelo->get_ancho_mapa()) && (coord_y < this->modelo->get_alto_mapa()) && (coord_x >= 0) && (coord_y >= 0));
+	return ((coord_x < this->modelo->get_ancho_mapa())
+			&& (coord_y < this->modelo->get_alto_mapa()) && (coord_x >= 0)
+			&& (coord_y >= 0));
 }
 
 bool Vista::adentro_del_mapa(int coord_x, int coord_y) {
-	return ((coord_x < this->modelo->get_ancho_mapa()) && (coord_y < this->modelo->get_alto_mapa()) && (coord_x >= 0) && (coord_y >= 0));
+	return ((coord_x < this->modelo->get_ancho_mapa())
+			&& (coord_y < this->modelo->get_alto_mapa()) && (coord_x >= 0)
+			&& (coord_y >= 0));
 }
 
 bool Vista::esta_en_seleccion(int x, int y) {
-	return ((x < seleccion_x_final) && (x > seleccion_x_inicio) && (y < seleccion_y_final) && (y > seleccion_y_inicio));
+	return ((x < seleccion_x_final) && (x > seleccion_x_inicio)
+			&& (y < seleccion_y_final) && (y > seleccion_y_inicio));
 
 }
 void Vista::setear_seleccion() {
@@ -516,17 +679,24 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	int img_personaje_x, img_personaje_y;
 	double personaje_x = personaje->getReferenciaMapaX();
 	double personaje_y = personaje->getReferenciaMapaY();
-	this->corregir_referencia_coordenadas_mapa_pantalla(personaje_x, personaje_y);
-	this->transformador->transformar_isometrica_pantalla(personaje_x, personaje_y, img_personaje_x, img_personaje_y);
+	this->corregir_referencia_coordenadas_mapa_pantalla(personaje_x,
+			personaje_y);
+	this->transformador->transformar_isometrica_pantalla(personaje_x,
+			personaje_y, img_personaje_x, img_personaje_y);
 
-	shared_ptr<DibujoPersonaje> dibujo_pers_anterior = dynamic_pointer_cast<DibujoPersonaje>(
+	shared_ptr<DibujoPersonaje> dibujo_pers_anterior = dynamic_pointer_cast<
+			DibujoPersonaje>(
 			this->factory->get_dibujo(personaje->getDibujoAnterior()));
-	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
+	shared_ptr<DibujoPersonaje> dibujo_pers = dynamic_pointer_cast<
+			DibujoPersonaje>(this->factory->get_dibujo(personaje->dibujar()));
 
-	dibujo_pers->setMovimientoActual(dibujo_pers_anterior->getMovimientoActual());
+	dibujo_pers->setMovimientoActual(
+			dibujo_pers_anterior->getMovimientoActual());
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
-	if (esta_en_seleccion(img_personaje_x, img_personaje_y) && termino_de_elegir) {
-		modelo->seleccionar(personaje->getReferenciaMapaX(), personaje->getReferenciaMapaY());
+	if (esta_en_seleccion(img_personaje_x, img_personaje_y)
+			&& termino_de_elegir) {
+		modelo->seleccionar(personaje->getReferenciaMapaX(),
+				personaje->getReferenciaMapaY());
 	}
 	if(personaje->estaAtacandoCliente()){
 		dibujo_pers->playMusic();
@@ -560,7 +730,8 @@ void Vista::dibujar_mapa() {
 	/**Bordes**/
 	vector<int> bordes = this->calcular_bordes();
 	/****/
-	int x_start = bordes[X_START], y_min = bordes[Y_MIN], x_max = bordes[X_MAX], y_max = bordes[Y_MAX];
+	int x_start = bordes[X_START], y_min = bordes[Y_MIN], x_max = bordes[X_MAX],
+			y_max = bordes[Y_MAX];
 	int x_imagen, y_imagen;
 	for (int dim = 0; dim < DIMENSIONES; dim++) {
 		int max = abs(x_max) + abs(y_max);
@@ -570,15 +741,20 @@ void Vista::dibujar_mapa() {
 				int coord_x = i - j - 1;
 				int coord_y = j;
 
-				if ((adentro_del_mapa(coord_x, coord_y)) && (coord_x < x_max) && (coord_y < y_max)) {
+				if ((adentro_del_mapa(coord_x, coord_y)) && (coord_x < x_max)
+						&& (coord_y < y_max)) {
 					//Cambio para dibujar agregados
 					size_t n_imagen;
 					if (dim == TILES) {
 						n_imagen = this->modelo->dibujar(dim, coord_x, coord_y); //MEZCLA MODELO CON VISTA para dsps
 					} else {
-						n_imagen = this->factory->get_idDibujo(this->modelo->mapa->mostrar_entidad(coord_x, coord_y).getNombre());
-						Entidad* entidad = this->modelo->mapa->entidad_celda(coord_x, coord_y);
-						shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(n_imagen);
+						n_imagen = this->factory->get_idDibujo(
+								this->modelo->mapa->mostrar_entidad(coord_x,
+										coord_y).getNombre());
+						Entidad* entidad = this->modelo->mapa->entidad_celda(
+								coord_x, coord_y);
+						shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(
+								n_imagen);
 
 						if (entidad) {
 							if (!entidad->estaConstruida()) {
@@ -591,12 +767,16 @@ void Vista::dibujar_mapa() {
 					}
 					//fin cambio villero
 					int oscuro = modelo->oscuridad(dim, coord_x, coord_y);
-					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(n_imagen);
+					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(
+							n_imagen);
 
-					if (this->modelo->devolverPersonaje(coord_x, coord_y) && dim != TILES) {
+					if (this->modelo->devolverPersonaje(coord_x,
+							coord_y) && dim != TILES) {
 						//agregue el && dim tiles porque estaba renderisando dos veces el personaje
 						if (oscuro == 0) {
-							dibujar_personaje(this->modelo->devolverPersonaje(coord_x, coord_y));
+							dibujar_personaje(
+									this->modelo->devolverPersonaje(coord_x,
+											coord_y));
 						}
 					}
 					if (dim == TILES) {
@@ -604,10 +784,13 @@ void Vista::dibujar_mapa() {
 							dibujo->iluminar();
 						}
 					}
-					if (dibujo != NULL && !repito_dibujo(coord_x, coord_y, dim)) {
+					if (dibujo != NULL
+							&& !repito_dibujo(coord_x, coord_y, dim)) {
 						/*HARDCODE*/
-						this->transformador->transformar_isometrica_pantalla(coord_x - referencia_mapa_x, coord_y - referencia_mapa_y,
-								x_imagen, y_imagen);
+						this->transformador->transformar_isometrica_pantalla(
+								coord_x - referencia_mapa_x,
+								coord_y - referencia_mapa_y, x_imagen,
+								y_imagen);
 						dibujo->set_posicion_default(x_imagen, y_imagen);
 
 						if (oscuro == 1)
@@ -643,7 +826,8 @@ void Vista::dibujar_mapa() {
 }
 
 void Vista::dibujar_barra() {
-	this->barra->actualizar(this->modelo->getJugador(), this->modelo->devolverPersonajeSeleccionado(),
+	this->barra->actualizar(this->modelo->getJugador(),
+			this->modelo->devolverPersonajeSeleccionado(),
 			this->modelo->get_entidad_seleccionada());
 	this->barra->render(gRenderer);
 }
@@ -670,18 +854,30 @@ void Vista::setear_vista(string nombreJugador) {
 	for (; it != personajes.end(); it++) {
 		Personaje* p = *it;
 		if ((p)->getNombreJugador() == nombreJugador) {
-			this->setear_referencia(p->get_posicion().get_x_exacta(), p->get_posicion().get_y_exacta());
+			this->setear_referencia(p->get_posicion().get_x_exacta(),
+					p->get_posicion().get_y_exacta());
 			return;
 		}
 	}
 }
 Vista::~Vista() {
 	this->barra->closeFont();
+	Mix_FreeChunk( musica_creacion );
 	SDL_DestroyTexture(backgroundTexture);
+	SDL_DestroyTexture(perdedorTexture);
+	SDL_DestroyTexture(ganadorElfosTexture);
+	SDL_DestroyTexture(ganadorHobbitTexture);
+	SDL_DestroyTexture(ganadorMordorTexture);
 	TTF_Quit();
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
-    Mix_FreeChunk( music );
+    Mix_FreeChunk( musicaLoading );
+	Mix_FreeChunk( music_ganador_elfo );
+	Mix_FreeChunk( musica_ganador_hobbit );
+	Mix_FreeChunk( musica_ganador_humanos );
+	Mix_FreeChunk( musica_ganador_mordor );
+
+
     Mix_CloseAudio();
 	gWindow = NULL;
 	gRenderer = NULL;

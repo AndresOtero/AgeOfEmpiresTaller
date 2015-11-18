@@ -22,7 +22,7 @@
 #include "Comida.h"
 #define RITMO 5
 using namespace std;
-#define VISIBILIDAD 5
+#define VISIBILIDAD 8
 #define VISIBILIDAD_CONSTRUCCIONES 10
 #define CICLOS_MAX 500
 #define ORO 0
@@ -36,7 +36,7 @@ enum dimension {
 Modelo::Modelo(Juego* juego) {
 	this->acumuladorPiso = 0;
 	this->juego = juego;
-	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
+	//setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 	this->personajes = vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
 	this->jugador = juego->escenario->jugador;
@@ -45,16 +45,9 @@ Modelo::Modelo(Juego* juego) {
 	}
 	this->factory_personaje.cargarPersonajes(this->juego->tipos);
 	personajes_seleccionados.clear();
-	this->insertarEntidades();
 	this->totalRecursos = 0;
 	gettimeofday(&estado, NULL);
 	idServer = 0;
-	int ancho = this->get_ancho_mapa();
-	int alto = this->get_alto_mapa();
-	vector<int> row(ancho, OSCURO);
-	for (int i = 0; i < alto; i++) {
-		pisadas.push_back(row);
-	}
 	entidad_seleccionada = NULL;
 }
 string Modelo::nombreJugador() {
@@ -73,6 +66,7 @@ Entidad* Modelo::set_CentroCivicoNuevoServer(string raza) {
 	if (base) {
 		vector<Entidad*> centros = this->obtenerCentrosCivicosEnMapa();
 		Posicion pos = this->mapa->posicionValidaParaCentroCivico(centros, base);
+		printf("%d,%d\n",pos.getX(),pos.getY());
 		base->set_posicion(pos.getX(), pos.getY());
 		base->finalizarConstruccion();
 		this->insertarEntidad(base);
@@ -114,6 +108,11 @@ void Modelo::insertarEntidades() {
 
 void Modelo::setMapa(int ancho, int largo) {
 	this->mapa = shared_ptr<Mapa>(new Mapa(ancho, largo));
+	this->insertarEntidades();
+	vector<int> row(ancho, OSCURO);
+	for (int i = 0; i < largo; i++) {
+		pisadas.push_back(row);
+	}
 }
 
 void Modelo::actualizarMapa() {
@@ -296,7 +295,10 @@ DatosSeleccionado Modelo::seleccionar(double mov_x, double mov_y) {
 	this->mapa->seleccionar(seleccionada.getX(), seleccionada.getY());
 	entidad_seleccionada = NULL;
 	if (this->mapa->personaje_celda(seleccionada.getX(), seleccionada.getY())) {
-		personajes_seleccionados.push_back(this->mapa->personaje_celda(seleccionada.getX(), seleccionada.getY()));
+		if(personajes_seleccionados.size() < SELECCION_MAXIMA){
+			personajes_seleccionados.push_back(this->mapa->personaje_celda(seleccionada.getX(), seleccionada.getY()));
+		}
+
 	} else {
 		if (this->mapa->entidad_celda(seleccionada.getX(), seleccionada.getY()) != NULL) {
 			entidad_seleccionada = this->mapa->entidad_celda(seleccionada.getX(), seleccionada.getY());
