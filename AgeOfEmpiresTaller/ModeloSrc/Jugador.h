@@ -21,6 +21,8 @@ public:
 	string nombre;
 	string raza;
 
+	bool perdi;
+	bool gane;
 	Jugador(string nombre,string raza);
 	virtual ~Jugador();
 

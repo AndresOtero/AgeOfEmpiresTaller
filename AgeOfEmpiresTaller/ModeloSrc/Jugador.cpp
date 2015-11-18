@@ -9,6 +9,8 @@
 
 Jugador::Jugador(string nombre,string raza) {
 	// TODO Auto-generated constructor stub
+	this->gane = false;
+	this->perdi = false;
 	this->raza=raza;
 	this->nombre=nombre;
 	this->recursos = new RecursosJugador(1200,1200,1200,1200);
