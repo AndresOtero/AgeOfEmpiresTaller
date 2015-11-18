@@ -271,6 +271,76 @@ bool Vista::run() {
 				break;
 			}
 		}
+		if (e.type == SDL_MOUSEBUTTONUP) {
+			if (e.button.button == SDL_BUTTON_LEFT) {
+				printf("up left\n");
+				esta_eligiendo = false;
+				termino_de_elegir = true;
+				SDL_GetMouseState(&seleccion_x_final, &seleccion_y_final);
+				int pant_x = seleccion_x_final;
+				int pant_y = seleccion_y_final; //por si cambian en setear seleccion
+				this->setear_seleccion();
+				double a, b;
+				this->transformador->transformar_pantalla_isometrica(pant_x,
+						pant_y, a, b);
+				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
+				//si seleeciono sobre mapa
+				if (seleccion_y_final < this->barra->obtenerYDondeSeDibuja()) {
+					//si ve donde esta haciendo click
+					if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
+						if (this->entidadACrear) {
+							//no lo puede crear en lugar donde no ve
+							if (!this->modelo->tocaSombra(entidadACrear)
+									&& this->modelo->getJugador()->puedePagar(
+											entidadACrear->getCosto())) {
+								//TODO crear con muchos tipitos
+								//si puede crear es porque tiene un tipito seleccionado
+								if (this->modelo->mapa->puedeUbicar(
+										entidadACrear)) {
+									this->modelo->getJugador()->pagar(
+											entidadACrear->getCosto());
+									this->gameController->crearEdificio(
+											this->entidadACrear->mostrar_contenido().getNombre(),
+											this->modelo->devolverPersonajeSeleccionado().front()->getId(),
+											floor(a), floor(b));
+								}
+
+								//podria moverse a cuando recibe que se creo asi se deja de dibjar
+								//en ese momento
+							}
+						} else {
+							//si no creo estoy seleccionando
+							this->barra->setDisplay(modelo->seleccionar(a, b));
+						}
+					}
+					//si clickeo pase lo q pase dejo de dibujar
+					this->dejarDeDibujarEdificio();
+				} else {
+					tuple<ObjetoMapa*, int> tipo = this->barra->seleccionar(
+							pant_x, pant_y);
+					ObjetoMapa* objeto = std::get<0>(tipo);
+					if (objeto) {
+						Costo costo;
+						costo.setCosto(objeto->oro, objeto->piedra,
+								objeto->madera, objeto->comida);
+						if (std::get<1>(tipo) >= 0) {
+							if (this->modelo->getJugador()->puedePagar(costo)) {
+								this->gameController->crearPersonajeEdificio(
+										objeto->nombre, std::get<1>(tipo));
+								this->modelo->getJugador()->pagar(costo);
+							}
+
+						} else {
+							this->cargarEdificioACrear(objeto->nombre);
+						}
+						//elegir entre mandar a crear personaje o crear edificio
+
+					}
+				}
+
+			}
+
+		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 
 			if (e.button.button == SDL_BUTTON_RIGHT) {
@@ -298,72 +368,18 @@ bool Vista::run() {
 			//no dejo que se dibuje el edificio si clique
 
 			if (e.button.button == SDL_BUTTON_LEFT) {
+				printf("down left\n");
 				double a, b;
 				SDL_GetMouseState(&seleccion_x_inicio, &seleccion_y_inicio);
 				if (seleccion_y_inicio < this->barra->obtenerYDondeSeDibuja() && !this->entidadACrear) {
+					printf("Esta eligiendo\n");
 					esta_eligiendo = true;
+					this->modelo->limpiarSeleccion();
 				}
 
 			}
 		}
-		if (e.type == SDL_MOUSEBUTTONUP) {
-			if (e.button.button == SDL_BUTTON_LEFT) {
-				esta_eligiendo = false;
-				termino_de_elegir = true;
-				this->setear_seleccion();
-				SDL_GetMouseState(&seleccion_x_final, &seleccion_y_final);
-				double a, b;
-				this->transformador->transformar_pantalla_isometrica(seleccion_x_final, seleccion_y_final, a, b);
-				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
-				//si seleeciono sobre mapa
-				if (seleccion_y_final < this->barra->obtenerYDondeSeDibuja()) {
-					//si ve donde esta haciendo click
-					if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
-						if (this->entidadACrear) {
-							//no lo puede crear en lugar donde no ve
-							if (!this->modelo->tocaSombra(entidadACrear)
-									&& this->modelo->getJugador()->puedePagar(entidadACrear->getCosto())) {
-								//TODO crear con muchos tipitos
-								//si puede crear es porque tiene un tipito seleccionado
-								if (this->modelo->mapa->puedeUbicar(entidadACrear)) {
-									this->modelo->getJugador()->pagar(entidadACrear->getCosto());
-									this->gameController->crearEdificio(this->entidadACrear->mostrar_contenido().getNombre(),
-											this->modelo->devolverPersonajeSeleccionado().front()->getId(), floor(a), floor(b));
-								}
 
-								//podria moverse a cuando recibe que se creo asi se deja de dibjar
-								//en ese momento
-							}
-						} else {
-							//si no creo estoy seleccionando
-							this->barra->setDisplay(modelo->seleccionar(a, b));
-						}
-					}
-					//si clickeo pase lo q pase dejo de dibujar
-					this->dejarDeDibujarEdificio();
-				} else {
-					tuple<ObjetoMapa*, int> tipo = this->barra->seleccionar(seleccion_x_final, seleccion_y_final);
-					ObjetoMapa* objeto = std::get<0>(tipo);
-					if (objeto) {
-						Costo costo;
-						costo.setCosto(objeto->oro, objeto->piedra, objeto->madera, objeto->comida);
-						if (std::get<1>(tipo) >= 0) {
-							if (this->modelo->getJugador()->puedePagar(costo)) {
-								this->gameController->crearPersonajeEdificio(objeto->nombre, std::get<1>(tipo));
-								this->modelo->getJugador()->pagar(costo);
-							}
-
-						} else {
-							this->cargarEdificioACrear(objeto->nombre);
-						}
-						//elegir entre mandar a crear personaje o crear edificio
-
-					}
-				}
-
-			}
-
-		}
 		if (e.type == SDL_KEYDOWN) {
 			this->dejarDeDibujarEdificio();
 			SDL_Keycode keyPressed = e.key.keysym.sym;
@@ -614,7 +630,7 @@ void Vista::dibujar_mapa() {
 		SDL_RenderDrawRect(gRenderer, &rect);
 		this->modelo->limpiarSeleccion();
 	}
-	termino_de_elegir = false;
+
 }
 
 void Vista::dibujar_barra() {
