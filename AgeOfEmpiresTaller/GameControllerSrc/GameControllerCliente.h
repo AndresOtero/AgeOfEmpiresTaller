@@ -51,6 +51,7 @@ public:
 	void terminarAccion(int id);
 	void finalizarConstruccion(int id);
 	void capturaBandera(string razaAtacante,string razaPerdedora);
+	void meFijoSiPerdi(string razaPerdedora);
 
 	void eliminarTodos(string razaPerdedora);
 
