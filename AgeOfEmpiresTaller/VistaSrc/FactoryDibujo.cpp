@@ -23,7 +23,7 @@ FactoryDibujo::FactoryDibujo(SDL_Renderer* gRenderer) {
 }
 bool FactoryDibujo::crear_dibujo_personaje(string path,
 		int cantidad_de_movimientos, int frames, int fps) {
-	printf("path: %s\n",path.c_str());
+	//printf("path: %s\n",path.c_str());
 	shared_ptr<DibujoPersonaje> dibujo_nuevo = shared_ptr<DibujoPersonaje>(
 			new DibujoPersonaje());
 	if (dibujo_nuevo->cargar_archivo(path, gRenderer)) {
@@ -46,7 +46,7 @@ bool FactoryDibujo::crear_dibujo_personaje(string path,
 	return false;
 }
 bool FactoryDibujo::crear_dibujo_animado(string path, vector<int> pixeles, int fps,	int delay) {
-	printf("path: %s\n",path.c_str());
+	//printf("path: %s\n",path.c_str());
 	shared_ptr<DibujoAnimado> dibujo_nuevo = shared_ptr<DibujoAnimado>(
 			new DibujoAnimado());
 	if (dibujo_nuevo->cargar_archivo(path, gRenderer)) {
@@ -81,7 +81,7 @@ bool FactoryDibujo::crear_dibujo_tile(string path) {
 }
 bool FactoryDibujo::crear_dibujo_estatico(string path,
 		vector<int> parametros_de_imagen) {
-	printf("path: %s\n",path.c_str());
+	//printf("path: %s\n",path.c_str());
 	shared_ptr<Dibujo_Estatico> dibujo_nuevo = shared_ptr<Dibujo_Estatico>(
 			new Dibujo_Estatico());
 	if (dibujo_nuevo->cargar_archivo(path, gRenderer)) {

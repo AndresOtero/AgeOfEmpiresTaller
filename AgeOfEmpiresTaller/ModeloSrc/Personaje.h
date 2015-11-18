@@ -14,6 +14,7 @@
 #include "Atacable.h"
 #include "Costo.h"
 #include "../VistaSrc/DatosSeleccionado.h"
+#include <math.h>
 #ifndef PERSONAJE_H_
 #define PERSONAJE_H_
 typedef int dibujo_t;
@@ -32,6 +33,7 @@ class Personaje:public Atacable {
 	int armadura;
 	int recoleccion;
 	int construccion;
+	int rango;
 	Posicion destino;
 	Posicion camino;
 	Contador contador_ataque;
@@ -81,12 +83,15 @@ public:
 	int danioInfringido();
 	msg_t interactuar(Entidad * otra_entidad);
 
-	int atacar(Personaje* otro_personaje);
+	int atacar(Atacable* otro_personaje);
 	void terminarAccion();
 	bool esAdyacente(Entidad* entidad);
 
 	string get_raza(){
 		return this->objetoMapa->raza;
+	}
+	void set_raza(string raza){
+			this->objetoMapa->raza=raza;
 	}
 	bool tieneRecursos(){
 		return !this->recursos->estaVacio();
@@ -225,6 +230,8 @@ public:
 	void atacandoCliente(bool atacandoCliente) {
 		atacando_cliente = atacandoCliente;
 	}
+	bool esAdyacente(Posicion pos);
+	bool estaEnRango(int rango,Posicion pos);
 };
 
 #endif /* PERSONAJE_H_ */

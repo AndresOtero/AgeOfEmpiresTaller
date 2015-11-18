@@ -89,6 +89,31 @@ bool Entidad::esAdyacente(Posicion pos){
 	}
 	return false;
 }
+
+bool Entidad::estaEnRango(int rango, Posicion pos){
+	//mismo que adyacente pero comparando con distancias
+	int alto,ancho,x,y;
+	alto = this->objetoMapa->baseLogica->alto;
+	ancho = this->objetoMapa->baseLogica->ancho;
+	Posicion temp1,temp2;
+	//reviso si alguna fila de ancho esta en rango de la posicion
+	for (x = 0; x < (ancho); x++) {
+		temp1 = {this->posicion->getX()+x,this->posicion->getY()};
+		temp2 = {this->posicion->getX()+x,posicion->getY()+alto-1};
+		if (pos.distancia(temp1)<= rango || pos.distancia(temp2)<= rango) {
+			return true;
+		}
+	}
+	//reviso si alguna que no cheque esta en rango
+	for (y = 1; y < (alto - 1); y++) {
+		temp1 = {posicion->getX(),posicion->getY()+y};
+		temp2 = {posicion->getX()+ancho-1,posicion->getY()+y};
+		if (pos.distancia(temp1)<= rango || pos.distancia(temp2) <= rango) {
+			return true;
+		}
+	}
+	return false;
+}
 bool Entidad::esUnCentroCivio(){
 	if (!this->diccionario_de_personajes.empty()){
 		map<string, ObjetoMapa*>::iterator it;

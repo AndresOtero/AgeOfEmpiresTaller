@@ -38,7 +38,7 @@ enum MensajeType {
 	CREAR_PERSONAJE_EDIFICIO,/*Id edificio Nombre de Personaje*/
 	TERMINAR_ACCION, //TODO
 	COMENZAR_PARTIDA,
-	CAPTURA_BANDERA,
+	CAMBIAR_PERSONAJE,/*Id , nombre y raza del nuevo dueño*/
 	ELIMINAR_TODOS
 };
 

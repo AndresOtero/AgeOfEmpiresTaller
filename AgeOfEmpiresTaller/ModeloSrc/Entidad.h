@@ -26,6 +26,7 @@ class Entidad :public Atacable{
 	map<string,ObjetoMapa*> diccionario_de_personajes;
 	int velocidad_cosntruccion;
 	Costo costo;
+	bool esUnaBandera;
 public:
 	Entidad(ObjetoMapa* objetoMapa);
 	Entidad(ObjetoMapa* objetoMapa, int x, int y);
@@ -54,7 +55,12 @@ public:
 		return *(this->posicion);
 	}
 	void recibirDanio(int danio){
-		this->vida-=danio;
+		int resultado = vida - danio;
+		if (resultado < 0) {
+			this->vida = 0;
+		} else {
+			this->vida = resultado;
+		}
 	}
 	bool esta_vivo(){
 		return (vida>0);
@@ -77,8 +83,10 @@ public:
 		return raza;
 	}
 	bool esUnCentroCivio();
-
-	bool esUnaBandera;
+	
+	bool setEsUnaBandera(){
+		esUnaBandera=true;
+	}
 
 	bool esBandera(){
 		return esUnaBandera;
@@ -94,6 +102,7 @@ public:
 	}
 	map<string,ObjetoMapa*> devolverPersonajesCreables();
 	bool  puedeCrearPersonajes();
+	bool estaEnRango(int rango, Posicion pos);
 
 };
 

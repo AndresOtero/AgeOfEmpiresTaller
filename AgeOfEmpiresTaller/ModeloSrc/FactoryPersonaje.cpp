@@ -20,7 +20,6 @@ void FactoryPersonaje::cargarPersonajes(map<string,ObjetoMapa*> tipos){
 	map<string, ObjetoMapa*>::iterator it_personajes;
 		for (it_edificios = tipos.begin(); it_edificios != tipos.end(); it_edificios++)	{
 			//first es key, second es value
-			printf("Edificio Constructor: %s\n",it_edificios->second->edificio_constructor.c_str());
 
 			for (it_personajes = tipos.begin(); it_personajes != tipos.end(); it_personajes++)	{
 				if (it_personajes->second->edificio_constructor == it_edificios->first){

@@ -17,11 +17,10 @@ class GameControllerServer: public GameController {
 public:
 	GameControllerServer();
 	~GameControllerServer();
-
 	bool hayEventos(SDL_mutex *mutex);
 	msg_t sacarMensaje(SDL_mutex *mutex);
 	void agregarMensaje(msg_t mensaje, SDL_mutex *mutex);
-
+	void cambiar_personaje(int id_personaje, string nombre,string raza) ;
 	void insertarModelo(Modelo* modelo);
 	void setMapa(int ancho, int largo);
 	void setDibujoMapa(vector<vector<dibujo_t>> escenario, vector<vector<dibujo_t>> tiles);
@@ -47,7 +46,7 @@ public:
 	void crearPersonajeHeroe(string nombre, string tipo, Id id_edificio, SDL_mutex *mutex);
 	queue<msg_t> inicializacion();
 	void crearCentroCivicoNuevoUser(string tipo, string nombreJugador, SDL_mutex * mutex);
-	void capturaBandera(string razaAtacante, string razaPerdedora);
+	void capturaBandera(Personaje* personaje, string razaPerdedora, SDL_mutex *mutex);
 	int getObjetivo() {
 		return objetivo;
 	}

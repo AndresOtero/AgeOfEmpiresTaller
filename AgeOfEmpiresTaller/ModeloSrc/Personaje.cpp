@@ -25,6 +25,7 @@ Personaje::Personaje() {
 	this->congelado = false;
 	this->atacado = NULL;
 	this->objetivo = NULL;
+	this->rango = 0;
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa) {
 	this->esHeroe= false;
@@ -46,6 +47,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa) {
 	this->atacando_cliente = false;
 	this->atacado = NULL;
 	this->objetivo = NULL;
+	this->rango = objetoMapa->rango;
 	this->costo.setCosto(objetoMapa->oro, objetoMapa->madera, objetoMapa->piedra, objetoMapa->comida);
 	GeneradorNumeros generar;
 	int id = generar.otroID();
@@ -67,10 +69,11 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y) {
 	this->recursos = new RecursosJugador();
 	this->congelado = false;
 	this->costo.setCosto(objetoMapa->oro, objetoMapa->madera, objetoMapa->piedra, objetoMapa->comida);
-
+	this->adyacente = false;
 	this->atacando_cliente = false;
 	this->atacado = NULL;
 	this->objetivo = NULL;
+	this->rango = objetoMapa->rango;
 	GeneradorNumeros generar;
 	int id = generar.otroID();
 	this->id = id;
@@ -181,6 +184,7 @@ msg_t Personaje::interactuar(Entidad* otra_entidad) {
 			return mensaje;
 		}
 	}
+	printf("No hace nada\n");
 	mensaje.type = KEEPALIVE;
 	return mensaje;
 }
@@ -191,32 +195,45 @@ bool Personaje::esAdyacente(Entidad* entidad) {
 		this->adyacente = entidad->esAdyacente(this->get_posicion());
 	return adyacente;
 }
-
-
-int Personaje::atacar(Personaje* otro_personaje) {
-return this->fuerza;
+int Personaje::atacar(Atacable* otro_personaje){
+	GeneradorNumeros generador;
+	int danio;
+	//cuanta mas fuerza mas probable que pegue
+	if (generador.numeroRandom(0,this->fuerza)!=0){
+		//pega la diferencia entre fuerza armadura por su fuerza
+		//puede dar o muchisimo o poco
+		danio = floor(exp(-generador.numeroRandom(0,otro_personaje->getArmadura()/this->fuerza))*this->fuerza);
+	}else{
+		danio = 0;
+	}
+	//printf("Danio %d\n",danio);
+	return danio;
 }
 void Personaje::set_ataque(Atacable* otro_personaje) {
-this->atacado = otro_personaje;
+	this->atacado = otro_personaje;
 }
 void Personaje::dejar_de_atacar() {
-this->destino = this->get_posicion();
-
-this->atacado = NULL;
-this->objetivo = NULL;
+	this->destino = this->get_posicion();
+	this->atacado = NULL;
+	this->objetivo = NULL;
 }
-int Personaje::danioInfringido() {
-return 5;
+int  Personaje::danioInfringido(){
+	return atacar(this->atacado);
 }
 bool Personaje::ejecutar_ataque() {
-if (this->atacado) {
-	this->atacado->recibirDanio(this->danioInfringido());
-	return true;
+	if (this->atacado) {
+		this->atacado->recibirDanio(this->danioInfringido());
+		return true;
+	}
+	return false;
 }
-return false;
-}
-void Personaje::recibirDanio(int danio) {
-this->vida -= danio;
+void  Personaje::recibirDanio(int danio){
+	int resultado = vida -danio;
+	if (resultado <0){
+		this->vida = 0;
+	}else{
+		this->vida = resultado;
+	}
 }
 bool operator==(Personaje &P1, Personaje &P2) {
 return (P1.getId() == P2.getId());
@@ -228,21 +245,38 @@ if (this->atacado == NULL) {
 }
 }
 void Personaje::terminarAccion() {
-this->set_destino(this->get_posicion());
-this->atacando_cliente = false;
-this->atacado = NULL;
-this->objetivo = NULL;
+	this->set_destino(this->get_posicion());
+	this->atacando_cliente = false;
+	this->atacado = NULL;
+	this->objetivo = NULL;
 }
 
 RecursosJugador* Personaje::recursosJugador() {
-return recursos;
+	return recursos;
 }
 Personaje::~Personaje() {
-delete recursos;
+	delete recursos;
 }
 void Personaje::set_destino_al_ataque() {
-this->set_destino(this->atacado->get_posicion());
+	if (this->atacado->estaEnRango(rango,this->get_posicion())){
+		this->set_destino(this->get_posicion());
+	}else{
+		this->set_destino(this->atacado->get_posicion());
+	}
+
+}
+
+bool Personaje::esAdyacente(Posicion pos) {
+	return this->get_posicion().es_adyacente(pos);
 }
 bool Personaje::es_adyacente_al_atacado() {
-return this->atacado->get_posicion().es_adyacente(this->get_posicion());
+	if (this->rango == 0){
+		return this->atacado->esAdyacente(this->get_posicion());
+	}else{
+		return (this->atacado->estaEnRango(rango,this->get_posicion()));
+	}
+
+}
+bool Personaje::estaEnRango(int rango, Posicion pos){
+	return (this->get_posicion().distancia(pos) <= rango );
 }

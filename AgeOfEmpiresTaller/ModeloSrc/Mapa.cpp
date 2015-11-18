@@ -149,12 +149,7 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	if ((adonde_estoy == adonde_voy) || (!celdaOcupad)) {
 		return adonde_voy;
 	}
-	/*if(adonde_estoy.distancia_octal(adonde_voy)<=14){
-	 printf("Estoy %d,%d\n",adonde_estoy.getX(),adonde_estoy.getY());
-	 printf("Voy %d,%d\n",adonde_voy.getX(),adonde_voy.getY());
-	 return adonde_estoy;
-	 }*/
-	// si me quiero mover a un lugar ocupado adyacente a mi
+
 	bool esAdyacente;
 	Entidad* entidad = this->entidad_celda(adonde_voy.getX(), adonde_voy.getY());
 	if (entidad) {

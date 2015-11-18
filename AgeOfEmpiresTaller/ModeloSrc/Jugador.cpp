@@ -11,7 +11,7 @@ Jugador::Jugador(string nombre,string raza) {
 	// TODO Auto-generated constructor stub
 	this->raza=raza;
 	this->nombre=nombre;
-	this->recursos = new RecursosJugador(200,200,200,200);
+	this->recursos = new RecursosJugador(1200,1200,1200,1200);
 	this->factory.setRaza(raza);
 
 }
