@@ -167,6 +167,7 @@ msg_t Personaje::interactuar(Entidad* otra_entidad) {
 	mensaje.paramInt1 = id;
 	mensaje.paramDouble1 = otra_entidad->getId();
 	if (this->get_raza() == otra_entidad->get_raza()) {
+		printf("Construye\n");
 		if (this->puedeCrear() && (!otra_entidad->estaConstruida())) {
 			mensaje.type = CONSTRUIR;
 			return mensaje;
@@ -174,13 +175,16 @@ msg_t Personaje::interactuar(Entidad* otra_entidad) {
 	} else {
 
 		if (otra_entidad->esUnRecurso() && this->puedeRecolectar()) {
+			printf("Recolecta\n");
 			mensaje.type = RECOLECCION_RECURSOS;
 			return mensaje;
 		} else if (this->puedeAtacar() && (!otra_entidad->esUnRecurso())) { //falta ver q sea del enemigo
+			printf("Ataca\n");
 			mensaje.type = ATACAR;
 			return mensaje;
 		}
 	}
+	printf("No hace nada\n");
 	mensaje.type = KEEPALIVE;
 	return mensaje;
 }
@@ -241,21 +245,25 @@ if (this->atacado == NULL) {
 }
 }
 void Personaje::terminarAccion() {
-this->set_destino(this->get_posicion());
-this->atacando_cliente = false;
-this->atacado = NULL;
-this->objetivo = NULL;
+	this->set_destino(this->get_posicion());
+	this->atacando_cliente = false;
+	this->atacado = NULL;
+	this->objetivo = NULL;
 }
 
 RecursosJugador* Personaje::recursosJugador() {
-return recursos;
+	return recursos;
 }
 Personaje::~Personaje() {
-delete recursos;
+	delete recursos;
 }
 void Personaje::set_destino_al_ataque() {
-this->set_destino(this->atacado->get_posicion());
+	this->set_destino(this->atacado->get_posicion());
+}
+
+bool Personaje::esAdyacente(Posicion pos) {
+	return this->get_posicion().es_adyacente(pos);
 }
 bool Personaje::es_adyacente_al_atacado() {
-return this->atacado->get_posicion().es_adyacente(this->get_posicion());
+	return this->atacado->esAdyacente(this->get_posicion());
 }

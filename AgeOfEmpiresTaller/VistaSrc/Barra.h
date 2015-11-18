@@ -37,6 +37,8 @@ public:
 	int obtenerYDondeSeDibuja();
 	virtual ~Barra();
 private:
+	void cargarIconos(vector<Personaje*> personajes);
+	void dibujarIconos(SDL_Renderer *renderer);
 	void dibujarDatosSeleccionados(SDL_Renderer* renderer);
 	void dibujarDatosRecurso(SDL_Renderer* renderer);
 	void dibujarDatosEdificio(SDL_Renderer* renderer);
@@ -73,10 +75,12 @@ private:
 	int alto_por_celda;
 	int x_comienzo_recurso;
 	map<string,ObjetoMapa*> listaCreables;
+	vector<string> iconos;
 	bool seleccionable;
 	bool personaje_a_crear;
 	int id_edificio_creador;
 	int x_datos;
+	int x_lista;
 };
 
 #endif /* BARRA_H_ */

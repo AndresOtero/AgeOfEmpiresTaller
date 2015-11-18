@@ -41,6 +41,7 @@ Barra::Barra(Modelo * modelo,double * x, double *y) {
 	this->x_comienzo_recurso=(this->mapa->anchoPantalla()-this->mapa->altoMapa())/5;
 	this->id_edificio_creador=-1;
 	this->x_datos = x_comienzo_recurso*2;
+	this->x_lista = modelo->juego->conf->get_margen_scroll();
 }
 
 
@@ -73,27 +74,70 @@ void Barra::load(SDL_Renderer * renderer, string path, int ancho_por_celda,int a
 
 void Barra::setDisplay(DatosSeleccionado datos){
 	this->display= datos;
+	this->listaCreables.clear();
 }
 void  Barra::actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad* entidad){
 	oro->cambiarCant(jugador->recursosJugador()->cantOro());
 	madera->cambiarCant(jugador->recursosJugador()->cantMadera());
 	piedra->cambiarCant(jugador->recursosJugador()->cantPiedra());
 	comida->cambiarCant(jugador->recursosJugador()->cantComida());
-	if (personajes.size()==1){
-		if (personajes[0]->puedeCrear()){
-			this->id_edificio_creador = -1;
-			this->setListaCreables(jugador->devolverEdificiosCreables());
+	int size = personajes.size();
+	if (size !=0){
+		if (size == 1 && personajes[0]->puedeCrear()){
+			if (jugador->raza == personajes[0]->get_raza()){
+				this->id_edificio_creador = -1;
+				this->setListaCreables(jugador->devolverEdificiosCreables());
+			}
+		}else{
+			cargarIconos(personajes);
 			return;
 		}
-	}
-	if(entidad){
-		if (entidad->estaConstruida()){
+	}else if(entidad){
+		if (entidad->estaConstruida() && (jugador->raza==entidad->get_raza())){
 			this->id_edificio_creador = entidad->getId();
 			this->setListaCreables(entidad->devolverPersonajesCreables());
-			return;
+		}
+	}else{
+		this->seleccionable=false;
+	}
+	this->iconos.clear();
+
+
+}
+
+void Barra::cargarIconos(vector<Personaje*> personajes){
+	if (this->iconos.empty()){
+		vector<Personaje*>::iterator it = personajes.begin();
+		for (;it!=personajes.end();it++) {
+			this->iconos.push_back((*it)->objetoMapa->icono);
 		}
 	}
-	this->seleccionable=false;
+
+}
+
+void Barra::dibujarIconos(SDL_Renderer* renderer){
+	vector<string>::iterator it = this->iconos.begin();
+	int x_inicio = this->x_datos;
+	int x_acumulado = x_inicio;
+	int y_escalar = (this->mapa->altoMapa()/TTF_FontHeight(font));
+	int y = this->referencia_y + 2*this->mapa->altoMapa()/y_escalar;
+	int corrimiento = TTF_FontHeight(font);
+	int largo_total = (this->mapa->anchoPantalla() - this->mapa->altoMapa()
+			- this->x_comienzo_recurso) / 2;
+	SDL_Rect rect = {0,0,corrimiento,corrimiento};
+
+	for(;it!=iconos.end();it++){
+		shared_ptr<Textura> icono(new Textura());
+		if (icono->loadFromFile((*it),renderer)){
+			icono->render(x_acumulado,y,&rect,renderer);
+			x_acumulado+=corrimiento;
+			if (x_acumulado-x_inicio > largo_total){
+				x_acumulado = x_inicio;
+				y+= corrimiento;
+			}
+		}
+
+	}
 
 }
 //tengo q hacer actualizar de jugador no de personaje
@@ -129,7 +173,7 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 
 			shared_ptr<Textura> icono(new Textura());
 			if (icono->loadFromFile(it->second->icono,renderer)){
-				SDL_Rect rect ={0,y,lado_icono,lado_icono};
+				SDL_Rect rect ={x_lista,y,lado_icono,lado_icono};
 				icono->renderEx(0,NULL,&rect,renderer,NULL);
 
 			}
@@ -141,7 +185,7 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 
 			if (cargarTextoChico(renderer, this->mapa->paleta(NEGRO), creable,
 					oss.str())){
-				imprimirTexto(lado_icono,y,renderer,creable);
+				imprimirTexto(x_lista+lado_icono,y,renderer,creable);
 			}
 
 			y+=TTF_FontHeight(font);
@@ -150,7 +194,7 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 }
 
 tuple<ObjetoMapa*,int> Barra::seleccionar(int pixel_x, int pixel_y){
-	if (pixel_x < TTF_FontHeight(font)&&seleccionable){
+	if ( (0< pixel_x-x_lista < TTF_FontHeight(font)) && seleccionable ){
 		int seleccion = (pixel_y-this->referencia_y)/TTF_FontHeight(font) - 1;
 		//si es un indice positivo y dentro del rango
 		if (seleccion>=0 && ((this->listaCreables.size())>(seleccion))){
@@ -207,6 +251,7 @@ void Barra::render(SDL_Renderer*renderer){
 	this->textura->renderEx(0,NULL,&rect,renderer,NULL);
 	this->renderTexto(renderer);
 	this->dibujarDatosSeleccionados(renderer);
+	//this->dibujarIconos(renderer);
 	this->mapa->render(renderer);
 	this->dibujarDondeMiro(renderer);
 

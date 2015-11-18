@@ -226,6 +226,7 @@ public:
 	void atacandoCliente(bool atacandoCliente) {
 		atacando_cliente = atacandoCliente;
 	}
+	bool esAdyacente(Posicion pos);
 };
 
 #endif /* PERSONAJE_H_ */

@@ -21,6 +21,7 @@ public:
 	virtual bool esUnHeroe(){return false;};
 	virtual bool esBandera(){return false;};
 	virtual bool esUnCentroCivio(){return false;};
+	virtual bool esAdyacente(Posicion pos){};
 	virtual std::string get_raza(){};
 	~Atacable();
 };
