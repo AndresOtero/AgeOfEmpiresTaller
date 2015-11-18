@@ -128,7 +128,7 @@ void GameControllerServer::crearBandera(string name, string raza, int idCentro, 
 
 	Entidad* bandera = new Entidad(obj);
 
-	bandera->esUnaBandera = true;
+	bandera->setEsUnaBandera();
 
 	int id = this->modelo->crearBandera(bandera, idCentro);
 
@@ -379,16 +379,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 				if (this->objetivo == FLAG) {
 
 					if (p->get_atacado()->esBandera()) {
-						msg_t mensajeCaptura;
-						mensajeCaptura.type = CAPTURA_BANDERA;
-
-						memcpy(mensajeCaptura.paramNombre, string_to_char_array(p->get_raza()), sizeof(mensajeCaptura.paramNombre));//raza que gana unidades
-
-						memcpy(mensajeCaptura.paramTipo, string_to_char_array(p->get_atacado()->get_raza()),
-								sizeof(mensajeCaptura.paramTipo)); //raza que pierde unidades
-
-						this->agregarMensaje(mensajeCaptura, mutex);
-						//capturaBandera(p->get_raza(), p->get_atacado()->get_raza());
+						capturaBandera(p, p->get_atacado()->get_raza(),mutex);
 					}
 				} else if (this->objetivo == KING) {
 					if (p->get_atacado()->esUnHeroe()) {
@@ -411,7 +402,6 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 
 					}
 				}
-				printf("MURIO\n");
 				//printf("Eliminar algo con id %d\n",p->get_atacado()->getId());
 				msg_t mensaje;
 				mensaje.type = ELIMINAR;
@@ -483,7 +473,6 @@ void GameControllerServer::crearCentroCivicoNuevoUser(string raza, string Nombre
 	}
 
 	if (this->objetivo == FLAG) {
-		printf("objetivo del flag\n");
 		this->crearBandera(NombreJugador, raza, entidad->getId(), mutex);
 	} else if (this->objetivo == KING) {
 		string heroeTipo;
@@ -517,19 +506,28 @@ void GameControllerServer::agregarMensaje(msg_t mensaje, SDL_mutex *mutex) {
 	}
 
 }
-void GameControllerServer::capturaBandera(string razaAtacante, string razaPerdedora) {
+
+void GameControllerServer::capturaBandera(Personaje* personaje_que_captura, string razaPerdedora, SDL_mutex *mutex) {
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator iter = personajes.begin();
-	printf("el nombre del atacante es %s\n", this->juego->escenario->jugador->nombre.c_str());
 	for (; iter != personajes.end(); iter++) {
 		Personaje* personaje = (*iter);
-		if (personaje) {
 			if (personaje->get_raza() == razaPerdedora) {
-				personaje->objetoMapa->raza = razaAtacante;
-				//personaje->setNombreJugador(nombreAtacante);
+				msg_t mensaje_cambiar;
+				mensaje_cambiar.type = CAMBIAR_PERSONAJE;
+				mensaje_cambiar.paramInt1=personaje->getId();
+				memcpy(mensaje_cambiar.paramNombre, string_to_char_array(personaje_que_captura->getNombreJugador()), sizeof(mensaje_cambiar.paramNombre)); //raza que pierde unidades
+				memcpy(mensaje_cambiar.paramTipo, string_to_char_array(personaje_que_captura->get_raza()), sizeof(mensaje_cambiar.paramTipo)); //raza que pierde unidades
+				this->cambiar_personaje(mensaje_cambiar.paramInt1,mensaje_cambiar.paramNombre,mensaje_cambiar.paramTipo);
+				this->agregarMensaje(mensaje_cambiar, mutex);
 			}
-		}
 
 	}
 
+}
+void GameControllerServer::cambiar_personaje(int id_personaje, string nombre,string raza) {
+	printf("Id personaje %d\n",id_personaje);
+	printf("Nombre %s\n",nombre.c_str());
+	printf("Raza %s\n",nombre.c_str());
+	this->modelo->cambiar_personaje(id_personaje,nombre,raza);
 }

@@ -202,7 +202,7 @@ int Personaje::atacar(Atacable* otro_personaje){
 	}else{
 		danio = 0;
 	}
-	printf("Danio %d\n",danio);
+	//printf("Danio %d\n",danio);
 	return danio;
 }
 void Personaje::set_ataque(Atacable* otro_personaje) {
