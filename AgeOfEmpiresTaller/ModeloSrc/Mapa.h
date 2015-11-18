@@ -28,7 +28,7 @@ public:
 	void deseleccionar();
 	dibujo_t dibujarTiles(int x, int y);
 	dibujo_t dibujarEscenario(int x, int y);
-	void setTiles(dibujo_t dibujo,int x,int y);
+	void setTiles(dibujo_t dibujo,dibujo_t dibujoElfo,dibujo_t dibujoHobbit,dibujo_t dibujoHumanos,dibujo_t dibujoMordor,dibujo_t dibujoWater, int x, int y);
 	void setEscenario(dibujo_t dibujo,int x,int y);
 	DatosSeleccionado mostrar_contenido(int x,int y);
 	DatosSeleccionado mostrar_entidad(int x, int y);
@@ -52,10 +52,11 @@ public:
 	Posicion posicionValidaEnSector(Posicion sector,Entidad * entidad);
 	Posicion posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base);
 	void posicionarPersonaje(Personaje * pers);
+	Celda* getCelda(int x,int y);
 private:
 	Posicion acercar(Posicion adonde_estoy,Posicion adonde_voy);
 	bool estoyAlLadoDeEntidadDestino(Posicion adonde_voy,Posicion adonde_estoy);
-	Celda* getCelda(int x,int y);
+
 
 };
 

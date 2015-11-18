@@ -71,8 +71,8 @@ bool FactoryDibujo::crear_dibujo_tile(string path) {
 	shared_ptr<Dibujo_Estatico> dibujo_nuevo = shared_ptr<Dibujo_Estatico>(
 			new Dibujo_Estatico());
 	if (dibujo_nuevo->cargar_archivo(path, gRenderer)) {
-		this->ancho_tile = dibujo_nuevo->getWidth() - 5;
-		this->alto_tile = dibujo_nuevo->getHeight() - 5;
+		this->ancho_tile = dibujo_nuevo->getWidth();
+		this->alto_tile = dibujo_nuevo->getHeight();
 		dibujo_nuevo->set_imagen(0, 0);
 		this->set_dibujo(dibujo_nuevo);
 		return true;

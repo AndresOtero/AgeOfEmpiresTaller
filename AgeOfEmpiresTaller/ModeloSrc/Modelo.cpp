@@ -23,6 +23,7 @@
 #define RITMO 5
 using namespace std;
 #define VISIBILIDAD 5
+#define VISIBILIDAD_CONSTRUCCIONES 10
 #define CICLOS_MAX 500
 #define ORO 0
 #define PIEDRA 1
@@ -170,9 +171,11 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario, vector<vector<vec
 		for (j = 0; j < largo; j++) {
 			this->mapa->setEscenario(escenario[i][j], i, j);
 
-			this->mapa->setTiles(tiles[i][j][this->acumuladorPiso], i, j);
+			vector<dibujo_t> vTiles = tiles[i][j];
 
-			if(this->acumuladorPiso == (tiles[i][j].size() - 1 ) ) {
+			this->mapa->setTiles(vTiles[this->acumuladorPiso],vTiles[this->acumuladorPiso + 4],vTiles[this->acumuladorPiso + 8],vTiles[this->acumuladorPiso + 12],vTiles[this->acumuladorPiso + 16],vTiles[this->acumuladorPiso + 20], i, j);
+
+			if(this->acumuladorPiso == 3) {
 				this->acumuladorPiso = 0;
 			} else
 			this->acumuladorPiso++;
@@ -181,23 +184,42 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario, vector<vector<vec
 }
 
 int Modelo::oscuridad(int dim, int x, int y) {
+
+	vector<Entidad*> lista = this->juego->escenario->entidades;
+	for (unsigned int i = 0; i < lista.size(); i++) {
+
+		Posicion pos = lista[i]->get_posicion();
+		float d = (pos.getX() - x) * (pos.getX() - x) + (pos.getY() - y) * (pos.getY() - y);
+		d = sqrt(d);
+		if (d < VISIBILIDAD_CONSTRUCCIONES) {
+
+			if (lista[i]->get_raza() == "Elfo") {
+				Celda* celda = this->mapa->getCelda(x, y);
+				celda->mostrarTileElfo();
+			}
+			if (lista[i]->get_raza() == "Hobbit") {
+				Celda* celda = this->mapa->getCelda(x, y);
+				celda->mostrarTileHobbit();
+			}
+			if (lista[i]->get_raza() == "Humano") {
+				Celda* celda = this->mapa->getCelda(x, y);
+				celda->mostrarTileHumanos();
+			}
+			if (lista[i]->get_raza() == "Mordor") {
+				Celda* celda = this->mapa->getCelda(x, y);
+				celda->mostrarTileMordor();
+			}
+			if (lista[i]->objetoMapa->raza == this->getJugador()->raza) {
+				agregarPosicionPisada(x, y);
+				return VISIBLE;
+			}
+
+		}
+	}
 	for (size_t i = 0; i < this->personajes.size(); i++) {
 		if (personajes[i]->getNombreJugador() == this->nombreJugador()) {
 			Posicion pos = personajes[i]->get_posicion();
 			//agregarPosicion(x,y);
-			float d = (pos.getX() - x) * (pos.getX() - x) + (pos.getY() - y) * (pos.getY() - y);
-			d = sqrt(d);
-			if (d < VISIBILIDAD) {
-				agregarPosicionPisada(x, y);
-				return VISIBLE;
-			}
-		}
-	}
-
-	vector<Entidad*> lista = this->juego->escenario->entidades;
-	for (unsigned int i = 0; i < lista.size(); i++) {
-		if (lista[i]->objetoMapa->raza == this->getJugador()->raza) {
-			Posicion pos = lista[i]->get_posicion();
 			float d = (pos.getX() - x) * (pos.getX() - x) + (pos.getY() - y) * (pos.getY() - y);
 			d = sqrt(d);
 			if (d < VISIBILIDAD) {
@@ -655,7 +677,7 @@ int Modelo::crearPersonajeServerEdificio(Personaje* personaje, Id id_edificio) {
 int Modelo::crearBandera(Entidad* bandera, Id id_edificio) {
 	Entidad* edificio = this->buscarEntidad(id_edificio);
 	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());
-	bandera->set_posicion(pos.getX(), pos.getY()) ;
+	bandera->set_posicion(pos.getX(), pos.getY());
 	this->insertarEntidad(bandera);
 	int id = bandera->getId();
 	return id;

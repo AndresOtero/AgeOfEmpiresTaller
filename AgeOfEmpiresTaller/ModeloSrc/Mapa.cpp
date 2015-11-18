@@ -43,8 +43,15 @@ void Mapa::deseleccionar() {
 Celda* Mapa::getCelda(int x, int y) {
 	return this->celdas[x][y];
 }
-void Mapa::setTiles(dibujo_t dibujo, int x, int y) {
-	this->getCelda(x, y)->setTiles(dibujo);
+void Mapa::setTiles(dibujo_t dibujo,dibujo_t dibujoElfo,dibujo_t dibujoHumanos,dibujo_t dibujoMordor,dibujo_t dibujoHobbit,dibujo_t dibujoWater, int x, int y) {
+	Celda* celda = this->getCelda(x, y);
+	celda->setTiles(dibujo);
+	celda->setTilesElfo(dibujoElfo);
+	celda->setTilesHobbit(dibujoHobbit);
+	celda->setTilesHumanos(dibujoHumanos);
+	celda->setTilesMordor(dibujoMordor);
+	celda->setTilesWater(dibujoWater);
+	celda->mostrarTileNormal();
 }
 void Mapa::setEscenario(dibujo_t dibujo, int x, int y) {
 	this->getCelda(x, y)->setEscenario(dibujo);

@@ -18,6 +18,14 @@ class Celda {
 private:
 	bool ocupada;
 	dibujo_t tiles;
+	dibujo_t tiles_elfo;
+	dibujo_t tiles_hobbit;
+	dibujo_t tiles_humanos;
+	dibujo_t tiles_mordor;
+	dibujo_t tiles_water;
+
+	dibujo_t tileActual;
+
 	dibujo_t escenario;
 	Entidad* entidad;
 	Personaje* personaje;
@@ -28,6 +36,19 @@ public:
 	bool estaOcupada();
 	void setEscenario(dibujo_t dibujo);
 	void setTiles(dibujo_t dibujo);
+	void setTilesElfo(dibujo_t dibujo);
+	void setTilesHobbit(dibujo_t dibujo);
+	void setTilesHumanos(dibujo_t dibujo);
+	void setTilesMordor(dibujo_t dibujo);
+	void setTilesWater(dibujo_t dibujo);
+
+	void mostrarTileNormal();
+	void mostrarTileElfo();
+	void mostrarTileHobbit();
+	void mostrarTileHumanos();
+	void mostrarTileMordor();
+	void mostrarTileWater();
+
 	void actualizar();
 	void ocuparCeldaPersonaje(Personaje* personaje);
 	bool tieneRecurso();

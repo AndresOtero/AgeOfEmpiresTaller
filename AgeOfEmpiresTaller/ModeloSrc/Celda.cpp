@@ -16,16 +16,54 @@ Celda::Celda() {
 	this -> ocupada = false;
 	this->entidad = NULL;
 	this->personaje=NULL;
+	this-> tileActual = this->tiles;
+	this->tiles_elfo = NULL;
+	this-> tiles_hobbit = NULL;
+	this-> tiles_humanos = NULL;
+	this->tiles_mordor = NULL;
+	this->tiles_water = NULL;
 }
 void Celda::setEscenario(dibujo_t dibujo_n){
-
 	this->escenario=dibujo_n;
 }
 void Celda::setTiles(dibujo_t dibujo_n){
 	this->tiles=dibujo_n;
 }
+void Celda::setTilesElfo(dibujo_t dibujo_n){
+	this->tiles_elfo=dibujo_n;
+}
+void Celda::setTilesHobbit(dibujo_t dibujo_n){
+	this->tiles_hobbit=dibujo_n;
+}
+void Celda::setTilesHumanos(dibujo_t dibujo_n){
+	this->tiles_humanos=dibujo_n;
+}
+void Celda::setTilesMordor(dibujo_t dibujo_n){
+	this->tiles_mordor=dibujo_n;
+}
+void Celda::setTilesWater(dibujo_t dibujo_n){
+	this->tiles_water=dibujo_n;
+}
+void Celda::mostrarTileNormal(){
+	this->tileActual = tiles;
+}
+void Celda::mostrarTileElfo(){
+	this->tileActual = tiles_elfo;
+}
+void Celda::mostrarTileHobbit(){
+	this->tileActual = tiles_hobbit;
+}
+void Celda::mostrarTileHumanos(){
+	this->tileActual = tiles_humanos;
+}
+void Celda::mostrarTileMordor(){
+	this->tileActual = tiles_mordor;
+}
+void Celda::mostrarTileWater(){
+	this->tileActual = tiles_water;
+}
 dibujo_t Celda::dibujarTiles(){
-	return this->tiles;
+	return this->tileActual;
 }
 dibujo_t Celda::dibujarEscenario(){
 	return this->escenario;

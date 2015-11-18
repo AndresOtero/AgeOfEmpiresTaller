@@ -30,7 +30,7 @@ enum bordes {
 #define TILES 0
 #define DIMENSIONES 2
 #define MOVIMIENTOS 8
-#define MAX_NRO_TEXTURA 5
+#define MAX_NRO_TEXTURA 24
 #define CANTIDAD_DE_IMAGENES 8
 
 #define ANCHO_ANIMACION 128
@@ -40,7 +40,7 @@ enum bordes {
 Vista::Vista(Modelo* modelo, GameControllerCliente* gameController) {
 	this->modelo = modelo;
 	this->pantalla = modelo->juego->pantalla;
-	this->velocidad_de_scroll = 0.4;
+	this->velocidad_de_scroll = 0.6;
 	this->margen_scroll = modelo->juego->conf->get_margen_scroll();
 	this->transformador = shared_ptr<CambioDeCoordendas>(new CambioDeCoordendas(ancho_por_celda(), altura_por_celda()));
 	shared_ptr<Barra> barra(new Barra(modelo, &referencia_mapa_x, &referencia_mapa_y));
