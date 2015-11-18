@@ -14,6 +14,7 @@
 #include "Atacable.h"
 #include "Costo.h"
 #include "../VistaSrc/DatosSeleccionado.h"
+#include <math.h>
 #ifndef PERSONAJE_H_
 #define PERSONAJE_H_
 typedef int dibujo_t;
