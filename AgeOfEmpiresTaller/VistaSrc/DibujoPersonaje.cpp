@@ -75,7 +75,7 @@ void DibujoPersonaje::elegir_frame(double des_x,double des_y) {
 		//movimiento_actual=DERECHA;
 		//printf("DERECHA\n");
 		//DERECHA
-	} else if ((des_x < -145) || (angulo > 145)) {
+	} else if ((angulo < -145) || (angulo > 145)) {
 		movimiento_actual = DIAGONAL_IZQUIERDA_ARRIBA;
 		//movimiento_actual=IZQUIERDA;
 		//printf("IZQUIERDA\n");

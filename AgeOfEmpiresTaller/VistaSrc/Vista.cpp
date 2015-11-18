@@ -377,65 +377,72 @@ bool Vista::run() {
 				SDL_GetMouseState(&seleccion_x_final, &seleccion_y_final);
 				int pant_x = seleccion_x_final;
 				int pant_y = seleccion_y_final; //por si cambian en setear seleccion
-				this->setear_seleccion();
 				double a, b;
 				this->transformador->transformar_pantalla_isometrica(pant_x,
 						pant_y, a, b);
 				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
-				//si seleeciono sobre mapa
-				if (seleccion_y_final < this->barra->obtenerYDondeSeDibuja()) {
-					//si ve donde esta haciendo click
-					if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
-						if (this->entidadACrear) {
-							//no lo puede crear en lugar donde no ve
-							if (!this->modelo->tocaSombra(entidadACrear)
-									&& this->modelo->getJugador()->puedePagar(
-											entidadACrear->getCosto())) {
-								//TODO crear con muchos tipitos
-								//si puede crear es porque tiene un tipito seleccionado
-								if (this->modelo->mapa->puedeUbicar(
-										entidadACrear)) {
-									this->modelo->getJugador()->pagar(
-											entidadACrear->getCosto());
-									this->gameController->crearEdificio(
-											this->entidadACrear->mostrar_contenido().getNombre(),
-											this->modelo->devolverPersonajeSeleccionado().front()->getId(),
-											floor(a), floor(b));
+				if (!this->modelo->afueraDelMapa(a, b)) {
+					this->setear_seleccion();
+					//si seleeciono sobre mapa
+					if (seleccion_y_final
+							< this->barra->obtenerYDondeSeDibuja()) {
+						//si ve donde esta haciendo click
+						if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
+							if (this->entidadACrear) {
+								//no lo puede crear en lugar donde no ve
+								if (!this->modelo->tocaSombra(entidadACrear)
+										&& this->modelo->getJugador()->puedePagar(
+												entidadACrear->getCosto())) {
+									//TODO crear con muchos tipitos
+									//si puede crear es porque tiene un tipito seleccionado
+									if (this->modelo->mapa->puedeUbicar(
+											entidadACrear)) {
+										this->modelo->getJugador()->pagar(
+												entidadACrear->getCosto());
+										this->gameController->crearEdificio(
+												this->entidadACrear->mostrar_contenido().getNombre(),
+												this->modelo->devolverPersonajeSeleccionado().front()->getId(),
+												floor(a), floor(b));
+									}
+
+									//podria moverse a cuando recibe que se creo asi se deja de dibjar
+									//en ese momento
+								}
+							} else {
+								//si no creo estoy seleccionando
+								this->barra->setDisplay(
+										modelo->seleccionar(a, b));
+							}
+						}
+						//si clickeo pase lo q pase dejo de dibujar
+						this->dejarDeDibujarEdificio();
+					} else {
+						tuple<ObjetoMapa*, int> tipo = this->barra->seleccionar(
+								pant_x, pant_y);
+						ObjetoMapa* objeto = std::get<0>(tipo);
+						if (objeto) {
+							Costo costo;
+							costo.setCosto(objeto->oro, objeto->piedra,
+									objeto->madera, objeto->comida);
+							if (std::get<1>(tipo) >= 0) {
+								if (this->modelo->getJugador()->puedePagar(
+										costo)) {
+									this->gameController->crearPersonajeEdificio(
+											objeto->nombre, std::get<1>(tipo));
+									Mix_PlayChannel(-1, musica_creacion, 0);
+									this->modelo->getJugador()->pagar(costo);
 								}
 
-								//podria moverse a cuando recibe que se creo asi se deja de dibjar
-								//en ese momento
+							} else {
+								this->cargarEdificioACrear(objeto->nombre);
 							}
-						} else {
-							//si no creo estoy seleccionando
-							this->barra->setDisplay(modelo->seleccionar(a, b));
+							//elegir entre mandar a crear personaje o crear edificio
+
 						}
 					}
-					//si clickeo pase lo q pase dejo de dibujar
-					this->dejarDeDibujarEdificio();
-				} else {
-					tuple<ObjetoMapa*, int> tipo = this->barra->seleccionar(
-							pant_x, pant_y);
-					ObjetoMapa* objeto = std::get<0>(tipo);
-					if (objeto) {
-						Costo costo;
-						costo.setCosto(objeto->oro, objeto->piedra,
-								objeto->madera, objeto->comida);
-						if (std::get<1>(tipo) >= 0) {
-							if (this->modelo->getJugador()->puedePagar(costo)) {
-								this->gameController->crearPersonajeEdificio(
-										objeto->nombre, std::get<1>(tipo));
-								Mix_PlayChannel( -1, musica_creacion, 0 );
-								this->modelo->getJugador()->pagar(costo);
-							}
 
-						} else {
-							this->cargarEdificioACrear(objeto->nombre);
-						}
-						//elegir entre mandar a crear personaje o crear edificio
-
-					}
 				}
+
 
 			}
 
@@ -541,18 +548,18 @@ bool Vista::mostrarPantallaGanador(string raza) {
 	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 	SDL_RenderClear(gRenderer);
 	if (raza == "Elfo") {
-		Mix_PlayChannel( -1, music_ganador_elfo, 0 );
+		//Mix_PlayChannel( -1, music_ganador_elfo, 0 );
 		SDL_RenderCopy(gRenderer, ganadorElfosTexture, NULL, NULL);
 	} else if (raza == "Hobbit") {
-		Mix_PlayChannel( -1, musica_ganador_hobbit, 0 );
+		//Mix_PlayChannel( -1, musica_ganador_hobbit, 0 );
 
 		SDL_RenderCopy(gRenderer, ganadorHobbitTexture, NULL, NULL);
 	} else if (raza == "Humano") {
-		Mix_PlayChannel( -1, musica_ganador_humanos, 0 );
+		//Mix_PlayChannel( -1, musica_ganador_humanos, 0 );
 
 		SDL_RenderCopy(gRenderer, ganadorHumanosTexture, NULL, NULL);
 	} else{
-		Mix_PlayChannel( -1, musica_ganador_mordor, 0 );
+		//Mix_PlayChannel( -1, musica_ganador_mordor, 0 );
 
 		SDL_RenderCopy(gRenderer, ganadorMordorTexture, NULL, NULL);
 	}
@@ -585,24 +592,29 @@ void Vista::dibujar_edificio(int mov_x, int mov_y) {
 		this->transformador->transformar_pantalla_isometrica(mov_x, mov_y, a,
 				b);
 		this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
-		this->entidadACrear->set_posicion(floor(a), floor(b));
-		if (this->modelo->tocaSombra(this->entidadACrear)) {
-			this->edificioACrear->ponerAmarillo();
-		} else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
-			this->edificioACrear->ponerRojo();
-		} else {
-			this->edificioACrear->ponerVerde();
-		}
 
-		double pant_x, pant_y;
-		this->transformador->transformar_isometrica_pantalla(
-				floor(a) - this->referencia_mapa_x,
-				floor(b) - this->referencia_mapa_y, pant_x, pant_y);
-		//this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
-		this->edificioACrear->set_posicion_default(pant_x, pant_y);
-		this->edificioACrear->render(gRenderer);
-		this->edificioACrear->resetear();
-		this->edificioACrear->reiniciar(); //pone el color original
+		this->entidadACrear->set_posicion(floor(a), floor(b));
+		if (!this->modelo->afueraDelMapa(floor(a), floor(b))) {
+			if (this->modelo->tocaSombra(this->entidadACrear)) {
+				this->edificioACrear->ponerAmarillo();
+			} else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
+				this->edificioACrear->ponerRojo();
+			} else {
+				this->edificioACrear->ponerVerde();
+			}
+
+			double pant_x, pant_y;
+			this->transformador->transformar_isometrica_pantalla(
+					floor(a) - this->referencia_mapa_x,
+					floor(b) - this->referencia_mapa_y, pant_x, pant_y);
+			//this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
+			this->edificioACrear->set_posicion_default(pant_x, pant_y);
+			this->edificioACrear->render(gRenderer);
+			this->edificioACrear->resetear();
+			this->edificioACrear->reiniciar();
+		}else{
+			this->dejarDeDibujarEdificio();
+		}
 	}
 }
 vector<int> Vista::calcular_bordes() {
