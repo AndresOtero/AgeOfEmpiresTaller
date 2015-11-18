@@ -509,6 +509,7 @@ void GameControllerServer::agregarMensaje(msg_t mensaje, SDL_mutex *mutex) {
 void GameControllerServer::capturaBandera(Personaje* personaje_que_captura, string razaPerdedora, SDL_mutex *mutex) {
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
 	vector<Personaje*>::iterator iter = personajes.begin();
+	vector<Personaje*> personajes_a_cambiar;
 	for (; iter != personajes.end(); iter++) {
 		Personaje* personaje = (*iter);
 		printf("Comparo Perdedora:%s , Personaje : %s\n",razaPerdedora.c_str(),personaje->get_raza().c_str());
@@ -519,14 +520,19 @@ void GameControllerServer::capturaBandera(Personaje* personaje_que_captura, stri
 				mensaje_cambiar.paramInt1=personaje->getId();
 				memcpy(mensaje_cambiar.paramNombre, string_to_char_array(personaje_que_captura->getNombreJugador()), sizeof(mensaje_cambiar.paramNombre)); //raza que pierde unidades
 				memcpy(mensaje_cambiar.paramTipo, string_to_char_array(personaje_que_captura->get_raza()), sizeof(mensaje_cambiar.paramTipo)); //raza que pierde unidades
-				this->cambiar_personaje(mensaje_cambiar.paramInt1,mensaje_cambiar.paramNombre,mensaje_cambiar.paramTipo);
 				this->agregarMensaje(mensaje_cambiar, mutex);
+				personajes_a_cambiar.push_back(personaje);
+				//this->cambiar_personaje(mensaje_cambiar.paramInt1,personaje_que_captura->getNombreJugador(),personaje_que_captura->get_raza() );
 			}
 
 	}
 
+
+
+
+
 }
-void GameControllerServer::cambiar_personaje(int id_personaje, string nombre,string raza) {
+void GameControllerServer::cambiar_personaje(int id_personaje, string nombre,string raza) { //nombre y raza a la que cambia
 	printf("Id personaje %d\n",id_personaje);
 	printf("Nombre %s\n",nombre.c_str());
 	printf("Raza %s\n",nombre.c_str());

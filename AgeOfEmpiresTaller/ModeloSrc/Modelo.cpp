@@ -184,7 +184,7 @@ void Modelo::setDibujoMapa(vector<vector<dibujo_t>> escenario, vector<vector<vec
 
 			this->mapa->setTiles(vTiles[this->acumuladorPiso],vTiles[this->acumuladorPiso + 4],vTiles[this->acumuladorPiso + 8],vTiles[this->acumuladorPiso + 12],vTiles[this->acumuladorPiso + 16],vTiles[this->acumuladorPiso + 20], i, j);
 
-			if(this->acumuladorPiso == 2) {
+			if(this->acumuladorPiso == 3) {
 				this->acumuladorPiso = 0;
 			} else
 			this->acumuladorPiso++;
