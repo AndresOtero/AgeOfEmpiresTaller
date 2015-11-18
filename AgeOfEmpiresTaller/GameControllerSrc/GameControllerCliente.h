@@ -43,7 +43,7 @@ public:
 	//void setearPosicionPersonaje(int id,double pos_x,double pos_y);
 	void setId(double x,double y,int id);
 	void reconectar(string id);
-	void desconectar(string Id);
+	void desconectar(string nombre);
 	void eliminarEntidad(int id);
 	void eliminar(int id);
 	char* string_to_char_array(string str);
@@ -52,7 +52,7 @@ public:
 	void finalizarConstruccion(int id);
 	void capturaBandera(string razaAtacante,string razaPerdedora);
 	void meFijoSiPerdi(string razaPerdedora);
-
+	void eliminarTodosPorNombre(string nombre_perdedor);
 	void eliminarTodos(string razaPerdedora);
 
 

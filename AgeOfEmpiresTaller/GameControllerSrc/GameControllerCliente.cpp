@@ -128,7 +128,21 @@ void GameControllerCliente::interactuar(Personaje* personaje, Posicion p) {
 void GameControllerCliente::eliminar_personaje(Id id) {
 	this->modelo->eliminar_personaje_por_Id(id);
 }
+void GameControllerCliente::eliminarTodosPorNombre(string nombre_perdedor) {
 
+	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*>::iterator iter = personajes.begin();
+	string razaPerdedora;
+	for (; iter != personajes.end(); iter++) {
+		Personaje* personaje = (*iter);
+		if (personaje->getNombreJugador() == nombre_perdedor) {
+			this->eliminar_personaje(personaje->getId());
+			razaPerdedora = personaje->get_raza();
+		}
+	}
+
+	this->meFijoSiPerdi(razaPerdedora);
+}
 void GameControllerCliente::eliminarTodos(string razaPerdedora) {
 
 	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
@@ -144,7 +158,6 @@ void GameControllerCliente::eliminarTodos(string razaPerdedora) {
 	}
 
 	this->meFijoSiPerdi(razaPerdedora);
-
 }
 void GameControllerCliente::meFijoSiPerdi(string razaPerdedora) {
 	if (this->modelo->getJugador()->raza == razaPerdedora) {
@@ -197,9 +210,9 @@ void GameControllerCliente::acutalizarRecursos(string jugador, int id_personaje,
 		int cant, int id_recurso) {
 	this->modelo->actualizarRecursos(jugador, id_personaje, cant, id_recurso);
 }
-void GameControllerCliente::desconectar(string id) {
+void GameControllerCliente::desconectar(string nombre) {
 	//this->eliminarTodos(id);
-	this->modelo->congelarPersonaje(id);
+	this->eliminarTodosPorNombre(nombre);
 }
 
 void GameControllerCliente::reconectar(string id) {
