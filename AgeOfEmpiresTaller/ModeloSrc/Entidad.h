@@ -77,7 +77,12 @@ public:
 		return raza;
 	}
 	bool esUnCentroCivio();
+
 	bool esUnaBandera;
+
+	bool esBandera(){
+		return esUnaBandera;
+	}
 	bool esInternaLaPosicion(int x, int y);
 	virtual ~Entidad();
 	int id;

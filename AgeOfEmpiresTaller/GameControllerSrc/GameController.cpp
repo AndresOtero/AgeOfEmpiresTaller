@@ -54,5 +54,3 @@ void GameController::desconectar(string id){
 void GameController::actualizar(){
 	//virtual
 }
-
-

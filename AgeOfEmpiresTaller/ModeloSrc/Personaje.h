@@ -42,10 +42,13 @@ class Personaje:public Atacable {
 	Entidad* objetivo;
 	int id;
 	string nombreJugador;
-	string raza;
 	Costo costo;
 public:
 	bool adyacente;
+	bool esUnHeroe(){
+		return esHeroe;
+	}
+	bool esHeroe;
 	Personaje();
 	Personaje(ObjetoMapa* objetoMapa);
 	Personaje(ObjetoMapa* objetoMapa, int x, int y);
@@ -83,7 +86,7 @@ public:
 	bool esAdyacente(Entidad* entidad);
 
 	string get_raza(){
-		return this->raza;
+		return this->objetoMapa->raza;
 	}
 	bool tieneRecursos(){
 		return !this->recursos->estaVacio();

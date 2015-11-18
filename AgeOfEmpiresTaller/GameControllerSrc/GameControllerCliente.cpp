@@ -1,5 +1,5 @@
 /*
-dibu * GameControllerCliente.cpp
+ dibu * GameControllerCliente.cpp
  *
  *  Created on: 21 de oct. de 2015
  *      Author: andres
@@ -7,7 +7,7 @@ dibu * GameControllerCliente.cpp
 
 #include "GameControllerCliente.h"
 
-char* GameControllerCliente::string_to_char_array(string str){
+char* GameControllerCliente::string_to_char_array(string str) {
 	int str_size = str.size();
 	char charArray[PARAM_STRING_LEN];
 	for (int a = 0; a <= str_size; a++) {
@@ -19,7 +19,6 @@ char* GameControllerCliente::string_to_char_array(string str){
 GameControllerCliente::GameControllerCliente() {
 }
 
-
 GameControllerCliente::~GameControllerCliente() {
 }
 string GameControllerCliente::nombreJugador() {
@@ -29,77 +28,77 @@ bool GameControllerCliente::esNombre(char* nombre) {
 	return (!this->juego->escenario->jugador->getNombre().compare(nombre));
 }
 
-void GameControllerCliente::cambiar_destino_personaje(Id id, double mov_x,double mov_y){
+void GameControllerCliente::cambiar_destino_personaje(Id id, double mov_x, double mov_y) {
 
 	msg_t mensaje;
 
 	mensaje.type = MOVER_PERSONAJE;
 	mensaje.paramDouble1 = mov_x;
 	mensaje.paramDouble2 = mov_y;
-	mensaje.paramInt1=id;
+	mensaje.paramInt1 = id;
 	this->agregarMensaje(mensaje);
 
 }
 
-void GameControllerCliente::eliminarEntidad(int id){
+void GameControllerCliente::eliminarEntidad(int id) {
 	this->modelo->eliminarEntidadPorID(id);
 }
-void GameControllerCliente::eliminar(int id){
+void GameControllerCliente::eliminar(int id) {
 	this->modelo->eliminar(id);
 }
-void GameControllerCliente::mover_personaje(Id id,double mov_x,double mov_y){
-	this->modelo->cambiar_destino_personaje(id,mov_x,mov_y);
+void GameControllerCliente::mover_personaje(Id id, double mov_x, double mov_y) {
+	this->modelo->cambiar_destino_personaje(id, mov_x, mov_y);
 }
-void GameControllerCliente::crearPersonajeEdificio(string tipo,int id){
+void GameControllerCliente::crearPersonajeEdificio(string tipo, int id) {
 	msg_t mensaje;
 	mensaje.type = CREAR_PERSONAJE_EDIFICIO;
-	memcpy(mensaje.paramNombre,string_to_char_array(this->modelo->nombreJugador()),sizeof(mensaje.paramNombre));
-	memcpy(mensaje.paramTipo,string_to_char_array(tipo),sizeof(mensaje.paramTipo));
-	mensaje.paramInt1=id;
+	memcpy(mensaje.paramNombre, string_to_char_array(this->modelo->nombreJugador()), sizeof(mensaje.paramNombre));
+	memcpy(mensaje.paramTipo, string_to_char_array(tipo), sizeof(mensaje.paramTipo));
+	mensaje.paramInt1 = id;
 	this->agregarMensaje(mensaje);
 }
 
-void GameControllerCliente::ataque(Id idAtacante,Id idAtacado,int danio){
+void GameControllerCliente::ataque(Id idAtacante, Id idAtacado, int danio) {
 	//aca crasheaba mal
-	Personaje* pAtacando=this->modelo->get_Personaje_Por_Id(idAtacante);
-	Personaje* p=this->modelo->get_Personaje_Por_Id(idAtacado);
+	Personaje* pAtacando = this->modelo->get_Personaje_Por_Id(idAtacante);
+	Personaje* p = this->modelo->get_Personaje_Por_Id(idAtacado);
 	pAtacando->atacandoCliente(true);
-	if (p){
+	if (p) {
 		p->recibirDanio(danio);
-		if (!p->esta_vivo()){
+		if (!p->esta_vivo()) {
 			pAtacando->atacandoCliente(false);
 		}
-	}else{
+	} else {
 		Entidad * entidad = this->modelo->buscarEntidad(idAtacado);
 		//no chequeo q sea null porque deberia existir
 		entidad->recibirDanio(danio);
-		if (!entidad->esta_vivo()){
+		if (!entidad->esta_vivo()) {
 			pAtacando->atacandoCliente(false);
 		}
 	}
 
 }
 
-void GameControllerCliente::construir(Id idAtacante,Id idConstruido,int construccion){
-	Personaje* pConstructor=this->modelo->get_Personaje_Por_Id(idAtacante);
+void GameControllerCliente::construir(Id idAtacante, Id idConstruido, int construccion) {
+	Personaje* pConstructor = this->modelo->get_Personaje_Por_Id(idAtacante);
 	Entidad * entidad = this->modelo->buscarEntidad(idConstruido);
 	//no esta atacando pero esta accionando
 	pConstructor->atacandoCliente(true);
 	entidad->construir(construccion);
-	if (entidad->estaConstruida()){
+	if (entidad->estaConstruida()) {
 		pConstructor->atacandoCliente(false);
 	}
 }
 
-void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
+void GameControllerCliente::interactuar(Personaje* personaje, Posicion p) {
 	//si no esta en rango no puede hacer nada
-	if(this->modelo->afueraDelMapa(p.getX(),p.getY())){
+	if (this->modelo->afueraDelMapa(p.getX(), p.getY())) {
 		return;
 	}
-	Personaje* otro_personaje=this->modelo->devolverPersonaje(p.getX(),p.getY());
-	Entidad * otra_entidad = this->modelo->mapa->entidad_celda(p.getX(),p.getY());
-	if(otro_personaje!=NULL){
-		msg_t mensaje=personaje->interactuar(otro_personaje);
+	Personaje* otro_personaje = this->modelo->devolverPersonaje(p.getX(), p.getY());
+	Entidad * otra_entidad = this->modelo->mapa->entidad_celda(p.getX(), p.getY());
+	if (otro_personaje != NULL) {
+		msg_t mensaje = personaje->interactuar(otro_personaje);
 		this->agregarMensaje(mensaje);
 		return;
 	}
@@ -111,75 +110,113 @@ void GameControllerCliente::interactuar(Personaje* personaje,Posicion p){
 	}
 
 }
-void GameControllerCliente::eliminar_personaje(Id id){
+void GameControllerCliente::eliminar_personaje(Id id) {
 	this->modelo->eliminar_personaje_por_Id(id);
 }
-void GameControllerCliente::setMapa(int ancho, int largo){
-	this->modelo->setMapa(largo,ancho);
+
+void GameControllerCliente::eliminarTodos(string razaPerdedora) {
+
+	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*>::iterator iter = personajes.begin();
+
+	for (; iter != personajes.end(); iter++) {
+		Personaje* personaje = (*iter);
+		if (personaje->get_raza() == razaPerdedora)
+			this->eliminar_personaje(personaje->getId());
+	}
+
+}
+void GameControllerCliente::setMapa(int ancho, int largo) {
+	this->modelo->setMapa(largo, ancho);
 }
 
-void GameControllerCliente::setId(double x, double y, int id){
-	Entidad* entidad = this->modelo->mapa->entidad_celda(floor(x),floor(y));
-	if (entidad!=NULL){
+void GameControllerCliente::setId(double x, double y, int id) {
+	Entidad* entidad = this->modelo->mapa->entidad_celda(floor(x), floor(y));
+	if (entidad != NULL) {
 		entidad->setId(id);
 	}
 }
 
-Personaje* GameControllerCliente::conectarCliente(string name,string tipo, int x,int y,dibujo_t dibujo,int id){
-	ObjetoMapa* obj= this->juego->tipos[tipo];
-	Personaje* personaje =new Personaje(obj,x,y);
+Personaje* GameControllerCliente::conectarCliente(string name, string tipo, int x, int y, dibujo_t dibujo, int id) {
+	ObjetoMapa* obj = this->juego->tipos[tipo];
+	Personaje* personaje = new Personaje(obj, x, y);
 	personaje->setNombreJugador(name);
 	personaje->setId(id);
-
 
 	this->modelo->agregarPersonajeCliente(personaje);
 	return personaje;
 
 }
 
-void GameControllerCliente::agregarEntidad(string nombre,int x, int y, int cant){
-	this->modelo->agregarEntidad(nombre,x,y,cant);
+void GameControllerCliente::agregarEntidad(string nombre, int x, int y, int cant) {
+	this->modelo->agregarEntidad(nombre, x, y, cant);
 }
-void GameControllerCliente::acutalizarRecursos(string jugador, int id_personaje, int cant,int id_recurso){
-	this->modelo->actualizarRecursos(jugador,id_personaje,cant, id_recurso);
+void GameControllerCliente::acutalizarRecursos(string jugador, int id_personaje, int cant, int id_recurso) {
+	this->modelo->actualizarRecursos(jugador, id_personaje, cant, id_recurso);
 }
-void GameControllerCliente::desconectar(string id){
+void GameControllerCliente::desconectar(string id) {
 	this->modelo->congelarPersonaje(id);
 }
 
-void GameControllerCliente::reconectar(string id){
+void GameControllerCliente::reconectar(string id) {
 	this->modelo->descongelarPersonaje(id);
 }
-void GameControllerCliente::crearEdificio(string nombre,int id_constructor,int x, int y){
+void GameControllerCliente::crearEdificio(string nombre, int id_constructor, int x, int y) {
 	//manda al server a crear la entidad
 	msg_t mensaje;
 	mensaje.type = CREAR_ENTIDAD;
-	memcpy(mensaje.paramNombre,string_to_char_array(nombre),sizeof(mensaje.paramNombre));
+	memcpy(mensaje.paramNombre, string_to_char_array(nombre), sizeof(mensaje.paramNombre));
 	mensaje.paramInt1 = id_constructor;
-	mensaje.paramDouble1 =x;
+	mensaje.paramDouble1 = x;
 	mensaje.paramDouble2 = y;
 	this->agregarMensaje(mensaje);
 }
-void GameControllerCliente::empezarAccion(int id){
+void GameControllerCliente::empezarAccion(int id) {
 	this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(true);
 }
 
-void GameControllerCliente::terminarAccion(int id){
+void GameControllerCliente::terminarAccion(int id) {
 	this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(false);
 }
-void GameControllerCliente::finalizarConstruccion(int id){
+void GameControllerCliente::finalizarConstruccion(int id) {
 	Entidad * entidad = this->modelo->buscarEntidad(id);
 	entidad->finalizarConstruccion();
 }
+void GameControllerCliente::capturaBandera(string razaAtacante, string razaPerdedora) {
 
-bool GameControllerCliente::hayEventos(){
+	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*>::iterator iter = personajes.begin();
+	bool encontrado = false;
+	string nombreAtacante;
+//	while ( (!encontrado) && (iter != personajes.end())) {
+//		Personaje* personaje = (*iter);
+//		if(personaje->get_raza() == razaAtacante){
+//			nombreAtacante = personaje->getNombreJugador();
+//			encontrado = true;
+//		}
+//		iter++;
+//	}
+	for (; iter != personajes.end(); iter++) {
+		printf("entra al for\n");
+		Personaje* personaje = (*iter);
+		if (personaje) {
+			if (personaje->get_raza() == razaPerdedora) {
+				printf("entra al if\n");
+				//personaje->objetoMapa->raza = razaAtacante;
+				//personaje->setNombreJugador(nombreAtacante);
+			}
+		}
+	}
+
+}
+bool GameControllerCliente::hayEventos() {
 	return (!this->cola.empty());
 }
-msg_t GameControllerCliente::sacarMensaje(){
+msg_t GameControllerCliente::sacarMensaje() {
 	msg_t mensaje = this->cola.front();
 	this->cola.pop();
 	return mensaje;
 }
-void GameControllerCliente::agregarMensaje(msg_t mensaje){
+void GameControllerCliente::agregarMensaje(msg_t mensaje) {
 	this->cola.push(mensaje);
 }

@@ -92,6 +92,25 @@ void GameControllerServer::crearPersonajeEdificio(string name, string tipo, Id i
 	this->agregarMensaje(mensaje, mutex);
 }
 
+void GameControllerServer::crearPersonajeHeroe(string name, string tipo, Id id_edificio, SDL_mutex *mutex) {
+	ObjetoMapa* obj = this->juego->tipos[tipo];
+	Personaje* personaje = new Personaje(obj);
+	personaje->esHeroe = true;
+	personaje->setNombreJugador(name);
+	int id = this->modelo->crearPersonajeServerEdificio(personaje, id_edificio);
+
+	//seteo mensaje
+	msg_t mensaje;
+	mensaje.type = NUEVO_PERSONAJE;
+	memcpy(mensaje.paramTipo, string_to_char_array(tipo), sizeof(mensaje.paramTipo));
+	memcpy(mensaje.paramNombre, string_to_char_array(name), sizeof(mensaje.paramNombre));
+	mensaje.paramInt1 = id;
+	mensaje.paramDouble1 = personaje->get_posicion().get_x_exacta();
+	mensaje.paramDouble2 = personaje->get_posicion().get_y_exacta();
+
+	this->agregarMensaje(mensaje, mutex);
+}
+
 void GameControllerServer::crearBandera(string name, string raza, int idCentro, SDL_mutex *mutex) {
 
 	string tipo;
@@ -357,6 +376,41 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 		if (p->esta_atacando()) {
 
 			if (!p->get_atacado()->esta_vivo()) {
+				if (this->objetivo == FLAG) {
+
+					if (p->get_atacado()->esBandera()) {
+						msg_t mensajeCaptura;
+						mensajeCaptura.type = CAPTURA_BANDERA;
+
+						memcpy(mensajeCaptura.paramNombre, string_to_char_array(p->get_raza()), sizeof(mensajeCaptura.paramNombre));//raza que gana unidades
+
+						memcpy(mensajeCaptura.paramTipo, string_to_char_array(p->get_atacado()->get_raza()),
+								sizeof(mensajeCaptura.paramTipo)); //raza que pierde unidades
+
+						this->agregarMensaje(mensajeCaptura, mutex);
+						//capturaBandera(p->get_raza(), p->get_atacado()->get_raza());
+					}
+				} else if (this->objetivo == KING) {
+					if (p->get_atacado()->esUnHeroe()) {
+						msg_t mensajeHeroe;
+						mensajeHeroe.type = ELIMINAR_TODOS;
+
+						memcpy(mensajeHeroe.paramTipo, string_to_char_array(p->get_atacado()->get_raza()), sizeof(mensajeHeroe.paramTipo)); //raza que pierde unidades
+
+						this->agregarMensaje(mensajeHeroe, mutex);
+					}
+				} else if (this->objetivo == KILL_ALL) {
+					if (p->get_atacado()->esUnCentroCivio()) {
+
+						msg_t mensajeCentro;
+						mensajeCentro.type = ELIMINAR_TODOS;
+
+						memcpy(mensajeCentro.paramTipo, string_to_char_array(p->get_atacado()->get_raza()), sizeof(mensajeCentro.paramTipo)); //raza que pierde unidades
+
+						this->agregarMensaje(mensajeCentro, mutex);
+
+					}
+				}
 				printf("MURIO\n");
 				//printf("Eliminar algo con id %d\n",p->get_atacado()->getId());
 				msg_t mensaje;
@@ -442,7 +496,7 @@ void GameControllerServer::crearCentroCivicoNuevoUser(string raza, string Nombre
 		} else
 			heroeTipo = "sauron";
 
-		this->crearPersonajeEdificio(NombreJugador, heroeTipo, entidad->getId(), mutex);
+		this->crearPersonajeHeroe(NombreJugador, heroeTipo, entidad->getId(), mutex);
 	}
 
 	msg_t mssg;
@@ -460,6 +514,22 @@ void GameControllerServer::agregarMensaje(msg_t mensaje, SDL_mutex *mutex) {
 			SDL_UnlockMutex(mutex);
 			paso = true;
 		}
+	}
+
+}
+void GameControllerServer::capturaBandera(string razaAtacante, string razaPerdedora) {
+	vector<Personaje*> personajes = this->modelo->devolverTodosLosPersonajes();
+	vector<Personaje*>::iterator iter = personajes.begin();
+	printf("el nombre del atacante es %s\n", this->juego->escenario->jugador->nombre.c_str());
+	for (; iter != personajes.end(); iter++) {
+		Personaje* personaje = (*iter);
+		if (personaje) {
+			if (personaje->get_raza() == razaPerdedora) {
+				personaje->objetoMapa->raza = razaAtacante;
+				//personaje->setNombreJugador(nombreAtacante);
+			}
+		}
+
 	}
 
 }
