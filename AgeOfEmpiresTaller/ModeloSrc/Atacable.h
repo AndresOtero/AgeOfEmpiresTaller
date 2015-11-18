@@ -23,7 +23,7 @@ public:
 	virtual bool esUnCentroCivio(){return false;};
 	virtual bool esAdyacente(Posicion pos){};
 	virtual std::string get_raza(){};
-	~Atacable();
+	virtual ~Atacable();
 };
 
 #endif /* ATACABLE_H_ */

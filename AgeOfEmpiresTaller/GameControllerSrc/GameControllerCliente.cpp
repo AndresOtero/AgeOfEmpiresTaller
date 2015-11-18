@@ -137,7 +137,7 @@ void GameControllerCliente::setId(double x, double y, int id) {
 	}
 }
 
-Personaje* GameControllerCliente::conectarCliente(string name, string tipo, int x, int y, dibujo_t dibujo, int id) {
+Personaje* GameControllerCliente::conectarCliente(string name, string tipo, int x, int y, int id) {
 	ObjetoMapa* obj = this->juego->tipos[tipo];
 	Personaje* personaje = new Personaje(obj, x, y);
 	personaje->setNombreJugador(name);
