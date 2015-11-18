@@ -45,6 +45,12 @@ class Vista {
 	static const int VACIO = 0;
 private:
 	SDL_Texture *backgroundTexture;
+	SDL_Texture *perdedorTexture;
+	SDL_Texture *ganadorElfosTexture;
+	SDL_Texture *ganadorHobbitTexture;
+	SDL_Texture *ganadorHumanosTexture;
+	SDL_Texture *ganadorMordorTexture;
+
 	bool esta_en_seleccion(int x,int y);
 	void setear_seleccion();
 	void dibujar_mapa();
@@ -65,11 +71,14 @@ private:
 	void dejarDeDibujarEdificio();
 
 
+
 public:
 	Vista(Modelo* modelo,GameControllerCliente* gameControler);
 	bool init();
 	bool loadMedia();
 	bool mostrarPantallaEspera();
+	bool mostrarPantallaPerdedor();
+	bool mostrarPantallaGanador(string raza);
 	void crearPersonaje(string tipo,Personaje* personaje);
 	void setear_referencia(double ref_x,double ref_y) ;
 	void setear_vista(string nombreJugador);

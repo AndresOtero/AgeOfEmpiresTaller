@@ -22,7 +22,7 @@
 #include "Comida.h"
 #define RITMO 5
 using namespace std;
-#define VISIBILIDAD 5
+#define VISIBILIDAD 8
 #define VISIBILIDAD_CONSTRUCCIONES 10
 #define CICLOS_MAX 500
 #define ORO 0
