@@ -387,6 +387,7 @@ bool Vista::run() {
 	dibujar_barra();
 	detectar_mouse_borde();
 	SDL_RenderPresent(gRenderer);
+	this->termino_de_elegir =false;
 	return quit;
 }
 
@@ -502,6 +503,7 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	dibujo_pers->setMovimientoActual(dibujo_pers_anterior->getMovimientoActual());
 	dibujo_pers->set_posicion_default(img_personaje_x, img_personaje_y);
 	if (esta_en_seleccion(img_personaje_x, img_personaje_y) && termino_de_elegir) {
+		printf("selecciono a %d,%d\n",personaje->get_posicion().getX(),personaje->get_posicion().getY());
 		modelo->seleccionar(personaje->getReferenciaMapaX(), personaje->getReferenciaMapaY());
 	}
 	Posicion destino = personaje->get_camino();
@@ -542,6 +544,7 @@ void Vista::dibujar_mapa() {
 			for (j = y_min; j < i; j++) {
 				int coord_x = i - j - 1;
 				int coord_y = j;
+
 				if ((adentro_del_mapa(coord_x, coord_y)) && (coord_x < x_max) && (coord_y < y_max)) {
 					//Cambio para dibujar agregados
 					size_t n_imagen;
@@ -565,7 +568,8 @@ void Vista::dibujar_mapa() {
 					int oscuro = modelo->oscuridad(dim, coord_x, coord_y);
 					shared_ptr<Dibujo> dibujo = this->factory->get_dibujo(n_imagen);
 
-					if (this->modelo->devolverPersonaje(coord_x, coord_y)) {
+					if (this->modelo->devolverPersonaje(coord_x, coord_y) && dim != TILES) {
+						//agregue el && dim tiles porque estaba renderisando dos veces el personaje
 						if (oscuro == 0) {
 							dibujar_personaje(this->modelo->devolverPersonaje(coord_x, coord_y));
 						}

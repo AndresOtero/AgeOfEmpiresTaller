@@ -82,6 +82,7 @@ void  Barra::actualizar(Jugador * jugador,vector<Personaje *> personajes,Entidad
 	piedra->cambiarCant(jugador->recursosJugador()->cantPiedra());
 	comida->cambiarCant(jugador->recursosJugador()->cantComida());
 	int size = personajes.size();
+	printf("Size personajes %d\n",size);
 	if (size !=0){
 		if (size == 1 && personajes[0]->puedeCrear()){
 			if (jugador->raza == personajes[0]->get_raza()){
@@ -251,7 +252,7 @@ void Barra::render(SDL_Renderer*renderer){
 	this->textura->renderEx(0,NULL,&rect,renderer,NULL);
 	this->renderTexto(renderer);
 	this->dibujarDatosSeleccionados(renderer);
-	//this->dibujarIconos(renderer);
+	this->dibujarIconos(renderer);
 	this->mapa->render(renderer);
 	this->dibujarDondeMiro(renderer);
 

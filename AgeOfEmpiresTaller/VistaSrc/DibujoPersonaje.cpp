@@ -125,7 +125,7 @@ int DibujoPersonaje::get_ancho(){
 void DibujoPersonaje::render( SDL_Renderer* renderer) {
 	int n_mov=movimiento_actual%cant_mov;
 	int n_imagen=this->imagen_actual%this->cantidad_de_imagenes[n_mov];
-	this->textura->render(this->x_imagen - this->get_ancho(n_mov,n_imagen)/2, this->y_imagen-this->get_alto(n_mov,n_imagen)/2 , &(this->spriteClips[n_mov][n_imagen]),renderer);
+	this->textura->render(this->x_imagen - this->get_ancho(n_mov,n_imagen)/2, this->y_imagen-2*(this->get_alto(n_mov,n_imagen))/3, &(this->spriteClips[n_mov][n_imagen]),renderer);
 }
 
 void DibujoPersonaje::cambiar_frame(){
