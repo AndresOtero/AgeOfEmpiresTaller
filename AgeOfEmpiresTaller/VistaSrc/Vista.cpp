@@ -45,14 +45,19 @@ Vista::Vista(Modelo* modelo, GameControllerCliente* gameController) {
 
 	this->transformador = shared_ptr<CambioDeCoordendas>(
 			new CambioDeCoordendas(ancho_por_celda(), altura_por_celda()));
-	shared_ptr<Barra> barra(
+	/*shared_ptr<Barra> barra(
 			new Barra(modelo, &referencia_mapa_x, &referencia_mapa_y));
-	this->barra = barra;
+	this->barra = barra;*/
 	shared_ptr<Dibujo> dibujo(new Dibujo());
 	this->edificioACrear = dibujo;
 	this->entidadACrear = NULL;
 	this->gameController = gameController;
 	this->esta_eligiendo = false;
+}
+
+void Vista::setBarra(Modelo * modelo){
+	shared_ptr<Barra> barra(new Barra(modelo, &referencia_mapa_x, &referencia_mapa_y));
+	this->barra = barra;
 }
 
 int Vista::altura_por_celda() {

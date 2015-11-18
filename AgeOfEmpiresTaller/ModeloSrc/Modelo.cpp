@@ -36,7 +36,7 @@ enum dimension {
 Modelo::Modelo(Juego* juego) {
 	this->acumuladorPiso = 0;
 	this->juego = juego;
-	setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
+	//setMapa(this->juego->escenario->size_x, this->juego->escenario->size_y);
 	this->personajes = vector<Personaje*>();
 	this->pisadas = vector<vector<int>>();
 	this->jugador = juego->escenario->jugador;
@@ -45,16 +45,9 @@ Modelo::Modelo(Juego* juego) {
 	}
 	this->factory_personaje.cargarPersonajes(this->juego->tipos);
 	personajes_seleccionados.clear();
-	this->insertarEntidades();
 	this->totalRecursos = 0;
 	gettimeofday(&estado, NULL);
 	idServer = 0;
-	int ancho = this->get_ancho_mapa();
-	int alto = this->get_alto_mapa();
-	vector<int> row(ancho, OSCURO);
-	for (int i = 0; i < alto; i++) {
-		pisadas.push_back(row);
-	}
 	entidad_seleccionada = NULL;
 }
 string Modelo::nombreJugador() {
@@ -115,6 +108,11 @@ void Modelo::insertarEntidades() {
 
 void Modelo::setMapa(int ancho, int largo) {
 	this->mapa = shared_ptr<Mapa>(new Mapa(ancho, largo));
+	this->insertarEntidades();
+	vector<int> row(ancho, OSCURO);
+	for (int i = 0; i < largo; i++) {
+		pisadas.push_back(row);
+	}
 }
 
 void Modelo::actualizarMapa() {

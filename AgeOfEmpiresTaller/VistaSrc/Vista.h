@@ -74,6 +74,7 @@ private:
 
 public:
 	Vista(Modelo* modelo,GameControllerCliente* gameControler);
+	void setBarra(Modelo * modelo);
 	bool init();
 	bool loadMedia();
 	bool mostrarPantallaEspera();

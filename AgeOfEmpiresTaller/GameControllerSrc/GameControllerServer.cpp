@@ -592,6 +592,9 @@ void GameControllerServer::capturaBandera(Personaje* personaje_que_captura,
 	this->agregarMensaje(mensajePierde, mutex);
 
 }
+void GameControllerServer::setMapa(int ancho, int largo){
+	this->modelo->setMapa(ancho,largo);
+}
 void GameControllerServer::cambiar_personaje(int id_personaje, string nombre,
 		string raza) { //nombre y raza a la que cambia
 	printf("Id personaje %d\n", id_personaje);
