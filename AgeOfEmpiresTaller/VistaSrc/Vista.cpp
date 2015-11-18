@@ -594,7 +594,7 @@ void Vista::dibujar_edificio(int mov_x, int mov_y) {
 		this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
 
 		this->entidadACrear->set_posicion(floor(a), floor(b));
-		if (!this->modelo->afueraDelMapa(floor(a), floor(b))) {
+		if (!this->modelo->afueraDelMapa(floor(a), floor(b))&& this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
 			if (this->modelo->tocaSombra(this->entidadACrear)) {
 				this->edificioACrear->ponerAmarillo();
 			} else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
@@ -613,6 +613,7 @@ void Vista::dibujar_edificio(int mov_x, int mov_y) {
 			this->edificioACrear->resetear();
 			this->edificioACrear->reiniciar();
 		}else{
+
 			this->dejarDeDibujarEdificio();
 		}
 	}
