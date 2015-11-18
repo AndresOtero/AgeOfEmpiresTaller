@@ -96,12 +96,13 @@ vector<Entidad *> Modelo::obtenerCentrosCivicosEnMapa() {
 void Modelo::agregarPersonajeCliente(Personaje* personaje) {
 	this->personajes.push_back(personaje);
 }
-void Modelo::eliminar_personaje_por_Id(Id id) {
+vector<msg_t> Modelo::eliminar_personaje_por_Id(Id id) {
+	vector<msg_t> terminados;
 	Personaje * pers = this->get_Personaje_Por_Id(id);
 	if (pers) {
-		this->eliminar_personaje(pers);
+		terminados = this->eliminar_personaje(pers);
 	}
-
+	return terminados;
 }
 
 void Modelo::insertarEntidades() {
@@ -127,13 +128,19 @@ void Modelo::actualizarMapa() {
 void Modelo::finalizarAccion(int id) {
 	this->get_Personaje_Por_Id(id)->noInteractua();
 }
-void Modelo::eliminar_personaje(Personaje* eliminado) {
+vector<msg_t> Modelo::eliminar_personaje(Personaje* eliminado) {
+	vector<msg_t> terminados;
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		if (p->esta_atacando()) {
 			if (p->get_atacado_id() == eliminado->getId()) {
 				p->terminarAccion();
+				msg_t terminar;
+				terminar.type = TERMINAR_ACCION;
+				terminar.paramInt1 = p->getId();
+				terminados.push_back(terminar);
+				printf("cargo terminar\n");
 			}
 		}
 	}
@@ -147,11 +154,15 @@ void Modelo::eliminar_personaje(Personaje* eliminado) {
 		}
 
 	}
+	return terminados;
 }
-void Modelo::eliminar(int id) {
+vector<msg_t> Modelo::eliminar(int id) {
 	//faltaria poner que si elimino personaje no se meta en eliminar entidad
-	this->eliminar_personaje_por_Id(id);
-	this->eliminarEntidadPorID(id);
+	vector<msg_t> terminados =	this->eliminar_personaje_por_Id(id);
+	if (terminados.empty()){
+		terminados = this->eliminarEntidadPorID(id);
+	}
+	return terminados;
 }
 vector<Personaje*> Modelo::devolverPersonajeSeleccionado() {
 	return personajes_seleccionados;
@@ -437,8 +448,8 @@ void Modelo::recolectar(Personaje * personaje, Recurso * recurso) {
 
 }
 //server
-void Modelo::eliminarEntidad(Entidad * entidad) {
-	eliminarEntidadPorID(entidad->id);
+vector<msg_t> Modelo::eliminarEntidad(Entidad * entidad) {
+	return eliminarEntidadPorID(entidad->id);
 	//falta sacarla de memoria
 }
 
@@ -467,19 +478,30 @@ vector<Entidad*> Modelo::obtenerEntidadesDeInicializacion() {
 }
 
 //cliente
-void Modelo::eliminarEntidadPorID(int id) {
+vector<msg_t> Modelo::eliminarEntidadPorID(int id) {
+	vector<msg_t> terminados;
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		if (p->esta_recolectando()) {
 			if (p->get_objetivo()->getId() == id) {
 				p->terminarAccion();
+				msg_t terminar;
+				terminar.type = TERMINAR_ACCION;
+				terminar.paramInt1 = p->getId();
+				terminados.push_back(terminar);
+				printf("cargo terminar\n");
 			}
 
 		}
 		if (p->esta_atacando()) {
 			if (p->get_atacado()->getId() == id) {
 				p->terminarAccion();
+				msg_t terminar;
+				terminar.type = TERMINAR_ACCION;
+				terminar.paramInt1 = p->getId();
+				terminados.push_back(terminar);
+				printf("cargo terminar\n");
 			}
 
 		}
@@ -499,6 +521,7 @@ void Modelo::eliminarEntidadPorID(int id) {
 		}
 
 	}
+	return terminados;
 
 }
 
@@ -672,7 +695,23 @@ int Modelo::crearPersonajeServer(Personaje* personaje) {
 	int id = personaje->getId();
 	return (id);
 }
-
+vector<msg_t> Modelo::terminarConstruccion(int id){
+	vector<msg_t> terminados;
+	vector<Personaje*>::iterator it = personajes.begin();
+	for (; it != personajes.end(); ++it) {
+		Personaje* p = (*it);
+		if (p->esta_contruyendo()){
+			if (p->get_objetivo()->getId()==id){
+				p->terminarAccion();
+				msg_t terminar;
+				terminar.type = TERMINAR_ACCION;
+				terminar.paramInt1 = p->getId();
+				terminados.push_back(terminar);
+			}
+		}
+	}
+	return terminados;
+}
 int Modelo::crearPersonajeServerEdificio(Personaje* personaje, Id id_edificio) {
 	Entidad* edificio = this->buscarEntidad(id_edificio);
 	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());

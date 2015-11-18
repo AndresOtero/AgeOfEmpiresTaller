@@ -308,7 +308,7 @@ void Barra::dibujarDatosEdificio(SDL_Renderer* renderer){
 						- this->display.getConstruccionActual(),
 				this->display.getConstruccionTotal(),
 				this->mapa->paleta(AMARILLO), this->mapa->paleta(BLANCO),
-				renderer, y + nombre->getHeight() + ALTO_BARRITA);
+				renderer, y + nombre->getHeight() + TTF_FontHeight(font_chico));
 	}
 
 	//terminar display
@@ -354,13 +354,19 @@ void Barra::dibujarCargaDeBarra(int actual, int total,SDL_Color primero,SDL_Colo
 		SDL_SetRenderDrawColor(renderer, primero.r, primero.g, primero.b,
 				primero.a);
 		SDL_Rect rect = { this->x_datos, y, largo_actual,
-				ALTO_BARRITA };
+				TTF_FontHeight(font_chico) };
 		SDL_RenderFillRect(renderer, &rect);
 		SDL_SetRenderDrawColor(renderer, segundo.r, segundo.g, segundo.b,
 				segundo.a);
 		SDL_Rect rect2 = { this->x_datos + largo_actual, y,
-				largo_total - largo_actual, ALTO_BARRITA };
+				largo_total - largo_actual, TTF_FontHeight(font_chico) };
 		SDL_RenderFillRect(renderer, &rect2);
+		shared_ptr<Textura> numeros(new Textura());
+		std::ostringstream oss;
+		oss <<actual<<"/"<<total;
+		if (cargarTextoChico(renderer,this->mapa->paleta(NEGRO),numeros,oss.str())){
+			this->imprimirTexto(this->x_datos,y,renderer,numeros);
+		}
 	}
 
 }
