@@ -114,24 +114,24 @@ bool Mapa::afueraDelMapa(int x, int y) {
 	return ((y >= this->largo) || (x >= this->ancho) || (y < 0) || (x < 0));
 }
 
-double cuantoMeAcerco(int actual, int acercarme) {
+double cuantoMeAcerco(double actual, double acercarme) {
 	if (actual == acercarme) {
 		return 0;
 	}
-	double factor = 0.75;
+	double factor = 0.40;
 	if (actual < acercarme) {
 		return factor;
 	} else {
-		return 1 - factor;
+		return -factor;
 	}
 
 }
 Posicion Mapa::acercar(Posicion adonde_estoy, Posicion adonde_voy) {
 	double x_factor, y_factor;
-	int x_estoy = adonde_estoy.getX();
-	int y_estoy = adonde_estoy.getY();
-	int x_voy = adonde_voy.getX();
-	int y_voy = adonde_voy.getY();
+	double x_estoy = adonde_estoy.getX()+0.5;
+	double y_estoy = adonde_estoy.getY()+0.5;
+	double x_voy = adonde_voy.getX()+0.5;
+	double y_voy = adonde_voy.getY()+0.5;
 	x_factor = cuantoMeAcerco(x_estoy, x_voy);
 	y_factor = cuantoMeAcerco(y_estoy, y_voy);
 	Posicion pos = { (double) x_estoy + x_factor, (double) y_estoy + y_factor };

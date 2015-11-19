@@ -412,19 +412,6 @@ void Modelo::actualizarRecursos(string jugador, int id_pers, int cant, int id_re
 
 }
 
-/*void Modelo::actualizarRecursosServer(int id ,int oro,int madera,int piedra){
- vector<Personaje*>::iterator it = personajes.begin();
- for (; it != personajes.end(); ++it) {
- Personaje* p = (*it);
- if(p->getId()==id){
- p->recursosJugador()->colectarMadera(madera);
- p->recursosJugador()->colectarOro(oro);
- p->recursosJugador()->colectarPiedra(piedra);
- }
- }
-
- }*/
-
 Entidad * Modelo::buscarEntidad(int id) {
 	vector<Entidad*> *lista = &this->juego->escenario->entidades;
 	for (unsigned int i = 0; i < lista->size(); i++) {

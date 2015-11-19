@@ -26,6 +26,8 @@ Personaje::Personaje() {
 	this->atacado = NULL;
 	this->objetivo = NULL;
 	this->rango = 0;
+	this->fuerza = 8;
+	this->armadura = 70;
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa) {
 	this->esHeroe= false;
@@ -199,12 +201,12 @@ int Personaje::atacar(Atacable* otro_personaje){
 	GeneradorNumeros generador;
 	int danio;
 	//cuanta mas fuerza mas probable que pegue
+
 	if (generador.numeroRandom(0,this->fuerza)!=0){
-		//pega la diferencia entre fuerza armadura por su fuerza
-		//puede dar o muchisimo o poco
-		danio = floor(exp(-generador.numeroRandom(0,otro_personaje->getArmadura()/this->fuerza))*this->fuerza);
+		//pega proporcional a su fuerza  e inversamente a la amadura del otro
+		danio = floor(exp(-(double)generador.numeroRandom(0,otro_personaje->getArmadura())/this->fuerza)*this->fuerza);
 	}else{
-		danio = 0;
+		danio = 1;
 	}
 	//printf("Danio %d\n",danio);
 	return danio;

@@ -289,6 +289,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
+		printf("p %s\n", p ? "NO NULL":"NULL");
 		if (p->esta_atacando()) {
 			//printf("Esta atacando\n");
 			p->set_destino_al_ataque();
