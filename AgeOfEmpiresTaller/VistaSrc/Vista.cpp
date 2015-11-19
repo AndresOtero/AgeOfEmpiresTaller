@@ -585,6 +585,22 @@ bool Vista::mostrarPantallaEspera() {
 	return quit;
 }
 
+void Vista::corregirCoordenadasEdificioACrear(int &x, int &y,Entidad * entidad){
+
+	int x_max = x + entidad->objetoMapa->baseLogica->ancho -1;
+	int y_max = y + entidad->objetoMapa->baseLogica->alto -1;
+
+	if (x < 0){
+		x = 0;
+	}else if ( x_max > this->modelo->get_ancho_mapa()-1){
+		x = this->modelo->get_ancho_mapa() - entidad->objetoMapa->baseLogica->ancho;
+	}
+	if ( y < 0){
+		y = 0;
+	}else if ( y_max > this->modelo->get_alto_mapa()-1){
+		y = this->modelo->get_alto_mapa() - entidad->objetoMapa->baseLogica->alto;
+	}
+}
 void Vista::dibujar_edificio(int mov_x, int mov_y) {
 	double a, b;
 	if (this->entidadACrear) {
@@ -592,9 +608,14 @@ void Vista::dibujar_edificio(int mov_x, int mov_y) {
 		this->transformador->transformar_pantalla_isometrica(mov_x, mov_y, a,
 				b);
 		this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
+		int x = floor(a);
+		int y = floor(b);
+		corregirCoordenadasEdificioACrear(x,y,entidadACrear);
+		printf("x,y %d,%d\n",x,y);
+		this->entidadACrear->set_posicion(x, y);
 
-		this->entidadACrear->set_posicion(floor(a), floor(b));
-		if (!this->modelo->afueraDelMapa(floor(a), floor(b))&& this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
+		if (!this->modelo->afueraDelMapa(x, y)) {
+
 			if (this->modelo->tocaSombra(this->entidadACrear)) {
 				this->edificioACrear->ponerAmarillo();
 			} else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
@@ -605,8 +626,8 @@ void Vista::dibujar_edificio(int mov_x, int mov_y) {
 
 			double pant_x, pant_y;
 			this->transformador->transformar_isometrica_pantalla(
-					floor(a) - this->referencia_mapa_x,
-					floor(b) - this->referencia_mapa_y, pant_x, pant_y);
+					x - this->referencia_mapa_x,
+					y - this->referencia_mapa_y, pant_x, pant_y);
 			//this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
 			this->edificioACrear->set_posicion_default(pant_x, pant_y);
 			this->edificioACrear->render(gRenderer);
