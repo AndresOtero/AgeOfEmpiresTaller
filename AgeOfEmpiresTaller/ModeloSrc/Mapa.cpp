@@ -334,7 +334,7 @@ bool Mapa::puedeUbicar(Entidad* entidad) {
 
 Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base) {
 //devuelve una posicion valida en el mapa
-	printf("entro\n");
+
 	Posicion pos;
 	int ancho_medio = this->getAncho() / 2;
 	int alto_medio =this->getLargo() / 2;
@@ -411,7 +411,7 @@ Posicion Mapa::posicionValidaEnSector(Posicion sector, Entidad * entidad, int an
 		celda = this->getCelda(x, y);
 		entidad->set_posicion(x, y);
 	} while (celda->estaOcupada() || !this->puedeUbicar(entidad));
-	printf("L3EncontroPosicion %d,%d\n",x,y);
+	//printf("L3EncontroPosicion %d,%d\n",x,y);
 	Posicion posicion = { x, y };
 	return posicion;
 }

@@ -585,21 +585,26 @@ bool Vista::mostrarPantallaEspera() {
 	return quit;
 }
 
-void Vista::corregirCoordenadasEdificioACrear(int &x, int &y,Entidad * entidad){
-
+bool Vista::corregirCoordenadasEdificioACrear(int &x, int &y,Entidad * entidad){
+	bool corrigio = false;
 	int x_max = x + entidad->objetoMapa->baseLogica->ancho -1;
 	int y_max = y + entidad->objetoMapa->baseLogica->alto -1;
 
 	if (x < 0){
 		x = 0;
+		corrigio = true;
 	}else if ( x_max > this->modelo->get_ancho_mapa()-1){
 		x = this->modelo->get_ancho_mapa() - entidad->objetoMapa->baseLogica->ancho;
+		corrigio = true;
 	}
 	if ( y < 0){
 		y = 0;
+		corrigio = true;
 	}else if ( y_max > this->modelo->get_alto_mapa()-1){
 		y = this->modelo->get_alto_mapa() - entidad->objetoMapa->baseLogica->alto;
+		corrigio = true;
 	}
+	return corrigio;
 }
 void Vista::dibujar_edificio(int mov_x, int mov_y) {
 	double a, b;
@@ -610,33 +615,28 @@ void Vista::dibujar_edificio(int mov_x, int mov_y) {
 		this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
 		int x = floor(a);
 		int y = floor(b);
-		corregirCoordenadasEdificioACrear(x,y,entidadACrear);
-		printf("x,y %d,%d\n",x,y);
+		bool corrigio = corregirCoordenadasEdificioACrear(x,y,entidadACrear);
+
 		this->entidadACrear->set_posicion(x, y);
 
-		if (!this->modelo->afueraDelMapa(x, y)) {
-
-			if (this->modelo->tocaSombra(this->entidadACrear)) {
-				this->edificioACrear->ponerAmarillo();
-			} else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
-				this->edificioACrear->ponerRojo();
-			} else {
-				this->edificioACrear->ponerVerde();
-			}
-
-			double pant_x, pant_y;
-			this->transformador->transformar_isometrica_pantalla(
-					x - this->referencia_mapa_x,
-					y - this->referencia_mapa_y, pant_x, pant_y);
-			//this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
-			this->edificioACrear->set_posicion_default(pant_x, pant_y);
-			this->edificioACrear->render(gRenderer);
-			this->edificioACrear->resetear();
-			this->edificioACrear->reiniciar();
-		}else{
-
-			this->dejarDeDibujarEdificio();
+		if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)|| corrigio) {
+			this->edificioACrear->ponerRojo();
+		} else if (this->modelo->tocaSombra(this->entidadACrear)) {
+			this->edificioACrear->ponerAmarillo();
+		} else {
+			this->edificioACrear->ponerVerde();
 		}
+
+		double pant_x, pant_y;
+		this->transformador->transformar_isometrica_pantalla(
+				floor(a) - this->referencia_mapa_x, floor(b) - this->referencia_mapa_y,
+				pant_x, pant_y);
+		//this->corregir_referencia_coordenadas_mapa_pantalla(pant_x,pant_y);
+		this->edificioACrear->set_posicion_default(pant_x, pant_y);
+		this->edificioACrear->render(gRenderer);
+		this->edificioACrear->resetear();
+		this->edificioACrear->reiniciar();
+
 	}
 }
 vector<int> Vista::calcular_bordes() {

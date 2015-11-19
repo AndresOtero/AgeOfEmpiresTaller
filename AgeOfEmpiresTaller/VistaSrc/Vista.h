@@ -71,7 +71,7 @@ private:
 	void dibujar_barra();
 	void dibujar_edificio(int mov_x,int mov_y);
 	void dejarDeDibujarEdificio();
-	void corregirCoordenadasEdificioACrear(int &x, int &y,Entidad * entidad);
+	bool corregirCoordenadasEdificioACrear(int &x, int &y,Entidad * entidad);
 
 
 public:
