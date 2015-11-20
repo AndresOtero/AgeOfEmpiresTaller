@@ -381,11 +381,12 @@ bool Vista::run() {
 				this->transformador->transformar_pantalla_isometrica(pant_x,
 						pant_y, a, b);
 				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
-				if (!this->modelo->afueraDelMapa(a, b)) {
+				//if (!this->modelo->afueraDelMapa(a, b)) {
 					this->setear_seleccion();
 					//si seleeciono sobre mapa
-					if (seleccion_y_final
-							< this->barra->obtenerYDondeSeDibuja()) {
+				if (seleccion_y_final < this->barra->obtenerYDondeSeDibuja()) {
+					//proteger contra tocas afuera del mapa
+					if (!this->modelo->afueraDelMapa(a, b)) {
 						//si ve donde esta haciendo click
 						if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
 							if (this->entidadACrear) {
@@ -416,7 +417,12 @@ bool Vista::run() {
 						}
 						//si clickeo pase lo q pase dejo de dibujar
 						this->dejarDeDibujarEdificio();
-					} else {
+
+					}else{
+						this->dejarDeDibujarEdificio();
+					}
+
+				} else {
 						tuple<ObjetoMapa*, int> tipo = this->barra->seleccionar(
 								pant_x, pant_y);
 						ObjetoMapa* objeto = std::get<0>(tipo);
@@ -441,7 +447,7 @@ bool Vista::run() {
 						}
 					}
 
-				}
+				//}
 
 
 			}
