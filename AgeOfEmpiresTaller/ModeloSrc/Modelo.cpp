@@ -536,13 +536,14 @@ void Modelo::cambiar_destino_personaje(Id id, double mov_x, double mov_y) {
 }
 Personaje* Modelo::get_Personaje_Por_Id(Id id) {
 	vector<Personaje*>::iterator it = personajes.begin();
+	printf("LLEGO\n");
 	for (; it != personajes.end(); ++it) {
-
 		Personaje* p = (*it);
 		if (p->getId() == id) {
 			return p;
 		}
 	}
+	printf("Salio\n");
 	return NULL;
 }
 void Modelo::atacarServer(Id idAtacante, Id idAtacado) {

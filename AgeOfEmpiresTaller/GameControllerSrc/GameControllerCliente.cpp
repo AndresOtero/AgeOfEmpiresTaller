@@ -232,11 +232,11 @@ void GameControllerCliente::crearEdificio(string nombre, int id_constructor,
 }
 
 void GameControllerCliente::empezarAccion(int id) {
-	this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(true);
+	if(this->modelo->get_Personaje_Por_Id(id)!=NULL)	this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(true);
 }
 
 void GameControllerCliente::terminarAccion(int id) {
-	this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(false);
+	if(this->modelo->get_Personaje_Por_Id(id)!=NULL)this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(false);
 }
 void GameControllerCliente::finalizarConstruccion(int id) {
 	Entidad * entidad = this->modelo->buscarEntidad(id);
