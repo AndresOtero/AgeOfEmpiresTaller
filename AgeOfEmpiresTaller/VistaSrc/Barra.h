@@ -53,6 +53,7 @@ private:
 	void imprimirTexto(int x, int y,SDL_Renderer* renderer,shared_ptr<Textura> textura);
 	bool cargarTextoConFont(SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display,TTF_Font* font);
 	bool cargarTextoChico(SDL_Renderer* renderer,SDL_Color color, shared_ptr<Textura> textura, string display);
+	bool enIcono(int pixel_x);
 	shared_ptr<Minimapa> mapa;
 	shared_ptr<Textura> texto;
 	shared_ptr<Textura> nombreJugador;

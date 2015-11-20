@@ -112,7 +112,6 @@ void Barra::cargarIconos(vector<Personaje*> personajes){
 	if (this->iconos.empty()){
 		vector<Personaje*>::iterator it = personajes.begin();
 		for (;it!=personajes.end();it++) {
-			printf("%s\n",(*it)->getNombreTipo().c_str());
 			this->iconos.push_back((*it)->objetoMapa->icono);
 		}
 	}
@@ -195,9 +194,20 @@ void Barra::imprimirLista(SDL_Renderer* renderer){
 		}
 	}
 }
-
+bool Barra::enIcono(int pixel_x){
+	return (0 < pixel_x-x_lista && pixel_x-x_lista < lado_icono);
+}
+/*bool Barra::enSectorMapa(int pixel_x, int pixel_y){
+	int seleccion_x = pixel_x - this->mapa->anchoPantalla()-this->mapa->altoMapa();
+	int seleccion_y = pixel_y - this->referencia_y;
+	if (seleccion_x > 0 && seleccion_y > 0){
+		seleccion_x += this->mapa->altoMapa()/2;
+		//TODO
+	}
+}*/
 tuple<ObjetoMapa*,int> Barra::seleccionar(int pixel_x, int pixel_y){
-	if ( (0< pixel_x-x_lista < lado_icono) && seleccionable ){
+
+	if ( enIcono(pixel_x) && seleccionable ){
 		int seleccion = (pixel_y-this->referencia_y)/lado_icono - 1;
 		//si es un indice positivo y dentro del rango
 		if (seleccion>=0 && ((this->listaCreables.size())>(seleccion))){
@@ -377,7 +387,7 @@ void Barra::dibujarDondeMiro(SDL_Renderer * renderer){
 	int x;
 	int y;
 	this->transformador->transformar_isometrica_pantalla(*x_ref, *y_ref, x, y);
-	//SUPER HARCODE funciona en parte del mapa
+
 	double x_corregido, y_corregido;
 	x_corregido = (double) x + (double) x / celda_mini * this->desfasaje;
 	y_corregido = (double) y + (double) y / celda_mini * this->desfasaje;
