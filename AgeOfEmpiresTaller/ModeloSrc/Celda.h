@@ -17,6 +17,7 @@ typedef int dibujo_t;
 class Celda {
 private:
 	bool ocupada;
+	bool agua;
 	dibujo_t tiles;
 	dibujo_t tiles_elfo;
 	dibujo_t tiles_hobbit;
@@ -49,9 +50,11 @@ public:
 	void mostrarTileMordor();
 	void mostrarTileWater();
 
+	void setAgua(){this->agua = true;};
 	void actualizar();
 	void ocuparCeldaPersonaje(Personaje* personaje);
 	bool tieneRecurso();
+	bool esAgua(){return agua;};
 	dibujo_t dibujarEscenario();
 	dibujo_t dibujarTiles();
 	DatosSeleccionado mostrar_contenido();

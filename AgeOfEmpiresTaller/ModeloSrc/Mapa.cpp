@@ -65,13 +65,23 @@ DatosSeleccionado Mapa::mostrar_entidad(int x, int y) {
 Entidad* Mapa::entidad_celda(int x, int y) {
 	return this->getCelda(x, y)->devolver_entidad();
 }
+
 bool Mapa::celdaOcupada(int x, int y) {
 	Celda* celda = this->getCelda(x, y);
 	if (celda == NULL) {
 		return false;
 	}
-	return (celda->estaOcupada());
+	return (celda->estaOcupada() || celda->esAgua());
 }
+
+bool Mapa::celdaAgua(int x, int y){
+	Celda* celda = this->getCelda(x, y);
+	if (celda == NULL) {
+		return false;
+	}
+	return (celda->esAgua());
+}
+
 dibujo_t Mapa::dibujarEscenario(int x, int y) {
 	if ((y >= this->largo) || (x >= this->ancho) || (y < 0) || (x < 0)) {
 		return AFUERA;
@@ -306,8 +316,8 @@ Posicion Mapa::posicionVacia() {
 	do {
 		x = num.numeroRandom(0, this->ancho);
 		y = num.numeroRandom(0, this->largo);
-		celda = this->getCelda(x, y);
-	} while (celda->estaOcupada());
+		//celda = this->getCelda(x, y);
+	} while (this->celdaOcupada(x,y));
 	Posicion pos = { x, y };
 	return pos;
 }
@@ -424,6 +434,19 @@ bool Mapa::estaDentroDeSector(Posicion sector, Posicion entidad) {
 		}
 	}
 	return false;
+}
+
+void Mapa::hacerPileta(int x, int y){
+	int ancho = this->ancho/4;
+	int largo =  this->largo/4;
+	for (int i = x; i < x+ancho-1 ; i++){
+		for (int j = y; j < y+largo-1; j++){
+			Celda * celda = this->getCelda(i,j);
+			if (celda){
+				celda->setAgua();
+			}
+		}
+	}
 }
 
 Mapa::~Mapa() {

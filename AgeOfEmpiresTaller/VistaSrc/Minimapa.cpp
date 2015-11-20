@@ -110,8 +110,10 @@ void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer,int * count)
 				color = this->obtenerColor(this->modelo->mapa->personaje_celda(x,y)->get_raza());
 			} else if (this->modelo->mapa->hayRecursosEn(pos)) {
 				color = AMARILLO;
-			}else {
+			}else if (this->modelo->mapa->entidad_celda(x,y)) {
 				color = this->obtenerColor(this->modelo->mapa->entidad_celda(x,y)->get_raza());
+			}else{
+				color = CELESTE;
 			}
 		}else{
 			color = VERDE;
@@ -161,6 +163,8 @@ int Minimapa::sombra(int color){
 			return AMARILLO_OSCURO;
 		case VIOLETA:
 			return VIOLETA_OSCURO;
+		case CELESTE:
+			return CELESTE_OSCURO;
 	}
 }
 
@@ -200,6 +204,12 @@ SDL_Color Minimapa::paleta(int Color){
 			break;
 		case VIOLETA:
 			c = {255,0,255};
+			break;
+		case CELESTE:
+			c = {137,255,244};
+			break;
+		case CELESTE_OSCURO:
+			c = {120,215,205};
 			break;
 		default:
 			c = {0xFF,0xFF,0xFF};

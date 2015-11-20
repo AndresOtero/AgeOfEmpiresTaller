@@ -53,6 +53,8 @@ public:
 	Posicion posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base);
 	void posicionarPersonaje(Personaje * pers);
 	Celda* getCelda(int x,int y);
+	bool celdaAgua(int x, int y);
+	void hacerPileta(int x, int y);
 private:
 	Posicion acercar(Posicion adonde_estoy,Posicion adonde_voy);
 	bool estoyAlLadoDeEntidadDestino(Posicion adonde_voy,Posicion adonde_estoy);

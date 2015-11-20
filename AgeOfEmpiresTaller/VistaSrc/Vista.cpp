@@ -786,6 +786,10 @@ void Vista::dibujar_mapa() {
 					//Cambio para dibujar agregados
 					size_t n_imagen;
 					if (dim == TILES) {
+						// LO METI aca porq en otra parte al crear el edificio cerca la tapo
+						if (this->modelo->mapa->celdaAgua(coord_x,coord_y)){
+							this->modelo->mapa->getCelda(coord_x,coord_y)->mostrarTileWater();
+						}
 						n_imagen = this->modelo->dibujar(dim, coord_x, coord_y); //MEZCLA MODELO CON VISTA para dsps
 					} else {
 						n_imagen = this->factory->get_idDibujo(

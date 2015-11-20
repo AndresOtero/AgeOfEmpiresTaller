@@ -108,6 +108,7 @@ void Modelo::insertarEntidades() {
 
 void Modelo::setMapa(int ancho, int largo) {
 	this->mapa = shared_ptr<Mapa>(new Mapa(ancho, largo));
+	this->mapa->hacerPileta(3*ancho/8,3*largo/8);
 	this->insertarEntidades();
 	vector<int> row(ancho, OSCURO);
 	for (int i = 0; i < largo; i++) {

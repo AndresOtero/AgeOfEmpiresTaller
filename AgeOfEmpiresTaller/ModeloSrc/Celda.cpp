@@ -22,6 +22,7 @@ Celda::Celda() {
 	this-> tiles_humanos = NULL;
 	this->tiles_mordor = NULL;
 	this->tiles_water = NULL;
+	this->agua = false;
 }
 void Celda::setEscenario(dibujo_t dibujo_n){
 	this->escenario=dibujo_n;
@@ -72,6 +73,7 @@ void Celda::actualizar(){
 	this->personaje=NULL;
 }
 void Celda::ocuparCeldaPersonaje(Personaje* personaje){
+
 	this->personaje=personaje;
 
 }
@@ -79,8 +81,7 @@ void Celda::liberarCelda(){
 	this->ocupada=false;
 	this->entidad=NULL;
 	this->escenario=DEFAULT;
-	//nose si este ultimo es necesario pero por las dudas
-	//this->tiles=DEFAULT;
+
 }
 
 bool Celda::tieneRecurso(){
@@ -91,6 +92,7 @@ bool Celda::tieneRecurso(){
 }
 
 bool Celda::estaOcupada(){
+
 	if ((this->entidad!=NULL)){
 		return true;
 	}
