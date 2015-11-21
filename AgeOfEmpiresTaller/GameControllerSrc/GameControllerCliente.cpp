@@ -232,9 +232,10 @@ void GameControllerCliente::crearEdificio(string nombre, int id_constructor,
 }
 
 void GameControllerCliente::empezarAccion(int id,Posicion donde_mira) {
-	if(this->modelo->get_Personaje_Por_Id(id)!=NULL){
-		this->modelo->get_Personaje_Por_Id(id)->atacandoCliente(true);
-		this->modelo->get_Personaje_Por_Id(id)->setDondeMira(donde_mira);
+	Personaje* personaje=this->modelo->get_Personaje_Por_Id(id);
+	if(personaje!=NULL){
+		personaje->atacandoCliente(true);
+		personaje->setDondeMira(donde_mira);
 	}
 }
 

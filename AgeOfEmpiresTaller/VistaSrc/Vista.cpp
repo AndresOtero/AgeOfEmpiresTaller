@@ -762,7 +762,8 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 			dibujo_pers->playMusic();
 			destino_x=personaje->getDondeMira().get_x_exacta();
 			destino_y=personaje->getDondeMira().get_y_exacta();
-
+			printf("Donde Estoy %g, %g",personaje_x,personaje_y);
+			printf("Donde miro %g, %g",destino_x,destino_y);
 	}
 	dibujo_pers->elegir_frame((destino_x - personaje_x),
 			(destino_y - personaje_y));
