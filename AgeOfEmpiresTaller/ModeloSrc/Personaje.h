@@ -37,6 +37,7 @@ class Personaje:public Atacable {
 	int rango;
 	Posicion destino;
 	Posicion camino;
+	Posicion donde_mira;
 	Contador contador_ataque;
 	bool congelado;
 	bool se_movio;
@@ -87,7 +88,12 @@ public:
 	int atacar(Atacable* otro_personaje);
 	void terminarAccion();
 	bool esAdyacente(Entidad* entidad);
-
+	Posicion getDondeMira(){
+		return donde_mira;
+	}
+	Posicion setDondeMira(Posicion donde_mira){
+		this->donde_mira= donde_mira;
+	}
 	string get_raza(){
 		return this->objetoMapa->raza;
 	}

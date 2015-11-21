@@ -47,7 +47,7 @@ public:
 	void eliminarEntidad(int id);
 	void eliminar(int id);
 	char* string_to_char_array(string str);
-	void empezarAccion(int id);
+	void empezarAccion(int id,Posicion donde_mira);
 	void terminarAccion(int id);
 	void finalizarConstruccion(int id);
 	void capturaBandera(string razaAtacante,string razaPerdedora);

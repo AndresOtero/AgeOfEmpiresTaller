@@ -738,9 +738,7 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 		modelo->seleccionar(personaje->getReferenciaMapaX(),
 				personaje->getReferenciaMapaY());
 	}
-	if(personaje->estaAtacandoCliente()){
-		dibujo_pers->playMusic();
-	}
+
 	Posicion destino = personaje->get_camino();
 	double mover_x = destino.get_x_exacta();
 	double mover_y = destino.get_y_exacta();
@@ -757,9 +755,15 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	personaje_x = personaje->get_posicion().get_x_exacta();
 	personaje_y = personaje->get_posicion().get_y_exacta();
 	//la vista recibe destinos pequenios
-	double destino_x = personaje->get_destino().get_x_exacta();
-	double destino_y = personaje->get_destino().get_y_exacta();
 
+	double destino_x = personaje->get_camino().get_x_exacta();
+	double destino_y = personaje->get_camino().get_y_exacta();
+	if (personaje->estaAtacandoCliente()) {
+			dibujo_pers->playMusic();
+			destino_x=personaje->getDondeMira().get_x_exacta();
+			destino_y=personaje->getDondeMira().get_y_exacta();
+
+	}
 	dibujo_pers->elegir_frame((destino_x - personaje_x),
 			(destino_y - personaje_y));
 	dibujo_pers->render(gRenderer);

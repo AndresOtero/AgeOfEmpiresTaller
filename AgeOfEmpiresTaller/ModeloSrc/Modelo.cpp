@@ -96,6 +96,7 @@ vector<msg_t> Modelo::eliminar_personaje_por_Id(Id id) {
 	if (pers) {
 		terminados = this->eliminar_personaje(pers);
 	}
+
 	return terminados;
 }
 
@@ -131,6 +132,7 @@ void Modelo::finalizarAccion(int id) {
 vector<msg_t> Modelo::eliminar_personaje(Personaje* eliminado) {
 	vector<msg_t> terminados;
 	vector<Personaje*>::iterator it = personajes.begin();
+	printf("Elimina\n");
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
 		if (p->esta_atacando()) {
@@ -149,6 +151,17 @@ vector<msg_t> Modelo::eliminar_personaje(Personaje* eliminado) {
 		Personaje* p = (*it);
 		if (p == eliminado) {
 			personajes.erase(it);
+			break;
+
+		}
+
+	}
+	it = personajes_seleccionados.begin();
+	for (; it != personajes_seleccionados.end(); ++it) {
+		Personaje* p = (*it);
+		printf("Borra seleccionado\n");
+		if (p == eliminado) {
+			personajes_seleccionados.erase(it);
 			break;
 
 		}
@@ -537,13 +550,14 @@ void Modelo::cambiar_destino_personaje(Id id, double mov_x, double mov_y) {
 }
 Personaje* Modelo::get_Personaje_Por_Id(Id id) {
 	vector<Personaje*>::iterator it = personajes.begin();
+	printf("LLEGO\n");
 	for (; it != personajes.end(); ++it) {
-
 		Personaje* p = (*it);
 		if (p->getId() == id) {
 			return p;
 		}
 	}
+	printf("Salio\n");
 	return NULL;
 }
 void Modelo::atacarServer(Id idAtacante, Id idAtacado) {

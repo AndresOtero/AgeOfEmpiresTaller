@@ -289,15 +289,17 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 	vector<Personaje*>::iterator it = personajes.begin();
 	for (; it != personajes.end(); ++it) {
 		Personaje* p = (*it);
-		printf("p %s\n", p ? "NO NULL":"NULL");
+		printf("p %s , %s \n", p ? "NO NULL":"NULL",p->mostrar_contenido().getNombre().c_str());
 		if (p->esta_atacando()) {
-			//printf("Esta atacando\n");
+			printf("Esta atacando\n");
 			p->set_destino_al_ataque();
 			if (p->es_adyacente_al_atacado()) {
 				if (!p->estaAtacandoCliente()) {
 					msg_t msg;
 					msg.type = EMPEZAR_ACCION;
 					msg.paramInt1 = p->getId();
+					msg.paramDouble1 =p->get_destino().getX();
+					msg.paramDouble2 =p->get_destino().getY();
 					this->agregarMensaje(msg, mutex);
 				}
 				if (p->contar()) {
@@ -319,7 +321,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 		if (p->seMovio()) {
 			double mov_x = p->get_posicion().get_x_exacta();
 			double mov_y = p->get_posicion().get_y_exacta();
-
+			printf("se movio\n");
 			//creo mensaje y guardo
 			msg_t mensaje;
 			mensaje.type = MOVER_PERSONAJE;
@@ -333,12 +335,15 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 
 		}
 		if (p->esta_recolectando()) {
+			printf("Esta Recolectando");
 			p->set_destino(p->get_objetivo()->get_posicion());
 			if (p->esAdyacente(p->get_objetivo())) {
 				if (!p->estaAtacandoCliente()) {
 					msg_t msg;
 					msg.type = EMPEZAR_ACCION;
 					msg.paramInt1 = p->getId();
+					msg.paramDouble1 =p->get_destino().getX();
+					msg.paramDouble2 =p->get_destino().getY();
 					this->agregarMensaje(msg, mutex);
 				}
 				if (p->contar()) {
@@ -379,12 +384,15 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 			}
 		}
 		if (p->esta_contruyendo()) {
+			printf("Esta construyendo\n");
 			p->set_destino(p->get_objetivo()->get_posicion());
 			if (p->esAdyacente(p->get_objetivo())) {
 				if (!p->estaAtacandoCliente()) {
 					msg_t msg;
 					msg.type = EMPEZAR_ACCION;
 					msg.paramInt1 = p->getId();
+					msg.paramDouble1 =p->get_destino().getX();
+					msg.paramDouble2 =p->get_destino().getY();
 					this->agregarMensaje(msg, mutex);
 				}
 				if (p->contar()) {
@@ -415,6 +423,7 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 		if (p->esta_atacando()) {
 
 			if (!p->get_atacado()->esta_vivo()) {
+				printf("Murio el atacado\n");
 				if (this->objetivo == FLAG) {
 
 					if (p->get_atacado()->esBandera()) {
