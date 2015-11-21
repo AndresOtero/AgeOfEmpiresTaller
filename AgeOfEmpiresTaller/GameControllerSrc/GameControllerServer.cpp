@@ -298,6 +298,8 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					msg_t msg;
 					msg.type = EMPEZAR_ACCION;
 					msg.paramInt1 = p->getId();
+					msg.paramDouble1 =p->get_destino().getX();
+					msg.paramDouble2 =p->get_destino().getY();
 					this->agregarMensaje(msg, mutex);
 				}
 				if (p->contar()) {
@@ -340,6 +342,8 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					msg_t msg;
 					msg.type = EMPEZAR_ACCION;
 					msg.paramInt1 = p->getId();
+					msg.paramDouble1 =p->get_destino().getX();
+					msg.paramDouble2 =p->get_destino().getY();
 					this->agregarMensaje(msg, mutex);
 				}
 				if (p->contar()) {
@@ -387,6 +391,8 @@ void GameControllerServer::actualizar(SDL_mutex *mutex) {
 					msg_t msg;
 					msg.type = EMPEZAR_ACCION;
 					msg.paramInt1 = p->getId();
+					msg.paramDouble1 =p->get_destino().getX();
+					msg.paramDouble2 =p->get_destino().getY();
 					this->agregarMensaje(msg, mutex);
 				}
 				if (p->contar()) {
