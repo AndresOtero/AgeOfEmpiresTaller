@@ -25,7 +25,7 @@ Posicion::Posicion(double x, double y) {
 bool Posicion::es_adyacente(Posicion posicion){
 	Posicion este = Posicion(this->getX(),this->getY());
 	Posicion otro = Posicion(posicion.getX(),posicion.getY());
-	return (este.distancia_octal(otro)<=14);
+	return (este.distancia_octal(otro)<14);
 
 }
 
