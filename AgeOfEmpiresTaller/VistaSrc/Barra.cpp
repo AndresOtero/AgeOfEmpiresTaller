@@ -143,6 +143,12 @@ void Barra::dibujarIconos(SDL_Renderer* renderer){
 	}
 
 }
+
+void Barra::borrarDisplay(){
+	DatosSeleccionado datos;
+	datos.setTipo(VACIO);
+	this->display = datos;
+}
 //tengo q hacer actualizar de jugador no de personaje
 void Barra::setListaCreables(map<string,ObjetoMapa*> tipos){
 	this->seleccionable= true;

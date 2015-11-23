@@ -18,7 +18,7 @@ typedef enum{
 class DatosSeleccionado {
 public:
 	DatosSeleccionado();
-	void setTipo(tipo_seleccionado tipo){
+	void setTipo(int tipo){
 		this->tipo = tipo;
 	}
 	void setNombre(string nombre){
@@ -59,7 +59,7 @@ public:
 	int getRecurso(){
 		return *(this->recurso);
 	}
-	tipo_seleccionado getTipoSeleccionado(){
+	int getTipoSeleccionado(){
 		return this->tipo;
 	}
 	virtual ~DatosSeleccionado();
@@ -71,7 +71,7 @@ private:
 	int *consturccion_actual;
 	int construccion_total;
 	int *recurso;
-	tipo_seleccionado tipo;
+	int tipo;
 
 
 };

@@ -68,8 +68,8 @@ DatosSeleccionado Entidad::mostrar_contenido() {
 
 bool Entidad::esAdyacente(Posicion pos){
 	int alto,ancho,x,y;
-	alto = this->objetoMapa->baseLogica->alto;
-	ancho = this->objetoMapa->baseLogica->ancho;
+	ancho = this->objetoMapa->baseLogica->alto;
+	alto = this->objetoMapa->baseLogica->ancho;
 	Posicion temp1,temp2;
 	//reviso si alguna fila de ancho esta en rango de la posicion
 	for (x = 0; x < (ancho); x++) {

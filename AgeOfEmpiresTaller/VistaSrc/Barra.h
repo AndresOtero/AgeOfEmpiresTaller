@@ -35,6 +35,7 @@ public:
 	tuple<ObjetoMapa*,int> seleccionar(int pixel_x,int pixel_y);
 	void imprimirLista(SDL_Renderer * renderer);
 	int obtenerYDondeSeDibuja();
+	void borrarDisplay();
 	virtual ~Barra();
 private:
 	void cargarIconos(vector<Personaje*> personajes);

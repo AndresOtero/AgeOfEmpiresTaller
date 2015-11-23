@@ -372,6 +372,7 @@ bool Vista::run() {
 		}
 		if (e.type == SDL_MOUSEBUTTONUP) {
 			if (e.button.button == SDL_BUTTON_LEFT) {
+				printf("click iz up\n");
 				esta_eligiendo = false;
 				termino_de_elegir = true;
 				SDL_GetMouseState(&seleccion_x_final, &seleccion_y_final);
@@ -386,9 +387,9 @@ bool Vista::run() {
 					//si seleeciono sobre mapa
 				if (seleccion_y_final < this->barra->obtenerYDondeSeDibuja()) {
 					//proteger contra tocas afuera del mapa
-					if (!this->modelo->afueraDelMapa(a, b)) {
+					if (!this->modelo->afueraDelMapa(floor(a), floor(b))) {
 						//si ve donde esta haciendo click
-						if (this->modelo->oscuridad(0, a, b) == VISIBLE) {
+						if (this->modelo->oscuridad(0, floor(a), floor(b)) == VISIBLE) {
 							if (this->entidadACrear) {
 								//no lo puede crear en lugar donde no ve
 								if (!this->modelo->tocaSombra(entidadACrear)
@@ -419,7 +420,9 @@ bool Vista::run() {
 						this->dejarDeDibujarEdificio();
 
 					}else{
+						this->barra->borrarDisplay();
 						this->dejarDeDibujarEdificio();
+						this->modelo->limpiarSeleccion();
 					}
 
 				} else {
@@ -486,13 +489,18 @@ bool Vista::run() {
 			//no dejo que se dibuje el edificio si clique
 
 			if (e.button.button == SDL_BUTTON_LEFT) {
+				printf("click iz down\n");
 				double a, b;
 				SDL_GetMouseState(&seleccion_x_inicio, &seleccion_y_inicio);
+				this->transformador->transformar_pantalla_isometrica(seleccion_x_inicio,
+						seleccion_y_inicio, a, b);
+				this->corregir_referencia_coordenadas_pantalla_mapa(a, b);
 				if (seleccion_y_inicio < this->barra->obtenerYDondeSeDibuja()
-						&& !this->entidadACrear) {
+						&& !this->entidadACrear ) {
 					esta_eligiendo = true;
 					this->modelo->limpiarSeleccion();
 				}
+
 
 			}
 		}
