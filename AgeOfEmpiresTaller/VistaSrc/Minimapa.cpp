@@ -105,7 +105,7 @@ void Minimapa::dibujarElemento(int x, int y,SDL_Renderer * renderer,int * count)
 	int y_pant = y*alto_por_celda;
 	if (d != 2) {
 		int color;
-		if (this->modelo->mapa->celdaOcupada(x, y)) {
+		if (this->modelo->mapa->celdaOcupada(x, y) || this->modelo->mapa->celdaAgua(x,y)) {
 			if (this->modelo->mapa->hay_personaje(x, y)) {
 				color = this->obtenerColor(this->modelo->mapa->personaje_celda(x,y)->get_raza());
 			} else if (this->modelo->mapa->hayRecursosEn(pos)) {

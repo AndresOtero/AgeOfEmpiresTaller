@@ -318,7 +318,7 @@ Posicion Mapa::posicionVacia() {
 		x = num.numeroRandom(0, this->ancho);
 		y = num.numeroRandom(0, this->largo);
 		//celda = this->getCelda(x, y);
-	} while (this->celdaOcupada(x,y));
+	} while (this->celdaOcupada(x,y) || this->celdaAgua(x,y));
 	Posicion pos = { x, y };
 	return pos;
 }
@@ -330,12 +330,12 @@ bool Mapa::puedeUbicar(Entidad* entidad) {
 	int x, y, ancho, alto;
 	ancho = entidad->objetoMapa->baseLogica->ancho;
 	alto = entidad->objetoMapa->baseLogica->alto;
-	for (x = pos.getX(); x < pos.getX() + ancho; x++) {
-		for (y = pos.getY(); y < pos.getY() + alto; y++) {
+	for (x = pos.getX(); x < pos.getX() + alto; x++) {
+		for (y = pos.getY(); y < pos.getY() + ancho; y++) {
 			if (this->afueraDelMapa(x,y)){
 				return false;
 			}
-			if (this->getCelda(x, y)->estaOcupada()) {
+			if (this->celdaOcupada(x,y) || this->celdaAgua(x,y)) {
 				return false;
 			}
 		}

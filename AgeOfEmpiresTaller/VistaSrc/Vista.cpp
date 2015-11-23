@@ -625,10 +625,12 @@ void Vista::dibujar_edificio(int mov_x, int mov_y) {
 
 		this->entidadACrear->set_posicion(x, y);
 
-		if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)|| corrigio) {
+		if (corrigio) {
 			this->edificioACrear->ponerRojo();
 		} else if (this->modelo->tocaSombra(this->entidadACrear)) {
 			this->edificioACrear->ponerAmarillo();
+		} else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
+			this->edificioACrear->ponerRojo();
 		} else {
 			this->edificioACrear->ponerVerde();
 		}
@@ -756,8 +758,8 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 	personaje_y = personaje->get_posicion().get_y_exacta();
 	//la vista recibe destinos pequenios
 
-	double destino_x = personaje->get_camino().get_x_exacta();
-	double destino_y = personaje->get_camino().get_y_exacta();
+	double destino_x = personaje->get_destino().get_x_exacta();
+	double destino_y = personaje->get_destino().get_y_exacta();
 	if (personaje->estaAtacandoCliente()) {
 			dibujo_pers->playMusic();
 			destino_x=personaje->getDondeMira().get_x_exacta();
