@@ -39,6 +39,7 @@ public:
 	int comida;
 	string raza;
 	string musica;
+	bool es_bote;
 
 	int velocidad_construcccion;
 	string edificio_constructor;

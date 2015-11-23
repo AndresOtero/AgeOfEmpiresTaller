@@ -82,10 +82,13 @@ void GameControllerServer::crearEdificio(string nombre, int id_constructor,
 }
 void GameControllerServer::crearPersonajeEdificio(string name, string tipo,
 		Id id_edificio, SDL_mutex *mutex) {
+	printf("%s\n",tipo.c_str());
 	ObjetoMapa* obj = this->juego->tipos[tipo];
 	Personaje* personaje = new Personaje(obj);
 	personaje->setNombreJugador(name);
+	printf("arranco crear\n",tipo.c_str());
 	int id = this->modelo->crearPersonajeServerEdificio(personaje, id_edificio);
+	printf("termino crear\n",tipo.c_str());
 
 	//seteo mensaje
 	msg_t mensaje;
@@ -108,7 +111,10 @@ void GameControllerServer::crearPersonajeHeroe(string name, string tipo,
 	personaje->esHeroe = true;
 	personaje->setNombreJugador(name);
 	int id = this->modelo->crearPersonajeServerEdificio(personaje, id_edificio);
-
+	if(id==-1){
+		delete personaje;
+		return;
+	}
 	//seteo mensaje
 	msg_t mensaje;
 	mensaje.type = NUEVO_PERSONAJE;
@@ -518,6 +524,7 @@ void GameControllerServer::crearCentroCivicoNuevoUser(string raza,
 
 	string tipito;
 	ObjetoMapa* tipo = entidad->devolverPersonajesCreables().begin()->second;
+
 	if (tipo->construccion > 0 || tipo->recoleccion > 0) {
 		tipito = tipo->nombre;
 	} else {

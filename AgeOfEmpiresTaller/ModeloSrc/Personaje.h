@@ -47,10 +47,14 @@ class Personaje:public Atacable {
 	int id;
 	string nombreJugador;
 	Costo costo;
+	bool es_bote;
 public:
 	bool adyacente;
 	bool esUnHeroe(){
 		return esHeroe;
+	}
+	bool esUnBote(){
+		return es_bote;
 	}
 	bool esHeroe;
 	Personaje();

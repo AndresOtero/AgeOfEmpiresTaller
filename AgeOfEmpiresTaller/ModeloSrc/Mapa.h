@@ -40,12 +40,12 @@ public:
 	bool hayRecursosEn(Posicion posicion);
 	bool afueraDelMapa(int x,int y);
 	bool celdaOcupada(int x,int y);
-	vector<Posicion> adyacenciasNoOcupadas(Posicion posicion);
-	Posicion encontrarAdyacenteMasCercano(Posicion posicion);
+	vector<Posicion> adyacenciasNoOcupadas(Posicion posicion,bool es_agua);
+	Posicion encontrarAdyacenteMasCercano(Posicion posicion,bool es_agua);
 	void posicionarEntidad(Entidad* entidad);
 	void sacarEntidad(Entidad * entidad);
 	void actualizar(vector<Personaje*> personajes);
-	Posicion validar_destino(Posicion adonde_voy,Posicion adonde_estoy);
+	Posicion validar_destino(Posicion adonde_voy,Posicion adonde_estoy, bool es_agua);
 	vector<Posicion> adyacencias(Posicion posicion);
 	bool puedeUbicar(Entidad * entidad);
 	bool estaDentroDeSector(Posicion sector,Posicion entidad);

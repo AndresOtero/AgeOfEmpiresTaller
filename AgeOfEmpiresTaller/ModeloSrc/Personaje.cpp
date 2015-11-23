@@ -54,6 +54,8 @@ Personaje::Personaje(ObjetoMapa* objetoMapa) {
 	GeneradorNumeros generar;
 	int id = generar.otroID();
 	this->id = id;
+	this->es_bote=objetoMapa->es_bote;
+
 }
 Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y) {
 	this->referencia_mapa_x = x;
@@ -79,6 +81,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y) {
 	GeneradorNumeros generar;
 	int id = generar.otroID();
 	this->id = id;
+	this->es_bote=objetoMapa->es_bote;
 }
 
 dibujo_t Personaje::dibujar() {

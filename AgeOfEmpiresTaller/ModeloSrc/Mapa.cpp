@@ -71,7 +71,7 @@ bool Mapa::celdaOcupada(int x, int y) {
 	if (celda == NULL) {
 		return false;
 	}
-	return (celda->estaOcupada() || celda->esAgua());
+	return (celda->estaOcupada());
 }
 
 bool Mapa::celdaAgua(int x, int y){
@@ -148,7 +148,7 @@ Posicion Mapa::acercar(Posicion adonde_estoy, Posicion adonde_voy) {
 	return pos;
 
 }
-Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
+Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy, bool es_agua) {
 	if (afueraDelMapa(adonde_voy.getX(), adonde_voy.getY())) {
 		return adonde_estoy;
 	}
@@ -156,7 +156,7 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	bool celdaOcupad = celdaOcupada(adonde_voy.getX(), adonde_voy.getY());
 	//bool esAdyacente = adonde_voy.es_adyacente(adonde_estoy);
 
-	if ((adonde_estoy == adonde_voy) || (!celdaOcupad)) {
+	if ((adonde_estoy == adonde_voy) || ((!celdaOcupad)&&(es_agua==celdaAgua(adonde_voy.getX(), adonde_voy.getY())))) {//&&(es_agua!=celdaAgua(adonde_voy.getX(),adonde_voy.getY()))
 		return adonde_voy;
 	}
 
@@ -180,7 +180,7 @@ Posicion Mapa::validar_destino(Posicion adonde_voy, Posicion adonde_estoy) {
 	while (pila_no_ocupadas.empty()) {
 		Posicion ocupado_mas_cercano = pila_ocupadas.top().first;
 		//printf("Ocupado: %d,%d\n",ocupado_mas_cercano.getX(),ocupado_mas_cercano.getY());
-		vector<Posicion> adyacentes_no_ocupados = adyacenciasNoOcupadas(ocupado_mas_cercano);
+		vector<Posicion> adyacentes_no_ocupados = adyacenciasNoOcupadas(ocupado_mas_cercano,es_agua);
 		vector<Posicion>::iterator it = adyacentes_no_ocupados.begin();
 		for (; it != adyacentes_no_ocupados.end(); ++it) {
 			Posicion ady = (*it);
@@ -223,7 +223,7 @@ bool Mapa::estoyAlLadoDeEntidadDestino(Posicion adonde_voy, Posicion adonde_esto
 	}
 	return false;
 }
-vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
+vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion,bool es_agua) {
 	vector<Posicion> adyacentes = vector<Posicion>();
 	int x = posicion.getX(), y = posicion.getY();
 	Entidad* entidad = this->entidad_celda(x, y);
@@ -233,36 +233,36 @@ vector<Posicion> Mapa::adyacenciasNoOcupadas(Posicion posicion) {
 	}
 
 	for (int i = x + 1, j = y + 1; i > x - 2; i -= 2, j -= 2) {
-		if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j)) && (!celdaOcupada(x, j)) && (!celdaOcupada(i, y))) {
+		if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j)) && (!celdaOcupada(x, j)) && (!celdaOcupada(i, y))&&(es_agua==celdaAgua(i,j))) {//&&(es_agua==celdaAgua(i,j))
 			adyacentes.push_back(Posicion(i, j));
 		}
 	}
 	for (int i = x - 1, j = y - 1; i < x + 2; i += 2, j += 2) {
-		if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j)) && (!celdaOcupada(x, j)) && (!celdaOcupada(i, y))) {
+		if ((!afueraDelMapa(i, j)) && (!celdaOcupada(i, j)) && (!celdaOcupada(x, j)) && (!celdaOcupada(i, y))&&(es_agua==celdaAgua(i,j))) {//&&(es_agua==celdaAgua(i,j))
 			adyacentes.push_back(Posicion(i, j));
 		}
 	}
 
 	for (int j = y - 1; j < y + 2; j += 2) {
-		if ((!afueraDelMapa(x, j)) && (!celdaOcupada(x, j))) {
+		if ((!afueraDelMapa(x, j)) && (!celdaOcupada(x, j))&&(es_agua==celdaAgua(x,j))) {//&&(es_agua==celdaAgua(i,j))
 			adyacentes.push_back(Posicion(x, j));
 		}
 	}
 
 	for (int i = x - 1; i < x + 2; i += 2) {
-		if ((!afueraDelMapa(i, y)) && (!celdaOcupada(i, y))) {
+		if ((!afueraDelMapa(i, y)) && (!celdaOcupada(i, y))&&(es_agua==celdaAgua(i,y))) {//&&(es_agua==celdaAgua(i,j))
 			adyacentes.push_back(Posicion(i, y));
 		}
 	}
 	return adyacentes;
 }
-Posicion Mapa::encontrarAdyacenteMasCercano(Posicion posicion) {
+Posicion Mapa::encontrarAdyacenteMasCercano(Posicion posicion,bool es_agua) {
 	queue<Posicion> pila;
 	pila.push(posicion);
 	while (!pila.empty()) {
 		Posicion p = pila.front();
 		pila.pop();
-		vector<Posicion> adyacentes_no_ocupados = this->adyacenciasNoOcupadas(p);
+		vector<Posicion> adyacentes_no_ocupados = this->adyacenciasNoOcupadas(p,es_agua);
 		if (adyacentes_no_ocupados.empty()) {
 			vector<Posicion> adyacentes = this->adyacencias(p);
 			vector<Posicion>::iterator it = adyacentes.begin();
@@ -275,6 +275,7 @@ Posicion Mapa::encontrarAdyacenteMasCercano(Posicion posicion) {
 			return adyacentes_no_ocupados.front();
 		}
 	}
+	return Posicion(-1,-1);
 }
 
 void Mapa::posicionarPersonaje(Personaje * pers) {

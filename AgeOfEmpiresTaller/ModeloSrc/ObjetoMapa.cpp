@@ -28,6 +28,7 @@ ObjetoMapa::ObjetoMapa(string nombre, string imagen) {
 	this->piedra=0;
 	this->comida=0;
 	this->rango = 0;
+	this->es_bote=false;
 }
 ObjetoMapa::~ObjetoMapa() {
 	delete this -> baseLogica;

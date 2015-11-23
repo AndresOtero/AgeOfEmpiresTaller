@@ -334,14 +334,14 @@ double Modelo::distancia(Posicion a, Posicion b) {
 }
 
 //server
-Posicion Modelo::calcular_camino(Posicion adonde_estoy, Posicion adonde_voy) {
+Posicion Modelo::calcular_camino(Posicion adonde_estoy, Posicion adonde_voy,bool es_bote) {
 	/**
 	 *http://www.redblobgames.com/pathfinding/a-star/introduction.html
 	 **/
 	if (adonde_estoy == adonde_voy) {
 		return adonde_voy;
 	}
-	adonde_voy = mapa->validar_destino(adonde_voy, adonde_estoy);
+	adonde_voy = mapa->validar_destino(adonde_voy, adonde_estoy,es_bote);
 	priority_queue<pair<Posicion, double>, vector<pair<Posicion, double>>, CompDistancias> pila;
 	map<Posicion, Posicion, cmp_posiciones> donde_vengo;
 	map<Posicion, double, cmp_posiciones> cuanto_recorri;
@@ -358,7 +358,7 @@ Posicion Modelo::calcular_camino(Posicion adonde_estoy, Posicion adonde_voy) {
 		if (posicion_actual == adonde_voy) {
 			break;
 		}
-		vector<Posicion> adyacentes = mapa->adyacenciasNoOcupadas(actual.first);
+		vector<Posicion> adyacentes = mapa->adyacenciasNoOcupadas(actual.first,es_bote);
 		vector<Posicion>::iterator it = adyacentes.begin();
 		for (; it != adyacentes.end(); ++it) {
 			Posicion ady = (*it);
@@ -407,7 +407,7 @@ Posicion Modelo::mover_personaje(Personaje * personaje) {
 	if (personaje->estaCongelado()) {
 		return adonde_estoy;
 	}
-	Posicion adonde_voy = calcular_camino(adonde_estoy, destino);
+	Posicion adonde_voy = calcular_camino(adonde_estoy, destino,personaje->esUnBote());
 	personaje->set_camino(adonde_voy);
 	personaje->mover();
 	return adonde_voy; //mandar adonde_voy a cliente
@@ -716,7 +716,10 @@ vector<msg_t> Modelo::terminarConstruccion(int id){
 }
 int Modelo::crearPersonajeServerEdificio(Personaje* personaje, Id id_edificio) {
 	Entidad* edificio = this->buscarEntidad(id_edificio);
-	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());
+	printf(personaje->esUnBote()?"Es un bote\n":"No es un bote\n");
+	printf("%s\n",personaje->getNombreTipo().c_str());
+	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion(),personaje->esUnBote());
+	if(pos==Posicion(-1,-1))return -1;
 	personaje->set_posicion(pos);
 	this->mapa->posicionarPersonaje(personaje);
 	personajes.push_back(personaje);
@@ -726,7 +729,7 @@ int Modelo::crearPersonajeServerEdificio(Personaje* personaje, Id id_edificio) {
 
 int Modelo::crearBandera(Entidad* bandera, Id id_edificio) {
 	Entidad* edificio = this->buscarEntidad(id_edificio);
-	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion());
+	Posicion pos = this->mapa->encontrarAdyacenteMasCercano(edificio->get_posicion(),false);
 	bandera->set_posicion(pos.getX(), pos.getY());
 	this->insertarEntidad(bandera);
 	int id = bandera->getId();

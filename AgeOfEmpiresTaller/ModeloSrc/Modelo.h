@@ -100,7 +100,7 @@ private:
 	void set_posicionRandomPersonaje(Personaje* personaje);
 
 	Posicion mover_personaje(Personaje* personaje);
-	Posicion calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy);
+	Posicion calcular_camino(Posicion adonde_estoy ,Posicion adonde_voy,bool es_bote);
 	void insertarEntidades();
 	bool celdaOcupada(Posicion);
 	double heuristica(Posicion adonde_voy,Posicion adonde_estoy);
