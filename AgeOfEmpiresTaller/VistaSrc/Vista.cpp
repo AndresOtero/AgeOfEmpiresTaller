@@ -764,6 +764,11 @@ void Vista::dibujar_personaje(Personaje* personaje) {
 			dibujo_pers->playMusic();
 			destino_x=personaje->getDondeMira().get_x_exacta();
 			destino_y=personaje->getDondeMira().get_y_exacta();
+			if(personaje->esUnBote()){
+				double aux=destino_x;
+				destino_x=(-1*destino_y);
+				destino_y=aux;
+			}
 			printf("Donde Estoy %g, %g",personaje_x,personaje_y);
 			printf("Donde miro %g, %g",destino_x,destino_y);
 	}
