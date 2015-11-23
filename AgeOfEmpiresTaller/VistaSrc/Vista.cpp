@@ -360,6 +360,7 @@ bool Vista::run() {
 		if (e.type == SDL_QUIT) {
 			quit = true;
 		}
+		//cheat
 		if (e.type == SDL_KEYDOWN) {
 			switch (e.key.keysym.sym) {
 			case SDLK_c:
@@ -372,7 +373,6 @@ bool Vista::run() {
 		}
 		if (e.type == SDL_MOUSEBUTTONUP) {
 			if (e.button.button == SDL_BUTTON_LEFT) {
-				printf("click iz up\n");
 				esta_eligiendo = false;
 				termino_de_elegir = true;
 				SDL_GetMouseState(&seleccion_x_final, &seleccion_y_final);
@@ -489,7 +489,6 @@ bool Vista::run() {
 			//no dejo que se dibuje el edificio si clique
 
 			if (e.button.button == SDL_BUTTON_LEFT) {
-				printf("click iz down\n");
 				double a, b;
 				SDL_GetMouseState(&seleccion_x_inicio, &seleccion_y_inicio);
 				this->transformador->transformar_pantalla_isometrica(seleccion_x_inicio,
