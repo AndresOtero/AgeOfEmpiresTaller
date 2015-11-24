@@ -7,7 +7,7 @@
 
 #include "Personaje.h"
 #define FACTOR_VELOCIDAD 100
-#define FACTOR_CONTADOR 5
+#define FACTOR_CONTADOR 1300
 
 Personaje::Personaje() {
 	this->esHeroe= false;
@@ -43,7 +43,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa) {
 	this->recoleccion = objetoMapa->recoleccion;
 	this->construccion = objetoMapa->construccion;
 	this->objetoMapa = objetoMapa;
-	this->contador_ataque = Contador(objetoMapa->velocidad * FACTOR_CONTADOR);
+	this->contador_ataque = Contador(FACTOR_CONTADOR/objetoMapa->velocidad);
 	this->recursos = new RecursosJugador();
 	this->congelado = false;
 	this->atacando_cliente = false;
@@ -68,7 +68,7 @@ Personaje::Personaje(ObjetoMapa* objetoMapa, int x, int y) {
 	this->armadura = objetoMapa->armadura;
 	this->recoleccion = objetoMapa->recoleccion;
 	this->construccion = objetoMapa->construccion;
-	this->contador_ataque = Contador(objetoMapa->velocidad * FACTOR_CONTADOR);
+	this->contador_ataque = Contador(FACTOR_CONTADOR/objetoMapa->velocidad);
 	this->objetoMapa = objetoMapa;
 	this->recursos = new RecursosJugador();
 	this->congelado = false;

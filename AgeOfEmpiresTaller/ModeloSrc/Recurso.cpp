@@ -12,12 +12,12 @@
 
 Recurso::Recurso(ObjetoMapa* objetoMapa): Entidad(objetoMapa) {
 	GeneradorNumeros generador;
-	cantidad = generador.numeroRandom(100,250);//random entre 100 y 250
+	cantidad = generador.numeroRandom(600,900);//random entre 100 y 250
 
 }
 Recurso::Recurso(ObjetoMapa* objetoMapa,int x , int y): Entidad( objetoMapa,x,y) {
 	GeneradorNumeros generador;
-	cantidad = generador.numeroRandom(100,250);//random entre 100 y 250
+	cantidad = generador.numeroRandom(600,900);//random entre 100 y 250
 }
 
 int Recurso::sacarRecurso(int cantidad){
