@@ -636,7 +636,7 @@ void Vista::dibujar_edificio(int mov_x, int mov_y) {
 			this->edificioACrear->ponerRojo();
 		} else if (this->modelo->tocaSombra(this->entidadACrear)) {
 			this->edificioACrear->ponerAmarillo();
-		} else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)) {
+		} else if (!this->modelo->mapa->puedeUbicar(this->entidadACrear)||!this->modelo->puedoCrearSiEsPuerto(this->entidadACrear)) {
 			this->edificioACrear->ponerRojo();
 		} else {
 			this->edificioACrear->ponerVerde();
