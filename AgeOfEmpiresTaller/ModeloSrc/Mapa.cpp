@@ -342,6 +342,46 @@ bool Mapa::puedeUbicar(Entidad* entidad) {
 	}
 	return true;
 }
+bool Mapa::puedeUbicarPuerto(Entidad * entidad){
+	Posicion pos = entidad->get_posicion();
+	int x, y, ancho, alto;
+	ancho = entidad->objetoMapa->baseLogica->ancho;
+	alto = entidad->objetoMapa->baseLogica->alto;
+	y = pos.getY() - 1;
+	printf("PUEDE UBICAR PUERTO\n");
+	for (x = pos.getX(); x < pos.getX() + alto; x++) {
+		if (this->celdaAgua(x, y)){
+			printf("afuera 1\n");
+			return true;
+		}
+	}
+	y = pos.getY() + ancho;
+	for (x = pos.getX(); x < pos.getX() + alto; x++) {
+		if (this->celdaAgua(x, y)){
+			printf("afuera 2\n");
+
+			return true;
+		}
+	}
+	x = pos.getX() -1;
+	for (y = pos.getY(); y < pos.getY() + ancho; y++) {
+		if (this->celdaAgua(x, y)){
+			printf("afuera 3\n");
+
+					return true;
+		}
+	}
+	x = pos.getX() +alto;
+		for (y = pos.getY(); y < pos.getY() + ancho; y++) {
+			if (this->celdaAgua(x, y)){
+				printf("afuera 4\n");
+
+						return true;
+			}
+		}
+		printf("afuera\ n");
+	return false;
+}
 
 Posicion Mapa::posicionValidaParaCentroCivico(vector<Entidad*> centros, Entidad * base) {
 //devuelve una posicion valida en el mapa

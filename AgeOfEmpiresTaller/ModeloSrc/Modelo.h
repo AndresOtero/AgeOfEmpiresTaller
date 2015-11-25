@@ -91,7 +91,7 @@ public:
 	int crearEdificio(string nombre, int x,int y);
 	void limpiarSeleccion();
 	Entidad* set_CentroCivicoNuevoServer(string raza);
-
+	bool puedoCrearSiEsPuerto(Entidad* entidad);
 private:
 	size_t acumuladorPiso;
 	vector<Entidad *> obtenerCentrosCivicosEnMapa();

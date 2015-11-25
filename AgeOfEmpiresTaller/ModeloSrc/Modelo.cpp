@@ -87,6 +87,24 @@ vector<Entidad *> Modelo::obtenerCentrosCivicosEnMapa() {
 	}
 	return centrosCivicos;
 }
+bool Modelo::puedoCrearSiEsPuerto(Entidad* entidad) {
+	bool es_puerto=false;;
+	map<string,ObjetoMapa*> dicc =factory_personaje.devolverTipos(entidad->objetoMapa->nombre);
+	if(!dicc.empty()){
+		for (std::map<string,ObjetoMapa*>::iterator it=dicc.begin(); it!=dicc.end(); ++it){
+			if(it->second->es_bote){
+				es_puerto=true;
+			}
+		}
+
+	}
+	if(!es_puerto){
+		return true;
+	}
+	return mapa->puedeUbicarPuerto(entidad);
+
+}
+
 void Modelo::agregarPersonajeCliente(Personaje* personaje) {
 	this->personajes.push_back(personaje);
 }

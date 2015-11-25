@@ -394,7 +394,7 @@ bool Vista::run() {
 								//no lo puede crear en lugar donde no ve
 								if (!this->modelo->tocaSombra(entidadACrear)
 										&& this->modelo->getJugador()->puedePagar(
-												entidadACrear->getCosto())) {
+												entidadACrear->getCosto())&&this->modelo->puedoCrearSiEsPuerto(entidadACrear)) {
 									//TODO crear con muchos tipitos
 									//si puede crear es porque tiene un tipito seleccionado
 									if (this->modelo->mapa->puedeUbicar(
@@ -413,7 +413,7 @@ bool Vista::run() {
 							} else {
 								//si no creo estoy seleccionando
 								this->barra->setDisplay(
-										modelo->seleccionar(a, b));
+								modelo->seleccionar(a, b));
 							}
 						}
 						//si clickeo pase lo q pase dejo de dibujar
